@@ -1,0 +1,66 @@
+{
+  "input": {
+    "mode": "AUTO",
+    "local_folder": "./real_data/local",
+    "schemas_folder": "./real_data/schemas",
+    "uci_sources_file": "./real_data/uci_sources.txt",
+    "run_local_files": true,
+    "run_uci_sources": true,
+    "sheet_name": 0,
+    "uci_drop_missing_target": true
+  },
+  "experiment": {
+    "run_centralized": true,
+    "run_federated": true,
+    "prediction_policy": "FIRST_MATCH"
+  },
+  "evaluation": {
+    "mode": "HOLDOUT",
+    "test_ratio": 0.2,
+    "cv_folds": 10,
+    "seed": 42
+  },
+  "preprocessing": {
+    "auto_discretize": true,
+    "unique_numeric_threshold": 10,
+    "n_bins": 3
+  },
+  "federated": {
+    "n_clients": 5,
+    "partition": "STRATIFIED",
+    "dirichlet_alpha": 0.5,
+    "dirichlet_max_retries": 100,
+    "run_client_sweep": true,
+    "client_counts": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "order_sensitivity_max_permutations": 120
+  },
+  "paper": {
+    "enabled": false,
+    "reference": "WANG_2007",
+    "cv_folds": 10
+  },
+  "reduct": {
+    "enabled": true,
+    "method": "MINIMUM_CARDINALITY",
+    "selection": "LEXICOGRAPHIC_FIRST",
+    "record_all_candidates": true
+  },
+  "report": {
+    "outputs_folder": "./outputs",
+    "show_rules": true,
+    "show_rule_limit": 10
+  },
+  "batch": {
+    "prediction_policies": [
+      "FIRST_MATCH",
+      "SIMPLE_VOTING",
+      "STANDARD_VOTING",
+      "GLOBAL_STRENGTH"
+    ]
+  }
+}

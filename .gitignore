@@ -1,0 +1,19 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+outputs/
+real_data/.cache/
+.superpowers/
+runtime/*
+!runtime/README.txt
+
+# Added during canonical import 2026-10-15 (machine-specific / runtime artifacts)
+venv/
+.mypy_cache/
+.ruff_cache/
+.env
+.env.*
+.idea/
+.vscode/
+*.log

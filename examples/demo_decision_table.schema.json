@@ -1,0 +1,7 @@
+{
+  "target": "class",
+  "continuous": ["age"],
+  "categorical": ["department"],
+  "ordinal": {},
+  "ignore": []
+}
