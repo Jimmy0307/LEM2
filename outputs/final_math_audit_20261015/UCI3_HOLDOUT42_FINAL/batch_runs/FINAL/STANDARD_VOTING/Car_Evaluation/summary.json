@@ -1,0 +1,23 @@
+{
+  "dataset": "Car Evaluation",
+  "source": "uci_id:19",
+  "rows": 1728,
+  "features": 6,
+  "target": "class",
+  "evaluation": "HOLDOUT",
+  "centralized_balanced_accuracy": 0.6318681318681318,
+  "centralized_coverage": 0.9248554913294798,
+  "federated_balanced_accuracy": 0.5435133048769413,
+  "federated_coverage": 1.0,
+  "federated_global_rules": 226,
+  "central_reduct_size": 6,
+  "central_reduct": "[\"buying\", \"doors\", \"lug_boot\", \"maint\", \"persons\", \"safety\"]",
+  "mean_local_reduct_size": 6.0,
+  "reduct_instability": 0.0,
+  "mean_local_central_reduct_jaccard": 1.0,
+  "rule_heterogeneity": 0.931375373020812,
+  "pre_resolution_conflict_case_rate": 0.6069364161849711,
+  "conflict_case_rate": 0.6069364161849711,
+  "order_invariant_by_design": true,
+  "order_sensitivity_rate": 0.0
+}

@@ -1,0 +1,10 @@
+........................................................................ [ 72%]
+............................                                             [100%]
+============================= slowest 5 durations =============================
+4.98s call     tests/test_final_math_audit.py::test_exact_search_equals_v61_search_when_gamma_positive_and_n_small
+1.78s call     tests/test_final_math_audit.py::test_p1_reduct_selection_uses_exact_positive_region_cardinality
+0.46s call     tests/test_reduct_pipeline.py::test_policy_does_not_change_structural_artifact
+0.32s call     tests/test_batch_runner.py::test_policy_matrix_runs_each_policy_into_separate_output_folder
+0.27s call     tests/test_reduct_pipeline.py::test_reduct_is_train_only_for_holdout_and_each_fold[K_FOLD_CV]
+100 passed in 11.15s
+pytest_exit=0

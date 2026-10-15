@@ -1,0 +1,9 @@
+﻿dataset,fold,client_count,policy,system,all_case_disagreement_rate_vs_first_match,conflict_case_disagreement_rate_vs_first_match
+Car Evaluation,1,5,FIRST_MATCH,CENTRALIZED,0.0,0.0
+Car Evaluation,1,5,FIRST_MATCH,FEDERATED,0.0,0.0
+Car Evaluation,1,2,FIRST_MATCH,CENTRALIZED,0.0,0.0
+Car Evaluation,1,2,FIRST_MATCH,FEDERATED,0.0,0.0
+Car Evaluation,1,3,FIRST_MATCH,CENTRALIZED,0.0,0.0
+Car Evaluation,1,3,FIRST_MATCH,FEDERATED,0.0,0.0
+Car Evaluation,1,4,FIRST_MATCH,CENTRALIZED,0.0,0.0
+Car Evaluation,1,4,FIRST_MATCH,FEDERATED,0.0,0.0

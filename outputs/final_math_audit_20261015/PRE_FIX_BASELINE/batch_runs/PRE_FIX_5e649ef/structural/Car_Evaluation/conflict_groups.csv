@@ -1,0 +1,10 @@
+﻿client_count,fold,dataset,antecedent,decisions,rule_count,sources
+5,1,Car Evaluation,doors=4 AND lug_boot=big AND maint=low AND safety=med,"['acc', 'good']",2.0,"['Client_1', 'Client_2']"
+5,1,Car Evaluation,buying=vhigh AND lug_boot=med AND persons=4 AND safety=med,"['acc', 'unacc']",2.0,"['Client_2', 'Client_3']"
+5,1,Car Evaluation,buying=low AND doors=5more AND persons=4 AND safety=high,"['acc', 'vgood']",2.0,"['Client_3', 'Client_4']"
+3,1,Car Evaluation,buying=high AND doors=2 AND maint=med AND safety=med,"['acc', 'unacc']",2.0,"['Client_1', 'Client_2']"
+3,1,Car Evaluation,doors=4 AND lug_boot=small AND maint=low AND persons=more AND safety=high,"['acc', 'good']",2.0,"['Client_1', 'Client_3']"
+3,1,Car Evaluation,buying=med AND maint=low AND persons=more AND safety=med,"['acc', 'good']",2.0,"['Client_2', 'Client_3']"
+3,1,Car Evaluation,buying=low AND doors=3 AND lug_boot=med AND maint=low AND persons=more,"['good', 'vgood']",2.0,"['Client_2', 'Client_3']"
+4,1,Car Evaluation,doors=3 AND lug_boot=small AND maint=low AND persons=more AND safety=high,"['acc', 'good']",2.0,"['Client_1', 'Client_4']"
+4,1,Car Evaluation,doors=2 AND lug_boot=big AND maint=low AND persons=more,"['acc', 'good']",2.0,"['Client_3', 'Client_4']"

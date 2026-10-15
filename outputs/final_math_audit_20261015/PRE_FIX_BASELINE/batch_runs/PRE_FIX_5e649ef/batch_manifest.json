@@ -1,0 +1,128 @@
+{
+  "run_id": "PRE_FIX_5e649ef",
+  "prediction_policies": [
+    "FIRST_MATCH",
+    "SIMPLE_VOTING",
+    "STANDARD_VOTING",
+    "GLOBAL_STRENGTH"
+  ],
+  "evaluation_mode": "HOLDOUT",
+  "base_outputs_folder": "outputs\\final_math_audit_20261015\\PRE_FIX_BASELINE",
+  "root_output": "outputs\\final_math_audit_20261015\\PRE_FIX_BASELINE\\batch_runs\\PRE_FIX_5e649ef",
+  "environment": {
+    "python": {
+      "version": "3.11.9",
+      "implementation": "CPython",
+      "executable": "C:\\Users\\jimmy_liao\\LEM2\\.venv\\Scripts\\python.exe",
+      "minimum_supported": "3.11",
+      "maximum_supported_exclusive": "3.14",
+      "supported": true
+    },
+    "platform": {
+      "system": "Windows",
+      "release": "10",
+      "machine": "AMD64"
+    },
+    "packages": {
+      "numpy": {
+        "installed": true,
+        "version": "2.3.5",
+        "expected_version": "2.3.5",
+        "matches_lock": true
+      },
+      "openpyxl": {
+        "installed": true,
+        "version": "3.1.5",
+        "expected_version": "3.1.5",
+        "matches_lock": true
+      },
+      "pandas": {
+        "installed": true,
+        "version": "2.2.3",
+        "expected_version": "2.2.3",
+        "matches_lock": true
+      },
+      "ucimlrepo": {
+        "installed": true,
+        "version": "0.0.7",
+        "expected_version": "0.0.7",
+        "matches_lock": true
+      },
+      "xlrd": {
+        "installed": true,
+        "version": "2.0.2",
+        "expected_version": "2.0.2",
+        "matches_lock": true
+      }
+    }
+  },
+  "base_config": {
+    "input": {
+      "mode": "AUTO",
+      "local_folder": "./real_data/local",
+      "schemas_folder": "./real_data/schemas",
+      "uci_sources_file": "./real_data/uci_sources.txt",
+      "run_local_files": false,
+      "run_uci_sources": true,
+      "sheet_name": 0,
+      "uci_drop_missing_target": true
+    },
+    "experiment": {
+      "run_centralized": true,
+      "run_federated": true,
+      "prediction_policy": "FIRST_MATCH"
+    },
+    "evaluation": {
+      "mode": "HOLDOUT",
+      "test_ratio": 0.2,
+      "cv_folds": 10,
+      "seed": 42
+    },
+    "preprocessing": {
+      "auto_discretize": true,
+      "unique_numeric_threshold": 10,
+      "n_bins": 3
+    },
+    "federated": {
+      "n_clients": 5,
+      "partition": "STRATIFIED",
+      "dirichlet_alpha": 0.5,
+      "dirichlet_max_retries": 100,
+      "run_client_sweep": true,
+      "client_counts": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "order_sensitivity_max_permutations": 120
+    },
+    "paper": {
+      "enabled": false,
+      "reference": "WANG_2007",
+      "cv_folds": 10
+    },
+    "reduct": {
+      "enabled": true,
+      "method": "MINIMUM_CARDINALITY",
+      "selection": "LEXICOGRAPHIC_FIRST",
+      "record_all_candidates": true
+    },
+    "report": {
+      "outputs_folder": "outputs\\final_math_audit_20261015\\PRE_FIX_BASELINE",
+      "show_rules": true,
+      "show_rule_limit": 10
+    },
+    "batch": {
+      "prediction_policies": [
+        "FIRST_MATCH",
+        "SIMPLE_VOTING",
+        "STANDARD_VOTING",
+        "GLOBAL_STRENGTH"
+      ]
+    }
+  },
+  "reduct_selection_policy": "lexicographic_first_among_minimum_cardinality",
+  "record_all_candidates": true,
+  "structural_artifacts_built_once_and_reused": true
+}

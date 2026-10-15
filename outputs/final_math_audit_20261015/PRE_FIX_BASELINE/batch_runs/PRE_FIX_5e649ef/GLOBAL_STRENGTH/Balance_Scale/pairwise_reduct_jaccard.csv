@@ -1,0 +1,21 @@
+﻿dataset,fold,client_count,client_i,client_j,reduct_i,reduct_j,intersection_size,union_size,jaccard
+Balance Scale,1,5,Client_1,Client_2,"('left_distance', 'left_weight', 'right_distance', 'right_weight')","('left_distance', 'left_weight', 'right_distance', 'right_weight')",4,4,1.0
+Balance Scale,1,5,Client_1,Client_3,"('left_distance', 'left_weight', 'right_distance', 'right_weight')","('left_distance', 'left_weight', 'right_distance', 'right_weight')",4,4,1.0
+Balance Scale,1,5,Client_1,Client_4,"('left_distance', 'left_weight', 'right_distance', 'right_weight')","('left_distance', 'left_weight', 'right_distance', 'right_weight')",4,4,1.0
+Balance Scale,1,5,Client_1,Client_5,"('left_distance', 'left_weight', 'right_distance', 'right_weight')","('left_distance', 'left_weight', 'right_distance', 'right_weight')",4,4,1.0
+Balance Scale,1,5,Client_2,Client_3,"('left_distance', 'left_weight', 'right_distance', 'right_weight')","('left_distance', 'left_weight', 'right_distance', 'right_weight')",4,4,1.0
+Balance Scale,1,5,Client_2,Client_4,"('left_distance', 'left_weight', 'right_distance', 'right_weight')","('left_distance', 'left_weight', 'right_distance', 'right_weight')",4,4,1.0
+Balance Scale,1,5,Client_2,Client_5,"('left_distance', 'left_weight', 'right_distance', 'right_weight')","('left_distance', 'left_weight', 'right_distance', 'right_weight')",4,4,1.0
+Balance Scale,1,5,Client_3,Client_4,"('left_distance', 'left_weight', 'right_distance', 'right_weight')","('left_distance', 'left_weight', 'right_distance', 'right_weight')",4,4,1.0
+Balance Scale,1,5,Client_3,Client_5,"('left_distance', 'left_weight', 'right_distance', 'right_weight')","('left_distance', 'left_weight', 'right_distance', 'right_weight')",4,4,1.0
+Balance Scale,1,5,Client_4,Client_5,"('left_distance', 'left_weight', 'right_distance', 'right_weight')","('left_distance', 'left_weight', 'right_distance', 'right_weight')",4,4,1.0
+Balance Scale,1,2,Client_1,Client_2,"('left_distance', 'left_weight', 'right_distance', 'right_weight')","('left_distance', 'left_weight', 'right_distance', 'right_weight')",4,4,1.0
+Balance Scale,1,3,Client_1,Client_2,"('left_distance', 'left_weight', 'right_distance', 'right_weight')","('left_distance', 'left_weight', 'right_distance', 'right_weight')",4,4,1.0
+Balance Scale,1,3,Client_1,Client_3,"('left_distance', 'left_weight', 'right_distance', 'right_weight')","('left_distance', 'left_weight', 'right_distance', 'right_weight')",4,4,1.0
+Balance Scale,1,3,Client_2,Client_3,"('left_distance', 'left_weight', 'right_distance', 'right_weight')","('left_distance', 'left_weight', 'right_distance', 'right_weight')",4,4,1.0
+Balance Scale,1,4,Client_1,Client_2,"('left_distance', 'left_weight', 'right_distance', 'right_weight')","('left_distance', 'left_weight', 'right_distance', 'right_weight')",4,4,1.0
+Balance Scale,1,4,Client_1,Client_3,"('left_distance', 'left_weight', 'right_distance', 'right_weight')","('left_distance', 'left_weight', 'right_distance', 'right_weight')",4,4,1.0
+Balance Scale,1,4,Client_1,Client_4,"('left_distance', 'left_weight', 'right_distance', 'right_weight')","('left_distance', 'left_weight', 'right_distance', 'right_weight')",4,4,1.0
+Balance Scale,1,4,Client_2,Client_3,"('left_distance', 'left_weight', 'right_distance', 'right_weight')","('left_distance', 'left_weight', 'right_distance', 'right_weight')",4,4,1.0
+Balance Scale,1,4,Client_2,Client_4,"('left_distance', 'left_weight', 'right_distance', 'right_weight')","('left_distance', 'left_weight', 'right_distance', 'right_weight')",4,4,1.0
+Balance Scale,1,4,Client_3,Client_4,"('left_distance', 'left_weight', 'right_distance', 'right_weight')","('left_distance', 'left_weight', 'right_distance', 'right_weight')",4,4,1.0

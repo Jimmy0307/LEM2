@@ -1,0 +1,29 @@
+section,item,antecedent,decision,provenance,client_1_support_ids,client_2_support_ids,client_3_support_ids,client_1_support,client_2_support,client_3_support,global_support_all_clients,pre_fix_provenance_scoped_support,production_global_weight,matching_rules,distributed_union_count,pooled_union_count,sum_of_rule_supports_if_double_counted,class_denominator,gs_score,pre_fix_gs_score,standard_vote,pre_fix_standard_vote,pre_fix_prediction,default_class
+RULE,r1,B=1,Y,Client_1,c1_0 c1_1,c2_0,,2.0,1.0,0.0,3.0,2.0,3.0,,,,,,,,,,,
+RULE,r2,A=1,Y,Client_2,c1_1,c2_0,,1.0,1.0,0.0,2.0,1.0,2.0,,,,,,,,,,,
+RULE,r3,A=0,N,Client_2,,c2_1,c3_1,0.0,1.0,1.0,2.0,1.0,2.0,,,,,,,,,,,
+RULE,r4,B=0,Y,Client_3,,,c3_0,0.0,0.0,1.0,1.0,1.0,1.0,,,,,,,,,,,
+RULE,r5,B=1,N,Client_3,,c2_1,c3_1,0.0,1.0,1.0,2.0,1.0,2.0,,,,,,,,,,,
+TEST_OBJECT_DECISION,"x0 A=1,B=1 true=Y",,N,,,c2_1,c3_1,0.0,1.0,1.0,,,,B=1->N,2.0,2.0,2.0,2.0,1.0,0.5,2.0,1.0,,
+TEST_OBJECT_DECISION,"x0 A=1,B=1 true=Y",,Y,,c1_0 c1_1,c2_0,,2.0,1.0,0.0,,,,B=1->Y ; A=1->Y,3.0,3.0,5.0,4.0,0.75,0.75,5.0,3.0,,
+PREDICTION,"x0 A=1,B=1 true=Y",,N,,,,,,,,,,,GLOBAL_STRENGTH,,,,,,,,,Y,Y
+PREDICTION,"x0 A=1,B=1 true=Y",,Y,,,,,,,,,,,STANDARD_VOTING,,,,,,,,,Y,Y
+PREDICTION,"x0 A=1,B=1 true=Y",,Y,,,,,,,,,,,SIMPLE_VOTING,,,,,,,,,Y,Y
+PREDICTION,"x0 A=1,B=1 true=Y",,Y,,,,,,,,,,,FIRST_MATCH,,,,,,,,,Y,Y
+TEST_OBJECT_DECISION,"x1 A=0,B=0 true=Y",,N,,,c2_1,c3_1,0.0,1.0,1.0,,,,A=0->N,2.0,2.0,2.0,2.0,1.0,0.5,2.0,1.0,,
+TEST_OBJECT_DECISION,"x1 A=0,B=0 true=Y",,Y,,,,c3_0,0.0,0.0,1.0,,,,B=0->Y,1.0,1.0,1.0,4.0,0.25,0.25,1.0,1.0,,
+PREDICTION,"x1 A=0,B=0 true=Y",,N,,,,,,,,,,,GLOBAL_STRENGTH,,,,,,,,,N,Y
+PREDICTION,"x1 A=0,B=0 true=Y",,N,,,,,,,,,,,STANDARD_VOTING,,,,,,,,,Y,Y
+PREDICTION,"x1 A=0,B=0 true=Y",,Y,,,,,,,,,,,SIMPLE_VOTING,,,,,,,,,Y,Y
+PREDICTION,"x1 A=0,B=0 true=Y",,N,,,,,,,,,,,FIRST_MATCH,,,,,,,,,N,Y
+TEST_OBJECT_DECISION,"x2 A=0,B=1 true=N",,N,,,c2_1,c3_1,0.0,1.0,1.0,,,,A=0->N ; B=1->N,2.0,2.0,4.0,2.0,1.0,1.0,4.0,2.0,,
+TEST_OBJECT_DECISION,"x2 A=0,B=1 true=N",,Y,,c1_0 c1_1,c2_0,,2.0,1.0,0.0,,,,B=1->Y,3.0,3.0,3.0,4.0,0.75,0.5,3.0,2.0,,
+PREDICTION,"x2 A=0,B=1 true=N",,N,,,,,,,,,,,GLOBAL_STRENGTH,,,,,,,,,N,Y
+PREDICTION,"x2 A=0,B=1 true=N",,N,,,,,,,,,,,STANDARD_VOTING,,,,,,,,,Y,Y
+PREDICTION,"x2 A=0,B=1 true=N",,N,,,,,,,,,,,SIMPLE_VOTING,,,,,,,,,N,Y
+PREDICTION,"x2 A=0,B=1 true=N",,Y,,,,,,,,,,,FIRST_MATCH,,,,,,,,,Y,Y
+TEST_OBJECT_DECISION,"x3 A=1,B=0 true=Y",,Y,,c1_1,c2_0,c3_0,1.0,1.0,1.0,,,,A=1->Y ; B=0->Y,3.0,3.0,3.0,4.0,0.75,0.5,3.0,2.0,,
+PREDICTION,"x3 A=1,B=0 true=Y",,Y,,,,,,,,,,,GLOBAL_STRENGTH,,,,,,,,,Y,Y
+PREDICTION,"x3 A=1,B=0 true=Y",,Y,,,,,,,,,,,STANDARD_VOTING,,,,,,,,,Y,Y
+PREDICTION,"x3 A=1,B=0 true=Y",,Y,,,,,,,,,,,SIMPLE_VOTING,,,,,,,,,Y,Y
+PREDICTION,"x3 A=1,B=0 true=Y",,Y,,,,,,,,,,,FIRST_MATCH,,,,,,,,,Y,Y

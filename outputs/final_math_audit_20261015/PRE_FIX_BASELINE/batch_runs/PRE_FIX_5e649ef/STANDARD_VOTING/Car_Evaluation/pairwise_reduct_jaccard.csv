@@ -1,0 +1,21 @@
+﻿dataset,fold,client_count,client_i,client_j,reduct_i,reduct_j,intersection_size,union_size,jaccard
+Car Evaluation,1,5,Client_1,Client_2,"('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')","('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')",6,6,1.0
+Car Evaluation,1,5,Client_1,Client_3,"('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')","('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')",6,6,1.0
+Car Evaluation,1,5,Client_1,Client_4,"('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')","('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')",6,6,1.0
+Car Evaluation,1,5,Client_1,Client_5,"('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')","('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')",6,6,1.0
+Car Evaluation,1,5,Client_2,Client_3,"('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')","('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')",6,6,1.0
+Car Evaluation,1,5,Client_2,Client_4,"('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')","('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')",6,6,1.0
+Car Evaluation,1,5,Client_2,Client_5,"('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')","('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')",6,6,1.0
+Car Evaluation,1,5,Client_3,Client_4,"('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')","('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')",6,6,1.0
+Car Evaluation,1,5,Client_3,Client_5,"('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')","('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')",6,6,1.0
+Car Evaluation,1,5,Client_4,Client_5,"('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')","('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')",6,6,1.0
+Car Evaluation,1,2,Client_1,Client_2,"('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')","('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')",6,6,1.0
+Car Evaluation,1,3,Client_1,Client_2,"('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')","('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')",6,6,1.0
+Car Evaluation,1,3,Client_1,Client_3,"('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')","('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')",6,6,1.0
+Car Evaluation,1,3,Client_2,Client_3,"('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')","('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')",6,6,1.0
+Car Evaluation,1,4,Client_1,Client_2,"('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')","('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')",6,6,1.0
+Car Evaluation,1,4,Client_1,Client_3,"('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')","('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')",6,6,1.0
+Car Evaluation,1,4,Client_1,Client_4,"('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')","('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')",6,6,1.0
+Car Evaluation,1,4,Client_2,Client_3,"('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')","('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')",6,6,1.0
+Car Evaluation,1,4,Client_2,Client_4,"('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')","('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')",6,6,1.0
+Car Evaluation,1,4,Client_3,Client_4,"('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')","('buying', 'doors', 'lug_boot', 'maint', 'persons', 'safety')",6,6,1.0

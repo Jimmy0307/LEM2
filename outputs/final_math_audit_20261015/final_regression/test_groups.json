@@ -1,0 +1,135 @@
+{
+  "core_math_and_lem2": {
+    "paths": [
+      "tests/test_math_core.py",
+      "tests/test_reference_ast_parity.py"
+    ],
+    "exit_code": 0,
+    "runtime_seconds": 1.395,
+    "summary_line": "8 passed in 0.78s",
+    "counts": {
+      "passed": 8
+    }
+  },
+  "reduct": {
+    "paths": [
+      "tests/test_reduct.py"
+    ],
+    "exit_code": 0,
+    "runtime_seconds": 1.139,
+    "summary_line": "1 passed in 0.63s",
+    "counts": {
+      "passed": 1
+    }
+  },
+  "pipeline_reduct_integration": {
+    "paths": [
+      "tests/test_reduct_pipeline.py"
+    ],
+    "exit_code": 0,
+    "runtime_seconds": 2.628,
+    "summary_line": "14 passed in 1.94s",
+    "counts": {
+      "passed": 14
+    }
+  },
+  "paper_historical": {
+    "paths": [
+      "tests/test_paper.py"
+    ],
+    "exit_code": 0,
+    "runtime_seconds": 1.464,
+    "summary_line": "1 passed in 0.83s",
+    "counts": {
+      "passed": 1
+    }
+  },
+  "resolver_semantics_evaluation": {
+    "paths": [
+      "tests/test_evaluation.py"
+    ],
+    "exit_code": 0,
+    "runtime_seconds": 1.095,
+    "summary_line": "4 passed in 0.42s",
+    "counts": {
+      "passed": 4
+    }
+  },
+  "federated": {
+    "paths": [
+      "tests/test_federated.py"
+    ],
+    "exit_code": 0,
+    "runtime_seconds": 0.998,
+    "summary_line": "5 passed in 0.47s",
+    "counts": {
+      "passed": 5
+    }
+  },
+  "full_suite": {
+    "paths": [
+      "tests"
+    ],
+    "exit_code": 0,
+    "runtime_seconds": 12.715,
+    "summary_line": "100 passed in 11.85s",
+    "counts": {
+      "passed": 100
+    }
+  },
+  "final_math_audit_contract": {
+    "paths": [
+      "tests/test_final_math_audit.py"
+    ],
+    "exit_code": 0,
+    "runtime_seconds": 15.541,
+    "summary_line": "26 passed in 14.55s",
+    "counts": {
+      "passed": 26
+    }
+  },
+  "empty_reduct": {
+    "paths": [
+      "tests/test_final_math_audit.py::test_e1_single_decision_class_selects_empty_reduct",
+      "tests/test_final_math_audit.py::test_e2_full_dependency_zero_selects_empty_reduct",
+      "tests/test_final_math_audit.py::test_e3_empty_reduct_single_class_induces_unconditional_certain_rule",
+      "tests/test_final_math_audit.py::test_e3_pipeline_central_empty_reduct_gives_true_implies_y_without_crash",
+      "tests/test_final_math_audit.py::test_e4_empty_reduct_inconsistent_table_invents_no_rule",
+      "tests/test_final_math_audit.py::test_e4_pipeline_central_empty_reduct_inconsistent_gives_zero_rules",
+      "tests/test_final_math_audit.py::test_e5_single_class_client_gets_local_empty_reduct_and_true_rule"
+    ],
+    "exit_code": 0,
+    "runtime_seconds": 1.346,
+    "summary_line": "7 passed in 0.57s",
+    "counts": {
+      "passed": 7
+    }
+  },
+  "distributed_pooled_equivalence": {
+    "paths": [
+      "tests/test_final_math_audit.py::test_g1_distributed_global_strength_equals_pooled",
+      "tests/test_final_math_audit.py::test_g5_fixed_rule_distributed_prediction_equals_pooled",
+      "tests/test_final_math_audit.py::test_g5_toy_predictions_are_hand_verified",
+      "tests/test_final_math_audit.py::test_s1_standard_support_counts_non_producing_clients"
+    ],
+    "exit_code": 0,
+    "runtime_seconds": 1.748,
+    "summary_line": "5 passed in 0.90s",
+    "counts": {
+      "passed": 5
+    }
+  },
+  "resolver_semantics_all": {
+    "paths": [
+      "tests/test_evaluation.py",
+      "tests/test_final_math_audit.py::test_g2_resolver_numerator_is_a_set_union_independent_of_scope",
+      "tests/test_final_math_audit.py::test_a1_all_resolvers_share_one_unmodified_structural_artifact"
+    ],
+    "exit_code": 0,
+    "runtime_seconds": 1.317,
+    "summary_line": "6 passed in 0.55s",
+    "counts": {
+      "passed": 6
+    }
+  }
+}

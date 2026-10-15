@@ -1,0 +1,122 @@
+{
+  "timestamp_utc": "2026-10-15T09:38:42+00:00",
+  "git_head": "5e649ef9d6065e98d472b024e2b50e025c271990",
+  "git_branch": "audit/final-math-freeze-20261015",
+  "git_status_porcelain": "M roughset/pipeline.py\n M roughset/reduct.py\n M tests/test_reduct_pipeline.py\n?? docs/final_math_audit_20261015/\n?? tests/test_final_math_audit.py",
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "python_executable": "C:\\Users\\jimmy_liao\\LEM2\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "packages": {
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "openpyxl": "3.1.5",
+    "xlrd": "2.0.2",
+    "ucimlrepo": "0.0.7",
+    "pytest": "9.0.2"
+  },
+  "config": {
+    "input": {
+      "mode": "AUTO",
+      "local_folder": "./real_data/local",
+      "schemas_folder": "./real_data/schemas",
+      "uci_sources_file": "./real_data/uci_sources.txt",
+      "run_local_files": true,
+      "run_uci_sources": true,
+      "sheet_name": 0,
+      "uci_drop_missing_target": true
+    },
+    "experiment": {
+      "run_centralized": true,
+      "run_federated": true,
+      "prediction_policy": "FIRST_MATCH"
+    },
+    "evaluation": {
+      "mode": "HOLDOUT",
+      "test_ratio": 0.2,
+      "cv_folds": 10,
+      "seed": 42
+    },
+    "preprocessing": {
+      "auto_discretize": true,
+      "unique_numeric_threshold": 10,
+      "n_bins": 3
+    },
+    "federated": {
+      "n_clients": 5,
+      "partition": "STRATIFIED",
+      "dirichlet_alpha": 0.5,
+      "dirichlet_max_retries": 100,
+      "run_client_sweep": true,
+      "client_counts": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "order_sensitivity_max_permutations": 120
+    },
+    "paper": {
+      "enabled": false,
+      "reference": "WANG_2007",
+      "cv_folds": 10
+    },
+    "reduct": {
+      "enabled": true,
+      "method": "MINIMUM_CARDINALITY",
+      "selection": "LEXICOGRAPHIC_FIRST",
+      "record_all_candidates": true
+    },
+    "report": {
+      "outputs_folder": "./outputs",
+      "show_rules": true,
+      "show_rule_limit": 10
+    },
+    "batch": {
+      "prediction_policies": [
+        "FIRST_MATCH",
+        "SIMPLE_VOTING",
+        "STANDARD_VOTING",
+        "GLOBAL_STRENGTH"
+      ]
+    }
+  },
+  "source_sha256": {
+    "roughset/__init__.py": "3e7f32ebb04792bf7af974922db5e6481e21334d745bb71f93c3ca383eef9368",
+    "roughset/adapters.py": "55e6ccc42ad279217670d04da47db3e2b9dff0238a08d7673204061e1409e0e7",
+    "roughset/app.py": "ac8f0b344023e0c6576b5d9da30e6da695e504656eb78f539dd00c88625f1b15",
+    "roughset/artifacts.py": "be7113a5c3206e3e54fdf911d05057943d7455a11fcbbcd919800133667a64b8",
+    "roughset/batch.py": "334efa5ceff86c7c557d1038ddf546963a0aba4775ba5a44cf7309e23560eb22",
+    "roughset/core.py": "79ab6a040572d11f4cd3a14552fd15c520b5f29fe9317ad47c7a13348eb5ba07",
+    "roughset/environment.py": "20113d184a0e10366eac59ca04118365fa43f7f7ed186c05bdf040e2908012dd",
+    "roughset/evaluation.py": "bfcf62e2d5a60e5264b1b7a843c885d19a5c12c70420a59029e058535f311ecb",
+    "roughset/federated.py": "0c93e694c4af1240b5d815f41fc153218077e471773b25efe367378d602bf7e5",
+    "roughset/paper.py": "b9b6d869b458a02bb3b67db845b1e3246a510352f783bf97817547b1232acef6",
+    "roughset/pipeline.py": "ef26810c6478dbd3cd1bc16bf6519de9b3bdfbb61b7c127c009765e6e45da0ed",
+    "roughset/preprocessing.py": "bc48d814d8a0038430e7a3f13799bcee53422d0bf2f20939d4d1f6f514ba798c",
+    "roughset/reduct.py": "8cf2e4bb5b691bac457cdf00e2da85ba718efbd6fcbf7a91e84fdaebabdfe7ac",
+    "roughset/schema.py": "3025df726c3bd300a505817e04f1f6ae39a847fb4665bf659db474041267d67f",
+    "roughset/sources.py": "d5447756939a84eab3cdab0d260996a78d571419bbf93901065b8e471bab3949",
+    "roughset/splitting.py": "99f20ff26565ef703fd27c6d5946bd5cf3971a5100bccd61c4318de44100c7e6",
+    "main.py": "509993cafb05c662d0ff08c5fcd4a4ba8de2def0efb3cb252b70473805fd1a9c",
+    "config.json": "b3270c8b524d4ca76eea30fcad6103cdd41c3a514e3a1a1d8edcdaa1ac332129"
+  },
+  "test_sha256": {
+    "tests/conftest.py": "633a2593e0b15d0d9847653baac9e1c55fe42cfd4d6910213196616990e316ec",
+    "tests/test_app_end_to_end.py": "fb1ce532c579b95aa3f746a1f144d076eda31543df6eefc2802fd06c6b341210",
+    "tests/test_architecture.py": "2e82529d7ce928968f87dade3d526d248939de833ef5611946870edede642dac",
+    "tests/test_batch_runner.py": "b04750e7329fb9bf427f45c4eed86798e2d74f3f79a5eb23ecaff496295926f8",
+    "tests/test_data_layers.py": "d57aeb276af2cf9120c10313654808531622a4dfbbf106e1df7100cbd0e9719d",
+    "tests/test_environment.py": "48e535a7a90c7f1626e575126eff99f44b4a887b80a4ea670d73f663abb4dbcd",
+    "tests/test_evaluation.py": "625411e4603ab8c6c8808fde3e141df0e2ded1b1c57384a1e4b2a8ffa7d1c11b",
+    "tests/test_federated.py": "941851335262ac396f2eb349915442ba5fa29f523f94c3acc6d55b64ca61af6e",
+    "tests/test_final_math_audit.py": "d173c3825f4e8352955d477beb6b2a4f71bc7beb3a246a9f1c13ac96a6d5d2e6",
+    "tests/test_math_core.py": "c2f0d3704d3f8b340e61963254958fc7b31a6aafc3dc3542c4948c8bab0b5aa5",
+    "tests/test_paper.py": "25f323d02804df6835882d060153cc34bf3655341841d89f4231c72be0be2ac0",
+    "tests/test_reduct.py": "b5c4fbc1d53c490a75b8c9b6cfe4d3ae4e070948af48100f0c08e22bd769728b",
+    "tests/test_reduct_pipeline.py": "3c37ef89d0400bbacb060bdeae0e00e9ad5e5ab84edad5807ad6314d95924d89",
+    "tests/test_reference_ast_parity.py": "bf69a8039bcbb1028cf5ad77e45823b753314743f90330bafaf7b7622ebbdef0"
+  },
+  "reference_sha256": {
+    "reference/lem2_control_panel_v6_1_reference.py": "5b073861c6f6c29c17bcf66e501edc065db1d153e11087f656754f878c1a757b"
+  }
+}

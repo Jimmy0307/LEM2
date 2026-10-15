@@ -1,0 +1,54 @@
+{
+  "44": {
+    "name": "Hayes-Roth",
+    "rows": 160,
+    "features": [
+      "hobby",
+      "age",
+      "educational level",
+      "marital status"
+    ],
+    "targets": [
+      "class"
+    ]
+  },
+  "19": {
+    "name": "Car Evaluation",
+    "rows": 1728,
+    "features": [
+      "buying",
+      "maint",
+      "doors",
+      "persons",
+      "lug_boot",
+      "safety"
+    ],
+    "targets": [
+      "class"
+    ]
+  },
+  "12": {
+    "name": "Balance Scale",
+    "rows": 625,
+    "features": [
+      "right-distance",
+      "right-weight",
+      "left-distance",
+      "left-weight"
+    ],
+    "targets": [
+      "class"
+    ]
+  },
+  "sha256": {
+    "uci_12.pkl": "7797b9671c284226c98bfeee12b56411c04d8b98e576cd26c31755fe6e6ac911",
+    "uci_12_features.csv": "f387292be1536367c46a62c1d074dbf68315cf6c6b482cf8fcbae1ff39a9cf3d",
+    "uci_12_targets.csv": "5d5889378f504e2aaa5b50541a455391ab9f42ab3a964def7badcd012d924635",
+    "uci_19.pkl": "1b5f6e726b8825cfb5118a457753d1b42dcc94f9d57c933f88d0831fcbbeef26",
+    "uci_19_features.csv": "02fa76d5069475b92336ca3afdcd405138535caf8c55c445710c202ee1f1c035",
+    "uci_19_targets.csv": "7a4fe31b62c522987cb5b16873575ad3baf16072905ddd68404ae8eaba69b5d5",
+    "uci_44.pkl": "ec641d3cbe73b355354d053955576791fed609dbddaf28b2c94632d624fd6c1e",
+    "uci_44_features.csv": "56e8987e23455bd29b74ac220025a0c1ed49b83dbb3df79b22214a3d3c292902",
+    "uci_44_targets.csv": "0b8f2f00850d30f731907c4373a00fea55c93134a29436f16bd4b24c98df318a"
+  }
+}

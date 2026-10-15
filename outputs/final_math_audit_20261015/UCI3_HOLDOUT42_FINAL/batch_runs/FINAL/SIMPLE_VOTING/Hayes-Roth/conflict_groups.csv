@@ -1,0 +1,5 @@
+﻿client_count,fold,dataset,antecedent,decisions,rule_count,sources
+5,1,Hayes-Roth,age=3 AND hobby=2,"['1.0', '2.0']",2,"['Client_3', 'Client_5']"
+2,1,Hayes-Roth,age=3 AND educational_level=3,"['1.0', '2.0']",2,"['Client_1', 'Client_2']"
+3,1,Hayes-Roth,age=3 AND hobby=2,"['1.0', '2.0']",2,"['Client_1', 'Client_2']"
+4,1,Hayes-Roth,age=3 AND educational_level=3,"['1.0', '2.0']",2,"['Client_2', 'Client_3']"

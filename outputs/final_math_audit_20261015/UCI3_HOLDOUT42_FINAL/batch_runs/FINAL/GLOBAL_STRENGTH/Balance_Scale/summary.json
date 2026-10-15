@@ -1,0 +1,23 @@
+{
+  "dataset": "Balance Scale",
+  "source": "uci_id:12",
+  "rows": 625,
+  "features": 4,
+  "target": "class",
+  "evaluation": "HOLDOUT",
+  "centralized_balanced_accuracy": 0.5287356321839081,
+  "centralized_coverage": 0.7222222222222222,
+  "federated_balanced_accuracy": 0.5908045977011495,
+  "federated_coverage": 0.9920634920634921,
+  "federated_global_rules": 183,
+  "central_reduct_size": 4,
+  "central_reduct": "[\"left_distance\", \"left_weight\", \"right_distance\", \"right_weight\"]",
+  "mean_local_reduct_size": 4.0,
+  "reduct_instability": 0.0,
+  "mean_local_central_reduct_jaccard": 1.0,
+  "rule_heterogeneity": 0.9260580104353089,
+  "pre_resolution_conflict_case_rate": 0.6587301587301587,
+  "conflict_case_rate": 0.6587301587301587,
+  "order_invariant_by_design": true,
+  "order_sensitivity_rate": 0.0
+}

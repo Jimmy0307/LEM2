@@ -1,0 +1,599 @@
+﻿policy,client_count,fold,dataset,row_id,true,matching_rules,decisions,predicted,correct
+SIMPLE_VOTING,5,1,Car Evaluation,14,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,21,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,25,unacc,6,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,43,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,61,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,77,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,80,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,83,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,97,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,100,unacc,5,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,130,unacc,5,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,132,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,133,unacc,5,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,152,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,156,unacc,3,"['unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,157,unacc,5,"['acc', 'unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,158,unacc,2,"['unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,173,unacc,4,"['acc', 'good', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,179,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,180,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,184,unacc,6,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,187,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,203,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,213,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,220,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,222,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,235,unacc,6,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,236,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,243,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,244,unacc,6,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,245,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,248,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,256,unacc,5,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,264,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,295,acc,5,"['acc', 'good', 'unacc']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,304,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,307,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,319,acc,4,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,322,acc,7,"['acc', 'good', 'unacc']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,325,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,345,unacc,2,"['good', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,346,unacc,5,"['acc', 'good', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,348,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,383,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,400,acc,4,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,417,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,423,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,427,acc,5,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,430,acc,10,"['acc', 'good', 'unacc']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,439,unacc,5,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,446,unacc,4,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,452,unacc,5,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,453,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,466,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,475,unacc,4,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,480,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,497,unacc,6,"['acc', 'good', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,499,unacc,3,"['acc', 'good', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,503,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,535,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,539,unacc,5,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,548,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,560,unacc,7,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,572,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,577,unacc,5,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,584,acc,7,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,589,acc,3,"['acc', 'unacc', 'vgood']",unacc,False
+SIMPLE_VOTING,5,1,Car Evaluation,590,acc,5,"['acc', 'unacc', 'vgood']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,601,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,602,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,609,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,634,acc,2,"['acc', 'unacc']",unacc,False
+SIMPLE_VOTING,5,1,Car Evaluation,641,acc,7,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,668,unacc,5,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,682,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,689,acc,3,"['acc', 'unacc']",unacc,False
+SIMPLE_VOTING,5,1,Car Evaluation,706,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,709,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,714,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,715,acc,4,"['acc', 'good']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,722,acc,3,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,777,unacc,2,"['good', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,779,acc,4,"['acc', 'good']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,782,acc,3,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,791,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,797,acc,4,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,809,acc,3,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,817,unacc,4,"['acc', 'good', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,821,acc,7,"['acc', 'good', 'unacc']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,823,acc,3,"['acc', 'good']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,826,acc,5,"['acc', 'good']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,834,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,836,acc,5,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,838,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,857,acc,6,"['acc', 'unacc', 'vgood']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,862,acc,7,"['acc', 'good']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,863,acc,5,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,866,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,877,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,888,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,901,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,938,acc,5,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,949,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,950,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,953,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,959,acc,7,"['acc', 'unacc', 'vgood']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,961,acc,3,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,966,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,974,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,977,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,986,acc,6,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1018,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1022,acc,3,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1039,acc,6,"['acc', 'good', 'unacc']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1040,acc,3,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1045,unacc,5,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1061,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1064,acc,5,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1070,acc,5,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1071,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1074,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1078,acc,4,"['acc', 'good']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1083,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1085,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1099,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1105,acc,5,"['acc', 'good']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1115,unacc,3,"['unacc', 'vgood']",vgood,False
+SIMPLE_VOTING,5,1,Car Evaluation,1117,acc,5,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1130,vgood,3,"['acc', 'unacc', 'vgood']",unacc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1131,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1154,acc,2,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1178,vgood,5,"['acc', 'vgood']",vgood,True
+SIMPLE_VOTING,5,1,Car Evaluation,1181,acc,5,"['acc', 'good', 'vgood']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1198,acc,4,"['acc', 'good', 'unacc']",unacc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1202,good,3,"['acc', 'good']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1205,vgood,2,"['acc', 'vgood']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1227,unacc,3,"['good', 'unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1230,unacc,2,"['good', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1231,good,5,"['acc', 'good', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1239,unacc,2,"['good', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1246,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1248,unacc,3,"['unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1249,unacc,4,"['acc', 'good', 'unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1250,unacc,3,"['unacc', 'vgood']",vgood,False
+SIMPLE_VOTING,5,1,Car Evaluation,1253,good,5,"['acc', 'good', 'vgood']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1258,good,6,"['acc', 'good', 'vgood']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1267,good,6,"['acc', 'good', 'vgood']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1276,unacc,3,"['acc', 'good', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1280,good,5,"['acc', 'vgood']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1289,good,4,"['acc', 'vgood']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1290,unacc,2,"['unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1306,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1315,unacc,5,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1318,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1320,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1333,unacc,5,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1334,acc,4,"['acc', 'good']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1339,acc,6,"['acc', 'good']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1342,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1343,acc,3,"['acc', 'good']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1354,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1357,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1360,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1361,acc,5,"['acc', 'good', 'unacc', 'vgood']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1376,acc,4,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1393,acc,6,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1396,unacc,4,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1403,acc,6,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1409,unacc,3,"['acc', 'unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1412,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1414,acc,5,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1417,acc,6,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1427,acc,3,"['acc', 'vgood']",vgood,False
+SIMPLE_VOTING,5,1,Car Evaluation,1430,vgood,3,"['acc', 'vgood']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1435,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1438,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1444,acc,6,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1451,acc,2,"['good', 'vgood']",good,False
+SIMPLE_VOTING,5,1,Car Evaluation,1469,acc,3,"['good', 'vgood']",vgood,False
+SIMPLE_VOTING,5,1,Car Evaluation,1471,acc,5,"['acc', 'good', 'unacc']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1476,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1487,unacc,3,"['acc', 'unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1494,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1504,acc,2,"['acc', 'unacc']",unacc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1505,acc,3,"['acc', 'vgood']",vgood,False
+SIMPLE_VOTING,5,1,Car Evaluation,1529,vgood,6,"['acc', 'good', 'vgood']",good,False
+SIMPLE_VOTING,5,1,Car Evaluation,1534,acc,3,"['good', 'unacc']",good,False
+SIMPLE_VOTING,5,1,Car Evaluation,1540,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1545,unacc,3,"['unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1554,unacc,3,"['good', 'unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1564,good,3,"['acc', 'good', 'vgood']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1575,unacc,2,"['good', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1581,unacc,3,"['good', 'unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1598,unacc,2,"['unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1604,good,5,"['acc', 'good', 'vgood']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1608,unacc,3,"['good', 'unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1610,vgood,6,"['acc', 'good', 'vgood']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1627,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1633,acc,5,"['acc', 'good', 'unacc']",acc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1637,vgood,2,"['acc', 'good']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1645,good,4,"['acc', 'good']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1656,unacc,2,"['good', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1664,vgood,3,"['acc', 'good']",good,False
+SIMPLE_VOTING,5,1,Car Evaluation,1668,unacc,2,"['unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1676,unacc,2,"['unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1678,unacc,4,"['acc', 'good', 'unacc']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1691,vgood,3,"['good', 'vgood']",vgood,True
+SIMPLE_VOTING,5,1,Car Evaluation,1698,unacc,2,"['good', 'unacc']",unacc,True
+SIMPLE_VOTING,5,1,Car Evaluation,1714,good,4,"['acc', 'good']",acc,False
+SIMPLE_VOTING,5,1,Car Evaluation,1718,vgood,4,"['acc', 'good', 'vgood']",good,False
+SIMPLE_VOTING,2,1,Car Evaluation,25,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,43,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,47,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,133,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,2,1,Car Evaluation,157,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,236,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,256,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,307,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,341,acc,2,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,2,1,Car Evaluation,408,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,417,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,427,acc,2,"['acc', 'good']",acc,True
+SIMPLE_VOTING,2,1,Car Evaluation,446,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,475,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,497,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,503,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,535,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,560,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,615,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,668,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,689,acc,2,"['acc', 'unacc']",unacc,False
+SIMPLE_VOTING,2,1,Car Evaluation,706,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,779,acc,2,"['acc', 'good']",acc,True
+SIMPLE_VOTING,2,1,Car Evaluation,797,acc,2,"['acc', 'unacc']",unacc,False
+SIMPLE_VOTING,2,1,Car Evaluation,827,acc,3,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,2,1,Car Evaluation,828,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,834,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,2,1,Car Evaluation,949,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1018,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,2,1,Car Evaluation,1033,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1045,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,2,1,Car Evaluation,1071,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1074,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,2,1,Car Evaluation,1085,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1099,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1105,acc,4,"['acc', 'good']",acc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1115,unacc,2,"['unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1118,acc,2,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1202,good,4,"['acc', 'good']",acc,False
+SIMPLE_VOTING,2,1,Car Evaluation,1205,vgood,2,"['good', 'vgood']",good,False
+SIMPLE_VOTING,2,1,Car Evaluation,1230,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1254,unacc,2,"['good', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1267,good,3,"['acc', 'good']",acc,False
+SIMPLE_VOTING,2,1,Car Evaluation,1306,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1313,acc,3,"['acc', 'good', 'vgood']",acc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1315,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1318,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,2,1,Car Evaluation,1336,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1342,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,2,1,Car Evaluation,1343,acc,4,"['acc', 'good']",acc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1345,acc,2,"['acc', 'unacc']",unacc,False
+SIMPLE_VOTING,2,1,Car Evaluation,1354,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1396,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,2,1,Car Evaluation,1413,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1417,acc,2,"['acc', 'unacc']",unacc,False
+SIMPLE_VOTING,2,1,Car Evaluation,1440,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1444,acc,3,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1451,acc,2,"['good', 'vgood']",good,False
+SIMPLE_VOTING,2,1,Car Evaluation,1467,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1469,acc,2,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1476,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1494,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1529,vgood,3,"['good', 'vgood']",good,False
+SIMPLE_VOTING,2,1,Car Evaluation,1534,acc,2,"['acc', 'good']",acc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1540,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1554,unacc,2,"['good', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1564,good,3,"['acc', 'good']",acc,False
+SIMPLE_VOTING,2,1,Car Evaluation,1575,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1578,unacc,2,"['good', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1581,unacc,2,"['good', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1598,unacc,2,"['unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1604,good,5,"['acc', 'good', 'vgood']",acc,False
+SIMPLE_VOTING,2,1,Car Evaluation,1608,unacc,2,"['good', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1610,vgood,4,"['good', 'vgood']",vgood,True
+SIMPLE_VOTING,2,1,Car Evaluation,1637,vgood,4,"['good', 'vgood']",good,False
+SIMPLE_VOTING,2,1,Car Evaluation,1644,unacc,2,"['good', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1645,good,3,"['acc', 'good']",good,True
+SIMPLE_VOTING,2,1,Car Evaluation,1646,vgood,2,"['good', 'vgood']",good,False
+SIMPLE_VOTING,2,1,Car Evaluation,1661,good,2,"['acc', 'good']",acc,False
+SIMPLE_VOTING,2,1,Car Evaluation,1664,vgood,4,"['acc', 'good', 'vgood']",vgood,True
+SIMPLE_VOTING,2,1,Car Evaluation,1668,unacc,2,"['unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1684,acc,3,"['acc', 'good']",acc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1691,vgood,3,"['good', 'vgood']",vgood,True
+SIMPLE_VOTING,2,1,Car Evaluation,1698,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,2,1,Car Evaluation,1718,vgood,4,"['good', 'vgood']",vgood,True
+SIMPLE_VOTING,3,1,Car Evaluation,14,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,77,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,80,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,3,1,Car Evaluation,100,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,150,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,152,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,173,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,184,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,185,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,187,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,220,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,235,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,236,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,3,1,Car Evaluation,245,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,248,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,287,acc,3,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,3,1,Car Evaluation,295,acc,2,"['acc', 'good']",acc,True
+SIMPLE_VOTING,3,1,Car Evaluation,304,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,3,1,Car Evaluation,348,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,371,acc,5,"['acc', 'good']",acc,True
+SIMPLE_VOTING,3,1,Car Evaluation,383,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,414,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,417,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,423,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,430,acc,2,"['acc', 'good']",acc,True
+SIMPLE_VOTING,3,1,Car Evaluation,437,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,440,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,446,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,475,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,478,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,503,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,535,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,539,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,548,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,560,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,601,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,3,1,Car Evaluation,602,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,609,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,615,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,652,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,656,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,662,acc,2,"['acc', 'unacc']",unacc,False
+SIMPLE_VOTING,3,1,Car Evaluation,668,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,682,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,689,acc,4,"['acc', 'unacc']",unacc,False
+SIMPLE_VOTING,3,1,Car Evaluation,691,acc,3,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,3,1,Car Evaluation,709,unacc,3,"['acc', 'good', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,777,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,3,1,Car Evaluation,780,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,797,acc,3,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,3,1,Car Evaluation,804,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,817,unacc,3,"['acc', 'good', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,823,acc,2,"['acc', 'good']",acc,True
+SIMPLE_VOTING,3,1,Car Evaluation,826,acc,4,"['acc', 'good']",acc,True
+SIMPLE_VOTING,3,1,Car Evaluation,828,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,834,unacc,3,"['acc', 'unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,836,acc,2,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,3,1,Car Evaluation,857,acc,2,"['acc', 'good']",acc,True
+SIMPLE_VOTING,3,1,Car Evaluation,862,acc,2,"['acc', 'good']",acc,True
+SIMPLE_VOTING,3,1,Car Evaluation,868,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,877,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,888,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,901,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,949,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,977,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,982,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,986,acc,3,"['acc', 'unacc']",unacc,False
+SIMPLE_VOTING,3,1,Car Evaluation,1014,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,3,1,Car Evaluation,1018,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1039,acc,2,"['acc', 'unacc']",unacc,False
+SIMPLE_VOTING,3,1,Car Evaluation,1045,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,3,1,Car Evaluation,1050,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1061,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1074,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1085,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1099,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1115,unacc,2,"['unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1118,acc,2,"['acc', 'good']",acc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1121,acc,3,"['acc', 'good', 'vgood']",acc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1127,acc,2,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1130,vgood,2,"['acc', 'vgood']",acc,False
+SIMPLE_VOTING,3,1,Car Evaluation,1148,vgood,2,"['acc', 'vgood']",acc,False
+SIMPLE_VOTING,3,1,Car Evaluation,1154,acc,3,"['acc', 'vgood']",vgood,False
+SIMPLE_VOTING,3,1,Car Evaluation,1181,acc,2,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1198,acc,3,"['acc', 'good']",acc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1202,good,4,"['acc', 'good', 'unacc', 'vgood']",unacc,False
+SIMPLE_VOTING,3,1,Car Evaluation,1203,unacc,3,"['good', 'unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1204,good,5,"['acc', 'good', 'vgood']",acc,False
+SIMPLE_VOTING,3,1,Car Evaluation,1205,vgood,3,"['good', 'vgood']",vgood,True
+SIMPLE_VOTING,3,1,Car Evaluation,1227,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1230,unacc,2,"['unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1231,good,3,"['acc', 'good', 'vgood']",acc,False
+SIMPLE_VOTING,3,1,Car Evaluation,1246,unacc,2,"['good', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1249,unacc,3,"['good', 'unacc']",good,False
+SIMPLE_VOTING,3,1,Car Evaluation,1253,good,3,"['acc', 'vgood']",acc,False
+SIMPLE_VOTING,3,1,Car Evaluation,1258,good,5,"['acc', 'good', 'vgood']",good,True
+SIMPLE_VOTING,3,1,Car Evaluation,1267,good,7,"['acc', 'good', 'vgood']",acc,False
+SIMPLE_VOTING,3,1,Car Evaluation,1276,unacc,2,"['good', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1280,good,2,"['acc', 'good']",acc,False
+SIMPLE_VOTING,3,1,Car Evaluation,1281,unacc,2,"['good', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1289,good,2,"['acc', 'good']",acc,False
+SIMPLE_VOTING,3,1,Car Evaluation,1290,unacc,2,"['unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1306,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1313,acc,2,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1318,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1333,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,3,1,Car Evaluation,1336,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1342,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1345,acc,2,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1360,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1376,acc,3,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1396,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1403,acc,5,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1409,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1417,acc,3,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1469,acc,3,"['acc', 'vgood']",vgood,False
+SIMPLE_VOTING,3,1,Car Evaluation,1476,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1487,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1505,acc,2,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1529,vgood,4,"['acc', 'good', 'vgood']",vgood,True
+SIMPLE_VOTING,3,1,Car Evaluation,1534,acc,2,"['acc', 'good']",acc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1540,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,3,1,Car Evaluation,1564,good,4,"['acc', 'good']",acc,False
+SIMPLE_VOTING,3,1,Car Evaluation,1575,unacc,2,"['good', 'unacc']",unacc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1598,unacc,3,"['unacc', 'vgood']",vgood,False
+SIMPLE_VOTING,3,1,Car Evaluation,1610,vgood,3,"['good', 'vgood']",vgood,True
+SIMPLE_VOTING,3,1,Car Evaluation,1614,unacc,4,"['good', 'unacc', 'vgood']",good,False
+SIMPLE_VOTING,3,1,Car Evaluation,1627,unacc,3,"['good', 'unacc']",good,False
+SIMPLE_VOTING,3,1,Car Evaluation,1633,acc,2,"['acc', 'unacc']",unacc,False
+SIMPLE_VOTING,3,1,Car Evaluation,1636,good,3,"['acc', 'good']",good,True
+SIMPLE_VOTING,3,1,Car Evaluation,1645,good,3,"['acc', 'good']",good,True
+SIMPLE_VOTING,3,1,Car Evaluation,1668,unacc,4,"['good', 'unacc', 'vgood']",vgood,False
+SIMPLE_VOTING,3,1,Car Evaluation,1684,acc,3,"['acc', 'good']",acc,True
+SIMPLE_VOTING,3,1,Car Evaluation,1698,unacc,2,"['unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,47,unacc,4,"['acc', 'good', 'unacc']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,77,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,80,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,130,unacc,5,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,131,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,152,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,157,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,158,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,184,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,185,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,222,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,236,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,256,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,287,acc,2,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,307,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,319,acc,2,"['acc', 'unacc']",unacc,False
+SIMPLE_VOTING,4,1,Car Evaluation,341,acc,4,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,346,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,348,unacc,4,"['acc', 'good', 'unacc']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,371,acc,6,"['acc', 'good']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,380,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,383,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,400,acc,3,"['acc', 'unacc']",unacc,False
+SIMPLE_VOTING,4,1,Car Evaluation,414,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,417,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,427,acc,3,"['acc', 'unacc']",unacc,False
+SIMPLE_VOTING,4,1,Car Evaluation,430,acc,3,"['acc', 'good', 'unacc']",unacc,False
+SIMPLE_VOTING,4,1,Car Evaluation,475,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,503,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,535,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,548,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,560,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,572,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,577,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,589,acc,2,"['acc', 'unacc']",unacc,False
+SIMPLE_VOTING,4,1,Car Evaluation,601,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,602,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,615,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,634,acc,3,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,641,acc,3,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,656,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,657,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,662,acc,3,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,668,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,682,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,689,acc,5,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,709,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,714,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,715,acc,5,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,722,acc,6,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,737,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,777,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,779,acc,5,"['acc', 'good']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,780,unacc,4,"['acc', 'good', 'unacc']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,782,acc,4,"['acc', 'good']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,795,unacc,3,"['good', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,797,acc,4,"['acc', 'good', 'unacc']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,804,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,827,acc,3,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,828,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,834,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,850,acc,3,"['acc', 'good', 'unacc']",unacc,False
+SIMPLE_VOTING,4,1,Car Evaluation,857,acc,3,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,862,acc,3,"['acc', 'good']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,866,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,877,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,888,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,901,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,916,acc,3,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,950,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,953,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,966,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,971,acc,3,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,974,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,977,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,982,unacc,6,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1018,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1019,acc,3,"['acc', 'good']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1033,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1039,acc,3,"['acc', 'unacc']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1045,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,1071,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1074,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,1085,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1099,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1115,unacc,2,"['unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1118,acc,2,"['acc', 'good']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1148,vgood,2,"['acc', 'vgood']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,1154,acc,2,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1181,acc,2,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1198,acc,6,"['acc', 'good', 'unacc']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1203,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1204,good,5,"['acc', 'good']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,1205,vgood,3,"['acc', 'vgood']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,1227,unacc,3,"['good', 'unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1230,unacc,2,"['unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1231,good,5,"['acc', 'good', 'vgood']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,1239,unacc,3,"['good', 'unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1249,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1250,unacc,2,"['unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1253,good,3,"['acc', 'good', 'vgood']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,1258,good,5,"['acc', 'good']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,1267,good,4,"['acc', 'good']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,1276,unacc,3,"['good', 'unacc']",good,False
+SIMPLE_VOTING,4,1,Car Evaluation,1280,good,2,"['acc', 'good']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,1289,good,3,"['acc', 'good']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,1290,unacc,2,"['good', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1306,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1313,acc,3,"['acc', 'good']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1315,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1318,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,1320,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1333,unacc,4,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1334,acc,6,"['acc', 'good']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1336,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,1339,acc,5,"['acc', 'good', 'unacc', 'vgood']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1343,acc,5,"['acc', 'good']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1345,acc,2,"['acc', 'unacc']",unacc,False
+SIMPLE_VOTING,4,1,Car Evaluation,1354,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1357,unacc,3,"['acc', 'good', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1360,unacc,4,"['acc', 'good', 'unacc']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,1361,acc,5,"['acc', 'good']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1393,acc,3,"['acc', 'good']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1407,unacc,3,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1409,unacc,3,"['acc', 'unacc']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,1412,unacc,3,"['unacc', 'vgood']",vgood,False
+SIMPLE_VOTING,4,1,Car Evaluation,1417,acc,4,"['acc', 'unacc']",unacc,False
+SIMPLE_VOTING,4,1,Car Evaluation,1427,acc,4,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1435,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1438,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1440,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1451,acc,4,"['acc', 'good', 'vgood']",good,False
+SIMPLE_VOTING,4,1,Car Evaluation,1469,acc,5,"['acc', 'good', 'vgood']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1471,acc,5,"['acc', 'good']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1487,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1492,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1505,acc,3,"['acc', 'vgood']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1529,vgood,4,"['acc', 'good', 'vgood']",good,False
+SIMPLE_VOTING,4,1,Car Evaluation,1534,acc,4,"['acc', 'good', 'unacc']",good,False
+SIMPLE_VOTING,4,1,Car Evaluation,1540,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1542,unacc,3,"['good', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1554,unacc,3,"['good', 'unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1564,good,4,"['acc', 'good', 'vgood']",good,True
+SIMPLE_VOTING,4,1,Car Evaluation,1578,unacc,2,"['good', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1581,unacc,2,"['good', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1598,unacc,2,"['unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1604,good,4,"['acc', 'good', 'vgood']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,1608,unacc,2,"['good', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1610,vgood,3,"['good', 'vgood']",vgood,True
+SIMPLE_VOTING,4,1,Car Evaluation,1614,unacc,2,"['good', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1627,unacc,2,"['good', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1633,acc,3,"['good', 'unacc', 'vgood']",unacc,False
+SIMPLE_VOTING,4,1,Car Evaluation,1636,good,4,"['acc', 'good']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,1637,vgood,4,"['acc', 'good', 'vgood']",good,False
+SIMPLE_VOTING,4,1,Car Evaluation,1644,unacc,4,"['acc', 'good', 'unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1645,good,6,"['acc', 'good', 'vgood']",good,True
+SIMPLE_VOTING,4,1,Car Evaluation,1646,vgood,3,"['acc', 'good', 'vgood']",acc,False
+SIMPLE_VOTING,4,1,Car Evaluation,1650,unacc,3,"['unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1661,good,7,"['acc', 'good', 'vgood']",vgood,False
+SIMPLE_VOTING,4,1,Car Evaluation,1664,vgood,3,"['good', 'vgood']",vgood,True
+SIMPLE_VOTING,4,1,Car Evaluation,1668,unacc,2,"['unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1676,unacc,4,"['acc', 'good', 'unacc']",good,False
+SIMPLE_VOTING,4,1,Car Evaluation,1678,unacc,2,"['acc', 'unacc']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1684,acc,4,"['acc', 'good']",acc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1691,vgood,2,"['good', 'vgood']",good,False
+SIMPLE_VOTING,4,1,Car Evaluation,1698,unacc,3,"['acc', 'unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1713,unacc,3,"['good', 'unacc', 'vgood']",unacc,True
+SIMPLE_VOTING,4,1,Car Evaluation,1714,good,3,"['good', 'vgood']",good,True
+SIMPLE_VOTING,4,1,Car Evaluation,1718,vgood,3,"['good', 'vgood']",good,False

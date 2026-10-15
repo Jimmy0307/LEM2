@@ -1,0 +1,21 @@
+﻿dataset,fold,client_count,client_i,client_j,reduct_i,reduct_j,intersection_size,union_size,jaccard
+Hayes-Roth,1,5,Client_1,Client_2,"('age', 'educational_level', 'hobby', 'marital_status')","('age', 'educational_level', 'marital_status')",3,4,0.75
+Hayes-Roth,1,5,Client_1,Client_3,"('age', 'educational_level', 'hobby', 'marital_status')","('age', 'educational_level', 'hobby', 'marital_status')",4,4,1.0
+Hayes-Roth,1,5,Client_1,Client_4,"('age', 'educational_level', 'hobby', 'marital_status')","('age', 'educational_level', 'hobby', 'marital_status')",4,4,1.0
+Hayes-Roth,1,5,Client_1,Client_5,"('age', 'educational_level', 'hobby', 'marital_status')","('age', 'educational_level', 'hobby', 'marital_status')",4,4,1.0
+Hayes-Roth,1,5,Client_2,Client_3,"('age', 'educational_level', 'marital_status')","('age', 'educational_level', 'hobby', 'marital_status')",3,4,0.75
+Hayes-Roth,1,5,Client_2,Client_4,"('age', 'educational_level', 'marital_status')","('age', 'educational_level', 'hobby', 'marital_status')",3,4,0.75
+Hayes-Roth,1,5,Client_2,Client_5,"('age', 'educational_level', 'marital_status')","('age', 'educational_level', 'hobby', 'marital_status')",3,4,0.75
+Hayes-Roth,1,5,Client_3,Client_4,"('age', 'educational_level', 'hobby', 'marital_status')","('age', 'educational_level', 'hobby', 'marital_status')",4,4,1.0
+Hayes-Roth,1,5,Client_3,Client_5,"('age', 'educational_level', 'hobby', 'marital_status')","('age', 'educational_level', 'hobby', 'marital_status')",4,4,1.0
+Hayes-Roth,1,5,Client_4,Client_5,"('age', 'educational_level', 'hobby', 'marital_status')","('age', 'educational_level', 'hobby', 'marital_status')",4,4,1.0
+Hayes-Roth,1,2,Client_1,Client_2,"('age', 'educational_level', 'hobby', 'marital_status')","('age', 'educational_level', 'hobby', 'marital_status')",4,4,1.0
+Hayes-Roth,1,3,Client_1,Client_2,"('age', 'educational_level', 'hobby', 'marital_status')","('age', 'educational_level', 'hobby', 'marital_status')",4,4,1.0
+Hayes-Roth,1,3,Client_1,Client_3,"('age', 'educational_level', 'hobby', 'marital_status')","('age', 'educational_level', 'hobby', 'marital_status')",4,4,1.0
+Hayes-Roth,1,3,Client_2,Client_3,"('age', 'educational_level', 'hobby', 'marital_status')","('age', 'educational_level', 'hobby', 'marital_status')",4,4,1.0
+Hayes-Roth,1,4,Client_1,Client_2,"('age', 'educational_level', 'marital_status')","('age', 'educational_level', 'marital_status')",3,3,1.0
+Hayes-Roth,1,4,Client_1,Client_3,"('age', 'educational_level', 'marital_status')","('age', 'educational_level', 'hobby', 'marital_status')",3,4,0.75
+Hayes-Roth,1,4,Client_1,Client_4,"('age', 'educational_level', 'marital_status')","('age', 'educational_level', 'hobby', 'marital_status')",3,4,0.75
+Hayes-Roth,1,4,Client_2,Client_3,"('age', 'educational_level', 'marital_status')","('age', 'educational_level', 'hobby', 'marital_status')",3,4,0.75
+Hayes-Roth,1,4,Client_2,Client_4,"('age', 'educational_level', 'marital_status')","('age', 'educational_level', 'hobby', 'marital_status')",3,4,0.75
+Hayes-Roth,1,4,Client_3,Client_4,"('age', 'educational_level', 'hobby', 'marital_status')","('age', 'educational_level', 'hobby', 'marital_status')",4,4,1.0
