@@ -1,0 +1,29 @@
+........................                                                 [100%]
+=================================== PASSES ====================================
+=========================== short test summary info ===========================
+PASSED tests/test_final_math_audit.py::test_e1_single_decision_class_selects_empty_reduct
+PASSED tests/test_final_math_audit.py::test_e2_full_dependency_zero_selects_empty_reduct
+PASSED tests/test_final_math_audit.py::test_e3_empty_reduct_single_class_induces_unconditional_certain_rule
+PASSED tests/test_final_math_audit.py::test_e3_pipeline_central_empty_reduct_gives_true_implies_y_without_crash
+PASSED tests/test_final_math_audit.py::test_e4_empty_reduct_inconsistent_table_invents_no_rule
+PASSED tests/test_final_math_audit.py::test_e4_pipeline_central_empty_reduct_inconsistent_gives_zero_rules
+PASSED tests/test_final_math_audit.py::test_e5_single_class_client_gets_local_empty_reduct_and_true_rule
+PASSED tests/test_final_math_audit.py::test_nonempty_reduct_lem2_path_is_the_frozen_core
+PASSED tests/test_final_math_audit.py::test_p1_reduct_selection_uses_exact_positive_region_cardinality
+PASSED tests/test_final_math_audit.py::test_p2_reduct_acceptance_does_not_depend_on_dependency_floats
+PASSED tests/test_final_math_audit.py::test_p3_candidates_are_normalized_and_lexicographically_selected
+PASSED tests/test_final_math_audit.py::test_p4_dependency_reporting_formula_unchanged
+PASSED tests/test_final_math_audit.py::test_s1_standard_support_counts_non_producing_clients
+PASSED tests/test_final_math_audit.py::test_s2_provenance_is_kept_separate_from_support_scope
+PASSED tests/test_final_math_audit.py::test_toy_global_rule_set_and_provenance_are_as_documented
+PASSED tests/test_final_math_audit.py::test_g1_distributed_global_strength_equals_pooled
+PASSED tests/test_final_math_audit.py::test_g2_overlapping_matching_rules_do_not_double_count
+PASSED tests/test_final_math_audit.py::test_g3_non_producing_clients_contribute_covered_objects
+PASSED tests/test_final_math_audit.py::test_g4_denominator_equals_pooled_class_size
+PASSED tests/test_final_math_audit.py::test_g5_fixed_rule_distributed_prediction_equals_pooled[GLOBAL_STRENGTH]
+PASSED tests/test_final_math_audit.py::test_g5_fixed_rule_distributed_prediction_equals_pooled[STANDARD_VOTING]
+PASSED tests/test_final_math_audit.py::test_g5_toy_predictions_are_hand_verified
+PASSED tests/test_final_math_audit.py::test_a1_all_resolvers_share_one_unmodified_structural_artifact
+PASSED tests/test_final_math_audit.py::test_g2_resolver_numerator_is_a_set_union_independent_of_scope
+24 passed in 5.57s
+pytest_exit=0

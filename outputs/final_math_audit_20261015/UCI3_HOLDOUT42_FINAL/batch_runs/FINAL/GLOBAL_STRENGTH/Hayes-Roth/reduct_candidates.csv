@@ -1,0 +1,19 @@
+﻿dataset,fold,client_count,scope,client_id,candidate_id,reduct_size,features,dependency
+Hayes-Roth,1,5,CENTRAL,,1,4,"[""age"", ""educational_level"", ""hobby"", ""marital_status""]",0.8113207547169812
+Hayes-Roth,1,5,LOCAL,Client_1,1,4,"[""age"", ""educational_level"", ""hobby"", ""marital_status""]",0.9130434782608695
+Hayes-Roth,1,5,LOCAL,Client_2,1,3,"[""age"", ""educational_level"", ""marital_status""]",0.9047619047619048
+Hayes-Roth,1,5,LOCAL,Client_3,1,4,"[""age"", ""educational_level"", ""hobby"", ""marital_status""]",1.0
+Hayes-Roth,1,5,LOCAL,Client_4,1,4,"[""age"", ""educational_level"", ""hobby"", ""marital_status""]",1.0
+Hayes-Roth,1,5,LOCAL,Client_5,1,4,"[""age"", ""educational_level"", ""hobby"", ""marital_status""]",0.9
+Hayes-Roth,1,2,CENTRAL,,1,4,"[""age"", ""educational_level"", ""hobby"", ""marital_status""]",0.8113207547169812
+Hayes-Roth,1,2,LOCAL,Client_1,1,4,"[""age"", ""educational_level"", ""hobby"", ""marital_status""]",0.8703703703703703
+Hayes-Roth,1,2,LOCAL,Client_2,1,4,"[""age"", ""educational_level"", ""hobby"", ""marital_status""]",0.8653846153846154
+Hayes-Roth,1,3,CENTRAL,,1,4,"[""age"", ""educational_level"", ""hobby"", ""marital_status""]",0.8113207547169812
+Hayes-Roth,1,3,LOCAL,Client_1,1,4,"[""age"", ""educational_level"", ""hobby"", ""marital_status""]",0.8333333333333334
+Hayes-Roth,1,3,LOCAL,Client_2,1,4,"[""age"", ""educational_level"", ""hobby"", ""marital_status""]",0.9444444444444444
+Hayes-Roth,1,3,LOCAL,Client_3,1,4,"[""age"", ""educational_level"", ""hobby"", ""marital_status""]",0.8235294117647058
+Hayes-Roth,1,4,CENTRAL,,1,4,"[""age"", ""educational_level"", ""hobby"", ""marital_status""]",0.8113207547169812
+Hayes-Roth,1,4,LOCAL,Client_1,1,3,"[""age"", ""educational_level"", ""marital_status""]",0.8571428571428571
+Hayes-Roth,1,4,LOCAL,Client_2,1,3,"[""age"", ""educational_level"", ""marital_status""]",0.8461538461538461
+Hayes-Roth,1,4,LOCAL,Client_3,1,4,"[""age"", ""educational_level"", ""hobby"", ""marital_status""]",0.9230769230769231
+Hayes-Roth,1,4,LOCAL,Client_4,1,4,"[""age"", ""educational_level"", ""hobby"", ""marital_status""]",0.9230769230769231

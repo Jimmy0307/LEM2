@@ -1,0 +1,45 @@
+﻿policy,client_count,fold,dataset,row_id,true,matching_rules,decisions,predicted,correct
+GLOBAL_STRENGTH,5,1,Hayes-Roth,18,1.0,4,"['1.0', '2.0']",2.0,False
+GLOBAL_STRENGTH,5,1,Hayes-Roth,42,2.0,3,"['1.0', '2.0']",1.0,False
+GLOBAL_STRENGTH,5,1,Hayes-Roth,53,1.0,3,"['1.0', '2.0']",1.0,True
+GLOBAL_STRENGTH,5,1,Hayes-Roth,58,1.0,3,"['1.0', '2.0']",1.0,True
+GLOBAL_STRENGTH,5,1,Hayes-Roth,75,3.0,2,"['1.0', '3.0']",3.0,True
+GLOBAL_STRENGTH,5,1,Hayes-Roth,77,3.0,2,"['2.0', '3.0']",3.0,True
+GLOBAL_STRENGTH,5,1,Hayes-Roth,82,1.0,3,"['1.0', '2.0']",2.0,False
+GLOBAL_STRENGTH,5,1,Hayes-Roth,90,2.0,2,"['1.0', '2.0']",2.0,True
+GLOBAL_STRENGTH,5,1,Hayes-Roth,95,2.0,3,"['1.0', '2.0']",2.0,True
+GLOBAL_STRENGTH,5,1,Hayes-Roth,100,2.0,4,"['1.0', '2.0']",1.0,False
+GLOBAL_STRENGTH,5,1,Hayes-Roth,114,1.0,3,"['1.0', '2.0']",1.0,True
+GLOBAL_STRENGTH,5,1,Hayes-Roth,116,3.0,4,"['1.0', '2.0', '3.0']",3.0,True
+GLOBAL_STRENGTH,5,1,Hayes-Roth,123,3.0,3,"['2.0', '3.0']",3.0,True
+GLOBAL_STRENGTH,5,1,Hayes-Roth,125,1.0,4,"['1.0', '2.0']",1.0,True
+GLOBAL_STRENGTH,5,1,Hayes-Roth,127,3.0,2,"['1.0', '3.0']",3.0,True
+GLOBAL_STRENGTH,5,1,Hayes-Roth,130,2.0,3,"['1.0', '2.0']",2.0,True
+GLOBAL_STRENGTH,5,1,Hayes-Roth,131,1.0,3,"['1.0', '2.0']",1.0,True
+GLOBAL_STRENGTH,2,1,Hayes-Roth,53,1.0,3,"['1.0', '2.0']",1.0,True
+GLOBAL_STRENGTH,2,1,Hayes-Roth,116,3.0,2,"['1.0', '3.0']",3.0,True
+GLOBAL_STRENGTH,2,1,Hayes-Roth,123,3.0,2,"['2.0', '3.0']",3.0,True
+GLOBAL_STRENGTH,3,1,Hayes-Roth,1,2.0,2,"['1.0', '2.0']",1.0,False
+GLOBAL_STRENGTH,3,1,Hayes-Roth,15,1.0,2,"['1.0', '2.0']",2.0,False
+GLOBAL_STRENGTH,3,1,Hayes-Roth,18,1.0,2,"['1.0', '2.0']",2.0,False
+GLOBAL_STRENGTH,3,1,Hayes-Roth,43,1.0,3,"['1.0', '2.0']",1.0,True
+GLOBAL_STRENGTH,3,1,Hayes-Roth,53,1.0,3,"['1.0', '2.0']",1.0,True
+GLOBAL_STRENGTH,3,1,Hayes-Roth,71,2.0,2,"['1.0', '2.0']",1.0,False
+GLOBAL_STRENGTH,3,1,Hayes-Roth,77,3.0,2,"['2.0', '3.0']",3.0,True
+GLOBAL_STRENGTH,3,1,Hayes-Roth,96,1.0,3,"['1.0', '2.0']",1.0,True
+GLOBAL_STRENGTH,3,1,Hayes-Roth,100,2.0,2,"['1.0', '2.0']",1.0,False
+GLOBAL_STRENGTH,3,1,Hayes-Roth,114,1.0,3,"['1.0', '2.0']",1.0,True
+GLOBAL_STRENGTH,3,1,Hayes-Roth,116,3.0,3,"['1.0', '2.0', '3.0']",3.0,True
+GLOBAL_STRENGTH,3,1,Hayes-Roth,123,3.0,2,"['2.0', '3.0']",3.0,True
+GLOBAL_STRENGTH,3,1,Hayes-Roth,127,3.0,3,"['1.0', '2.0', '3.0']",3.0,True
+GLOBAL_STRENGTH,3,1,Hayes-Roth,131,1.0,3,"['1.0', '2.0']",1.0,True
+GLOBAL_STRENGTH,4,1,Hayes-Roth,18,1.0,3,"['1.0', '2.0']",2.0,False
+GLOBAL_STRENGTH,4,1,Hayes-Roth,42,2.0,2,"['1.0', '2.0']",1.0,False
+GLOBAL_STRENGTH,4,1,Hayes-Roth,53,1.0,5,"['1.0', '2.0']",1.0,True
+GLOBAL_STRENGTH,4,1,Hayes-Roth,58,1.0,2,"['1.0', '2.0']",1.0,True
+GLOBAL_STRENGTH,4,1,Hayes-Roth,75,3.0,3,"['1.0', '2.0', '3.0']",3.0,True
+GLOBAL_STRENGTH,4,1,Hayes-Roth,95,2.0,4,"['1.0', '2.0']",2.0,True
+GLOBAL_STRENGTH,4,1,Hayes-Roth,100,2.0,2,"['1.0', '2.0']",1.0,False
+GLOBAL_STRENGTH,4,1,Hayes-Roth,116,3.0,2,"['1.0', '3.0']",3.0,True
+GLOBAL_STRENGTH,4,1,Hayes-Roth,123,3.0,4,"['1.0', '2.0', '3.0']",3.0,True
+GLOBAL_STRENGTH,4,1,Hayes-Roth,130,2.0,3,"['1.0', '2.0']",2.0,True

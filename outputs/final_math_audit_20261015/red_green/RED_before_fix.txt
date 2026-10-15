@@ -1,0 +1,329 @@
+FFFFFFFFFF..FF.FFF.FFF.                                                  [100%]
+================================== FAILURES ===================================
+_____________ test_e1_single_decision_class_selects_empty_reduct ______________
+
+    def test_e1_single_decision_class_selects_empty_reduct():
+        df = E1_SINGLE_CLASS
+        assert dependency_degree(df, ["a", "b"], "D") == 1.0
+        assert dependency_degree(df, [], "D") == 1.0
+    
+        result = select_minimum_reduct(df, ["a", "b"], "D")
+    
+>       assert result.selected_reduct == ()
+E       AssertionError: assert ('a',) == ()
+E         
+E         Left contains one more item: 'a'
+E         Use -v to get more diff
+
+tests\test_final_math_audit.py:62: AssertionError
+______________ test_e2_full_dependency_zero_selects_empty_reduct ______________
+
+    def test_e2_full_dependency_zero_selects_empty_reduct():
+        df = E2_DEPENDENCY_ZERO
+        assert _positive_region_size(df, ["a", "b"], "D") == 0
+        assert _positive_region_size(df, [], "D") == 0
+        assert dependency_degree(df, ["a", "b"], "D") == 0.0
+        assert dependency_degree(df, [], "D") == 0.0
+    
+        result = select_minimum_reduct(df, ["a", "b"], "D")
+    
+>       assert result.selected_reduct == ()
+E       AssertionError: assert ('a',) == ()
+E         
+E         Left contains one more item: 'a'
+E         Use -v to get more diff
+
+tests\test_final_math_audit.py:78: AssertionError
+____ test_e3_empty_reduct_single_class_induces_unconditional_certain_rule _____
+
+    def test_e3_empty_reduct_single_class_induces_unconditional_certain_rule():
+>       from roughset.pipeline import induce_lem2_on_reduct
+E       ImportError: cannot import name 'induce_lem2_on_reduct' from 'roughset.pipeline' (C:\Users\jimmy_liao\LEM2\roughset\pipeline.py)
+
+tests\test_final_math_audit.py:84: ImportError
+__ test_e3_pipeline_central_empty_reduct_gives_true_implies_y_without_crash ___
+
+    def test_e3_pipeline_central_empty_reduct_gives_true_implies_y_without_crash():
+        from roughset.pipeline import build_rule_system, evaluate_resolvers
+    
+        test = _table([("1", "1", "Y"), ("0", "0", "Y")], columns=("a", "b", "D"))
+        artifact = build_rule_system(
+            E1_SINGLE_CLASS, test, ["a", "b"], "D", run_federated=False
+        )
+    
+>       assert artifact.central_reduct_result.selected_reduct == ()
+E       AssertionError: assert ('a',) == ()
+E         
+E         Left contains one more item: 'a'
+E         Use -v to get more diff
+
+tests\test_final_math_audit.py:102: AssertionError
+___________ test_e4_empty_reduct_inconsistent_table_invents_no_rule ___________
+
+    def test_e4_empty_reduct_inconsistent_table_invents_no_rule():
+>       from roughset.pipeline import induce_lem2_on_reduct
+E       ImportError: cannot import name 'induce_lem2_on_reduct' from 'roughset.pipeline' (C:\Users\jimmy_liao\LEM2\roughset\pipeline.py)
+
+tests\test_final_math_audit.py:112: ImportError
+_____ test_e4_pipeline_central_empty_reduct_inconsistent_gives_zero_rules _____
+
+    def test_e4_pipeline_central_empty_reduct_inconsistent_gives_zero_rules():
+        from roughset.pipeline import build_rule_system
+    
+        test = _table([("0", "0", "Y")], columns=("a", "b", "D"))
+        artifact = build_rule_system(
+            E2_DEPENDENCY_ZERO, test, ["a", "b"], "D", run_federated=False
+        )
+    
+>       assert artifact.central_reduct_result.selected_reduct == ()
+E       AssertionError: assert ('a',) == ()
+E         
+E         Left contains one more item: 'a'
+E         Use -v to get more diff
+
+tests\test_final_math_audit.py:125: AssertionError
+______ test_e5_single_class_client_gets_local_empty_reduct_and_true_rule ______
+
+    def test_e5_single_class_client_gets_local_empty_reduct_and_true_rule():
+        from roughset.pipeline import build_rule_system
+    
+        clients = {
+            "Client_1": _table([("0", "0", "Y"), ("1", "1", "Y")]),
+            "Client_2": _table([("0", "0", "N"), ("1", "1", "Y")]),
+        }
+        train = pd.concat(clients.values(), ignore_index=True)
+        test = _table([("1", "0", "Y")])
+        artifact = build_rule_system(train, test, ["A", "B"], "D", clients=clients)
+    
+>       assert artifact.local_reduct_results["Client_1"].selected_reduct == ()
+E       AssertionError: assert ('A',) == ()
+E         
+E         Left contains one more item: 'A'
+E         Use -v to get more diff
+
+tests\test_final_math_audit.py:140: AssertionError
+______________ test_nonempty_reduct_lem2_path_is_the_frozen_core ______________
+
+    def test_nonempty_reduct_lem2_path_is_the_frozen_core():
+        from roughset.core import induce_lem2
+>       from roughset.pipeline import induce_lem2_on_reduct
+E       ImportError: cannot import name 'induce_lem2_on_reduct' from 'roughset.pipeline' (C:\Users\jimmy_liao\LEM2\roughset\pipeline.py)
+
+tests\test_final_math_audit.py:147: ImportError
+_______ test_p1_reduct_selection_uses_exact_positive_region_cardinality _______
+
+    def test_p1_reduct_selection_uses_exact_positive_region_cardinality():
+        n = 300_000
+        df = _large_near_tie_table(n)
+        full_pos = _positive_region_size(df, ["a", "b"], "D")
+        assert full_pos == n
+        assert _positive_region_size(df, ["a"], "D") == n - 2
+        assert _positive_region_size(df, ["b"], "D") == n
+        # The float criterion cannot tell these apart at this n.
+        assert np.isclose(dependency_degree(df, ["a"], "D"), dependency_degree(df, ["a", "b"], "D"))
+    
+        result = select_minimum_reduct(df, ["a", "b"], "D")
+    
+>       assert result.candidate_reducts == (("b",),)
+E       AssertionError: assert (('a',), ('b',)) == (('b',),)
+E         
+E         At index 0 diff: ('a',) != ('b',)
+E         Left contains one more item: ('b',)
+E         Use -v to get more diff
+
+tests\test_final_math_audit.py:186: AssertionError
+_______ test_p2_reduct_acceptance_does_not_depend_on_dependency_floats ________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002663B5BB690>
+
+    def test_p2_reduct_acceptance_does_not_depend_on_dependency_floats(monkeypatch):
+        import roughset.reduct as reduct
+    
+        df = pd.DataFrame({"A": [0, 0, 1, 1], "B": [0, 1, 0, 1], "D": ["N", "N", "Y", "Y"]})
+        # Make every reported float identical; selection must still follow POS sizes.
+        monkeypatch.setattr(reduct, "dependency_degree", lambda *_args, **_kw: 0.5)
+    
+        result = reduct.select_minimum_reduct(df, ["A", "B"], "D")
+    
+        assert result.selected_reduct == ("A",)
+>       assert result.candidate_reducts == (("A",),)
+E       AssertionError: assert (('A',), ('B',)) == (('A',),)
+E         
+E         Left contains one more item: ('B',)
+E         Use -v to get more diff
+
+tests\test_final_math_audit.py:201: AssertionError
+____________ test_s1_standard_support_counts_non_producing_clients ____________
+
+    def test_s1_standard_support_counts_non_producing_clients():
+        clients, artifact = _support_scope_artifact()
+        rule = ((("A", "1"),), "Y")
+    
+        assert rule in _keys(artifact.local_rules["Client_1"])
+        assert rule not in _keys(artifact.local_rules["Client_2"])
+        assert artifact.rule_provenance[rule] == ("Client_1",)
+    
+        supp = {
+            name: len(fit_rule_support_sets(df, [Rule(rule[0], rule[1])], "D")[0][rule])
+            for name, df in clients.items()
+        }
+        assert supp == {"Client_1": 1, "Client_2": 1}
+    
+>       assert artifact.global_rule_weights[rule] == supp["Client_1"] + supp["Client_2"] == 2
+E       assert 1.0 == (1 + 1)
+
+tests\test_final_math_audit.py:254: AssertionError
+___________ test_s2_provenance_is_kept_separate_from_support_scope ____________
+
+    def test_s2_provenance_is_kept_separate_from_support_scope():
+        _clients, artifact = _support_scope_artifact()
+        for rule in artifact.global_rules:
+            producers = set(artifact.rule_provenance[rule.key])
+            supporters = {client for client, _row in artifact.global_rule_support_sets[rule.key]}
+            assert producers <= supporters
+        # Client_2's object supports a rule it did not produce.
+>       assert ("Client_2", 0) in artifact.global_rule_support_sets[((("A", "1"),), "Y")]
+E       AssertionError: assert ('Client_2', 0) in frozenset({('Client_1', 0)})
+
+tests\test_final_math_audit.py:267: AssertionError
+______________ test_g1_distributed_global_strength_equals_pooled ______________
+
+    def test_g1_distributed_global_strength_equals_pooled():
+        train, artifact = _toy_artifact()
+        _w, pooled_sets, pooled_sizes = _pooled_context(train, artifact.global_rules)
+        for _, row in TOY_TEST.iterrows():
+>           assert _gs_scores(
+                row, artifact.global_rules, artifact.global_rule_support_sets, artifact.global_class_sizes
+            ) == _gs_scores(row, artifact.global_rules, pooled_sets, pooled_sizes)
+E           AssertionError: assert {'N': (1, 2), 'Y': (3, 4)} == {'N': (2, 2), 'Y': (3, 4)}
+E             
+E             Omitting 1 identical items, use -vv to show
+E             Differing items:
+E             {'N': (1, 2)} != {'N': (2, 2)}
+E             Use -v to get more diff
+
+tests\test_final_math_audit.py:331: AssertionError
+___________ test_g2_overlapping_matching_rules_do_not_double_count ____________
+
+    def test_g2_overlapping_matching_rules_do_not_double_count():
+        _train, artifact = _toy_artifact()
+        x = TOY_TEST.iloc[0]  # A=1, B=1 matches B=1->Y, A=1->Y and B=1->N
+        supp = artifact.global_rule_support_sets
+        by_b = supp[((("B", "1"),), "Y")]
+        by_a = supp[((("A", "1"),), "Y")]
+>       assert len(by_b) == 3 and len(by_a) == 2 and len(by_a & by_b) == 2
+E       AssertionError: assert (2 == 3)
+E        +  where 2 = len(frozenset({('Client_1', 0), ('Client_1', 1)}))
+
+tests\test_final_math_audit.py:344: AssertionError
+__________ test_g3_non_producing_clients_contribute_covered_objects ___________
+
+    def test_g3_non_producing_clients_contribute_covered_objects():
+        _train, artifact = _toy_artifact()
+        rule = ((("B", "1"),), "N")  # produced by Client_3 only
+        assert artifact.rule_provenance[rule] == ("Client_3",)
+>       assert artifact.global_rule_support_sets[rule] == frozenset({("Client_2", 1), ("Client_3", 1)})
+E       AssertionError: assert frozenset({('Client_3', 1)}) == frozenset({('...lient_3', 1)})
+E         
+E         Extra items in the right set:
+E         ('Client_2', 1)
+E         Use -v to get more diff
+
+tests\test_final_math_audit.py:355: AssertionError
+__ test_g5_fixed_rule_distributed_prediction_equals_pooled[GLOBAL_STRENGTH] ___
+
+policy = 'GLOBAL_STRENGTH'
+
+    @pytest.mark.parametrize("policy", ["GLOBAL_STRENGTH", "STANDARD_VOTING"])
+    def test_g5_fixed_rule_distributed_prediction_equals_pooled(policy):
+        train, artifact = _toy_artifact()
+        weights, pooled_sets, pooled_sizes = _pooled_context(train, artifact.global_rules)
+        for _, row in TOY_TEST.iterrows():
+            distributed, _ = predict_with_policy(
+                row, artifact.global_rules, artifact.default_class, policy,
+                rule_weights=artifact.global_rule_weights,
+                rule_support_sets=artifact.global_rule_support_sets,
+                class_sizes=artifact.global_class_sizes,
+            )
+            pooled, _ = predict_with_policy(
+                row, artifact.global_rules, artifact.default_class, policy,
+                rule_weights=weights, rule_support_sets=pooled_sets, class_sizes=pooled_sizes,
+            )
+>           assert distributed == pooled
+E           AssertionError: assert 'Y' == 'N'
+E             
+E             - N
+E             + Y
+
+tests\test_final_math_audit.py:380: AssertionError
+__ test_g5_fixed_rule_distributed_prediction_equals_pooled[STANDARD_VOTING] ___
+
+policy = 'STANDARD_VOTING'
+
+    @pytest.mark.parametrize("policy", ["GLOBAL_STRENGTH", "STANDARD_VOTING"])
+    def test_g5_fixed_rule_distributed_prediction_equals_pooled(policy):
+        train, artifact = _toy_artifact()
+        weights, pooled_sets, pooled_sizes = _pooled_context(train, artifact.global_rules)
+        for _, row in TOY_TEST.iterrows():
+            distributed, _ = predict_with_policy(
+                row, artifact.global_rules, artifact.default_class, policy,
+                rule_weights=artifact.global_rule_weights,
+                rule_support_sets=artifact.global_rule_support_sets,
+                class_sizes=artifact.global_class_sizes,
+            )
+            pooled, _ = predict_with_policy(
+                row, artifact.global_rules, artifact.default_class, policy,
+                rule_weights=weights, rule_support_sets=pooled_sets, class_sizes=pooled_sizes,
+            )
+>           assert distributed == pooled
+E           AssertionError: assert 'Y' == 'N'
+E             
+E             - N
+E             + Y
+
+tests\test_final_math_audit.py:380: AssertionError
+__________________ test_g5_toy_predictions_are_hand_verified __________________
+
+    def test_g5_toy_predictions_are_hand_verified():
+        from roughset.pipeline import evaluate_resolvers
+    
+        _train, artifact = _toy_artifact()
+        results = evaluate_resolvers(artifact, POLICIES)
+        # x0=(1,1): GS  Y=3/4, N=2/2 -> N.  STANDARD Y=3+2, N=2 -> Y.
+        # x1=(0,0): STANDARD A=0->N 2 vs B=0->Y 1 -> N.  GS N=2/2 vs Y=1/4 -> N.
+        # x2=(0,1): STANDARD Y=3 vs N=2+2 -> N.          GS Y=3/4 vs N=2/2 -> N.
+        # x3=(1,0): only Y rules match -> Y everywhere.
+>       assert results["GLOBAL_STRENGTH"]["federated"]["predictions"] == ["N", "N", "N", "Y"]
+E       AssertionError: assert ['Y', 'N', 'N', 'Y'] == ['N', 'N', 'N', 'Y']
+E         
+E         At index 0 diff: 'Y' != 'N'
+E         Use -v to get more diff
+
+tests\test_final_math_audit.py:393: AssertionError
+=================================== PASSES ====================================
+=========================== short test summary info ===========================
+PASSED tests/test_final_math_audit.py::test_p3_candidates_are_normalized_and_lexicographically_selected
+PASSED tests/test_final_math_audit.py::test_p4_dependency_reporting_formula_unchanged
+PASSED tests/test_final_math_audit.py::test_toy_global_rule_set_and_provenance_are_as_documented
+PASSED tests/test_final_math_audit.py::test_g4_denominator_equals_pooled_class_size
+PASSED tests/test_final_math_audit.py::test_a1_all_resolvers_share_one_unmodified_structural_artifact
+FAILED tests/test_final_math_audit.py::test_e1_single_decision_class_selects_empty_reduct
+FAILED tests/test_final_math_audit.py::test_e2_full_dependency_zero_selects_empty_reduct
+FAILED tests/test_final_math_audit.py::test_e3_empty_reduct_single_class_induces_unconditional_certain_rule
+FAILED tests/test_final_math_audit.py::test_e3_pipeline_central_empty_reduct_gives_true_implies_y_without_crash
+FAILED tests/test_final_math_audit.py::test_e4_empty_reduct_inconsistent_table_invents_no_rule
+FAILED tests/test_final_math_audit.py::test_e4_pipeline_central_empty_reduct_inconsistent_gives_zero_rules
+FAILED tests/test_final_math_audit.py::test_e5_single_class_client_gets_local_empty_reduct_and_true_rule
+FAILED tests/test_final_math_audit.py::test_nonempty_reduct_lem2_path_is_the_frozen_core
+FAILED tests/test_final_math_audit.py::test_p1_reduct_selection_uses_exact_positive_region_cardinality
+FAILED tests/test_final_math_audit.py::test_p2_reduct_acceptance_does_not_depend_on_dependency_floats
+FAILED tests/test_final_math_audit.py::test_s1_standard_support_counts_non_producing_clients
+FAILED tests/test_final_math_audit.py::test_s2_provenance_is_kept_separate_from_support_scope
+FAILED tests/test_final_math_audit.py::test_g1_distributed_global_strength_equals_pooled
+FAILED tests/test_final_math_audit.py::test_g2_overlapping_matching_rules_do_not_double_count
+FAILED tests/test_final_math_audit.py::test_g3_non_producing_clients_contribute_covered_objects
+FAILED tests/test_final_math_audit.py::test_g5_fixed_rule_distributed_prediction_equals_pooled[GLOBAL_STRENGTH]
+FAILED tests/test_final_math_audit.py::test_g5_fixed_rule_distributed_prediction_equals_pooled[STANDARD_VOTING]
+FAILED tests/test_final_math_audit.py::test_g5_toy_predictions_are_hand_verified
+18 failed, 5 passed in 8.76s
+pytest_exit=1

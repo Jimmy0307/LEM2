@@ -45,6 +45,8 @@ def find_minimum_cardinality_reducts(
     features: Sequence[str],
     target: str,
 ) -> List[Tuple[str, ...]]:
+    # V6.1 historical search, kept verbatim for the paper.py Wang replication
+    # lane. Production selection uses find_exact_minimum_cardinality_reducts.
     features = list(features)
     full_gamma = dependency_degree(df, features, target)
 
@@ -53,6 +55,31 @@ def find_minimum_cardinality_reducts(
         for combo in itertools.combinations(features, size):
             if np.isclose(dependency_degree(df, combo, target), full_gamma):
                 found.append(tuple(combo))
+        if found:
+            return found
+
+    return [tuple(features)]
+
+
+def find_exact_minimum_cardinality_reducts(
+    df: pd.DataFrame,
+    features: Sequence[str],
+    target: str,
+) -> List[Tuple[str, ...]]:
+    """Minimum-cardinality R ⊆ C with |POS_R(D)| = |POS_C(D)|, searched from |R| = 0.
+
+    Acceptance compares integer positive-region sizes, never dependency floats.
+    R = () is a legal candidate: IND(()) has the single class U.
+    """
+    features = list(features)
+    full_pos = _positive_region_size(df, features, target)
+
+    for size in range(0, len(features) + 1):
+        found = [
+            tuple(combo)
+            for combo in itertools.combinations(features, size)
+            if _positive_region_size(df, combo, target) == full_pos
+        ]
         if found:
             return found
 
@@ -71,7 +98,7 @@ def select_minimum_reduct(
         raise ValueError("selection must be LEXICOGRAPHIC_FIRST.")
 
     feature_list = list(features)
-    raw_candidates = find_minimum_cardinality_reducts(df, feature_list, target)
+    raw_candidates = find_exact_minimum_cardinality_reducts(df, feature_list, target)
     candidates = tuple(sorted({tuple(sorted(candidate)) for candidate in raw_candidates}))
     if not candidates:
         raise RuntimeError("Minimum-cardinality reduct search returned no candidates.")

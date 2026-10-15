@@ -23,7 +23,6 @@ from .evaluation import (
 )
 from .federated import (
     aggregate_rule_support_context,
-    aggregate_rule_weights,
     audit_order_distribution,
     union_rules_with_provenance,
 )
@@ -33,6 +32,55 @@ from .reduct import (
     pairwise_reduct_jaccard,
     select_minimum_reduct,
 )
+
+
+def induce_lem2_on_reduct(
+    df: pd.DataFrame,
+    reduct: Sequence[str],
+    target: str,
+    source: str = "",
+) -> list[Rule]:
+    """LEM2 on the selected reduct, including the empty reduct.
+
+    A non-empty reduct goes straight to the frozen V6.1 ``induce_lem2``.  That
+    function needs at least one attribute, so R = () is handled here: IND(())
+    has the single class U, the lower approximation of decision d is U when
+    every object has decision d and empty otherwise, and the only complex is
+    the empty conjunction with block U.  Hence TRUE -> d, or no certain rule.
+    """
+    if reduct:
+        return induce_lem2(df, list(reduct), target, source=source, verbose=False)
+    decisions = pd.unique(df[target])
+    if len(df) and len(decisions) == 1:
+        return [Rule(conditions=(), decision=decisions[0], source=source)]
+    return []
+
+
+def global_rule_support_context(
+    clients: Mapping[str, pd.DataFrame],
+    rules: Sequence[Rule],
+    target: str,
+) -> tuple[dict[Any, float], dict[Any, frozenset[Any]], dict[str, int]]:
+    """Support of every global rule over ALL clients, not only its producers.
+
+    Supp_c(r) = {z in U_c : z satisfies Ante(r) and D(z) = decision(r)}, keyed by
+    (client, local row) so the union over disjoint clients is the pooled set.
+    STANDARD_VOTING weight is Supp_G(r) = sum_c |Supp_c(r)|; GLOBAL_STRENGTH
+    uses the sets themselves.  Provenance plays no part in the scope.
+    """
+    client_sets: dict[str, dict[Any, set[Any]]] = {}
+    client_classes: dict[str, dict[Any, int]] = {}
+    for client_id, client_df in clients.items():
+        client_sets[client_id], client_classes[client_id] = fit_rule_support_sets(
+            client_df, rules, target=target, row_prefix=client_id
+        )
+    support_sets, class_sizes = aggregate_rule_support_context(client_sets, client_classes)
+    weights = {rule.key: float(len(support_sets.get(rule.key, ()))) for rule in rules}
+    return (
+        weights,
+        {key: frozenset(value) for key, value in support_sets.items()},
+        class_sizes,
+    )
 
 
 def _rule_condition_summary(rules: Sequence[Rule]) -> dict[str, Any]:
@@ -287,25 +335,22 @@ def build_rule_system(
         central_reduct = None
     central_cols = central_reduct.selected_reduct if central_reduct else feature_cols
 
-    central_result = None
+    # Same steps as run_centralized(run_evaluation=False), with induction routed
+    # through induce_lem2_on_reduct so an empty central reduct is supported.
+    central_rules: tuple[Rule, ...] = ()
+    central_weights: Mapping[Any, float] = {}
+    central_support: Mapping[Any, Any] = {}
+    central_classes: Mapping[Any, int] = {}
+    central_default = None
     if run_central:
-        from .evaluation import run_centralized
-
-        central_result = run_centralized(
-            train,
-            test,
-            central_cols,
-            target,
-            run_evaluation=False,
-            show_rules=False,
-            quiet=True,
+        central_rules = tuple(
+            induce_lem2_on_reduct(train, central_cols, target, source="Centralized")
         )
-    central_rules = tuple(central_result["rules"]) if central_result else ()
-    central_weights = central_result["rule_weights"] if central_result else {}
-    central_support, central_classes = (
-        central_result["rule_support_sets"], central_result["class_sizes"]
-    ) if central_result else ({}, {})
-    central_default = central_result["default_class"] if central_result else None
+        central_default = majority_class(train, target)
+        central_weights = fit_rule_weights(train, central_rules)
+        central_support, central_classes = fit_rule_support_sets(
+            train, central_rules, target=target
+        )
 
     local_reducts: dict[str, ReductSelectionResult | None] = {}
     local_reduct_seconds: dict[str, float | None] = {}
@@ -323,9 +368,7 @@ def build_rule_system(
             local_reduct_seconds[client_id] = None
         local_reducts[client_id] = local_reduct
         client_cols = local_reduct.selected_reduct if local_reduct else feature_cols
-        rules = tuple(
-            induce_lem2(client_df, client_cols, target, source=client_id, verbose=False)
-        )
+        rules = tuple(induce_lem2_on_reduct(client_df, client_cols, target, source=client_id))
         weights = fit_rule_weights(client_df, rules)
         supports, class_sizes = fit_rule_support_sets(
             client_df, rules, target=target, row_prefix=client_id
@@ -356,9 +399,9 @@ def build_rule_system(
         merged, sources = union_rules_with_provenance(local_rules)
         global_rules = tuple(merged)
         provenance = {key: tuple(value) for key, value in sources.items()}
-        global_weights = aggregate_rule_weights(local_weights)
-        support_sets, global_classes = aggregate_rule_support_context(local_support, local_classes)
-        global_support = {key: frozenset(value) for key, value in support_sets.items()}
+        global_weights, global_support, global_classes = global_rule_support_context(
+            client_tables, global_rules, target
+        )
         global_default = majority_class_from_clients(client_tables, target)
         rule_conflicts = audit_rule_conflicts(global_rules, rule_sources=provenance)
 

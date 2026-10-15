@@ -1,0 +1,6 @@
+{
+  "dataset": "Hayes-Roth",
+  "policy": "FIRST_MATCH",
+  "order_invariant_by_design": false,
+  "coverage_is_structural_and_shared": true
+}

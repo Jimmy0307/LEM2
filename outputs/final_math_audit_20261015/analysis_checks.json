@@ -1,0 +1,13 @@
+{
+  "reference_vs_prefix_rerun_nontiming_differences": 0,
+  "prefix_vs_final_structural_differences": 0,
+  "changed_rows_by_policy": {
+    "GLOBAL_STRENGTH": 11,
+    "STANDARD_VOTING": 11
+  },
+  "reference_matches_old_all_rows": true,
+  "FIRST_MATCH_unchanged": true,
+  "SIMPLE_VOTING_unchanged": true,
+  "STANDARD_VOTING_unchanged": false,
+  "GLOBAL_STRENGTH_unchanged": false
+}

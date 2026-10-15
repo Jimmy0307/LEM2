@@ -1,0 +1,23 @@
+﻿client_count,fold,dataset,scope,client_id,rule_count,average_condition_count,median_condition_count,min_condition_count,max_condition_count
+5,1,Car Evaluation,CENTRAL,,180,5.011111111111111,5.0,1,6
+5,1,Car Evaluation,LOCAL,Client_1,51,3.6470588235294117,4.0,1,5
+5,1,Car Evaluation,LOCAL,Client_2,52,3.6153846153846154,4.0,1,5
+5,1,Car Evaluation,LOCAL,Client_3,55,3.709090909090909,4.0,1,5
+5,1,Car Evaluation,LOCAL,Client_4,56,3.6785714285714284,4.0,1,5
+5,1,Car Evaluation,LOCAL,Client_5,48,3.625,4.0,1,5
+5,1,Car Evaluation,FEDERATED,,226,3.84070796460177,4.0,1,5
+2,1,Car Evaluation,CENTRAL,,180,5.011111111111111,5.0,1,6
+2,1,Car Evaluation,LOCAL,Client_1,108,4.444444444444445,5.0,1,6
+2,1,Car Evaluation,LOCAL,Client_2,102,4.352941176470588,5.0,1,5
+2,1,Car Evaluation,FEDERATED,,184,4.5271739130434785,5.0,1,6
+3,1,Car Evaluation,CENTRAL,,180,5.011111111111111,5.0,1,6
+3,1,Car Evaluation,LOCAL,Client_1,81,4.08641975308642,4.0,1,5
+3,1,Car Evaluation,LOCAL,Client_2,84,4.083333333333333,4.0,1,5
+3,1,Car Evaluation,LOCAL,Client_3,78,4.0,4.0,1,5
+3,1,Car Evaluation,FEDERATED,,207,4.207729468599034,4.0,1,5
+4,1,Car Evaluation,CENTRAL,,180,5.011111111111111,5.0,1,6
+4,1,Car Evaluation,LOCAL,Client_1,65,3.8615384615384616,4.0,1,5
+4,1,Car Evaluation,LOCAL,Client_2,63,3.761904761904762,4.0,1,5
+4,1,Car Evaluation,LOCAL,Client_3,70,3.9285714285714284,4.0,1,5
+4,1,Car Evaluation,LOCAL,Client_4,69,3.9130434782608696,4.0,1,5
+4,1,Car Evaluation,FEDERATED,,223,4.044843049327354,4.0,1,5

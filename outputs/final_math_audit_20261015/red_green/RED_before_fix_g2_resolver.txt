@@ -1,0 +1,6 @@
+.                                                                        [100%]
+=================================== PASSES ====================================
+=========================== short test summary info ===========================
+PASSED tests/test_final_math_audit.py::test_g2_resolver_numerator_is_a_set_union_independent_of_scope
+1 passed, 23 deselected in 1.29s
+pytest_exit=0

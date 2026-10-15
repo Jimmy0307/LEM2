@@ -1,0 +1,109 @@
+{
+  "dataset": "Balance Scale",
+  "source": "uci_id:12",
+  "target": "class",
+  "features": [
+    "right_distance",
+    "right_weight",
+    "left_distance",
+    "left_weight"
+  ],
+  "schema": {
+    "continuous": [],
+    "categorical": [
+      "right_distance",
+      "right_weight",
+      "left_distance",
+      "left_weight"
+    ],
+    "ordinal": {},
+    "ignore": []
+  },
+  "evaluation_mode": "HOLDOUT",
+  "preprocessing": {
+    "features": [
+      "right_distance",
+      "right_weight",
+      "left_distance",
+      "left_weight"
+    ],
+    "condition_columns": [
+      "right_distance",
+      "right_weight",
+      "left_distance",
+      "left_weight"
+    ],
+    "target": "class",
+    "continuous_columns": [],
+    "categorical_columns": [
+      "right_distance",
+      "right_weight",
+      "left_distance",
+      "left_weight"
+    ],
+    "n_bins": 3,
+    "local_min_max": {
+      "Client_1": {},
+      "Client_2": {},
+      "Client_3": {},
+      "Client_4": {},
+      "Client_5": {}
+    },
+    "global_min_max": {},
+    "bin_edges": {},
+    "bin_labels": {}
+  },
+  "reduct_enabled": true,
+  "reduct_method": "MINIMUM_CARDINALITY",
+  "reduct_selection_policy": "lexicographic_first_among_minimum_cardinality",
+  "record_all_candidates": true,
+  "conflict_rate_definition": "pre-resolution; all matching rules with more than one distinct decision",
+  "coverage_is_structural_and_shared_across_policies": true,
+  "environment": {
+    "python": {
+      "version": "3.11.9",
+      "implementation": "CPython",
+      "executable": "C:\\Users\\jimmy_liao\\LEM2\\.venv\\Scripts\\python.exe",
+      "minimum_supported": "3.11",
+      "maximum_supported_exclusive": "3.14",
+      "supported": true
+    },
+    "platform": {
+      "system": "Windows",
+      "release": "10",
+      "machine": "AMD64"
+    },
+    "packages": {
+      "numpy": {
+        "installed": true,
+        "version": "2.3.5",
+        "expected_version": "2.3.5",
+        "matches_lock": true
+      },
+      "openpyxl": {
+        "installed": true,
+        "version": "3.1.5",
+        "expected_version": "3.1.5",
+        "matches_lock": true
+      },
+      "pandas": {
+        "installed": true,
+        "version": "2.2.3",
+        "expected_version": "2.2.3",
+        "matches_lock": true
+      },
+      "ucimlrepo": {
+        "installed": true,
+        "version": "0.0.7",
+        "expected_version": "0.0.7",
+        "matches_lock": true
+      },
+      "xlrd": {
+        "installed": true,
+        "version": "2.0.2",
+        "expected_version": "2.0.2",
+        "matches_lock": true
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+dataset,client_count,global_rule_count,rules_with_support_from_non_producing_clients,client_union_equals_train,support_sizes_distributed_eq_pooled,standard_weights_distributed_eq_pooled,class_sizes_distributed_eq_pooled,standard_predictions_distributed_eq_pooled,global_strength_predictions_distributed_eq_pooled,artifact_unchanged_after_4_resolvers,conflict_case_ids_identical_across_4_resolvers,train_test_row_overlap
+Hayes-Roth,2,30,20,True,True,True,True,True,True,True,True,0
+Hayes-Roth,3,28,21,True,True,True,True,True,True,True,True,0
+Hayes-Roth,4,29,21,True,True,True,True,True,True,True,True,0
+Hayes-Roth,5,33,24,True,True,True,True,True,True,True,True,0
+Car Evaluation,2,184,94,True,True,True,True,True,True,True,True,0
+Car Evaluation,3,207,155,True,True,True,True,True,True,True,True,0
+Car Evaluation,4,223,184,True,True,True,True,True,True,True,True,0
+Car Evaluation,5,226,197,True,True,True,True,True,True,True,True,0
+Balance Scale,2,209,120,True,True,True,True,True,True,True,True,0
+Balance Scale,3,200,139,True,True,True,True,True,True,True,True,0
+Balance Scale,4,181,127,True,True,True,True,True,True,True,True,0
+Balance Scale,5,183,128,True,True,True,True,True,True,True,True,0

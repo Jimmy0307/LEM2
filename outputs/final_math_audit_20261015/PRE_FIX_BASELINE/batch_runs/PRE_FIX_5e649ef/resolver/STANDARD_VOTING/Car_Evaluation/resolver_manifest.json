@@ -1,0 +1,6 @@
+{
+  "dataset": "Car Evaluation",
+  "policy": "STANDARD_VOTING",
+  "order_invariant_by_design": true,
+  "coverage_is_structural_and_shared": true
+}

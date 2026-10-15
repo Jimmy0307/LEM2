@@ -1,0 +1,33 @@
+{
+  "dataset": "Balance Scale",
+  "source": "uci_id:12",
+  "evaluation_mode": "HOLDOUT",
+  "reduct_enabled": true,
+  "reduct_method": "MINIMUM_CARDINALITY",
+  "record_all_candidates": true,
+  "reduct_selection_policy": "lexicographic_first_among_minimum_cardinality",
+  "structural_configurations": [
+    {
+      "fold": 1,
+      "client_count": 5,
+      "seed": 42
+    },
+    {
+      "fold": 1,
+      "client_count": 2,
+      "seed": 42
+    },
+    {
+      "fold": 1,
+      "client_count": 3,
+      "seed": 42
+    },
+    {
+      "fold": 1,
+      "client_count": 4,
+      "seed": 42
+    }
+  ],
+  "conflict_rate_definition": "pre-resolution; all matching rules with more than one distinct decision",
+  "derived_metrics_are_not_original_rough_set_quantities": true
+}

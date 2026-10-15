@@ -99,17 +99,17 @@ def _condition_attributes(rules):
 
 
 def test_centralized_selected_reduct_controls_lem2_features(tmp_path, monkeypatch):
-    from roughset import evaluation
+    from roughset import pipeline
     from roughset.app import run_application
 
     condition_columns_seen = []
-    original = evaluation.induce_lem2
+    original = pipeline.induce_lem2
 
     def record_conditions(df, condition_cols, decision_col, **kwargs):
         condition_columns_seen.append(tuple(condition_cols))
         return original(df, condition_cols, decision_col, **kwargs)
 
-    monkeypatch.setattr(evaluation, "induce_lem2", record_conditions)
+    monkeypatch.setattr(pipeline, "induce_lem2", record_conditions)
     result = run_application(_project(tmp_path, run_federated=False))
     dataset = result["datasets"]["toy"]
     central_reduct = dataset["central_reduct_result"]
@@ -155,13 +155,13 @@ def test_reduct_is_train_only_for_holdout_and_each_fold(tmp_path, monkeypatch, m
     from roughset.app import run_application
 
     seen_row_ids = []
-    original = reduct.find_minimum_cardinality_reducts
+    original = reduct.find_exact_minimum_cardinality_reducts
 
     def record_reduct_input(df, features, target):
         seen_row_ids.append(set(df["__row_id__"].astype(int)))
         return original(df, features, target)
 
-    monkeypatch.setattr(reduct, "find_minimum_cardinality_reducts", record_reduct_input)
+    monkeypatch.setattr(reduct, "find_exact_minimum_cardinality_reducts", record_reduct_input)
     result = run_application(_project(tmp_path, mode=mode))
     dataset = result["datasets"]["toy"]
     if mode == "HOLDOUT":
@@ -182,13 +182,13 @@ def test_policy_does_not_change_structural_artifact(tmp_path, monkeypatch):
     from roughset.batch import run_policy_matrix
 
     reduct_calls = []
-    original = reduct.find_minimum_cardinality_reducts
+    original = reduct.find_exact_minimum_cardinality_reducts
 
     def count_reduct_builds(df, features, target):
         reduct_calls.append(tuple(sorted(set(df["__row_id__"].astype(int)))))
         return original(df, features, target)
 
-    monkeypatch.setattr(reduct, "find_minimum_cardinality_reducts", count_reduct_builds)
+    monkeypatch.setattr(reduct, "find_exact_minimum_cardinality_reducts", count_reduct_builds)
     result = run_policy_matrix(
         _project(tmp_path), policies=POLICIES, run_id="SHARED_STRUCTURE"
     )
@@ -284,19 +284,19 @@ def test_deterministic_multiple_minimum_reduct_selection_records_all_candidates(
 
 
 def test_reduct_disabled_keeps_all_feature_lem2_baseline(tmp_path, monkeypatch):
-    from roughset import evaluation
+    from roughset import pipeline
     from roughset.app import run_application
 
     config = _project(tmp_path, run_federated=False)
     config["reduct"]["enabled"] = False
     observed = []
-    original = evaluation.induce_lem2
+    original = pipeline.induce_lem2
 
     def record_conditions(df, condition_cols, decision_col, **kwargs):
         observed.append(tuple(condition_cols))
         return original(df, condition_cols, decision_col, **kwargs)
 
-    monkeypatch.setattr(evaluation, "induce_lem2", record_conditions)
+    monkeypatch.setattr(pipeline, "induce_lem2", record_conditions)
     result = run_application(config)
     dataset = result["datasets"]["toy"]
 

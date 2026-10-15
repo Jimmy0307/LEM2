@@ -1,0 +1,121 @@
+﻿client_count,fold,dataset,rule_no,client_id,selected_reduct,reduct_size,conditions,decision,rule_key,condition_count,source,provenance
+5,1,Hayes-Roth,1,,[],,marital_status=1 AND age=1,1.0,"((('age', '1'), ('marital_status', '1')), '1.0')",2,Client_1,"['Client_1', 'Client_5']"
+5,1,Hayes-Roth,2,,[],,educational_level=1 AND marital_status=1,1.0,"((('educational_level', '1'), ('marital_status', '1')), '1.0')",2,Client_1,"['Client_1', 'Client_2', 'Client_3', 'Client_4']"
+5,1,Hayes-Roth,3,,[],,educational_level=3 AND hobby=2,1.0,"((('educational_level', '3'), ('hobby', '2')), '1.0')",2,Client_1,['Client_1']
+5,1,Hayes-Roth,4,,[],,educational_level=1 AND age=1,1.0,"((('age', '1'), ('educational_level', '1')), '1.0')",2,Client_1,"['Client_1', 'Client_4']"
+5,1,Hayes-Roth,5,,[],,educational_level=4,3.0,"((('educational_level', '4'),), '3.0')",1,Client_1,"['Client_1', 'Client_2', 'Client_3', 'Client_4', 'Client_5']"
+5,1,Hayes-Roth,6,,[],,marital_status=4,3.0,"((('marital_status', '4'),), '3.0')",1,Client_1,"['Client_1', 'Client_2', 'Client_3', 'Client_5']"
+5,1,Hayes-Roth,7,,[],,marital_status=2 AND educational_level=2,2.0,"((('educational_level', '2'), ('marital_status', '2')), '2.0')",2,Client_1,"['Client_1', 'Client_2', 'Client_4', 'Client_5']"
+5,1,Hayes-Roth,8,,[],,age=2 AND educational_level=2,2.0,"((('age', '2'), ('educational_level', '2')), '2.0')",2,Client_1,"['Client_1', 'Client_2', 'Client_5']"
+5,1,Hayes-Roth,9,,[],,educational_level=3 AND hobby=3,2.0,"((('educational_level', '3'), ('hobby', '3')), '2.0')",2,Client_1,['Client_1']
+5,1,Hayes-Roth,10,,[],,marital_status=2 AND hobby=1 AND educational_level=3,2.0,"((('educational_level', '3'), ('hobby', '1'), ('marital_status', '2')), '2.0')",3,Client_1,['Client_1']
+5,1,Hayes-Roth,11,,[],,age=2 AND marital_status=2,2.0,"((('age', '2'), ('marital_status', '2')), '2.0')",2,Client_1,"['Client_1', 'Client_2', 'Client_4']"
+5,1,Hayes-Roth,12,,[],,educational_level=1 AND marital_status=2 AND age=1,1.0,"((('age', '1'), ('educational_level', '1'), ('marital_status', '2')), '1.0')",3,Client_2,['Client_2']
+5,1,Hayes-Roth,13,,[],,age=3,1.0,"((('age', '3'),), '1.0')",1,Client_2,['Client_2']
+5,1,Hayes-Roth,14,,[],,educational_level=1 AND marital_status=3,1.0,"((('educational_level', '1'), ('marital_status', '3')), '1.0')",2,Client_2,['Client_2']
+5,1,Hayes-Roth,15,,[],,age=2 AND educational_level=3,2.0,"((('age', '2'), ('educational_level', '3')), '2.0')",2,Client_2,['Client_2']
+5,1,Hayes-Roth,16,,[],,age=1 AND hobby=2,1.0,"((('age', '1'), ('hobby', '2')), '1.0')",2,Client_3,['Client_3']
+5,1,Hayes-Roth,17,,[],,hobby=1 AND age=3,1.0,"((('age', '3'), ('hobby', '1')), '1.0')",2,Client_3,['Client_3']
+5,1,Hayes-Roth,18,,[],,marital_status=3 AND age=1,1.0,"((('age', '1'), ('marital_status', '3')), '1.0')",2,Client_3,['Client_3']
+5,1,Hayes-Roth,19,,[],,age=4,3.0,"((('age', '4'),), '3.0')",1,Client_3,"['Client_3', 'Client_4', 'Client_5']"
+5,1,Hayes-Roth,20,,[],,age=3 AND hobby=2,2.0,"((('age', '3'), ('hobby', '2')), '2.0')",2,Client_3,['Client_3']
+5,1,Hayes-Roth,21,,[],,hobby=3 AND educational_level=2,2.0,"((('educational_level', '2'), ('hobby', '3')), '2.0')",2,Client_3,['Client_3']
+5,1,Hayes-Roth,22,,[],,marital_status=2 AND hobby=1,2.0,"((('hobby', '1'), ('marital_status', '2')), '2.0')",2,Client_3,['Client_3']
+5,1,Hayes-Roth,23,,[],,marital_status=3 AND hobby=3,2.0,"((('hobby', '3'), ('marital_status', '3')), '2.0')",2,Client_3,['Client_3']
+5,1,Hayes-Roth,24,,[],,educational_level=2 AND marital_status=1,1.0,"((('educational_level', '2'), ('marital_status', '1')), '1.0')",2,Client_4,['Client_4']
+5,1,Hayes-Roth,25,,[],,educational_level=3 AND age=1,1.0,"((('age', '1'), ('educational_level', '3')), '1.0')",2,Client_4,"['Client_4', 'Client_5']"
+5,1,Hayes-Roth,26,,[],,marital_status=3 AND hobby=3 AND age=2,1.0,"((('age', '2'), ('hobby', '3'), ('marital_status', '3')), '1.0')",3,Client_4,['Client_4']
+5,1,Hayes-Roth,27,,[],,age=2 AND hobby=1,2.0,"((('age', '2'), ('hobby', '1')), '2.0')",2,Client_4,['Client_4']
+5,1,Hayes-Roth,28,,[],,age=3 AND educational_level=3,2.0,"((('age', '3'), ('educational_level', '3')), '2.0')",2,Client_4,['Client_4']
+5,1,Hayes-Roth,29,,[],,marital_status=3 AND hobby=2 AND educational_level=1,2.0,"((('educational_level', '1'), ('hobby', '2'), ('marital_status', '3')), '2.0')",3,Client_4,['Client_4']
+5,1,Hayes-Roth,30,,[],,hobby=2 AND marital_status=3,1.0,"((('hobby', '2'), ('marital_status', '3')), '1.0')",2,Client_5,['Client_5']
+5,1,Hayes-Roth,31,,[],,hobby=2 AND age=3,1.0,"((('age', '3'), ('hobby', '2')), '1.0')",2,Client_5,['Client_5']
+5,1,Hayes-Roth,32,,[],,educational_level=1 AND marital_status=2,2.0,"((('educational_level', '1'), ('marital_status', '2')), '2.0')",2,Client_5,['Client_5']
+5,1,Hayes-Roth,33,,[],,age=3 AND hobby=3,2.0,"((('age', '3'), ('hobby', '3')), '2.0')",2,Client_5,['Client_5']
+2,1,Hayes-Roth,1,,[],,marital_status=1 AND age=1,1.0,"((('age', '1'), ('marital_status', '1')), '1.0')",2,Client_1,['Client_1']
+2,1,Hayes-Roth,2,,[],,educational_level=1 AND age=1 AND marital_status=2,1.0,"((('age', '1'), ('educational_level', '1'), ('marital_status', '2')), '1.0')",3,Client_1,['Client_1']
+2,1,Hayes-Roth,3,,[],,marital_status=1 AND educational_level=1,1.0,"((('educational_level', '1'), ('marital_status', '1')), '1.0')",2,Client_1,['Client_1']
+2,1,Hayes-Roth,4,,[],,age=3 AND hobby=1,1.0,"((('age', '3'), ('hobby', '1')), '1.0')",2,Client_1,['Client_1']
+2,1,Hayes-Roth,5,,[],,age=3 AND educational_level=1,1.0,"((('age', '3'), ('educational_level', '1')), '1.0')",2,Client_1,['Client_1']
+2,1,Hayes-Roth,6,,[],,educational_level=3 AND age=3,1.0,"((('age', '3'), ('educational_level', '3')), '1.0')",2,Client_1,['Client_1']
+2,1,Hayes-Roth,7,,[],,educational_level=3 AND marital_status=2 AND hobby=2,1.0,"((('educational_level', '3'), ('hobby', '2'), ('marital_status', '2')), '1.0')",3,Client_1,['Client_1']
+2,1,Hayes-Roth,8,,[],,marital_status=4,3.0,"((('marital_status', '4'),), '3.0')",1,Client_1,"['Client_1', 'Client_2']"
+2,1,Hayes-Roth,9,,[],,age=4,3.0,"((('age', '4'),), '3.0')",1,Client_1,"['Client_1', 'Client_2']"
+2,1,Hayes-Roth,10,,[],,educational_level=4,3.0,"((('educational_level', '4'),), '3.0')",1,Client_1,"['Client_1', 'Client_2']"
+2,1,Hayes-Roth,11,,[],,educational_level=2 AND hobby=3 AND marital_status=2,2.0,"((('educational_level', '2'), ('hobby', '3'), ('marital_status', '2')), '2.0')",3,Client_1,['Client_1']
+2,1,Hayes-Roth,12,,[],,age=2 AND educational_level=2,2.0,"((('age', '2'), ('educational_level', '2')), '2.0')",2,Client_1,"['Client_1', 'Client_2']"
+2,1,Hayes-Roth,13,,[],,marital_status=2 AND educational_level=1 AND age=2,2.0,"((('age', '2'), ('educational_level', '1'), ('marital_status', '2')), '2.0')",3,Client_1,['Client_1']
+2,1,Hayes-Roth,14,,[],,educational_level=2 AND age=1 AND marital_status=2,2.0,"((('age', '1'), ('educational_level', '2'), ('marital_status', '2')), '2.0')",3,Client_1,['Client_1']
+2,1,Hayes-Roth,15,,[],,marital_status=3 AND educational_level=2,2.0,"((('educational_level', '2'), ('marital_status', '3')), '2.0')",2,Client_1,['Client_1']
+2,1,Hayes-Roth,16,,[],,educational_level=3 AND marital_status=3,2.0,"((('educational_level', '3'), ('marital_status', '3')), '2.0')",2,Client_1,['Client_1']
+2,1,Hayes-Roth,17,,[],,hobby=3 AND marital_status=1 AND educational_level=2,2.0,"((('educational_level', '2'), ('hobby', '3'), ('marital_status', '1')), '2.0')",3,Client_1,['Client_1']
+2,1,Hayes-Roth,18,,[],,educational_level=3 AND hobby=1 AND marital_status=2,2.0,"((('educational_level', '3'), ('hobby', '1'), ('marital_status', '2')), '2.0')",3,Client_1,['Client_1']
+2,1,Hayes-Roth,19,,[],,marital_status=1 AND educational_level=2 AND age=1,1.0,"((('age', '1'), ('educational_level', '2'), ('marital_status', '1')), '1.0')",3,Client_2,['Client_2']
+2,1,Hayes-Roth,20,,[],,educational_level=1 AND marital_status=1 AND age=2,1.0,"((('age', '2'), ('educational_level', '1'), ('marital_status', '1')), '1.0')",3,Client_2,['Client_2']
+2,1,Hayes-Roth,21,,[],,age=1 AND educational_level=1,1.0,"((('age', '1'), ('educational_level', '1')), '1.0')",2,Client_2,['Client_2']
+2,1,Hayes-Roth,22,,[],,age=3 AND hobby=2,1.0,"((('age', '3'), ('hobby', '2')), '1.0')",2,Client_2,['Client_2']
+2,1,Hayes-Roth,23,,[],,educational_level=3 AND age=1 AND hobby=2,1.0,"((('age', '1'), ('educational_level', '3'), ('hobby', '2')), '1.0')",3,Client_2,['Client_2']
+2,1,Hayes-Roth,24,,[],,hobby=3 AND educational_level=3 AND age=1,1.0,"((('age', '1'), ('educational_level', '3'), ('hobby', '3')), '1.0')",3,Client_2,['Client_2']
+2,1,Hayes-Roth,25,,[],,hobby=3 AND marital_status=1 AND educational_level=1,1.0,"((('educational_level', '1'), ('hobby', '3'), ('marital_status', '1')), '1.0')",3,Client_2,['Client_2']
+2,1,Hayes-Roth,26,,[],,marital_status=2 AND age=2,2.0,"((('age', '2'), ('marital_status', '2')), '2.0')",2,Client_2,['Client_2']
+2,1,Hayes-Roth,27,,[],,educational_level=2 AND marital_status=2,2.0,"((('educational_level', '2'), ('marital_status', '2')), '2.0')",2,Client_2,['Client_2']
+2,1,Hayes-Roth,28,,[],,age=3 AND educational_level=2 AND hobby=3,2.0,"((('age', '3'), ('educational_level', '2'), ('hobby', '3')), '2.0')",3,Client_2,['Client_2']
+2,1,Hayes-Roth,29,,[],,age=3 AND educational_level=3,2.0,"((('age', '3'), ('educational_level', '3')), '2.0')",2,Client_2,['Client_2']
+2,1,Hayes-Roth,30,,[],,age=3 AND marital_status=1 AND hobby=1,2.0,"((('age', '3'), ('hobby', '1'), ('marital_status', '1')), '2.0')",3,Client_2,['Client_2']
+3,1,Hayes-Roth,1,,[],,marital_status=1 AND educational_level=1 AND age=2,1.0,"((('age', '2'), ('educational_level', '1'), ('marital_status', '1')), '1.0')",3,Client_1,['Client_1']
+3,1,Hayes-Roth,2,,[],,age=1 AND marital_status=2 AND educational_level=1,1.0,"((('age', '1'), ('educational_level', '1'), ('marital_status', '2')), '1.0')",3,Client_1,['Client_1']
+3,1,Hayes-Roth,3,,[],,marital_status=1 AND age=1 AND educational_level=2,1.0,"((('age', '1'), ('educational_level', '2'), ('marital_status', '1')), '1.0')",3,Client_1,['Client_1']
+3,1,Hayes-Roth,4,,[],,age=3 AND hobby=3 AND marital_status=1,1.0,"((('age', '3'), ('hobby', '3'), ('marital_status', '1')), '1.0')",3,Client_1,['Client_1']
+3,1,Hayes-Roth,5,,[],,age=4,3.0,"((('age', '4'),), '3.0')",1,Client_1,"['Client_1', 'Client_2', 'Client_3']"
+3,1,Hayes-Roth,6,,[],,educational_level=4,3.0,"((('educational_level', '4'),), '3.0')",1,Client_1,"['Client_1', 'Client_2', 'Client_3']"
+3,1,Hayes-Roth,7,,[],,marital_status=4,3.0,"((('marital_status', '4'),), '3.0')",1,Client_1,"['Client_1', 'Client_2', 'Client_3']"
+3,1,Hayes-Roth,8,,[],,hobby=1 AND marital_status=3,2.0,"((('hobby', '1'), ('marital_status', '3')), '2.0')",2,Client_1,['Client_1']
+3,1,Hayes-Roth,9,,[],,marital_status=2 AND hobby=3,2.0,"((('hobby', '3'), ('marital_status', '2')), '2.0')",2,Client_1,['Client_1']
+3,1,Hayes-Roth,10,,[],,hobby=2 AND age=3,2.0,"((('age', '3'), ('hobby', '2')), '2.0')",2,Client_1,['Client_1']
+3,1,Hayes-Roth,11,,[],,age=2 AND marital_status=2,2.0,"((('age', '2'), ('marital_status', '2')), '2.0')",2,Client_1,"['Client_1', 'Client_2']"
+3,1,Hayes-Roth,12,,[],,educational_level=2 AND age=2,2.0,"((('age', '2'), ('educational_level', '2')), '2.0')",2,Client_1,"['Client_1', 'Client_2', 'Client_3']"
+3,1,Hayes-Roth,13,,[],,marital_status=2 AND age=1 AND educational_level=2,2.0,"((('age', '1'), ('educational_level', '2'), ('marital_status', '2')), '2.0')",3,Client_1,['Client_1']
+3,1,Hayes-Roth,14,,[],,age=1 AND marital_status=1,1.0,"((('age', '1'), ('marital_status', '1')), '1.0')",2,Client_2,"['Client_2', 'Client_3']"
+3,1,Hayes-Roth,15,,[],,educational_level=1 AND age=1,1.0,"((('age', '1'), ('educational_level', '1')), '1.0')",2,Client_2,"['Client_2', 'Client_3']"
+3,1,Hayes-Roth,16,,[],,age=3 AND hobby=2,1.0,"((('age', '3'), ('hobby', '2')), '1.0')",2,Client_2,['Client_2']
+3,1,Hayes-Roth,17,,[],,marital_status=3,1.0,"((('marital_status', '3'),), '1.0')",1,Client_2,['Client_2']
+3,1,Hayes-Roth,18,,[],,hobby=1 AND marital_status=1 AND age=3,1.0,"((('age', '3'), ('hobby', '1'), ('marital_status', '1')), '1.0')",3,Client_2,['Client_2']
+3,1,Hayes-Roth,19,,[],,educational_level=3 AND hobby=2 AND marital_status=2,1.0,"((('educational_level', '3'), ('hobby', '2'), ('marital_status', '2')), '1.0')",3,Client_2,['Client_2']
+3,1,Hayes-Roth,20,,[],,educational_level=1 AND hobby=1,1.0,"((('educational_level', '1'), ('hobby', '1')), '1.0')",2,Client_2,['Client_2']
+3,1,Hayes-Roth,21,,[],,marital_status=2 AND educational_level=2,2.0,"((('educational_level', '2'), ('marital_status', '2')), '2.0')",2,Client_2,"['Client_2', 'Client_3']"
+3,1,Hayes-Roth,22,,[],,hobby=3 AND marital_status=1,2.0,"((('hobby', '3'), ('marital_status', '1')), '2.0')",2,Client_2,['Client_2']
+3,1,Hayes-Roth,23,,[],,educational_level=1 AND marital_status=1,1.0,"((('educational_level', '1'), ('marital_status', '1')), '1.0')",2,Client_3,['Client_3']
+3,1,Hayes-Roth,24,,[],,educational_level=3 AND age=3,1.0,"((('age', '3'), ('educational_level', '3')), '1.0')",2,Client_3,['Client_3']
+3,1,Hayes-Roth,25,,[],,educational_level=3 AND age=1 AND hobby=3,1.0,"((('age', '1'), ('educational_level', '3'), ('hobby', '3')), '1.0')",3,Client_3,['Client_3']
+3,1,Hayes-Roth,26,,[],,marital_status=2 AND age=2 AND educational_level=1,2.0,"((('age', '2'), ('educational_level', '1'), ('marital_status', '2')), '2.0')",3,Client_3,['Client_3']
+3,1,Hayes-Roth,27,,[],,educational_level=3 AND marital_status=2 AND hobby=1,2.0,"((('educational_level', '3'), ('hobby', '1'), ('marital_status', '2')), '2.0')",3,Client_3,['Client_3']
+3,1,Hayes-Roth,28,,[],,educational_level=3 AND hobby=2,2.0,"((('educational_level', '3'), ('hobby', '2')), '2.0')",2,Client_3,['Client_3']
+4,1,Hayes-Roth,1,,[],,marital_status=1 AND age=1,1.0,"((('age', '1'), ('marital_status', '1')), '1.0')",2,Client_1,"['Client_1', 'Client_3']"
+4,1,Hayes-Roth,2,,[],,educational_level=1 AND marital_status=1,1.0,"((('educational_level', '1'), ('marital_status', '1')), '1.0')",2,Client_1,"['Client_1', 'Client_3', 'Client_4']"
+4,1,Hayes-Roth,3,,[],,age=1 AND educational_level=1,1.0,"((('age', '1'), ('educational_level', '1')), '1.0')",2,Client_1,"['Client_1', 'Client_2', 'Client_4']"
+4,1,Hayes-Roth,4,,[],,age=3 AND marital_status=1,1.0,"((('age', '3'), ('marital_status', '1')), '1.0')",2,Client_1,"['Client_1', 'Client_2']"
+4,1,Hayes-Roth,5,,[],,age=4,3.0,"((('age', '4'),), '3.0')",1,Client_1,"['Client_1', 'Client_2', 'Client_4']"
+4,1,Hayes-Roth,6,,[],,marital_status=4,3.0,"((('marital_status', '4'),), '3.0')",1,Client_1,"['Client_1', 'Client_2', 'Client_3', 'Client_4']"
+4,1,Hayes-Roth,7,,[],,age=2 AND educational_level=2,2.0,"((('age', '2'), ('educational_level', '2')), '2.0')",2,Client_1,"['Client_1', 'Client_2', 'Client_3']"
+4,1,Hayes-Roth,8,,[],,marital_status=2 AND age=2,2.0,"((('age', '2'), ('marital_status', '2')), '2.0')",2,Client_1,"['Client_1', 'Client_2', 'Client_4']"
+4,1,Hayes-Roth,9,,[],,marital_status=3 AND age=3,2.0,"((('age', '3'), ('marital_status', '3')), '2.0')",2,Client_1,['Client_1']
+4,1,Hayes-Roth,10,,[],,marital_status=3 AND educational_level=3,2.0,"((('educational_level', '3'), ('marital_status', '3')), '2.0')",2,Client_1,['Client_1']
+4,1,Hayes-Roth,11,,[],,age=1 AND marital_status=2 AND educational_level=2,2.0,"((('age', '1'), ('educational_level', '2'), ('marital_status', '2')), '2.0')",3,Client_1,['Client_1']
+4,1,Hayes-Roth,12,,[],,age=1 AND marital_status=1 AND educational_level=2,1.0,"((('age', '1'), ('educational_level', '2'), ('marital_status', '1')), '1.0')",3,Client_2,['Client_2']
+4,1,Hayes-Roth,13,,[],,educational_level=3 AND marital_status=1,1.0,"((('educational_level', '3'), ('marital_status', '1')), '1.0')",2,Client_2,['Client_2']
+4,1,Hayes-Roth,14,,[],,educational_level=4,3.0,"((('educational_level', '4'),), '3.0')",1,Client_2,"['Client_2', 'Client_3', 'Client_4']"
+4,1,Hayes-Roth,15,,[],,marital_status=2 AND educational_level=2,2.0,"((('educational_level', '2'), ('marital_status', '2')), '2.0')",2,Client_2,"['Client_2', 'Client_3']"
+4,1,Hayes-Roth,16,,[],,age=3 AND educational_level=3,2.0,"((('age', '3'), ('educational_level', '3')), '2.0')",2,Client_2,['Client_2']
+4,1,Hayes-Roth,17,,[],,educational_level=1 AND hobby=2 AND marital_status=3,1.0,"((('educational_level', '1'), ('hobby', '2'), ('marital_status', '3')), '1.0')",3,Client_3,['Client_3']
+4,1,Hayes-Roth,18,,[],,educational_level=1 AND age=1 AND marital_status=2,1.0,"((('age', '1'), ('educational_level', '1'), ('marital_status', '2')), '1.0')",3,Client_3,['Client_3']
+4,1,Hayes-Roth,19,,[],,age=3 AND educational_level=3,1.0,"((('age', '3'), ('educational_level', '3')), '1.0')",2,Client_3,['Client_3']
+4,1,Hayes-Roth,20,,[],,marital_status=1 AND hobby=1,1.0,"((('hobby', '1'), ('marital_status', '1')), '1.0')",2,Client_3,['Client_3']
+4,1,Hayes-Roth,21,,[],,hobby=2 AND educational_level=3 AND age=1,1.0,"((('age', '1'), ('educational_level', '3'), ('hobby', '2')), '1.0')",3,Client_3,['Client_3']
+4,1,Hayes-Roth,22,,[],,age=2 AND educational_level=1 AND marital_status=3,2.0,"((('age', '2'), ('educational_level', '1'), ('marital_status', '3')), '2.0')",3,Client_3,['Client_3']
+4,1,Hayes-Roth,23,,[],,age=2 AND educational_level=1 AND marital_status=2,2.0,"((('age', '2'), ('educational_level', '1'), ('marital_status', '2')), '2.0')",3,Client_3,['Client_3']
+4,1,Hayes-Roth,24,,[],,educational_level=2 AND hobby=3,2.0,"((('educational_level', '2'), ('hobby', '3')), '2.0')",2,Client_3,['Client_3']
+4,1,Hayes-Roth,25,,[],,educational_level=3 AND hobby=1,2.0,"((('educational_level', '3'), ('hobby', '1')), '2.0')",2,Client_3,['Client_3']
+4,1,Hayes-Roth,26,,[],,hobby=3 AND educational_level=3,1.0,"((('educational_level', '3'), ('hobby', '3')), '1.0')",2,Client_4,['Client_4']
+4,1,Hayes-Roth,27,,[],,hobby=3 AND age=2,1.0,"((('age', '2'), ('hobby', '3')), '1.0')",2,Client_4,['Client_4']
+4,1,Hayes-Roth,28,,[],,educational_level=2 AND marital_status=1,2.0,"((('educational_level', '2'), ('marital_status', '1')), '2.0')",2,Client_4,['Client_4']
+4,1,Hayes-Roth,29,,[],,educational_level=2 AND age=1,2.0,"((('age', '1'), ('educational_level', '2')), '2.0')",2,Client_4,['Client_4']

@@ -1,0 +1,25 @@
+﻿dataset,fold,client_count,feature,selected_client_count,total_clients,selection_frequency
+Car Evaluation,1,5,buying,5,5,1.0
+Car Evaluation,1,5,maint,5,5,1.0
+Car Evaluation,1,5,doors,5,5,1.0
+Car Evaluation,1,5,persons,5,5,1.0
+Car Evaluation,1,5,lug_boot,5,5,1.0
+Car Evaluation,1,5,safety,5,5,1.0
+Car Evaluation,1,2,buying,2,2,1.0
+Car Evaluation,1,2,maint,2,2,1.0
+Car Evaluation,1,2,doors,2,2,1.0
+Car Evaluation,1,2,persons,2,2,1.0
+Car Evaluation,1,2,lug_boot,2,2,1.0
+Car Evaluation,1,2,safety,2,2,1.0
+Car Evaluation,1,3,buying,3,3,1.0
+Car Evaluation,1,3,maint,3,3,1.0
+Car Evaluation,1,3,doors,3,3,1.0
+Car Evaluation,1,3,persons,3,3,1.0
+Car Evaluation,1,3,lug_boot,3,3,1.0
+Car Evaluation,1,3,safety,3,3,1.0
+Car Evaluation,1,4,buying,4,4,1.0
+Car Evaluation,1,4,maint,4,4,1.0
+Car Evaluation,1,4,doors,4,4,1.0
+Car Evaluation,1,4,persons,4,4,1.0
+Car Evaluation,1,4,lug_boot,4,4,1.0
+Car Evaluation,1,4,safety,4,4,1.0

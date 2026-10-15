@@ -1,0 +1,267 @@
+﻿policy,client_count,fold,dataset,row_id,true,matching_rules,decisions,predicted,correct
+STANDARD_VOTING,5,1,Balance Scale,1,R,5,"['B', 'L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,20,R,4,"['B', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,27,R,5,"['B', 'L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,29,R,5,"['B', 'L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,31,R,3,"['B', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,53,R,4,"['L', 'R']",L,False
+STANDARD_VOTING,5,1,Balance Scale,54,R,2,"['L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,58,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,59,R,2,"['L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,65,R,4,"['B', 'L', 'R']",L,False
+STANDARD_VOTING,5,1,Balance Scale,66,R,4,"['L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,70,R,4,"['B', 'L', 'R']",L,False
+STANDARD_VOTING,5,1,Balance Scale,77,L,4,"['B', 'L', 'R']",R,False
+STANDARD_VOTING,5,1,Balance Scale,78,B,5,"['B', 'L', 'R']",L,False
+STANDARD_VOTING,5,1,Balance Scale,94,R,5,"['B', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,102,L,2,"['B', 'R']",R,False
+STANDARD_VOTING,5,1,Balance Scale,106,L,3,"['L', 'R']",L,True
+STANDARD_VOTING,5,1,Balance Scale,127,R,2,"['L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,129,R,5,"['B', 'L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,137,R,4,"['B', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,145,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,160,L,5,"['L', 'R']",L,True
+STANDARD_VOTING,5,1,Balance Scale,169,R,4,"['B', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,170,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,177,L,3,"['L', 'R']",L,True
+STANDARD_VOTING,5,1,Balance Scale,183,R,3,"['L', 'R']",L,False
+STANDARD_VOTING,5,1,Balance Scale,196,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,203,L,4,"['B', 'L']",L,True
+STANDARD_VOTING,5,1,Balance Scale,209,R,8,"['B', 'L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,214,R,4,"['L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,217,R,5,"['L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,243,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,244,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,246,B,2,"['L', 'R']",R,False
+STANDARD_VOTING,5,1,Balance Scale,250,L,3,"['L', 'R']",L,True
+STANDARD_VOTING,5,1,Balance Scale,251,L,6,"['B', 'L', 'R']",L,True
+STANDARD_VOTING,5,1,Balance Scale,257,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,258,R,6,"['L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,259,R,5,"['L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,282,B,2,"['L', 'R']",R,False
+STANDARD_VOTING,5,1,Balance Scale,290,L,5,"['L', 'R']",R,False
+STANDARD_VOTING,5,1,Balance Scale,302,L,5,"['B', 'L', 'R']",L,True
+STANDARD_VOTING,5,1,Balance Scale,303,L,5,"['L', 'R']",L,True
+STANDARD_VOTING,5,1,Balance Scale,304,L,5,"['L', 'R']",L,True
+STANDARD_VOTING,5,1,Balance Scale,305,L,5,"['L', 'R']",L,True
+STANDARD_VOTING,5,1,Balance Scale,311,L,5,"['B', 'L', 'R']",L,True
+STANDARD_VOTING,5,1,Balance Scale,329,L,4,"['L', 'R']",L,True
+STANDARD_VOTING,5,1,Balance Scale,336,L,3,"['B', 'L']",L,True
+STANDARD_VOTING,5,1,Balance Scale,343,R,5,"['B', 'L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,348,R,5,"['B', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,352,L,3,"['B', 'L']",L,True
+STANDARD_VOTING,5,1,Balance Scale,353,L,3,"['L', 'R']",L,True
+STANDARD_VOTING,5,1,Balance Scale,359,L,3,"['L', 'R']",L,True
+STANDARD_VOTING,5,1,Balance Scale,367,L,4,"['L', 'R']",R,False
+STANDARD_VOTING,5,1,Balance Scale,369,R,5,"['L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,372,B,3,"['L', 'R']",R,False
+STANDARD_VOTING,5,1,Balance Scale,385,L,6,"['B', 'L', 'R']",L,True
+STANDARD_VOTING,5,1,Balance Scale,387,R,4,"['B', 'L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,390,B,3,"['L', 'R']",R,False
+STANDARD_VOTING,5,1,Balance Scale,413,R,3,"['B', 'L', 'R']",L,False
+STANDARD_VOTING,5,1,Balance Scale,416,B,2,"['L', 'R']",R,False
+STANDARD_VOTING,5,1,Balance Scale,421,R,3,"['L', 'R']",L,False
+STANDARD_VOTING,5,1,Balance Scale,437,L,4,"['B', 'L']",L,True
+STANDARD_VOTING,5,1,Balance Scale,439,R,4,"['L', 'R']",L,False
+STANDARD_VOTING,5,1,Balance Scale,458,L,4,"['B', 'L', 'R']",L,True
+STANDARD_VOTING,5,1,Balance Scale,463,L,4,"['B', 'L', 'R']",L,True
+STANDARD_VOTING,5,1,Balance Scale,464,L,5,"['L', 'R']",R,False
+STANDARD_VOTING,5,1,Balance Scale,467,L,3,"['L', 'R']",L,True
+STANDARD_VOTING,5,1,Balance Scale,471,L,5,"['L', 'R']",L,True
+STANDARD_VOTING,5,1,Balance Scale,478,L,4,"['B', 'L', 'R']",L,True
+STANDARD_VOTING,5,1,Balance Scale,483,L,3,"['B', 'L', 'R']",L,True
+STANDARD_VOTING,5,1,Balance Scale,494,B,3,"['L', 'R']",R,False
+STANDARD_VOTING,5,1,Balance Scale,499,R,2,"['L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,512,R,6,"['B', 'L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,513,R,5,"['B', 'L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,514,R,6,"['B', 'L', 'R']",R,True
+STANDARD_VOTING,5,1,Balance Scale,557,L,5,"['B', 'L']",L,True
+STANDARD_VOTING,5,1,Balance Scale,563,L,3,"['L', 'R']",L,True
+STANDARD_VOTING,5,1,Balance Scale,578,L,4,"['B', 'L']",L,True
+STANDARD_VOTING,5,1,Balance Scale,594,B,5,"['L', 'R']",R,False
+STANDARD_VOTING,5,1,Balance Scale,613,L,4,"['L', 'R']",L,True
+STANDARD_VOTING,5,1,Balance Scale,620,L,4,"['B', 'L']",L,True
+STANDARD_VOTING,5,1,Balance Scale,624,B,2,"['L', 'R']",L,False
+STANDARD_VOTING,2,1,Balance Scale,1,R,2,"['L', 'R']",R,True
+STANDARD_VOTING,2,1,Balance Scale,20,R,4,"['B', 'R']",R,True
+STANDARD_VOTING,2,1,Balance Scale,27,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,2,1,Balance Scale,29,R,4,"['L', 'R']",R,True
+STANDARD_VOTING,2,1,Balance Scale,31,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,2,1,Balance Scale,53,R,3,"['L', 'R']",L,False
+STANDARD_VOTING,2,1,Balance Scale,54,R,3,"['L', 'R']",L,False
+STANDARD_VOTING,2,1,Balance Scale,65,R,2,"['B', 'L']",L,False
+STANDARD_VOTING,2,1,Balance Scale,70,R,3,"['B', 'L', 'R']",L,False
+STANDARD_VOTING,2,1,Balance Scale,77,L,2,"['L', 'R']",R,False
+STANDARD_VOTING,2,1,Balance Scale,78,B,2,"['L', 'R']",R,False
+STANDARD_VOTING,2,1,Balance Scale,102,L,4,"['B', 'L', 'R']",R,False
+STANDARD_VOTING,2,1,Balance Scale,106,L,2,"['L', 'R']",R,False
+STANDARD_VOTING,2,1,Balance Scale,108,R,4,"['L', 'R']",R,True
+STANDARD_VOTING,2,1,Balance Scale,129,R,4,"['L', 'R']",R,True
+STANDARD_VOTING,2,1,Balance Scale,132,R,3,"['B', 'R']",R,True
+STANDARD_VOTING,2,1,Balance Scale,160,L,2,"['B', 'R']",R,False
+STANDARD_VOTING,2,1,Balance Scale,177,L,2,"['B', 'L']",L,True
+STANDARD_VOTING,2,1,Balance Scale,203,L,2,"['B', 'L']",L,True
+STANDARD_VOTING,2,1,Balance Scale,209,R,2,"['B', 'R']",R,True
+STANDARD_VOTING,2,1,Balance Scale,213,R,2,"['B', 'R']",R,True
+STANDARD_VOTING,2,1,Balance Scale,238,R,3,"['L', 'R']",L,False
+STANDARD_VOTING,2,1,Balance Scale,246,B,2,"['L', 'R']",R,False
+STANDARD_VOTING,2,1,Balance Scale,257,R,5,"['B', 'L', 'R']",R,True
+STANDARD_VOTING,2,1,Balance Scale,258,R,5,"['L', 'R']",R,True
+STANDARD_VOTING,2,1,Balance Scale,259,R,6,"['L', 'R']",R,True
+STANDARD_VOTING,2,1,Balance Scale,282,B,2,"['L', 'R']",R,False
+STANDARD_VOTING,2,1,Balance Scale,290,L,3,"['L', 'R']",L,True
+STANDARD_VOTING,2,1,Balance Scale,292,R,4,"['B', 'R']",R,True
+STANDARD_VOTING,2,1,Balance Scale,302,L,3,"['B', 'L']",L,True
+STANDARD_VOTING,2,1,Balance Scale,336,L,2,"['B', 'L']",L,True
+STANDARD_VOTING,2,1,Balance Scale,367,L,2,"['B', 'R']",R,False
+STANDARD_VOTING,2,1,Balance Scale,372,B,2,"['L', 'R']",R,False
+STANDARD_VOTING,2,1,Balance Scale,385,L,3,"['L', 'R']",R,False
+STANDARD_VOTING,2,1,Balance Scale,390,B,2,"['L', 'R']",R,False
+STANDARD_VOTING,2,1,Balance Scale,413,R,2,"['B', 'R']",R,True
+STANDARD_VOTING,2,1,Balance Scale,458,L,2,"['B', 'L']",L,True
+STANDARD_VOTING,2,1,Balance Scale,478,L,3,"['B', 'L']",L,True
+STANDARD_VOTING,2,1,Balance Scale,483,L,4,"['B', 'L']",L,True
+STANDARD_VOTING,2,1,Balance Scale,494,B,4,"['L', 'R']",R,False
+STANDARD_VOTING,2,1,Balance Scale,499,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,2,1,Balance Scale,512,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,2,1,Balance Scale,513,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,2,1,Balance Scale,514,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,2,1,Balance Scale,552,L,3,"['B', 'L']",L,True
+STANDARD_VOTING,2,1,Balance Scale,594,B,2,"['L', 'R']",L,False
+STANDARD_VOTING,2,1,Balance Scale,624,B,2,"['L', 'R']",R,False
+STANDARD_VOTING,3,1,Balance Scale,1,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,20,R,3,"['B', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,27,R,4,"['B', 'L', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,29,R,2,"['B', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,31,R,2,"['L', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,37,R,6,"['L', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,53,R,2,"['L', 'R']",L,False
+STANDARD_VOTING,3,1,Balance Scale,54,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,58,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,59,R,5,"['L', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,65,R,3,"['B', 'L', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,70,R,4,"['B', 'L', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,77,L,3,"['L', 'R']",L,True
+STANDARD_VOTING,3,1,Balance Scale,78,B,2,"['L', 'R']",L,False
+STANDARD_VOTING,3,1,Balance Scale,94,R,5,"['B', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,102,L,3,"['L', 'R']",R,False
+STANDARD_VOTING,3,1,Balance Scale,108,R,2,"['L', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,129,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,132,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,160,L,4,"['L', 'R']",L,True
+STANDARD_VOTING,3,1,Balance Scale,177,L,3,"['B', 'L']",L,True
+STANDARD_VOTING,3,1,Balance Scale,203,L,3,"['B', 'L']",L,True
+STANDARD_VOTING,3,1,Balance Scale,209,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,213,R,5,"['B', 'L', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,214,R,5,"['L', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,231,L,3,"['B', 'L']",L,True
+STANDARD_VOTING,3,1,Balance Scale,232,L,5,"['B', 'L']",L,True
+STANDARD_VOTING,3,1,Balance Scale,238,R,2,"['L', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,243,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,244,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,250,L,5,"['B', 'L', 'R']",L,True
+STANDARD_VOTING,3,1,Balance Scale,251,L,7,"['B', 'L', 'R']",R,False
+STANDARD_VOTING,3,1,Balance Scale,257,R,4,"['L', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,258,R,4,"['L', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,259,R,4,"['L', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,282,B,2,"['L', 'R']",L,False
+STANDARD_VOTING,3,1,Balance Scale,292,R,2,"['B', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,302,L,4,"['B', 'L']",L,True
+STANDARD_VOTING,3,1,Balance Scale,311,L,2,"['B', 'L']",L,True
+STANDARD_VOTING,3,1,Balance Scale,313,R,3,"['B', 'L', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,336,L,3,"['B', 'L']",L,True
+STANDARD_VOTING,3,1,Balance Scale,359,L,2,"['B', 'L']",L,True
+STANDARD_VOTING,3,1,Balance Scale,367,L,2,"['B', 'L']",L,True
+STANDARD_VOTING,3,1,Balance Scale,369,R,2,"['B', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,372,B,4,"['L', 'R']",R,False
+STANDARD_VOTING,3,1,Balance Scale,385,L,4,"['L', 'R']",L,True
+STANDARD_VOTING,3,1,Balance Scale,390,B,2,"['L', 'R']",L,False
+STANDARD_VOTING,3,1,Balance Scale,407,L,2,"['B', 'L']",B,False
+STANDARD_VOTING,3,1,Balance Scale,458,L,3,"['B', 'L', 'R']",L,True
+STANDARD_VOTING,3,1,Balance Scale,463,L,3,"['B', 'L', 'R']",R,False
+STANDARD_VOTING,3,1,Balance Scale,467,L,2,"['L', 'R']",L,True
+STANDARD_VOTING,3,1,Balance Scale,478,L,4,"['B', 'L']",L,True
+STANDARD_VOTING,3,1,Balance Scale,483,L,3,"['L', 'R']",L,True
+STANDARD_VOTING,3,1,Balance Scale,494,B,3,"['L', 'R']",R,False
+STANDARD_VOTING,3,1,Balance Scale,499,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,3,1,Balance Scale,552,L,5,"['B', 'L']",L,True
+STANDARD_VOTING,3,1,Balance Scale,557,L,4,"['B', 'L']",L,True
+STANDARD_VOTING,3,1,Balance Scale,563,L,2,"['B', 'R']",R,False
+STANDARD_VOTING,3,1,Balance Scale,578,L,4,"['B', 'L']",L,True
+STANDARD_VOTING,3,1,Balance Scale,594,B,2,"['L', 'R']",R,False
+STANDARD_VOTING,3,1,Balance Scale,613,L,2,"['L', 'R']",L,True
+STANDARD_VOTING,3,1,Balance Scale,624,B,2,"['L', 'R']",R,False
+STANDARD_VOTING,4,1,Balance Scale,1,R,2,"['L', 'R']",L,False
+STANDARD_VOTING,4,1,Balance Scale,20,R,4,"['B', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,27,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,29,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,31,R,2,"['B', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,37,R,5,"['L', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,53,R,2,"['L', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,54,R,2,"['L', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,58,R,2,"['L', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,59,R,2,"['L', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,65,R,2,"['L', 'R']",L,False
+STANDARD_VOTING,4,1,Balance Scale,70,R,4,"['B', 'L', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,77,L,2,"['L', 'R']",R,False
+STANDARD_VOTING,4,1,Balance Scale,78,B,3,"['L', 'R']",R,False
+STANDARD_VOTING,4,1,Balance Scale,102,L,3,"['B', 'L', 'R']",R,False
+STANDARD_VOTING,4,1,Balance Scale,106,L,3,"['B', 'R']",R,False
+STANDARD_VOTING,4,1,Balance Scale,108,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,129,R,4,"['L', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,131,R,2,"['B', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,145,R,3,"['B', 'L', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,160,L,4,"['L', 'R']",L,True
+STANDARD_VOTING,4,1,Balance Scale,170,R,3,"['L', 'R']",L,False
+STANDARD_VOTING,4,1,Balance Scale,177,L,5,"['B', 'L', 'R']",L,True
+STANDARD_VOTING,4,1,Balance Scale,183,R,2,"['L', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,201,L,6,"['B', 'L']",L,True
+STANDARD_VOTING,4,1,Balance Scale,203,L,5,"['B', 'L', 'R']",L,True
+STANDARD_VOTING,4,1,Balance Scale,209,R,2,"['L', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,213,R,5,"['B', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,228,L,5,"['B', 'L', 'R']",L,True
+STANDARD_VOTING,4,1,Balance Scale,238,R,5,"['L', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,243,R,6,"['L', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,244,R,6,"['L', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,250,L,3,"['L', 'R']",L,True
+STANDARD_VOTING,4,1,Balance Scale,251,L,2,"['L', 'R']",L,True
+STANDARD_VOTING,4,1,Balance Scale,257,R,6,"['B', 'L', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,258,R,6,"['L', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,259,R,6,"['L', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,282,B,3,"['L', 'R']",R,False
+STANDARD_VOTING,4,1,Balance Scale,290,L,7,"['B', 'L', 'R']",L,True
+STANDARD_VOTING,4,1,Balance Scale,303,L,3,"['L', 'R']",L,True
+STANDARD_VOTING,4,1,Balance Scale,304,L,3,"['L', 'R']",L,True
+STANDARD_VOTING,4,1,Balance Scale,313,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,329,L,3,"['L', 'R']",L,True
+STANDARD_VOTING,4,1,Balance Scale,343,R,3,"['B', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,359,L,4,"['B', 'L', 'R']",L,True
+STANDARD_VOTING,4,1,Balance Scale,367,L,3,"['L', 'R']",L,True
+STANDARD_VOTING,4,1,Balance Scale,369,R,5,"['L', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,372,B,3,"['L', 'R']",R,False
+STANDARD_VOTING,4,1,Balance Scale,385,L,3,"['L', 'R']",R,False
+STANDARD_VOTING,4,1,Balance Scale,390,B,3,"['L', 'R']",R,False
+STANDARD_VOTING,4,1,Balance Scale,407,L,3,"['B', 'L', 'R']",R,False
+STANDARD_VOTING,4,1,Balance Scale,413,R,3,"['B', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,416,B,4,"['L', 'R']",R,False
+STANDARD_VOTING,4,1,Balance Scale,421,R,3,"['B', 'L', 'R']",L,False
+STANDARD_VOTING,4,1,Balance Scale,437,L,3,"['B', 'L', 'R']",L,True
+STANDARD_VOTING,4,1,Balance Scale,457,L,5,"['B', 'L']",L,True
+STANDARD_VOTING,4,1,Balance Scale,458,L,4,"['B', 'L']",L,True
+STANDARD_VOTING,4,1,Balance Scale,463,L,4,"['B', 'L', 'R']",R,False
+STANDARD_VOTING,4,1,Balance Scale,464,L,2,"['L', 'R']",R,False
+STANDARD_VOTING,4,1,Balance Scale,471,L,3,"['L', 'R']",L,True
+STANDARD_VOTING,4,1,Balance Scale,478,L,5,"['B', 'L']",L,True
+STANDARD_VOTING,4,1,Balance Scale,481,L,3,"['B', 'L']",L,True
+STANDARD_VOTING,4,1,Balance Scale,483,L,4,"['B', 'L']",L,True
+STANDARD_VOTING,4,1,Balance Scale,494,B,4,"['L', 'R']",L,False
+STANDARD_VOTING,4,1,Balance Scale,499,R,3,"['L', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,512,R,4,"['L', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,513,R,4,"['L', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,514,R,5,"['B', 'L', 'R']",R,True
+STANDARD_VOTING,4,1,Balance Scale,563,L,3,"['L', 'R']",L,True
+STANDARD_VOTING,4,1,Balance Scale,578,L,4,"['B', 'L']",L,True
+STANDARD_VOTING,4,1,Balance Scale,590,L,5,"['B', 'L']",L,True
+STANDARD_VOTING,4,1,Balance Scale,594,B,3,"['B', 'L', 'R']",L,False
+STANDARD_VOTING,4,1,Balance Scale,613,L,4,"['L', 'R']",L,True
+STANDARD_VOTING,4,1,Balance Scale,624,B,3,"['B', 'L', 'R']",R,False

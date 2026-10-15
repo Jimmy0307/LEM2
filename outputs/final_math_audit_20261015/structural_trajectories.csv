@@ -1,0 +1,16 @@
+dataset,metric,C2,C3,C4,C5,shape_C2_to_C5
+Hayes-Roth,reduct_instability,0.0,0.0,0.1666666666666666,0.0999999999999999,non-monotonic
+Hayes-Roth,rule_heterogeneity,0.8666666666666667,0.7469696969696971,0.75,0.7727605779153767,non-monotonic
+Hayes-Roth,pre_resolution_conflict_case_rate,0.1153846153846153,0.5384615384615384,0.3846153846153846,0.6538461538461539,non-monotonic
+Hayes-Roth,coverage,0.9230769230769232,1.0,1.0,1.0,non-decreasing
+Hayes-Roth,global_rule_count,30.0,28.0,29.0,33.0,non-monotonic
+Car Evaluation,reduct_instability,0.0,0.0,0.0,0.0,constant
+Car Evaluation,rule_heterogeneity,0.8586956521739131,0.8977490077490078,0.9071528841482928,0.931375373020812,non-decreasing
+Car Evaluation,pre_resolution_conflict_case_rate,0.245664739884393,0.3872832369942196,0.4884393063583815,0.6069364161849711,non-decreasing
+Car Evaluation,coverage,0.976878612716763,0.9826589595375722,0.9942196531791908,1.0,non-decreasing
+Car Evaluation,global_rule_count,184.0,207.0,223.0,226.0,non-decreasing
+Balance Scale,reduct_instability,0.0,0.0,0.0,0.0,constant
+Balance Scale,rule_heterogeneity,0.9665071770334928,0.945676496675343,0.9109724697959992,0.9260580104353088,non-monotonic
+Balance Scale,pre_resolution_conflict_case_rate,0.373015873015873,0.492063492063492,0.5873015873015873,0.6587301587301587,non-decreasing
+Balance Scale,coverage,0.9444444444444444,0.984126984126984,1.0,0.992063492063492,non-monotonic
+Balance Scale,global_rule_count,209.0,200.0,181.0,183.0,non-monotonic
