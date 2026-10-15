@@ -1,0 +1,1 @@
+Put your CSV / XLSX / XLS files in this folder, then double-click run.bat.

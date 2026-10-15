@@ -1,0 +1,11 @@
+# Preloaded UCI benchmarks from the earlier Rough Set / LEM2 experiments.
+# One item per line. UCI IDs are used directly to avoid DOI-resolution ambiguity.
+
+# Hayes-Roth — UCI ID 44 — DOI 10.24432/C5501T
+uci_id:44
+
+# Car Evaluation — UCI ID 19 — DOI 10.24432/C5JP48
+uci_id:19
+
+# Balance Scale — UCI ID 12 — DOI 10.24432/C5488X
+uci_id:12

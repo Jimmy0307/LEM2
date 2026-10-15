@@ -1,0 +1,6 @@
+# Exact top-level runtime pins validated against the V1 software interface. Transitive packages are recorded in run manifests after installation.
+numpy==2.3.5
+pandas==2.2.3
+openpyxl==3.1.5
+xlrd==2.0.2
+ucimlrepo==0.0.7

@@ -1,0 +1,9 @@
+{
+  "target": "class",
+  "continuous": ["age", "income"],
+  "categorical": ["department", "gender"],
+  "ordinal": {
+    "job_level": ["junior", "middle", "senior"]
+  },
+  "ignore": ["id", "name"]
+}
