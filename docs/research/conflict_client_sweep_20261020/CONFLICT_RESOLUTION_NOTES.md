@@ -1,8 +1,14 @@
-# Federated LEM2 的 Conflict 與 Resolution：從 A/B 衝突到最終決策
+# Federated LEM2 的 Conflict 與 Prediction Policies
 
-## 1. 最核心的問題：最後只能是 A 或 B
+> 本文件是組內與老師討論用的概念版。正式共同名稱採 **Prediction Policies（預測策略）**；「conflict resolution」描述它們在衝突情境中的功能，不把四種方法統稱為四個 resolver 演算法。
+>
+> Frozen production baseline：`main @ 31b078bb78c6754d04c56a2e1cc849c8feb221d7`
 
-假設兩個 client 各自學到：
+---
+
+## 1. 問題：最後仍必須輸出單一 decision
+
+假設不同 clients 學到：
 
 \[
 r_1:X\rightarrow A
@@ -12,44 +18,23 @@ r_1:X\rightarrow A
 r_2:X\rightarrow B
 \]
 
-條件相同：
+若同一筆測試資料同時符合兩條規則，最後 prediction 仍必須是單一 class：
 
 \[
-Ante(r_1)=Ante(r_2)=X
+\hat y(x)\in\{A,B\}
 \]
 
-但 decision 不同：
+因此研究問題不是「把 A 與 B 合在一起」，而是：
 
-\[
-Decision(r_1)\neq Decision(r_2)
-\]
+> 當 competing rule evidence 同時存在時，Prediction Policy 要根據什麼 evidence 產生唯一決策？
 
-這就是最直觀的 conflict。
-
-系統最後不可能輸出 \(A+B\)，最終仍必須輸出：
-
-\[
-A\quad\text{or}\quad B
-\]
-
-真正的問題因此是：
-
-> 當 A、B 都有規則證據時，要根據什麼 evidence 決定最後相信哪一邊？
+Rule-conflict literature 一般把「兩條以上 rules cover 同一 example，但 predict different classes」視為衝突情境；本研究以這個 prediction-time 定義作主要 conflict object（Lindgren, 2004；Lindgren & Boström, 2002）。
 
 ---
 
-## 2. 為什麼不能在 UNION 時直接刪 A 或 B？
+## 2. Aggregation 與 Conflict Handling 必須分開
 
-如果 aggregation 只把 antecedent 當 rule identity：
-
-```text
-Client 1: X → A
-Client 2: X → B
-```
-
-看到 X 重複後直接只留其中一條，就會把 conflict 藏掉。
-
-所以 frozen baseline 的完整 rule identity 是：
+Frozen implementation 的完整 rule identity 是：
 
 \[
 key(r)=(Ante(r),Decision(r))
@@ -61,94 +46,89 @@ key(r)=(Ante(r),Decision(r))
 X\rightarrow A
 \]
 
-和：
+與：
 
 \[
 X\rightarrow B
 \]
 
-是兩條不同完整規則，兩條都保留。
+是兩條不同完整規則，不會因 antecedent 相同而互相覆蓋。
 
-Aggregation 只回答「哪些 rules 進 global rule set」，不負責決定 A/B winner。
-
----
-
-## 3. Conflict Detection 與 Resolution 分開
-
-### Conflict Detection
-
-先問：
-
-> 現在是不是同一筆 test case 同時有不同 decision evidence？
-
-對 test case \(x\)：
+Federated aggregation 採 UNION：
 
 \[
-M(x)=\{r\in R_G:x\models Ante(r)\}
+R_G=\bigcup_{c=1}^{C}R_c
 \]
 
-若：
+此步驟只回答「哪些 local rules 進入 global ruleset」，不負責決定衝突時 A/B 誰勝出。Woźniak et al. (2026) 的 Federated LEM2 source paper 同樣以 local rules 的 union 建立 global rule set，再進行 inference。
 
-\[
-|\{d_r:r\in M(x)\}|>1
-\]
-
-就是 inference-level conflict。
-
-### Conflict Resolution
-
-再問：
-
-> 已知 A/B 都有人支持，最後要選誰？
-
-\[
-\{A,B\}
-\rightarrow
-Resolver
-\rightarrow
-A\text{ or }B
-\]
-
-因此正確順序是：
+因此流程應拆成：
 
 ```text
-Local Rules
+Local LEM2
     ↓
-Federated Aggregation
+Federated UNION Aggregation
     ↓
-Global Rules
+Global Rule Set
     ↓
 Conflict Detection
     ↓
-Conflict Resolution
+Prediction Policy
     ↓
 Single Prediction
 ```
 
 ---
 
-## 4. FIRST_MATCH：誰先出現就選誰
+## 3. 主要 Conflict 定義：prediction-time conflict set
 
-假設：
-
-```text
-r1: X → A
-r2: X → B
-```
-
-如果 `r1` 在前：
+對測試資料 \(x\)：
 
 \[
-\hat y=A
+M(x)=\{r\in R_G:x\models Ante(r)\}
 \]
 
-如果順序反過來：
+若 matching rules 的 decisions 不只一種：
 
 \[
-\hat y=B
+|\{d_r:r\in M(x)\}|>1
 \]
 
-數學上令：
+則 \(x\) 屬於 conflict set：
+
+\[
+\boxed{
+\mathcal C=\{x\in U_{test}:|\{d_r:r\in M(x)\}|>1\}
+}
+\]
+
+這個定義直接對應 overlapping/intersecting rules predicting different classes 的既有 rule-conflict 問題（Lindgren, 2004；Lindgren & Boström, 2002）。
+
+### Exact antecedent conflict
+
+如果：
+
+\[
+Ante(r_i)=Ante(r_j),\qquad d_i\neq d_j
+\]
+
+我們另外記錄為 exact-antecedent structural contradiction。
+
+它是 supplementary structural audit，不取代上面的 prediction-time conflict set；因為不同 antecedents 仍可能同時 cover 同一個 object。
+
+---
+
+# 4. Policy 1 — FIRST_MATCH
+
+Woźniak et al. (2026) 的 Federated LEM2 inference 採 first-match approach；global rule order 保留 client results / local rule order 的順序語意。
+
+令：
+
+\[
+R_G=(r_1,r_2,\ldots,r_m)
+\]
+
+第一條符合 \(x\) 的 rule：
 
 \[
 k^*(x)=\min\{k:x\models Ante(r_k)\}
@@ -157,66 +137,64 @@ k^*(x)=\min\{k:x\models Ante(r_k)\}
 則：
 
 \[
-\hat y=d_{r_{k^*(x)}}
+\boxed{
+\hat y_{FM}(x)=d_{r_{k^*(x)}}
+}
 \]
 
-它沒有比較 A/B evidence 強弱，只使用 rule order。
+它使用的 evidence 是：
+
+\[
+\boxed{Rule\ Order}
+\]
 
 因此：
 
 \[
-Client\ Order
-\rightarrow
-Rule\ Order
-\rightarrow
-Prediction
+Client\ Order\rightarrow Global\ Rule\ Order\rightarrow Prediction
 \]
 
-這就是 order sensitivity。
+FIRST_MATCH 不是 voting method。
+
+**來源**：Woźniak, Sousa, & Śnieżyński (2026), *Rule-Based Federated Learning for Healthcare*. DOI `10.1007/978-3-032-29921-5_38`.
 
 ---
 
-## 5. SIMPLE_VOTING：哪一邊 matching rules 比較多
+# 5. Policy 2 — SIMPLE_VOTING
 
-假設：
-
-```text
-r1 → A
-r2 → A
-r3 → A
-r4 → B
-r5 → B
-```
-
-則：
+對 decision \(d\)：
 
 \[
-Score(A)=3,
-\qquad
-Score(B)=2
+M_d(x)=\{r\in M(x):d_r=d\}
 \]
 
-所以選 A。
-
-公式：
+Simple Voting：
 
 \[
-Score_{SV}(d|x)=|M_d(x)|
+\boxed{
+S_{SV}(d|x)=|M_d(x)|
+}
 \]
 
-每條 rule 都只有一票，因此：
+每一條 matching rule 一票，不考慮 rule support 大小。
 
-> 很強的 rule = 1 票；很弱的 rule = 1 票。
+它使用的 evidence 是：
+
+\[
+\boxed{Matching\ Rule\ Count}
+\]
+
+RSES rule-classification literature 將 Simple Voting 描述為 matching rules 對 consequent decision 投等權票（Lazo-Cortés et al., 2020）。
+
+**來源**：Lazo-Cortés et al. (2020), *Towards Selecting Reducts for Building Decision Rules for Rule-Based Classifiers*. DOI `10.1007/978-3-030-49076-8_7`.
 
 ---
 
-## 6. STANDARD_VOTING：看 pooled positive rule support
+# 6. Policy 3 — STANDARD_VOTING
 
-這裡要以 **final mathematical audit 後的 federated pipeline** 為準。
+Standard Voting 使用 rule support 作為權重。
 
-對每一條 global rule \(r\)，不是只看產生它的 client，而是把它重新放到所有 clients 的 training data 上評估。
-
-對 client \(c\)：
+在 frozen federated implementation 中，對每條 global rule \(r\)，會在 **所有 clients** 上重新估計 decision-consistent positive support：
 
 \[
 Supp_c(r)
@@ -224,182 +202,134 @@ Supp_c(r)
 \{z\in U_c:z\models Ante(r)\land D(z)=d_r\}
 \]
 
-只有：
-
-1. antecedent 命中；且
-2. object 真實 decision 等於 rule decision
-
-才算 positive support。
-
-所有 clients 合起來：
+合併所有 clients：
 
 \[
-w(r)=Supp_G(r)
-=\sum_{c=1}^{C}|Supp_c(r)|
+S_G(r)=\bigsqcup_{c=1}^{C}Supp_c(r)
 \]
 
-然後：
+rule weight：
 
 \[
-Score_{STD}(d|x)
-=
-\sum_{r\in M_d(x)}w(r)
-\]
-
-例如：
-
-```text
-r1: X → A   positive support = 100
-r2: Y → A   positive support = 50
-r3: Z → B   positive support = 120
-```
-
-則：
-
-\[
-Score(A)=100+50=150
-\]
-
-\[
-Score(B)=120
-\]
-
-所以 STANDARD_VOTING 選 A。
-
-它回答的是：
-
-> 支持 A/B 的 matching rules，累積起來各自有多少正向 training evidence？
-
-### 重要限制
-
-如果同一個 training object 同時支持 r1 與 r2，它會存在兩個 rule weights 中。
-
-因此在：
-
-\[
-w(r_1)+w(r_2)
-\]
-
-裡可能被計兩次。
-
----
-
-## 7. GLOBAL_STRENGTH：先去除重複 object，再看 class coverage
-
-GLOBAL_STRENGTH 不直接把各 rule support 相加。
-
-假設 A 有：
-
-\[
-r_1,r_2,r_3
-\]
-
-先做：
-
-\[
-S_A(x)
-=
-Supp(r_1)\cup Supp(r_2)\cup Supp(r_3)
-\]
-
-所以同一 training object 即使同時被三條 A rules 支持，也只算一次。
-
-接著除以整個 A class 大小：
-
-\[
-GS(A|x)=\frac{|S_A(x)|}{|Class_A|}
-\]
-
-B 同樣：
-
-\[
-GS(B|x)=\frac{|S_B(x)|}{|Class_B|}
+\boxed{w_F(r)=|S_G(r)|}
 \]
 
 最後：
 
 \[
-\hat y=\arg\max_dGS(d|x)
+\boxed{
+S_{STD}(d|x)=\sum_{r\in M_d(x)}w_F(r)
+}
 \]
 
-所以它真正問的是：
+它使用的 evidence 是：
 
-> 目前這群 matching rules 合起來，可以覆蓋這個 decision class 多少比例？
+\[
+\boxed{Rule\ Support\ Sum}
+\]
+
+### 與原文的關係
+
+RSES Standard Voting 的既有原理是 support-weighted rule voting；本研究將 weight 的 evidence scope 擴展為 federated pooled、decision-consistent positive support。因此不能寫成「Lazo-Cortés et al. 已提出本研究的 federated support 定義」。
+
+同一 training object 若同時支持多條 matching rules，可能在多個 rule weights 中重複貢獻。
+
+**來源**：Lazo-Cortés et al. (2020). DOI `10.1007/978-3-030-49076-8_7`.
 
 ---
 
-## 8. STANDARD 與 GLOBAL 最容易混淆的地方
+# 7. Policy 4 — GLOBAL_STRENGTH
+
+Bazan et al. (2000) 的 GlobalStrength 核心不是把 rule supports 直接相加，而是先對 matching rules 所 cover 的 class-consistent objects 做 set union，再除以 decision class size。
+
+本研究的 federated 版本：
+
+\[
+S_d(x)=\bigcup_{r\in M_d(x)}S_G(r)
+\]
+
+令：
+
+\[
+N_d=|\{z\in U_{train}:D(z)=d\}|
+\]
+
+則：
+
+\[
+\boxed{
+GS(d|x)=\frac{|S_d(x)|}{N_d}
+}
+\]
+
+它使用的 evidence 是：
+
+\[
+\boxed{Unique\ Class\ Coverage\ Ratio}
+\]
+
+相同 object 同時被多條同 decision rules cover 時，在 union 中只計一次。
+
+**來源**：Bazan, Nguyen, Nguyen, Synak, & Wróblewski (2000), *Rough Set Algorithms in Classification Problem*, GlobalStrength Eq. (23). DOI `10.1007/978-3-7908-1840-6_3`.
+
+---
+
+# 8. STANDARD 與 GLOBAL 的差異
 
 假設兩條 A rules：
 
 \[
-w(r_1)=100,
-\qquad
-w(r_2)=50
+w(r_1)=100,\qquad w(r_2)=50
 \]
 
-STANDARD 直接加：
+STANDARD：
 
 \[
-Score_{STD}(A)=100+50=150
+S_{STD}(A)=100+50=150
 \]
 
-但如果兩條 rules 大量 cover 同一批 objects，實際 unique support 只有：
+若兩條 rules 的支持 objects 大量重疊：
 
 \[
-|Supp(r_1)\cup Supp(r_2)|=110
+|S_G(r_1)\cup S_G(r_2)|=110
 \]
 
-GLOBAL_STRENGTH 使用的是 110，不是 150。
-
-如果：
+且：
 
 \[
-|Class_A|=500
+N_A=500
 \]
 
-則：
+則 GLOBAL：
 
 \[
 GS(A)=110/500=0.22
 \]
 
-假設 B：
+所以：
 
 \[
-|Supp(r_3)|=120,
-\qquad
-|Class_B|=200
+\boxed{STANDARD=Rule\ Support\ Sum}
 \]
-
-則：
 
 \[
-GS(B)=120/200=0.60
+\boxed{GLOBAL=Unique\ Class\ Coverage\ Ratio}
 \]
 
-因此可能出現：
-
-```text
-SIMPLE → A
-STANDARD → A
-GLOBAL_STRENGTH → B
-```
-
-這不是矛盾，而是三個方法回答的問題不同。
+兩者得到不同 prediction 是方法定義造成的正常結果。
 
 ---
 
-## 9. 四種 resolver 一次看懂
+# 9. 四種 Prediction Policies 一次看懂
 
-| Resolver | 真正問的問題 | Evidence |
-|---|---|---|
-| FIRST_MATCH | 誰先出現？ | Rule order |
-| SIMPLE_VOTING | 哪邊 matching rules 比較多？ | Rule count |
-| STANDARD_VOTING | 哪邊累積 positive rule support 比較大？ | Sum of pooled positive rule support |
-| GLOBAL_STRENGTH | 哪邊的 matching-rule coalition 覆蓋自己 class 的比例比較高？ | Unique support-object union / class size |
+| Prediction Policy | 核心問題 | Evidence | 主要來源 |
+|---|---|---|---|
+| `FIRST_MATCH` | 誰先 match？ | Rule order | Woźniak et al. (2026) |
+| `SIMPLE_VOTING` | 哪個 decision 的 matching rules 多？ | Rule count | Lazo-Cortés et al. (2020) / RSES |
+| `STANDARD_VOTING` | 哪個 decision 的 weighted rule evidence 大？ | Federated pooled positive support sum | Lazo-Cortés et al. (2020) 原理 + 本研究 adaptation |
+| `GLOBAL_STRENGTH` | 哪個 decision 的 unique class coverage 高？ | Unique support-object union / class size | Bazan et al. (2000) |
 
-可以壓成：
+最簡單記法：
 
 \[
 \boxed{
@@ -415,7 +345,7 @@ Unique\ Class\ Coverage\ Ratio
 
 ---
 
-## 10. Tie 與沒有 rule match 時怎麼辦
+# 10. Tie 與 no-match semantics
 
 如果：
 
@@ -423,89 +353,82 @@ Unique\ Class\ Coverage\ Ratio
 M(x)=\emptyset
 \]
 
-四種 policy 都使用 default class。
+使用 pooled-majority default class。
 
 對 SIMPLE / STANDARD / GLOBAL，如果最高 score tie：
 
-1. default class 在 winners 裡就選 default；
-2. 否則選字串排序最小的 winner。
+1. default class 位於 winners 中 → 選 default class；
+2. 否則 → 選字串排序最小的 winner。
 
-所以 resolver 的完整數學不能只寫 `argmax`，tie rule 也是 implementation semantics 的一部分。
+因此 implementation semantics 不只是 `argmax`，tie rule 也必須固定。
 
----
-
-## 11. 我們目前到底解決了什麼？
-
-不是宣稱已經找到永遠正確的 resolver。
-
-我們已經把問題拆成：
-
-\[
-Conflict\ Detection
-\rightarrow
-Conflict\ Resolution
-\rightarrow
-Evaluation
-\]
-
-並且可以在同一 frozen global rule artifact 上比較四種 resolver。
-
-目前 frozen UCI3 結果：
-
-- Hayes-Roth：FIRST_MATCH 最好或並列最好；
-- Car Evaluation：GLOBAL_STRENGTH 最好；
-- Balance Scale：C=2–4 STANDARD_VOTING 最好，C=5 GLOBAL_STRENGTH 最好。
-
-因此不能宣稱某個 fixed resolver 是 universal best。
-
-目前較合理的研究式為：
-
-\[
-Best\ Resolver
-=
-f(Dataset,Rule\ Structure,Conflict\ Workload,Client\ Configuration)
-\]
-
----
-
-## 12. 下一個真正值得研究的問題
-
-現在我們已經知道怎麼：
+Production implementation：
 
 ```text
-找到 conflict
-↓
-整理 A/B evidence
-↓
-用四種固定 resolver 做決策
-↓
-量化 outcome
+roughset/evaluation.py::predict_with_policy
+roughset/evaluation.py::_resolve_vote
 ```
-
-所以下一步才是：
-
-> 能不能根據當下的 conflict structure、rule support、provenance、class distribution，自動決定這一次應該相信哪一種 evidence？
-
-也就是從：
-
-\[
-Fixed\ Resolver
-\]
-
-走向：
-
-\[
-Adaptive\ Resolver
-\]
-
-但在提出新 resolver 前，四種 frozen baseline 必須先作為共同 comparator。
 
 ---
 
-## 13. 老師問「你們 conflict 到底怎麼處理？」
+# 11. 評量方式
 
-一句話回答：
+正式主要評量不再使用專案自創名稱 `CRA / CCR / OSR / H_rule` 作理論核心。
 
-> 我們不在 aggregation 階段把衝突規則刪掉，而是先保留完整 rules；當同一個 test case 同時命中不同 decision 的規則後，才進入 resolver。目前比較 FIRST_MATCH、規則數投票、pooled positive support 加權，以及 unique class coverage strength。四者最後都只輸出一個 decision，但使用的 evidence 定義不同。
+使用：
 
-完整數學架構見：`modules/08_MATHEMATICAL_ARCHITECTURE.md`。
+- Balanced Accuracy — Woźniak et al. (2026); Brodersen et al. (2010).
+- Macro-F1 — Sokolova & Lapalme (2009).
+- Coverage / Ruleset Size / Conditions per Rule / Pairwise Jaccard — Woźniak et al. (2026).
+- Conflict-set count / proportion — Lindgren-style conflict set 的描述統計。
+- \(BA_{\mathcal C}\) / \(MacroF1_{\mathcal C}\) — 標準分類指標 restricted to conflict set。
+- Variation Ratio — client-order categorical disagreement；Gal (2016), Eq. (3.19), citing Freeman (1965).
+- repeated experiments 完成後：Friedman + post-hoc / paired Wilcoxon；Demšar (2006)，並與 Healthcare source paper 的 paired Wilcoxon 設計對齊。
+
+完整公式、涵義與 code mapping：
+
+`TEAM_EVALUATION_METRICS_ESTABLISHED.md`
+
+---
+
+# 12. Frozen empirical result 的正確說法
+
+目前 frozen UCI3 單一 holdout/seed 結果顯示：
+
+- Hayes-Roth：nominal FIRST_MATCH 最好或並列最好，但對 client order 高度敏感；
+- Car Evaluation：GLOBAL_STRENGTH 的 Balanced Accuracy 在 C=2–5 都最高；
+- Balance Scale：C=2–4 STANDARD_VOTING 較高，C=5 GLOBAL_STRENGTH 較高。
+
+因此目前安全結論是：
+
+\[
+\boxed{
+Policy^*=f(Dataset,Rule\ Structure,Conflict\ Workload,Client\ Configuration)
+}
+\]
+
+不能宣稱存在 universal best policy。
+
+這一批仍是 mechanism baseline；publication-level superiority 需要 repeated splits/seeds 與正式 statistical comparison。
+
+---
+
+# 13. 老師問「你們 conflict 到底怎麼處理？」
+
+可以直接回答：
+
+> 我們不在 federated aggregation 階段刪除 competing rules，而是以 antecedent + decision 保留完整 rule identity。當同一 test case 同時被不同 decision rules cover 時，依既有 rule-conflict 定義形成 conflict set，再比較四種 Prediction Policies：FIRST_MATCH、Simple Voting、Standard Voting 與 Global Strength。四者使用的 evidence 分別是 rule order、matching-rule count、pooled positive rule-support sum，以及 unique class-coverage ratio。
+
+---
+
+# References
+
+- Bazan, J. G., Nguyen, H. S., Nguyen, S. H., Synak, P., & Wróblewski, J. (2000). *Rough Set Algorithms in Classification Problem*. https://doi.org/10.1007/978-3-7908-1840-6_3
+- Brodersen, K. H., Ong, C. S., Stephan, K. E., & Buhmann, J. M. (2010). *The Balanced Accuracy and Its Posterior Distribution*. https://doi.org/10.1109/ICPR.2010.764
+- Demšar, J. (2006). *Statistical Comparisons of Classifiers over Multiple Data Sets*. Journal of Machine Learning Research, 7, 1–30.
+- Gal, Y. (2016). *Uncertainty in Deep Learning*. PhD thesis, University of Cambridge, §3.3.1, Eq. (3.19).
+- Lazo-Cortés, M. S., Martínez-Trinidad, J. F., Carrasco-Ochoa, J. A., & Almanza-Ortega, N. N. (2020). *Towards Selecting Reducts for Building Decision Rules for Rule-Based Classifiers*. https://doi.org/10.1007/978-3-030-49076-8_7
+- Lindgren, T. (2004). *Methods for Rule Conflict Resolution*. https://doi.org/10.1007/978-3-540-30115-8_26
+- Lindgren, T., & Boström, H. (2002). *Classification with Intersecting Rules*. https://doi.org/10.1007/3-540-36169-3_31
+- Sokolova, M., & Lapalme, G. (2009). *A systematic analysis of performance measures for classification tasks*. https://doi.org/10.1016/j.ipm.2009.03.002
+- Woźniak, K., Sousa, J., & Śnieżyński, B. (2026). *Rule-Based Federated Learning for Healthcare*. https://doi.org/10.1007/978-3-032-29921-5_38
