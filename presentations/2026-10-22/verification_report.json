@@ -1,0 +1,11 @@
+{
+  "slides": 15,
+  "aspect_ratio": "16:9",
+  "embedded_notes": 15,
+  "balanced_accuracy_values_verified": 48,
+  "pdf_pages": 15,
+  "source_checksums": "all passed",
+  "geometry": "all slide objects and PDF text within page bounds",
+  "rendering": "all slides rendered; contact sheet inspected; system/conflict/detail charts inspected",
+  "research_status": "frozen evidence transcribed; no new UCI training or GitHub state verification"
+}
