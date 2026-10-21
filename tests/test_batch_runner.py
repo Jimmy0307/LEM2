@@ -63,6 +63,12 @@ def test_policy_matrix_runs_each_policy_into_separate_output_folder(tmp_path):
     summary = pd.read_csv(root / "batch_summary.csv")
     assert set(summary["prediction_policy"]) == {"FIRST_MATCH", "SIMPLE_VOTING"}
     assert len(summary) == 2
+    assert {"mean_variation_ratio", "mean_variation_ratio_conflict"} <= set(summary.columns)
+
+    first_match = summary.loc[summary["prediction_policy"] == "FIRST_MATCH"].iloc[0]
+    simple = summary.loc[summary["prediction_policy"] == "SIMPLE_VOTING"].iloc[0]
+    assert 0.0 <= float(first_match["mean_variation_ratio"]) <= 1.0
+    assert float(simple["mean_variation_ratio"]) == 0.0
     assert result["run_id"] == "TEST_RUN"
     assert Path(result["root_output"]) == root
 
