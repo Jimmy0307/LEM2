@@ -11,6 +11,7 @@ import numpy as np
 
 from .app import run_application, _write_dataset_output, _summary, _aggregate_cv
 from .environment import environment_manifest
+from .established_metrics import audit_order_variation_ratio
 
 
 SUPPORTED_POLICIES = (
@@ -45,7 +46,7 @@ def run_policy_matrix(
     run_id: str | None = None,
     fetcher=None,
 ) -> dict[str, Any]:
-    """Build structural artifacts once, then evaluate each resolver on those artifacts."""
+    """Build structural artifacts once, then evaluate each prediction policy."""
     base_config = deepcopy(dict(config))
     selected = _normalized_policies(base_config, policies)
     actual_run_id = run_id or datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -206,6 +207,32 @@ def run_policy_matrix(
                 evaluated = policy_result.get(policy, {})
                 central = evaluated.get("centralized") or {}
                 fed = evaluated.get("federated") or {}
+
+                if fed and artifact.local_rules:
+                    if policy == "FIRST_MATCH":
+                        variation = audit_order_variation_ratio(
+                            test=artifact.test,
+                            local_rules=artifact.local_rules,
+                            default_class=artifact.default_class,
+                            prediction_policy=policy,
+                            rule_weights=artifact.global_rule_weights,
+                            rule_support_sets=artifact.global_rule_support_sets,
+                            class_sizes=artifact.global_class_sizes,
+                            conflict_case_flags=artifact.pre_resolution_conflict_flags,
+                            max_permutations=artifact.order_sensitivity_max_permutations,
+                            seed=artifact.seed,
+                        )
+                        fed.update(variation)
+                    else:
+                        fed.update(
+                            {
+                                "variation_ratio_by_case": tuple(),
+                                "mean_variation_ratio": 0.0,
+                                "mean_variation_ratio_conflict": 0.0,
+                                "variation_ratio_orderings_checked": 0,
+                            }
+                        )
+
                 policy_fed_rows.append(fed)
                 case_table=fed.get("conflict_cases_table")
                 if isinstance(case_table,pd.DataFrame):
@@ -233,6 +260,8 @@ def run_policy_matrix(
                         "order_invariant_by_design": fed.get("order_invariant_by_design"),
                         "order_sensitivity_status": fed.get("order_sensitivity_status"),
                         "order_sensitivity_rate": fed.get("order_sensitivity_rate"),
+                        "mean_variation_ratio": fed.get("mean_variation_ratio"),
+                        "mean_variation_ratio_conflict": fed.get("mean_variation_ratio_conflict"),
                         "order_balanced_accuracy_mean": fed.get("order_balanced_accuracy_mean"),
                         "order_balanced_accuracy_std": fed.get("order_balanced_accuracy_std"),
                         "order_balanced_accuracy_min": fed.get("order_balanced_accuracy_min"),
@@ -310,6 +339,14 @@ def run_policy_matrix(
                         "policy": policy,
                         "order_invariant_by_design": policy != "FIRST_MATCH",
                         "coverage_is_structural_and_shared": True,
+                        "primary_evaluation_metrics": [
+                            "balanced_accuracy",
+                            "macro_f1",
+                            "coverage",
+                            "conflict_balanced_accuracy",
+                            "conflict_macro_f1",
+                            "mean_variation_ratio",
+                        ],
                     },
                     ensure_ascii=False,
                     indent=2,
@@ -405,6 +442,23 @@ def run_policy_matrix(
         "reduct_selection_policy": "lexicographic_first_among_minimum_cardinality",
         "record_all_candidates": bool(base_config.get("reduct", {}).get("record_all_candidates", True)),
         "structural_artifacts_built_once_and_reused": True,
+        "primary_evaluation_metrics": [
+            "balanced_accuracy",
+            "macro_f1",
+            "coverage",
+            "ruleset_size",
+            "mean_conditions_per_rule",
+            "pairwise_antecedent_jaccard",
+            "conflict_set_count_and_proportion",
+            "conflict_balanced_accuracy",
+            "conflict_macro_f1",
+            "mean_variation_ratio",
+        ],
+        "legacy_project_metrics_are_supplementary": [
+            "conflict_resolution_accuracy",
+            "order_sensitivity_rate",
+            "rule_heterogeneity",
+        ],
     }
     (root_output / "batch_manifest.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2, default=str),
