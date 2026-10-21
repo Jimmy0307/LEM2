@@ -45,3 +45,9 @@ Legacy project-specific fields such as `conflict_resolution_accuracy`, `order_se
 - Variation Ratio: Gal (2016), §3.3.1, Eq. (3.19), citing Freeman (1965).
 
 Teacher-facing overview: `docs/research/conflict_client_sweep_20261020/FINAL_TEACHER_HANDOFF.md`.
+
+## Verification boundary
+
+The research branch CI verifies the Python software path with Python 3.12, `compileall`, and the full pytest suite, including the all-policy batch-output contract and separated-policy parity checks.
+
+This does not mean a native Windows desktop has physically double-clicked `run.bat`; CMD-specific smoke testing remains environment-specific. The launcher itself stays unchanged because the metric synchronization occurs in the Python batch/reporting layer it invokes.
