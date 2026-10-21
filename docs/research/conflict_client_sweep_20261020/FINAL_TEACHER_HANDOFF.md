@@ -75,7 +75,7 @@ reference/policies/
 roughset/evaluation.py::predict_with_policy
 ```
 
-以避免 production semantics 分叉。
+以避免 production semantics 分叉。`tests/test_reference_policy_examples.py` 逐一把四支 reference implementation 與 frozen runtime 做 parity check。
 
 ---
 
@@ -120,6 +120,8 @@ Exact same-antecedent / different-decision conflict 只保留作 supplementary s
 
 完整公式 × 涵義 × code × citation：`TEAM_EVALUATION_METRICS_ESTABLISHED.md`。
 
+文獻與「既有方法 / established theory / federated adaptation / empirical observation」的引用邊界：`LITERATURE_REFERENCE_INDEX.md`。
+
 ---
 
 ## 5. 軟體入口
@@ -159,14 +161,27 @@ prediction_policies =
   GLOBAL_STRENGTH
 ```
 
-Variation Ratio 已由 `roughset/established_metrics.py` 實作，正式 batch output 應輸出：
+Variation Ratio 已由 `roughset/established_metrics.py` 實作，並接入 `roughset.batch.run_policy_matrix()` 的正式 combined output：
 
 ```text
 mean_variation_ratio
 mean_variation_ratio_conflict
 ```
 
-因此 `.bat` 本身不需要增加新 command；同步點在 `batch.py` 的輸出 schema。
+因此 `.bat` command 本身不需改；同步點位於它所呼叫的 Python batch pipeline。
+
+### 驗證界線
+
+目前 fresh GitHub Actions 使用 Python 3.12 驗證：
+
+```text
+python -m compileall -q roughset main.py
+python -m pytest -q
+```
+
+並驗證 batch runner 的 all-policy output schema 與 separated-policy parity tests。
+
+GitHub Actions 是 Linux runner，所以這證明 Python/software call chain 與輸出已同步；它不等同於實際在 Windows 桌面上雙擊 `.bat`。Windows CMD-specific smoke test 仍屬環境層驗證，不影響目前 Python pipeline 的數學與輸出 contract。
 
 ---
 
@@ -225,9 +240,10 @@ multiple random splits / seeds
 2. `TEAM_DISCUSSION_PREDICTION_POLICIES_AND_CONFLICT.md` — 四種方法 + conflict。
 3. `TEAM_EVALUATION_METRICS_ESTABLISHED.md` — 評量公式、涵義、code、citation。
 4. `CONFLICT_RESOLUTION_NOTES.md` — conflict → prediction policy 的數學說明。
-5. `LITERATURE_REFERENCE_INDEX.md` — 文獻索引。
+5. `LITERATURE_REFERENCE_INDEX.md` — 文獻索引與 citation boundary。
 6. `modules/00`–`08` — 每個 pipeline layer 的拆解。
 7. `reference/policies/` — 四支分開 teaching/reference code。
+8. `ALL_POLICIES_RUN.md` — `.bat` / all-policy software使用與輸出說明。
 
 ---
 
