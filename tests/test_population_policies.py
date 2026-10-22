@@ -5,7 +5,12 @@ import math
 import pandas as pd
 
 from roughset.core import Rule
-from roughset.evaluation import evaluate_rule_model, predict_with_policy
+from roughset.evaluation import (
+    evaluate_rule_model,
+    population_support_summary,
+    predict_with_policy,
+    target_coverage_by_class,
+)
 
 
 def _conflict_example():
@@ -23,6 +28,21 @@ def _conflict_example():
     weights = {key: float(len(values)) for key, values in supports.items()}
     class_sizes = {"A": 4, "B": 6}
     return row, rules, weights, supports, class_sizes
+
+
+def test_population_ratio_matches_meeting_example_four_unique_over_six_occurrences():
+    row, rules, _weights, supports, class_sizes = _conflict_example()
+    matching_a_rules = rules[:2]
+    summary = population_support_summary(
+        matching_a_rules,
+        supports,
+        class_sizes=class_sizes,
+    )["A"]
+
+    assert summary["total_support_occurrences"] == 6.0
+    assert summary["unique_population"] == 4.0
+    assert summary["redundant_occurrences"] == 2.0
+    assert math.isclose(summary["population_nonredundancy_ratio"], 2.0 / 3.0)
 
 
 def test_population_standard_deduplicates_repeated_support_population():
@@ -81,7 +101,7 @@ def test_population_global_applies_same_redundancy_correction_to_global_strength
     assert population_global == "B"
 
 
-def test_holdout_metrics_report_overall_and_per_target_coverage_and_recall():
+def test_holdout_coverage_helpers_report_overall_and_per_target_coverage():
     test = pd.DataFrame(
         {
             "A": ["1", "0", "1", "0"],
@@ -101,9 +121,11 @@ def test_holdout_metrics_report_overall_and_per_target_coverage_and_recall():
         target="D",
         prediction_policy="FIRST_MATCH",
     )
+    target_coverage = target_coverage_by_class(test["D"], metrics["matched_rules"])
 
-    assert math.isclose(metrics["overall_coverage"], 0.75)
-    assert metrics["target_coverage_by_class"] == {"N": 1.0, "Y": 0.5}
-    assert math.isclose(metrics["target_coverage_macro"], 0.75)
-    assert math.isclose(metrics["recall_macro"], 0.5)
-    assert math.isclose(metrics["recall_macro"], metrics["balanced_accuracy"])
+    # Keep evaluate_rule_model itself frozen; the new reporting layer aliases
+    # its existing coverage as overall_coverage and adds per-target coverage.
+    assert math.isclose(metrics["coverage"], 0.75)
+    assert target_coverage == {"N": 1.0, "Y": 0.5}
+    assert math.isclose(sum(target_coverage.values()) / len(target_coverage), 0.75)
+    assert math.isclose(metrics["balanced_accuracy"], 0.5)
