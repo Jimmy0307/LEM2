@@ -77,7 +77,14 @@ def validate_config(config: Mapping[str, Any]) -> Dict[str, Any]:
     if emode not in {"HOLDOUT", "K_FOLD_CV"}:
         raise ValueError("evaluation.mode must be HOLDOUT or K_FOLD_CV.")
     policy = str(cfg["experiment"]["prediction_policy"]).upper()
-    if policy not in {"FIRST_MATCH", "SIMPLE_VOTING", "STANDARD_VOTING", "GLOBAL_STRENGTH"}:
+    if policy not in {
+        "FIRST_MATCH",
+        "SIMPLE_VOTING",
+        "STANDARD_VOTING",
+        "GLOBAL_STRENGTH",
+        "POPULATION_STANDARD",
+        "POPULATION_GLOBAL",
+    }:
         raise ValueError("Unsupported prediction policy.")
     if not (cfg["experiment"]["run_centralized"] or cfg["experiment"]["run_federated"]):
         raise ValueError("Enable at least one of run_centralized/run_federated.")

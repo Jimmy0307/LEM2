@@ -509,27 +509,15 @@ def evaluate_rule_model(
         class_sizes=class_sizes,
     )
 
-    overall_coverage = float(np.mean([len(x) > 0 for x in matched])) if len(test) else 0.0
-    target_coverage = target_coverage_by_class(test[target], matched)
-    target_coverage_values = [value for value in target_coverage.values() if np.isfinite(value)]
-    target_coverage_macro = (
-        float(np.mean(target_coverage_values)) if target_coverage_values else float("nan")
-    )
-
     return {
         "accuracy": classification_accuracy(test[target], preds),
         "balanced_accuracy": balanced_accuracy(test[target], preds),
-        "recall_macro": macro_recall_score(test[target], preds),
         "macro_f1": macro_f1_score(test[target], preds),
-        "coverage": overall_coverage,
-        "overall_coverage": overall_coverage,
-        "target_coverage_by_class": target_coverage,
-        "target_coverage_macro": target_coverage_macro,
+        "coverage": float(np.mean([len(x) > 0 for x in matched])) if len(test) else 0.0,
         "predictions": preds,
         "matched_rules": matched,
         "prediction_policy": str(prediction_policy).strip().upper(),
     }
-
 
 def run_centralized(
     train: pd.DataFrame,

@@ -19,6 +19,8 @@ SUPPORTED_POLICIES = (
     "SIMPLE_VOTING",
     "STANDARD_VOTING",
     "GLOBAL_STRENGTH",
+    "POPULATION_STANDARD",
+    "POPULATION_GLOBAL",
 )
 
 
@@ -243,13 +245,31 @@ def run_policy_matrix(
                 resolver_rows.append(
                     {
                         "dataset": artifact.dataset,
+                        "dataset_rows": len(artifact.train) + len(artifact.test),
+                        "dataset_columns": len(artifact.condition_columns) + 1,
+                        "condition_attribute_count": len(artifact.condition_columns),
+                        "target_column": artifact.target,
+                        "class_count": len(
+                            set(artifact.train[artifact.target].astype(str).tolist())
+                            | set(artifact.test[artifact.target].astype(str).tolist())
+                        ),
+                        "train_rows": len(artifact.train),
+                        "test_rows": len(artifact.test),
                         "fold": artifact.fold,
                         "client_count": artifact.client_count,
                         "policy": policy,
                         "accuracy": fed.get("accuracy"),
+                        "recall_macro": fed.get("recall_macro"),
                         "balanced_accuracy": fed.get("balanced_accuracy"),
                         "macro_f1": fed.get("macro_f1"),
                         "coverage": fed.get("coverage"),
+                        "overall_coverage": fed.get("overall_coverage"),
+                        "target_coverage_macro": fed.get("target_coverage_macro"),
+                        "target_coverage_by_class": json.dumps(
+                            fed.get("target_coverage_by_class", {}),
+                            ensure_ascii=False,
+                            sort_keys=True,
+                        ),
                         "conflict_resolution_accuracy": fed.get("conflict_resolution_accuracy"),
                         "conflict_balanced_accuracy": fed.get("conflict_balanced_accuracy"),
                         "conflict_macro_f1": fed.get("conflict_macro_f1"),
@@ -340,12 +360,19 @@ def run_policy_matrix(
                         "order_invariant_by_design": policy != "FIRST_MATCH",
                         "coverage_is_structural_and_shared": True,
                         "primary_evaluation_metrics": [
-                            "balanced_accuracy",
+                            "accuracy",
+                            "recall_macro",
                             "macro_f1",
-                            "coverage",
+                            "balanced_accuracy",
+                            "overall_coverage",
+                            "target_coverage_macro",
                             "conflict_balanced_accuracy",
                             "conflict_macro_f1",
                             "mean_variation_ratio",
+                        ],
+                        "experimental_population_policies": [
+                            "POPULATION_STANDARD",
+                            "POPULATION_GLOBAL",
                         ],
                     },
                     ensure_ascii=False,
@@ -443,9 +470,12 @@ def run_policy_matrix(
         "record_all_candidates": bool(base_config.get("reduct", {}).get("record_all_candidates", True)),
         "structural_artifacts_built_once_and_reused": True,
         "primary_evaluation_metrics": [
-            "balanced_accuracy",
+            "accuracy",
+            "recall_macro",
             "macro_f1",
-            "coverage",
+            "balanced_accuracy",
+            "overall_coverage",
+            "target_coverage_macro",
             "ruleset_size",
             "mean_conditions_per_rule",
             "pairwise_antecedent_jaccard",
@@ -454,6 +484,11 @@ def run_policy_matrix(
             "conflict_macro_f1",
             "mean_variation_ratio",
         ],
+        "experimental_population_policies": {
+            "POPULATION_STANDARD": "deduplicated unique support population U_d = T_d * (U_d/T_d)",
+            "POPULATION_GLOBAL": "GlobalStrength (U_d/N_d) multiplied by nonredundancy ratio (U_d/T_d)",
+            "literature_status": "project-defined experimental variants; not attributed to prior literature",
+        },
         "legacy_project_metrics_are_supplementary": [
             "conflict_resolution_accuracy",
             "order_sensitivity_rate",

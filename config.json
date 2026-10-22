@@ -60,7 +60,9 @@
       "FIRST_MATCH",
       "SIMPLE_VOTING",
       "STANDARD_VOTING",
-      "GLOBAL_STRENGTH"
+      "GLOBAL_STRENGTH",
+      "POPULATION_STANDARD",
+      "POPULATION_GLOBAL"
     ]
   }
 }
