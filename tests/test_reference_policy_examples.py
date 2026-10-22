@@ -6,6 +6,8 @@ from roughset.core import Rule
 from roughset.evaluation import predict_with_policy
 from reference.policies.first_match import predict_first_match
 from reference.policies.global_strength import predict_global_strength
+from reference.policies.population_global import predict_population_global
+from reference.policies.population_standard import predict_population_standard
 from reference.policies.simple_voting import predict_simple_voting
 from reference.policies.standard_voting import predict_standard_voting
 
@@ -69,4 +71,48 @@ def test_separated_reference_policies_match_frozen_prediction_policy_semantics()
             class_sizes,
         )
         == expected_global
+    )
+
+
+def test_separated_population_reference_policies_match_runtime_semantics():
+    row, rules, weights, support_sets, class_sizes = _fixture()
+    default_class = "N"
+
+    expected_population_standard, _ = predict_with_policy(
+        row,
+        rules,
+        default_class,
+        policy="POPULATION_STANDARD",
+        rule_weights=weights,
+        rule_support_sets=support_sets,
+        class_sizes=class_sizes,
+    )
+    expected_population_global, _ = predict_with_policy(
+        row,
+        rules,
+        default_class,
+        policy="POPULATION_GLOBAL",
+        rule_weights=weights,
+        rule_support_sets=support_sets,
+        class_sizes=class_sizes,
+    )
+
+    assert (
+        predict_population_standard(
+            row,
+            rules,
+            default_class,
+            support_sets,
+        )
+        == expected_population_standard
+    )
+    assert (
+        predict_population_global(
+            row,
+            rules,
+            default_class,
+            support_sets,
+            class_sizes,
+        )
+        == expected_population_global
     )
