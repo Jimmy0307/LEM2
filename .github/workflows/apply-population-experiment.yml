@@ -6,6 +6,7 @@ on:
       - research/conflict-client-sweep-20261020
     paths:
       - tools/apply_population_experiment_patch.py
+      - tools/population_patch_trigger.txt
 
 permissions:
   contents: write
