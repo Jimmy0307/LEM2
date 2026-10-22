@@ -8,6 +8,7 @@ import pandas as pd
 
 from .core import Rule, induce_lem2
 
+
 def majority_class(df: pd.DataFrame, target_col: str):
     return str(df[target_col].value_counts().idxmax())
 
@@ -37,6 +38,60 @@ def _resolve_vote(votes: Mapping[Any, float], default_class: Any):
     if default_class in winners:
         return default_class
     return sorted(winners, key=str)[0]
+
+
+def population_support_summary(
+    matched_rules: Sequence[Rule],
+    rule_support_sets: Mapping[Any, Set[Any]],
+    class_sizes: Optional[Mapping[Any, int]] = None,
+) -> Dict[Any, Dict[str, float]]:
+    """Summarize support duplication for each decision among matching rules.
+
+    This is a project-defined experimental quantity from the 2026-10-22
+    meeting, not a literature-derived rough-set metric.
+
+    For decision d:
+
+        T_d = sum_r |S(r)|                         total support occurrences
+        U_d = |union_r S(r)|                       unique supporting population
+        P_d = U_d / T_d                            nonredundancy ratio
+
+    ``POPULATION_STANDARD`` uses ``U_d = T_d * P_d`` as its score.
+    ``POPULATION_GLOBAL`` applies the same factor to GlobalStrength:
+
+        (U_d / N_d) * P_d = U_d^2 / (N_d * T_d)
+
+    where N_d is the training class size.
+    """
+    grouped: Dict[Any, List[Rule]] = defaultdict(list)
+    for rule in matched_rules:
+        grouped[rule.decision].append(rule)
+
+    result: Dict[Any, Dict[str, float]] = {}
+    for decision, decision_rules in grouped.items():
+        support_sets = [set(rule_support_sets.get(rule.key, set())) for rule in decision_rules]
+        total_occurrences = float(sum(len(values) for values in support_sets))
+        unique_objects: Set[Any] = set()
+        for values in support_sets:
+            unique_objects |= values
+        unique_population = float(len(unique_objects))
+        redundancy = total_occurrences - unique_population
+        nonredundancy_ratio = (
+            unique_population / total_occurrences if total_occurrences > 0 else 0.0
+        )
+        class_size = 0
+        if class_sizes is not None:
+            class_size = int(class_sizes.get(decision, class_sizes.get(str(decision), 0)))
+        global_strength = unique_population / class_size if class_size > 0 else 0.0
+        result[decision] = {
+            "total_support_occurrences": total_occurrences,
+            "unique_population": unique_population,
+            "redundant_occurrences": redundancy,
+            "population_nonredundancy_ratio": nonredundancy_ratio,
+            "class_size": float(class_size),
+            "global_strength": global_strength,
+        }
+    return result
 
 
 def predict_with_policy(
@@ -87,17 +142,40 @@ def predict_with_policy(
             for rule in decision_rules:
                 supported_objects |= set(rule_support_sets.get(rule.key, set()))
 
-            denominator = int(class_sizes.get(decision, 0))
+            denominator = int(class_sizes.get(decision, class_sizes.get(str(decision), 0)))
             votes[decision] = (
                 len(supported_objects) / denominator
                 if denominator > 0
                 else 0.0
             )
 
+    elif policy in {"POPULATION_STANDARD", "POPULATION_GLOBAL"}:
+        if rule_support_sets is None:
+            raise ValueError(f"{policy} requires rule_support_sets.")
+        if policy == "POPULATION_GLOBAL" and class_sizes is None:
+            raise ValueError("POPULATION_GLOBAL requires class_sizes.")
+
+        summaries = population_support_summary(
+            matched,
+            rule_support_sets,
+            class_sizes=class_sizes,
+        )
+        for decision, summary in summaries.items():
+            if policy == "POPULATION_STANDARD":
+                # Standard support sum T_d corrected by P_d = U_d/T_d.
+                # Algebraically this is the unique supporting population U_d.
+                votes[decision] = summary["unique_population"]
+            else:
+                # GlobalStrength U_d/N_d with the same nonredundancy penalty P_d.
+                votes[decision] = (
+                    summary["global_strength"]
+                    * summary["population_nonredundancy_ratio"]
+                )
+
     else:
         raise ValueError(
             "policy must be FIRST_MATCH, SIMPLE_VOTING, STANDARD_VOTING, "
-            "or GLOBAL_STRENGTH."
+            "GLOBAL_STRENGTH, POPULATION_STANDARD, or POPULATION_GLOBAL."
         )
 
     return _resolve_vote(votes, default_class), matched
@@ -215,13 +293,17 @@ def balanced_accuracy(y_true, y_pred) -> float:
     return float(np.mean(recalls)) if recalls else 0.0
 
 
-
 def classification_accuracy(y_true, y_pred) -> float:
     y_true = np.asarray(y_true, dtype=object)
     y_pred = np.asarray(y_pred, dtype=object)
     if len(y_true) == 0:
         return 0.0
     return float(np.mean(y_true == y_pred))
+
+
+def macro_recall_score(y_true, y_pred) -> float:
+    """Macro recall; numerically equal to multiclass Balanced Accuracy here."""
+    return balanced_accuracy(y_true, y_pred)
 
 
 def macro_f1_score(y_true, y_pred) -> float:
@@ -241,6 +323,21 @@ def macro_f1_score(y_true, y_pred) -> float:
         f1 = 2 * precision * recall / (precision + recall) if (precision + recall) else 0.0
         scores.append(f1)
     return float(np.mean(scores))
+
+
+def target_coverage_by_class(
+    y_true: Sequence[Any],
+    matched_rule_lists: Sequence[Sequence[Rule]],
+) -> Dict[str, float]:
+    """Coverage inside each true target class on the evaluation set."""
+    true = np.asarray([str(value) for value in y_true], dtype=object)
+    covered = np.asarray([len(rules) > 0 for rules in matched_rule_lists], dtype=bool)
+    result: Dict[str, float] = {}
+    for label in sorted(set(true.tolist()), key=str):
+        mask = true == label
+        result[str(label)] = float(np.mean(covered[mask])) if mask.any() else float("nan")
+    return result
+
 
 def rule_antecedent_signature(rule: "Rule") -> Tuple[Tuple[str, str], ...]:
     """Canonical antecedent only; used for paper-style Jaccard and conflict grouping."""
@@ -391,6 +488,7 @@ def audit_conflict_cases(
         "conflict_resolution_accuracy": resolution_accuracy,
     }
 
+
 def evaluate_rule_model(
     test: pd.DataFrame,
     rules: Sequence[Rule],
@@ -411,11 +509,22 @@ def evaluate_rule_model(
         class_sizes=class_sizes,
     )
 
+    overall_coverage = float(np.mean([len(x) > 0 for x in matched])) if len(test) else 0.0
+    target_coverage = target_coverage_by_class(test[target], matched)
+    target_coverage_values = [value for value in target_coverage.values() if np.isfinite(value)]
+    target_coverage_macro = (
+        float(np.mean(target_coverage_values)) if target_coverage_values else float("nan")
+    )
+
     return {
         "accuracy": classification_accuracy(test[target], preds),
         "balanced_accuracy": balanced_accuracy(test[target], preds),
+        "recall_macro": macro_recall_score(test[target], preds),
         "macro_f1": macro_f1_score(test[target], preds),
-        "coverage": float(np.mean([len(x) > 0 for x in matched])) if len(test) else 0.0,
+        "coverage": overall_coverage,
+        "overall_coverage": overall_coverage,
+        "target_coverage_by_class": target_coverage,
+        "target_coverage_macro": target_coverage_macro,
         "predictions": preds,
         "matched_rules": matched,
         "prediction_policy": str(prediction_policy).strip().upper(),
