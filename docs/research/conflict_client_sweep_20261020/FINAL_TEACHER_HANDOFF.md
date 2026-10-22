@@ -1,6 +1,6 @@
 # Federated LEM2 — Final Teacher Handoff
 
-> 目的：把老師目前要求的「整體介紹、分開 code、conflict、四種 Prediction Policies、client-count sweep、評量方式、引用來源、可執行軟體」集中到同一個入口。
+> 目的：把老師目前要求的「整體介紹、分開 code、conflict、client-count sweep、六種 prediction methods、80/20 評量、引用來源、可執行軟體」集中到同一個入口。
 >
 > Frozen mathematical baseline：`main @ 31b078bb78c6754d04c56a2e1cc849c8feb221d7`
 >
@@ -13,42 +13,64 @@
 ```text
 Decision Table
    ↓
-Local Rough Set / Reduct / LEM2
+80% Training / 20% Holdout
+   ↓
+Local Rough Set / Reduct / LEM2          ← only 80%
    ↓
 Local Rule Sets R1 ... RC
    ↓
 Federated UNION Aggregation
    ↓
-Global Rule Set RG
+Global Rule Set RG + training support context
    ↓
 Rule Conflict Set
    ↓
-Prediction Policy
+Prediction Policy / Experimental Variant
    ├─ FIRST_MATCH
    ├─ SIMPLE_VOTING
    ├─ STANDARD_VOTING
-   └─ GLOBAL_STRENGTH
+   ├─ GLOBAL_STRENGTH
+   ├─ POPULATION_STANDARD      [project-defined]
+   └─ POPULATION_GLOBAL        [project-defined]
    ↓
-Prediction
+Prediction on untouched 20% holdout
    ↓
-Established Evaluation Metrics
+Accuracy / Recall / F1 / BA / Coverage
 ```
 
-Client count \(C\in\{2,3,4,5\}\) 是外層實驗變數，不是第五種演算法。
+Client count \(C\in\{2,3,4,5\}\) 是外層實驗變數，不是 prediction method。
 
-完整架構：`modules/00_PIPELINE_MAP.md` 到 `modules/08_MATHEMATICAL_ARCHITECTURE.md`。
+20% holdout 不參與 reduct、LEM2、aggregation、support-set construction 或 weight construction。
 
 ---
 
-## 2. 四種方法的正式名稱
+## 2. 三個 UCI dataset 的資料量
 
-共同名稱使用：
+| Dataset | Total rows | Condition attributes | Total data columns | Classes | Frozen train | Frozen test |
+|---|---:|---:|---:|---:|---:|---:|
+| Hayes-Roth | 132 | 4 | 5 | 3 | 106 | 26 |
+| Car Evaluation | 1,728 | 6 | 7 | 4 | 1,382 | 346 |
+| Balance Scale | 625 | 4 | 5 | 3 | 499 | 126 |
 
-\[
-\boxed{Prediction\ Policies}
-\]
+`Total data columns = condition attributes + decision column`；內部 `__row_id__` 不算資料標頭。
 
-不是「四種 resolver 演算法」。Conflict resolution 是它們在 competing-rule cases 上的功能。
+Batch output 會逐列寫出：
+
+```text
+dataset_rows
+dataset_columns
+condition_attribute_count
+target_column
+class_count
+train_rows
+test_rows
+```
+
+---
+
+## 3. 四個既有 baseline
+
+共同正式名稱仍是 **Prediction Policies**。
 
 | Policy | Evidence | 主要來源 |
 |---|---|---|
@@ -57,31 +79,102 @@ Client count \(C\in\{2,3,4,5\}\) 是外層實驗變數，不是第五種演算�
 | `STANDARD_VOTING` | pooled positive rule-support sum | Lazo-Cortés et al. (2020) principle + federated adaptation |
 | `GLOBAL_STRENGTH` | unique class-coverage ratio | Bazan et al. (2000) |
 
-公式與說明：`TEAM_DISCUSSION_PREDICTION_POLICIES_AND_CONFLICT.md`。
+四個 baseline 不被這次改動覆蓋，仍保留作 comparison control。
 
-老師若要「四個方法分開 code」，請看：
+---
+
+## 4. 2026-10-22 新增兩個 population experimental variants
+
+這兩個是本研究依會議需求新增的 experimental design，**不是既有文獻已提出的方法**。
+
+對 candidate decision \(d\)：
+
+\[
+T_d=\sum_{r\in M_d(x)}|S_G(r)|
+\]
+
+\[
+U_d=\left|\bigcup_{r\in M_d(x)}S_G(r)\right|
+\]
+
+\[
+\boxed{P_d=\frac{U_d}{T_d}}
+\]
+
+其中 \(P_d\) 表示 raw rule-support occurrences 中，扣除跨 rules 重複 population 後留下的 nonredundant proportion。
+
+Meeting example：
+
+```text
+r1 -> A : {u1,u2,u3}
+r2 -> A : {u2,u3,u4}
+```
+
+所以：
+
+\[
+T_A=3+3=6,\qquad U_A=4,\qquad P_A=4/6=2/3
+\]
+
+### POPULATION_STANDARD
+
+\[
+\boxed{S_{PS}(d|x)=T_dP_d=U_d}
+\]
+
+也就是 Standard 的 raw support sum 去除 duplicate support inflation。
+
+### POPULATION_GLOBAL
+
+原 GlobalStrength：
+
+\[
+GS(d|x)=\frac{U_d}{N_d}
+\]
+
+目前 experimental correction：
+
+\[
+\boxed{
+S_{PG}(d|x)
+=
+\frac{U_d}{N_d}\frac{U_d}{T_d}
+=
+\frac{U_d^2}{N_dT_d}
+}
+\]
+
+完整規格：`POPULATION_EXPERIMENT_UPDATE_20261022.md`。
+
+---
+
+## 5. 六支分開 reference code
+
+老師若要逐支看 code：
 
 ```text
 reference/policies/
 ├─ first_match.py
 ├─ simple_voting.py
 ├─ standard_voting.py
-└─ global_strength.py
+├─ global_strength.py
+├─ population_standard.py
+└─ population_global.py
 ```
 
-這四支是 teaching/reference code；runtime 的 canonical implementation 仍保留在：
+Production canonical implementation：
 
 ```text
 roughset/evaluation.py::predict_with_policy
 ```
 
-以避免 production semantics 分叉。`tests/test_reference_policy_examples.py` 逐一把四支 reference implementation 與 frozen runtime 做 parity check。
+`tests/test_reference_policy_examples.py` 對 reference implementation 與 runtime 做 parity check。
 
 ---
 
-## 3. Conflict 定義
+## 6. Conflict 定義
 
-主要 conflict object 採既有 rule-conflict literature 的 prediction-time 定義：
+主要 conflict 使用既有 rule-conflict literature 的 prediction-time 定義：
 
 \[
 M(x)=\{r\in R_G:x\models Ante(r)\}
@@ -93,38 +186,56 @@ M(x)=\{r\in R_G:x\models Ante(r)\}
 }
 \]
 
-也就是：同一 example 被多條 rules cover，而且 rules 預測不同 classes（Lindgren, 2004；Lindgren & Boström, 2002）。
+也就是同一 example 被多條 rules cover，而且 rules 預測不同 classes（Lindgren, 2004；Lindgren & Boström, 2002）。
 
-Exact same-antecedent / different-decision conflict 只保留作 supplementary structural audit。
-
-完整說明：`CONFLICT_RESOLUTION_NOTES.md`。
+Exact same-antecedent / different-decision conflict 只作 supplementary structural audit。
 
 ---
 
-## 4. 正式評量方式
+## 7. 最後 20% prediction-set evaluation
 
-正式主分析只使用既有理論／標準評量：
+老師會議要求的 final reporting 現在包含：
 
-| 面向 | 指標 |
-|---|---|
-| Classification | Balanced Accuracy、Macro-F1 |
-| Rule coverage | Coverage |
-| Rule complexity | Ruleset size、mean conditions per rule |
-| Client ruleset similarity | Pairwise Jaccard |
-| Conflict workload | conflict-set count / proportion |
-| Conflict cases performance | \(BA_{\mathcal C}\)、\(MacroF1_{\mathcal C}\) |
-| Client-order categorical disagreement | Variation Ratio |
-| Repeated policy comparison | Friedman + post-hoc / paired Wilcoxon |
+```text
+Accuracy
+Recall (macro)
+Macro-F1
+Balanced Accuracy
+Overall Coverage
+Target Coverage by class
+Target Coverage macro
+```
 
-不再以專案自創名稱 `CRA / CCR / OSR / H_rule` 作主要理論指標；舊欄位若仍出現在輸出，只作 backward compatibility / supplementary diagnostics。
+### Overall Coverage
 
-完整公式 × 涵義 × code × citation：`TEAM_EVALUATION_METRICS_ESTABLISHED.md`。
+\[
+\boxed{
+Coverage_{overall}
+=
+\frac{|\{x\in U_{test}:M(x)\neq\emptyset\}|}{|U_{test}|}
+}
+\]
 
-文獻與「既有方法 / established theory / federated adaptation / empirical observation」的引用邊界：`LITERATURE_REFERENCE_INDEX.md`。
+### Target Coverage
+
+對真實 target class \(d\)：
+
+\[
+\boxed{
+Coverage_d
+=
+\frac{|\{x\in U_{test}:D(x)=d,\ M(x)\neq\emptyset\}|}
+{|\{x\in U_{test}:D(x)=d\}|}
+}
+\]
+
+Target Coverage 看「rule system 有沒有 cover 到該 target」；Recall 看「最後 prediction 有沒有判對」，兩者不要混用。
+
+既有研究 metrics（Jaccard、rule complexity、conflict-set BA/F1、Variation Ratio）仍保留作結構與 robustness analysis。
 
 ---
 
-## 5. 軟體入口
+## 8. Windows software path
 
 Windows 預設入口：
 
@@ -136,114 +247,64 @@ run.bat
 
 ```text
 run.bat
-→ environment check/setup
 → main.py --config config.json --all-policies
 → roughset.batch.run_policy_matrix(...)
-→ 4 Prediction Policies
-→ configured client-count sweep
+→ C = 2,3,4,5 client sweep
+→ six policies on the same artifact
+→ untouched 20% holdout evaluation
 → outputs/batch_runs/<run_id>/
 ```
 
-單一 config policy 入口：
+`config.json` 現在 default all-policy list：
 
 ```text
-run_single.bat
+FIRST_MATCH
+SIMPLE_VOTING
+STANDARD_VOTING
+GLOBAL_STRENGTH
+POPULATION_STANDARD
+POPULATION_GLOBAL
 ```
 
-目前 `config.json` 已設定：
-
-```text
-client_counts = [2, 3, 4, 5]
-prediction_policies =
-  FIRST_MATCH
-  SIMPLE_VOTING
-  STANDARD_VOTING
-  GLOBAL_STRENGTH
-```
-
-Variation Ratio 已由 `roughset/established_metrics.py` 實作，並接入 `roughset.batch.run_policy_matrix()` 的正式 combined output：
-
-```text
-mean_variation_ratio
-mean_variation_ratio_conflict
-```
-
-因此 `.bat` command 本身不需改；同步點位於它所呼叫的 Python batch pipeline。
-
-### 驗證界線
-
-目前 fresh GitHub Actions 使用 Python 3.12 驗證：
-
-```text
-python -m compileall -q roughset main.py
-python -m pytest -q
-```
-
-並驗證 batch runner 的 all-policy output schema 與 separated-policy parity tests。
-
-GitHub Actions 是 Linux runner，所以這證明 Python/software call chain 與輸出已同步；它不等同於實際在 Windows 桌面上雙擊 `.bat`。Windows CMD-specific smoke test 仍屬環境層驗證，不影響目前 Python pipeline 的數學與輸出 contract。
+`.bat` command 本身不需另外改；變更在它呼叫的 Python batch pipeline。
 
 ---
 
-## 6. Frozen empirical baseline 的安全說法
+## 9. Citation boundary
 
-目前 frozen UCI3 / holdout / seed 42 baseline 顯示：
+### 可直接引用既有 literature
 
-- Hayes-Roth：nominal FIRST_MATCH 最好或並列最好，但存在明顯 client-order sensitivity；
-- Car Evaluation：GLOBAL_STRENGTH 在 C=2–5 的 Balanced Accuracy 都最高；
-- Balance Scale：C=2–4 STANDARD_VOTING 較高，C=5 GLOBAL_STRENGTH 較高。
+- Woźniak et al. (2026)：Federated LEM2 source architecture、FIRST_MATCH、C=2..5、BA/Coverage/Jaccard。
+- Lazo-Cortés et al. (2020)：Simple / Standard voting principle。
+- Bazan et al. (2000)：GlobalStrength。
+- Lindgren (2004)；Lindgren & Boström (2002)：rule conflict。
+- Brodersen et al. (2010)：Balanced Accuracy。
+- Sokolova & Lapalme (2009)：classification metrics。
+- Gal (2016)：Variation Ratio。
+- Demšar (2006)：classifier comparison statistics。
 
-因此目前只能說：
-
-\[
-\boxed{
-Policy^*=f(Dataset,Rule\ Structure,Conflict\ Workload,Client\ Configuration)
-}
-\]
-
-不能宣稱某一種 Prediction Policy universal best。
-
----
-
-## 7. 研究與 publication scope 的界線
-
-目前老師要求的 engineering / method handoff 已涵蓋：
-
-- local LEM2 與 federated flow；
-- aggregation；
-- conflict；
-- 四種 Prediction Policies；
-- C=2–5 client sweep；
-- 數學與 code mapping；
-- established evaluation metrics；
-- citation mapping；
-- Windows launcher / all-policy software path；
-- group discussion handoff。
-
-若後續進入正式 publication-level inference，還需要另外增加：
+### 不可假裝是既有文獻方法
 
 ```text
-multiple random splits / seeds
-→ paired repeated observations
-→ Friedman omnibus test
-→ post-hoc correction
-→ paired Wilcoxon where appropriate
+POPULATION_STANDARD
+POPULATION_GLOBAL
+P_d = U_d / T_d
 ```
 
-這是下一階段統計驗證，不是目前四種方法與 conflict implementation 的缺口。
+這三者目前都屬於 **project-defined experimental design**。
 
 ---
 
-# Canonical files for discussion
+## 10. Canonical files for discussion
 
-1. `FINAL_TEACHER_HANDOFF.md` — 本文件，總入口。
-2. `TEAM_DISCUSSION_PREDICTION_POLICIES_AND_CONFLICT.md` — 四種方法 + conflict。
-3. `TEAM_EVALUATION_METRICS_ESTABLISHED.md` — 評量公式、涵義、code、citation。
-4. `CONFLICT_RESOLUTION_NOTES.md` — conflict → prediction policy 的數學說明。
-5. `LITERATURE_REFERENCE_INDEX.md` — 文獻索引與 citation boundary。
-6. `modules/00`–`08` — 每個 pipeline layer 的拆解。
-7. `reference/policies/` — 四支分開 teaching/reference code。
-8. `ALL_POLICIES_RUN.md` — `.bat` / all-policy software使用與輸出說明。
+1. `FINAL_TEACHER_HANDOFF.md` — 本文件，會議總入口。
+2. `POPULATION_EXPERIMENT_UPDATE_20261022.md` — 2026-10-22 六方法新規格。
+3. `TEAM_DISCUSSION_PREDICTION_POLICIES_AND_CONFLICT.md` — 四個 established baseline + conflict。
+4. `TEAM_EVALUATION_METRICS_ESTABLISHED.md` — 既有 evaluation formulas / citations。
+5. `LITERATURE_REFERENCE_INDEX.md` — citation boundary。
+6. `reference/policies/` — 六支 separated teaching/reference code。
+7. `roughset/evaluation.py` — canonical runtime prediction implementation。
+8. `roughset/batch.py` — six-policy batch output / metadata contract。
 
 ---
 
@@ -251,8 +312,8 @@ multiple random splits / seeds
 
 - Bazan, J. G., Nguyen, H. S., Nguyen, S. H., Synak, P., & Wróblewski, J. (2000). *Rough Set Algorithms in Classification Problem*. https://doi.org/10.1007/978-3-7908-1840-6_3
 - Brodersen, K. H., Ong, C. S., Stephan, K. E., & Buhmann, J. M. (2010). *The Balanced Accuracy and Its Posterior Distribution*. https://doi.org/10.1109/ICPR.2010.764
-- Demšar, J. (2006). *Statistical Comparisons of Classifiers over Multiple Data Sets*. Journal of Machine Learning Research, 7, 1–30.
-- Gal, Y. (2016). *Uncertainty in Deep Learning*. PhD thesis, University of Cambridge, §3.3.1, Eq. (3.19).
+- Demšar, J. (2006). *Statistical Comparisons of Classifiers over Multiple Data Sets*. *JMLR, 7*, 1–30.
+- Gal, Y. (2016). *Uncertainty in Deep Learning*. PhD thesis, University of Cambridge.
 - Lazo-Cortés, M. S., Martínez-Trinidad, J. F., Carrasco-Ochoa, J. A., & Almanza-Ortega, N. N. (2020). *Towards Selecting Reducts for Building Decision Rules for Rule-Based Classifiers*. https://doi.org/10.1007/978-3-030-49076-8_7
 - Lindgren, T. (2004). *Methods for Rule Conflict Resolution*. https://doi.org/10.1007/978-3-540-30115-8_26
 - Lindgren, T., & Boström, H. (2002). *Classification with Intersecting Rules*. https://doi.org/10.1007/3-540-36169-3_31
