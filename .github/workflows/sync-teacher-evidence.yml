@@ -1,0 +1,57 @@
+name: Sync Teacher Evidence
+
+on:
+  push:
+    branches:
+      - research/conflict-client-sweep-20261020
+    paths:
+      - tools/sync_teacher_evidence_trigger.txt
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  DEST: docs/research/conflict_client_sweep_20261020/evidence/20261023/teacher
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/conflict-client-sweep-20261020
+          fetch-depth: 0
+      - name: Download refreshed backtrace artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: lem2-target-case-backtrace
+          path: _teacher_artifact
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: Jimmy0307/LEM2
+          run-id: 39970049917
+      - name: Copy canonical teacher evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$DEST"
+          root="$(find _teacher_artifact -type f -name TEACHER_DATASET_METADATA.csv -printf '%h\n' -quit)"
+          test -n "$root"
+          cp "$root"/TEACHER_*.csv "$DEST"/
+          cp "$root"/TARGET_BACKTRACE_MANIFEST.json "$DEST"/
+          printf '%s\n' \
+            'source_workflow_run=39970049917' \
+            'source_artifact=lem2-target-case-backtrace' \
+            'source_head=c6fff39d9598bdadef6c9d53fd047326777ed8e0' \
+            'implementation_commit=9c32ee1bbe1f7c4ba7f93dd4dccd4fb0a18da5fa' \
+            > "$DEST/PROVENANCE.txt"
+      - name: Commit evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$DEST"
+          git commit -m "research: add teacher-question evidence tables"
+          git push origin HEAD:research/conflict-client-sweep-20261020
