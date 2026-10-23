@@ -1,0 +1,56 @@
+name: Apply Six-Policy Whitelist Fix
+
+on:
+  push:
+    branches:
+      - research/conflict-client-sweep-20261020
+    paths:
+      - tools/six_policy_whitelist_fix_trigger.txt
+
+permissions:
+  contents: write
+
+jobs:
+  fix-and-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+        with:
+          ref: research/conflict-client-sweep-20261020
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Apply minimal whitelist fix
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('roughset/app.py')
+          text = path.read_text(encoding='utf-8')
+          old = '    supported = {"FIRST_MATCH", "SIMPLE_VOTING", "STANDARD_VOTING", "GLOBAL_STRENGTH"}\n'
+          new = '''    supported = {\n        "FIRST_MATCH",\n        "SIMPLE_VOTING",\n        "STANDARD_VOTING",\n        "GLOBAL_STRENGTH",\n        "POPULATION_STANDARD",\n        "POPULATION_GLOBAL",\n    }\n'''
+          if text.count(old) != 1:
+              raise SystemExit(f'expected one stale whitelist, found {text.count(old)}')
+          path.write_text(text.replace(old, new), encoding='utf-8')
+          PY
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements-dev.txt
+
+      - name: Verify fix
+        run: |
+          python -m compileall -q roughset main.py
+          python -m pytest -q
+          git diff --check
+
+      - name: Commit verified fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add roughset/app.py
+          git commit -m "fix: align run_application with six-policy contract"
+          git push origin HEAD:research/conflict-client-sweep-20261020
