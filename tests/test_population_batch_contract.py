@@ -26,6 +26,25 @@ def test_single_policy_config_accepts_population_variants():
         assert cfg["experiment"]["prediction_policy"] == policy
 
 
+def test_run_application_accepts_six_policy_list(monkeypatch):
+    import roughset.app as app
+
+    monkeypatch.setattr(app, "discover_datasets", lambda config, fetcher=None: [])
+    result = app.run_application(
+        {},
+        prediction_policies=[
+            "FIRST_MATCH",
+            "SIMPLE_VOTING",
+            "STANDARD_VOTING",
+            "GLOBAL_STRENGTH",
+            "POPULATION_STANDARD",
+            "POPULATION_GLOBAL",
+        ],
+    )
+
+    assert result["datasets"] == {}
+
+
 def test_batch_summary_reports_dataset_shape_holdout_size_and_target_coverage(tmp_path):
     from roughset.batch import run_policy_matrix
 
