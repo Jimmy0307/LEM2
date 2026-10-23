@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  actions: read
 
 env:
   RESEARCH_DIR: docs/research/conflict_client_sweep_20261020
