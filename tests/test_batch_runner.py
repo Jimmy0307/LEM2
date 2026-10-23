@@ -64,11 +64,30 @@ def test_policy_matrix_runs_each_policy_into_separate_output_folder(tmp_path):
     assert set(summary["prediction_policy"]) == {"FIRST_MATCH", "SIMPLE_VOTING"}
     assert len(summary) == 2
     assert {"mean_variation_ratio", "mean_variation_ratio_conflict"} <= set(summary.columns)
+    assert {
+        "dataset_rows",
+        "dataset_columns",
+        "condition_attribute_count",
+        "target_column",
+        "class_count",
+        "train_rows",
+        "test_rows",
+        "accuracy",
+        "recall_macro",
+        "balanced_accuracy",
+        "macro_f1",
+        "overall_coverage",
+        "target_coverage_macro",
+        "target_coverage_by_class",
+        "target_candidate_coverage_macro",
+        "target_candidate_coverage_by_class",
+    } <= set(summary.columns)
 
     first_match = summary.loc[summary["prediction_policy"] == "FIRST_MATCH"].iloc[0]
     simple = summary.loc[summary["prediction_policy"] == "SIMPLE_VOTING"].iloc[0]
     assert 0.0 <= float(first_match["mean_variation_ratio"]) <= 1.0
     assert float(simple["mean_variation_ratio"]) == 0.0
+    assert 0.0 <= float(first_match["target_candidate_coverage_macro"]) <= 1.0
     assert result["run_id"] == "TEST_RUN"
     assert Path(result["root_output"]) == root
 
