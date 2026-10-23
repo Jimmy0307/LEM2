@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 
 from .core import Rule, induce_lem2
+from .research_evidence import target_candidate_coverage_by_class
 
 
 def majority_class(df: pd.DataFrame, target_col: str):

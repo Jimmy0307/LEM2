@@ -10,6 +10,7 @@ import pandas as pd
 
 from roughset.app import run_application
 from roughset.evaluation import matching_rules, population_support_summary, predict_with_policy
+from roughset.research_evidence import transition_redundancy_evidence
 
 
 POLICIES = (
@@ -187,6 +188,71 @@ def main() -> None:
     all_case_rows: list[dict[str, Any]] = []
     all_decision_rows: list[dict[str, Any]] = []
     all_rule_rows: list[dict[str, Any]] = []
+    standard_transition_rows: list[dict[str, Any]] = []
+    global_transition_rows: list[dict[str, Any]] = []
+    teacher_metric_rows: list[dict[str, Any]] = []
+    teacher_coverage_rows: list[dict[str, Any]] = []
+    teacher_metadata_rows: list[dict[str, Any]] = []
+
+    # Teacher-facing experiment tables: one canonical source for dataset metadata,
+    # six-policy HOLDOUT metrics, and both ordinary and true-candidate coverage.
+    for dataset_key, dataset_result in build["datasets"].items():
+        artifacts = list(dataset_result.get("structural_artifacts", []))
+        policy_results = list(dataset_result.get("artifact_policy_results", []))
+        for artifact, artifact_results in zip(artifacts, policy_results):
+            teacher_metadata_rows.append(
+                {
+                    "dataset": artifact.dataset,
+                    "dataset_rows": len(artifact.train) + len(artifact.test),
+                    "dataset_columns": len(artifact.condition_columns) + 1,
+                    "condition_attribute_count": len(artifact.condition_columns),
+                    "target_column": artifact.target,
+                    "class_count": len(
+                        set(artifact.train[artifact.target].astype(str))
+                        | set(artifact.test[artifact.target].astype(str))
+                    ),
+                    "train_rows": len(artifact.train),
+                    "test_rows": len(artifact.test),
+                    "client_count": artifact.client_count,
+                    "fold": artifact.fold,
+                }
+            )
+            for policy in POLICIES:
+                fed = (artifact_results.get(policy, {}) or {}).get("federated") or {}
+                if not fed:
+                    continue
+                teacher_metric_rows.append(
+                    {
+                        "dataset": artifact.dataset,
+                        "client_count": artifact.client_count,
+                        "fold": artifact.fold,
+                        "policy": policy,
+                        "accuracy": fed.get("accuracy"),
+                        "recall_macro": fed.get("recall_macro"),
+                        "balanced_accuracy": fed.get("balanced_accuracy"),
+                        "macro_f1": fed.get("macro_f1"),
+                        "overall_coverage": fed.get("overall_coverage"),
+                        "target_coverage_macro": fed.get("target_coverage_macro"),
+                        "target_candidate_coverage_macro": fed.get("target_candidate_coverage_macro"),
+                        "conflict_balanced_accuracy": fed.get("conflict_balanced_accuracy"),
+                        "conflict_macro_f1": fed.get("conflict_macro_f1"),
+                    }
+                )
+                target_cov = fed.get("target_coverage_by_class", {}) or {}
+                candidate_cov = fed.get("target_candidate_coverage_by_class", {}) or {}
+                labels = sorted(set(map(str, target_cov)) | set(map(str, candidate_cov)), key=str)
+                for label in labels:
+                    teacher_coverage_rows.append(
+                        {
+                            "dataset": artifact.dataset,
+                            "client_count": artifact.client_count,
+                            "fold": artifact.fold,
+                            "policy": policy,
+                            "target_class": label,
+                            "target_coverage": target_cov.get(label),
+                            "target_candidate_coverage": candidate_cov.get(label),
+                        }
+                    )
 
     # First pass: collect every prediction-time conflict case with score decomposition.
     for dataset_key, dataset_result in build["datasets"].items():
@@ -203,6 +269,18 @@ def main() -> None:
                 row_id = int(row["__row_id__"])
                 predictions = _prediction_map(artifact, row)
                 scores = _scores_for_case(artifact, matched)
+                ps_evidence = transition_redundancy_evidence(
+                    true_decision=true_value,
+                    old_winner=predictions["STANDARD_VOTING"],
+                    new_winner=predictions["POPULATION_STANDARD"],
+                    decision_scores=scores,
+                )
+                pg_evidence = transition_redundancy_evidence(
+                    true_decision=true_value,
+                    old_winner=predictions["GLOBAL_STRENGTH"],
+                    new_winner=predictions["POPULATION_GLOBAL"],
+                    decision_scores=scores,
+                )
 
                 redundancies = []
                 for decision, score in scores.items():
@@ -211,16 +289,8 @@ def main() -> None:
                     redundancies.append((t - u) / t if t > 0 else 0.0)
                 max_redundancy_ratio = max(redundancies) if redundancies else 0.0
 
-                ps_status = _status(
-                    true_value,
-                    predictions["STANDARD_VOTING"],
-                    predictions["POPULATION_STANDARD"],
-                )
-                pg_status = _status(
-                    true_value,
-                    predictions["GLOBAL_STRENGTH"],
-                    predictions["POPULATION_GLOBAL"],
-                )
+                ps_status = ps_evidence["status"]
+                pg_status = pg_evidence["status"]
                 changed = (
                     predictions["STANDARD_VOTING"] != predictions["POPULATION_STANDARD"]
                     or predictions["GLOBAL_STRENGTH"] != predictions["POPULATION_GLOBAL"]
@@ -241,11 +311,71 @@ def main() -> None:
                     "pg_status": pg_status,
                     "case_category": case_category,
                     "max_redundancy_ratio": max_redundancy_ratio,
+                    "true_candidate_present": bool(ps_evidence["true_candidate_present"]),
+                    "ps_error_type": ps_evidence["error_type"],
+                    "pg_error_type": pg_evidence["error_type"],
+                    "ps_redundancy_asymmetry": ps_evidence["redundancy_asymmetry"],
+                    "pg_redundancy_asymmetry": pg_evidence["redundancy_asymmetry"],
+                    "ps_winner_redundancy_drop": ps_evidence["winner_redundancy_drop"],
+                    "pg_winner_redundancy_drop": pg_evidence["winner_redundancy_drop"],
                     **{f"pred_{policy.lower()}": predictions[policy] for policy in POLICIES},
                 }
                 for col, value in factors.items():
                     base[f"factor__{col}"] = value
                 all_case_rows.append(base)
+
+                def transition_row(kind: str, old_policy: str, new_policy: str, evidence: dict[str, Any]) -> dict[str, Any]:
+                    old_decision = predictions[old_policy]
+                    new_decision = predictions[new_policy]
+                    old_score = scores.get(str(old_decision), {})
+                    new_score = scores.get(str(new_decision), {})
+                    true_score = scores.get(str(true_value), {})
+                    return {
+                        "dataset": artifact.dataset,
+                        "client_count": artifact.client_count,
+                        "fold": artifact.fold,
+                        "row_id": row_id,
+                        "true": true_value,
+                        "transition": kind,
+                        "old_policy": old_policy,
+                        "new_policy": new_policy,
+                        "old_winner": old_decision,
+                        "new_winner": new_decision,
+                        "status": evidence["status"],
+                        "error_type": evidence["error_type"],
+                        "true_candidate_present": evidence["true_candidate_present"],
+                        "old_T": old_score.get("total_support_occurrences"),
+                        "old_U": old_score.get("unique_population"),
+                        "old_P": old_score.get("population_nonredundancy_ratio"),
+                        "new_T": new_score.get("total_support_occurrences"),
+                        "new_U": new_score.get("unique_population"),
+                        "new_P": new_score.get("population_nonredundancy_ratio"),
+                        "true_T": true_score.get("total_support_occurrences"),
+                        "true_U": true_score.get("unique_population"),
+                        "true_P": true_score.get("population_nonredundancy_ratio"),
+                        "old_redundancy": evidence["old_redundancy"],
+                        "new_redundancy": evidence["new_redundancy"],
+                        "true_redundancy": evidence["true_redundancy"],
+                        "winner_redundancy_drop": evidence["winner_redundancy_drop"],
+                        "redundancy_asymmetry": evidence["redundancy_asymmetry"],
+                    }
+
+                standard_transition_rows.append(
+                    transition_row(
+                        "STANDARD_TO_POPULATION_STANDARD",
+                        "STANDARD_VOTING",
+                        "POPULATION_STANDARD",
+                        ps_evidence,
+                    )
+                )
+                global_transition_rows.append(
+                    transition_row(
+                        "GLOBAL_TO_POPULATION_GLOBAL",
+                        "GLOBAL_STRENGTH",
+                        "POPULATION_GLOBAL",
+                        pg_evidence,
+                    )
+                )
 
                 for decision, score in sorted(scores.items()):
                     decision_row = {
@@ -307,6 +437,82 @@ def main() -> None:
     selected_rules = all_rules_df.merge(selected_keys, on=key_cols, how="inner")
     selected_decisions.to_csv(out_dir / "SELECTED_TARGET_DECISION_SCORES.csv", index=False, encoding="utf-8-sig")
     selected_rules.to_csv(out_dir / "SELECTED_TARGET_RULE_BACKTRACE.csv", index=False, encoding="utf-8-sig")
+
+    # Canonical teacher-facing exports.  These are intentionally denormalized so
+    # the presentation can answer the professor's questions without hand-copying
+    # values from multiple internal files.
+    metadata_df = pd.DataFrame(teacher_metadata_rows)
+    if not metadata_df.empty:
+        metadata_df = metadata_df.sort_values(["dataset", "client_count", "fold"])
+        metadata_df.to_csv(out_dir / "TEACHER_DATASET_METADATA.csv", index=False, encoding="utf-8-sig")
+    pd.DataFrame(teacher_metric_rows).to_csv(
+        out_dir / "TEACHER_SIX_POLICY_METRICS.csv", index=False, encoding="utf-8-sig"
+    )
+    coverage_df = pd.DataFrame(teacher_coverage_rows)
+    if not coverage_df.empty:
+        coverage_df = coverage_df.drop_duplicates(
+            ["dataset", "client_count", "fold", "target_class", "target_coverage", "target_candidate_coverage"]
+        ).sort_values(["dataset", "client_count", "fold", "target_class"])
+    coverage_df.to_csv(out_dir / "TEACHER_COVERAGE_BY_CLASS.csv", index=False, encoding="utf-8-sig")
+
+    selected_key_map = {
+        (str(row.dataset), int(row.client_count), int(row.fold), int(row.row_id)): int(row.target_no)
+        for row in selected_df.itertuples()
+    }
+    for transition_rows in (standard_transition_rows, global_transition_rows):
+        for transition in transition_rows:
+            transition["selected_target_no"] = selected_key_map.get(
+                (
+                    str(transition["dataset"]),
+                    int(transition["client_count"]),
+                    int(transition["fold"]),
+                    int(transition["row_id"]),
+                )
+            )
+
+    standard_df = pd.DataFrame(standard_transition_rows)
+    global_df = pd.DataFrame(global_transition_rows)
+    standard_df.to_csv(out_dir / "TEACHER_STANDARD_TRANSITIONS.csv", index=False, encoding="utf-8-sig")
+    global_df.to_csv(out_dir / "TEACHER_GLOBAL_TRANSITIONS.csv", index=False, encoding="utf-8-sig")
+    selected_df.to_csv(out_dir / "TEACHER_TARGET_1_TO_5.csv", index=False, encoding="utf-8-sig")
+
+    error_cols = [
+        "dataset", "client_count", "fold", "row_id", "true", "candidate_decisions",
+        "true_candidate_present", "ps_status", "pg_status", "ps_error_type", "pg_error_type",
+    ]
+    all_cases_df[error_cols].to_csv(
+        out_dir / "TEACHER_ERROR_DECOMPOSITION.csv", index=False, encoding="utf-8-sig"
+    )
+    asymmetry_rows = []
+    for method, frame in (("POPULATION_STANDARD", standard_df), ("POPULATION_GLOBAL", global_df)):
+        for transition in frame.to_dict(orient="records"):
+            asymmetry_rows.append(
+                {
+                    "dataset": transition["dataset"],
+                    "client_count": transition["client_count"],
+                    "fold": transition["fold"],
+                    "row_id": transition["row_id"],
+                    "selected_target_no": transition.get("selected_target_no"),
+                    "method": method,
+                    "true": transition["true"],
+                    "old_winner": transition["old_winner"],
+                    "new_winner": transition["new_winner"],
+                    "status": transition["status"],
+                    "error_type": transition["error_type"],
+                    "true_candidate_present": transition["true_candidate_present"],
+                    "true_redundancy": transition["true_redundancy"],
+                    "competitor_redundancy": (
+                        transition["old_redundancy"] if transition["status"] == "CORRECTED"
+                        else transition["new_redundancy"] if transition["status"] == "HARMED"
+                        else float("nan")
+                    ),
+                    "winner_redundancy_drop": transition["winner_redundancy_drop"],
+                    "redundancy_asymmetry": transition["redundancy_asymmetry"],
+                }
+            )
+    pd.DataFrame(asymmetry_rows).to_csv(
+        out_dir / "TEACHER_REDUNDANCY_ASYMMETRY.csv", index=False, encoding="utf-8-sig"
+    )
 
     # Human-readable explanation.
     md = [
@@ -383,6 +589,16 @@ def main() -> None:
         "policies": list(POLICIES),
         "selection_is_descriptive_not_inferential": True,
         "target_definition": "selected holdout test object for case-level mechanism backtrace",
+        "teacher_exports": [
+            "TEACHER_DATASET_METADATA.csv",
+            "TEACHER_SIX_POLICY_METRICS.csv",
+            "TEACHER_COVERAGE_BY_CLASS.csv",
+            "TEACHER_TARGET_1_TO_5.csv",
+            "TEACHER_STANDARD_TRANSITIONS.csv",
+            "TEACHER_GLOBAL_TRANSITIONS.csv",
+            "TEACHER_ERROR_DECOMPOSITION.csv",
+            "TEACHER_REDUNDANCY_ASYMMETRY.csv",
+        ],
     }
     (out_dir / "TARGET_BACKTRACE_MANIFEST.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8"

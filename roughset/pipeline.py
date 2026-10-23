@@ -21,6 +21,7 @@ from .evaluation import (
     matching_rules,
     pairwise_rule_jaccard,
     target_coverage_by_class,
+    target_candidate_coverage_by_class,
 )
 from .federated import (
     aggregate_rule_support_context,
@@ -636,6 +637,26 @@ def _evaluate_system(
     metrics["target_coverage_macro"] = (
         float(np.mean(finite_target_coverage))
         if finite_target_coverage
+        else float("nan")
+    )
+
+    # Candidate coverage is stricter than ordinary coverage: the true class must
+    # be represented by at least one matching rule.  It is derived from the full
+    # matching-rule set rather than policy-specific matched output so FIRST_MATCH
+    # does not hide later candidate rules.
+    all_matching_rule_lists = [
+        matching_rules(row, rules) for _, row in artifact.test.iterrows()
+    ]
+    target_candidate_coverage = target_candidate_coverage_by_class(
+        artifact.test[artifact.target], all_matching_rule_lists
+    )
+    metrics["target_candidate_coverage_by_class"] = target_candidate_coverage
+    finite_candidate_coverage = [
+        value for value in target_candidate_coverage.values() if np.isfinite(value)
+    ]
+    metrics["target_candidate_coverage_macro"] = (
+        float(np.mean(finite_candidate_coverage))
+        if finite_candidate_coverage
         else float("nan")
     )
     flags = np.asarray(artifact.pre_resolution_conflict_flags, dtype=bool)

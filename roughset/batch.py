@@ -270,6 +270,12 @@ def run_policy_matrix(
                             ensure_ascii=False,
                             sort_keys=True,
                         ),
+                        "target_candidate_coverage_macro": fed.get("target_candidate_coverage_macro"),
+                        "target_candidate_coverage_by_class": json.dumps(
+                            fed.get("target_candidate_coverage_by_class", {}),
+                            ensure_ascii=False,
+                            sort_keys=True,
+                        ),
                         "conflict_resolution_accuracy": fed.get("conflict_resolution_accuracy"),
                         "conflict_balanced_accuracy": fed.get("conflict_balanced_accuracy"),
                         "conflict_macro_f1": fed.get("conflict_macro_f1"),
