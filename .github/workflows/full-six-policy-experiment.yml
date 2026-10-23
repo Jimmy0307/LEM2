@@ -64,7 +64,7 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           import pandas as pd
-          import json
+          import numpy as np
 
           root = Path('deliverable/results')
           summary_path = root / 'batch_summary.csv'
@@ -93,23 +93,38 @@ jobs:
           view = df[cols].copy()
           view.to_csv('deliverable/SIX_POLICY_RESULTS_COMPACT.csv', index=False, encoding='utf-8-sig')
 
+          def all_winners(metric):
+              rows = []
+              valid = df.dropna(subset=[metric]).copy()
+              for (dataset, client_count), group in valid.groupby(['dataset','client_count'], sort=True):
+                  best = float(group[metric].max())
+                  tied = group[np.isclose(group[metric].astype(float), best)]
+                  for _, row in tied.iterrows():
+                      rows.append({
+                          'dataset': dataset,
+                          'client_count': int(client_count),
+                          'policy': row['policy'],
+                          metric: float(row[metric]),
+                      })
+              return pd.DataFrame(rows).sort_values(['dataset','client_count','policy'])
+
           if {'dataset','client_count','policy','balanced_accuracy'}.issubset(df.columns):
-              valid = df.dropna(subset=['balanced_accuracy']).copy()
-              idx = valid.groupby(['dataset','client_count'])['balanced_accuracy'].idxmax()
-              winners = valid.loc[idx, ['dataset','client_count','policy','balanced_accuracy']].sort_values(['dataset','client_count'])
-              out.append('## Balanced Accuracy winners')
+              winners = all_winners('balanced_accuracy')
+              out.append('## Balanced Accuracy winners (ties retained)')
               out.append('')
-              out.append(winners.to_markdown(index=False))
+              out.append('```text')
+              out.append(winners.to_string(index=False))
+              out.append('```')
               out.append('')
               winners.to_csv('deliverable/BALANCED_ACCURACY_WINNERS.csv', index=False, encoding='utf-8-sig')
 
           if {'dataset','client_count','policy','macro_f1'}.issubset(df.columns):
-              valid = df.dropna(subset=['macro_f1']).copy()
-              idx = valid.groupby(['dataset','client_count'])['macro_f1'].idxmax()
-              winners = valid.loc[idx, ['dataset','client_count','policy','macro_f1']].sort_values(['dataset','client_count'])
-              out.append('## Macro-F1 winners')
+              winners = all_winners('macro_f1')
+              out.append('## Macro-F1 winners (ties retained)')
               out.append('')
-              out.append(winners.to_markdown(index=False))
+              out.append('```text')
+              out.append(winners.to_string(index=False))
+              out.append('```')
               out.append('')
               winners.to_csv('deliverable/MACRO_F1_WINNERS.csv', index=False, encoding='utf-8-sig')
 
@@ -117,7 +132,9 @@ jobs:
               out.append(f'## {dataset}')
               out.append('')
               use = [c for c in ['client_count','policy','balanced_accuracy','macro_f1','overall_coverage','target_coverage_macro','conflict_balanced_accuracy'] if c in part.columns]
-              out.append(part[use].sort_values(['client_count','policy']).to_markdown(index=False))
+              out.append('```text')
+              out.append(part[use].sort_values(['client_count','policy']).to_string(index=False))
+              out.append('```')
               out.append('')
 
           Path('deliverable/RESULTS_README.md').write_text('\n'.join(out), encoding='utf-8')
