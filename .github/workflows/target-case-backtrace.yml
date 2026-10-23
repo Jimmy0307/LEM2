@@ -1,0 +1,64 @@
+name: Target Case Population Backtrace
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/conflict-client-sweep-20261020
+    paths:
+      - tools/target_case_backtrace.py
+      - tools/target_case_backtrace_trigger.txt
+      - .github/workflows/target-case-backtrace.yml
+
+permissions:
+  contents: read
+
+jobs:
+  backtrace:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+        with:
+          ref: research/conflict-client-sweep-20261020
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements-dev.txt
+
+      - name: Verify source
+        run: |
+          python -m compileall -q roughset main.py tools/target_case_backtrace.py
+          python -m pytest -q
+
+      - name: Run target backtrace
+        run: |
+          set -o pipefail
+          python tools/target_case_backtrace.py 2>&1 | tee target_case_backtrace.log
+
+      - name: Package target backtrace
+        run: |
+          mkdir -p target_backtrace_artifact
+          cp -a outputs/target_case_backtrace/. target_backtrace_artifact/
+          cp target_case_backtrace.log target_backtrace_artifact/
+          git rev-parse HEAD > target_backtrace_artifact/GIT_COMMIT.txt
+          python - <<'PY'
+          import shutil
+          shutil.make_archive('LEM2_TARGET_CASE_BACKTRACE', 'zip', 'target_backtrace_artifact')
+          PY
+
+      - name: Upload target backtrace
+        uses: actions/upload-artifact@v4
+        with:
+          name: lem2-target-case-backtrace
+          path: |
+            target_backtrace_artifact/
+            LEM2_TARGET_CASE_BACKTRACE.zip
+          retention-days: 30
+          if-no-files-found: error
