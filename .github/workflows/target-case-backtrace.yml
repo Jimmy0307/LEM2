@@ -38,6 +38,8 @@ jobs:
           python -m pytest -q
 
       - name: Run target backtrace
+        env:
+          PYTHONPATH: .
         run: |
           set -o pipefail
           python tools/target_case_backtrace.py 2>&1 | tee target_case_backtrace.log
