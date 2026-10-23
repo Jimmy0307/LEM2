@@ -505,7 +505,14 @@ def run_application(
         str(policy).strip().upper()
         for policy in (prediction_policies or [cfg["experiment"]["prediction_policy"]])
     ))
-    supported = {"FIRST_MATCH", "SIMPLE_VOTING", "STANDARD_VOTING", "GLOBAL_STRENGTH"}
+    supported = {
+        "FIRST_MATCH",
+        "SIMPLE_VOTING",
+        "STANDARD_VOTING",
+        "GLOBAL_STRENGTH",
+        "POPULATION_STANDARD",
+        "POPULATION_GLOBAL",
+    }
     unknown = set(policies) - supported
     if not policies or unknown:
         raise ValueError(f"Unsupported or empty prediction policy list: {sorted(unknown)}")
