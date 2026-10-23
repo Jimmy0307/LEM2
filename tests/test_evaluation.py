@@ -6,6 +6,7 @@ from roughset.evaluation import (
     predict_with_policy, fit_rule_weights, fit_rule_support_sets,
     balanced_accuracy, macro_f1_score, pairwise_rule_jaccard,
     audit_rule_conflicts, audit_conflict_cases, evaluate_rule_model,
+    target_coverage_by_class, target_candidate_coverage_by_class,
 )
 
 
@@ -60,3 +61,20 @@ def test_conflict_case_and_resolution_accuracy():
     assert audit['conflict_case_count'] == 1
     assert audit['conflict_case_rate'] == 0.5
     assert audit['conflict_resolution_accuracy'] == 1.0
+
+
+def test_target_candidate_coverage_requires_a_matching_rule_for_the_true_class():
+    y_true = ['A', 'A', 'B']
+    matched = [
+        [Rule((('x','1'),), 'B')],
+        [Rule((('x','2'),), 'A')],
+        [],
+    ]
+
+    ordinary = target_coverage_by_class(y_true, matched)
+    candidate = target_candidate_coverage_by_class(y_true, matched)
+
+    # Ordinary target coverage asks only whether any rule matched.
+    assert ordinary == {'A': 1.0, 'B': 0.0}
+    # Candidate coverage asks whether the true decision itself is represented.
+    assert candidate == {'A': 0.5, 'B': 0.0}
