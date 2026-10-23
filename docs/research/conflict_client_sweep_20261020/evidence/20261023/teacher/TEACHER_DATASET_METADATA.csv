@@ -1,0 +1,13 @@
+﻿dataset,dataset_rows,dataset_columns,condition_attribute_count,target_column,class_count,train_rows,test_rows,client_count,fold
+Balance Scale,625,5,4,class,3,499,126,2,1
+Balance Scale,625,5,4,class,3,499,126,3,1
+Balance Scale,625,5,4,class,3,499,126,4,1
+Balance Scale,625,5,4,class,3,499,126,5,1
+Car Evaluation,1728,7,6,class,4,1382,346,2,1
+Car Evaluation,1728,7,6,class,4,1382,346,3,1
+Car Evaluation,1728,7,6,class,4,1382,346,4,1
+Car Evaluation,1728,7,6,class,4,1382,346,5,1
+Hayes-Roth,132,5,4,class,3,106,26,2,1
+Hayes-Roth,132,5,4,class,3,106,26,3,1
+Hayes-Roth,132,5,4,class,3,106,26,4,1
+Hayes-Roth,132,5,4,class,3,106,26,5,1
