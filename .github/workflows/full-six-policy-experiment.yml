@@ -1,0 +1,145 @@
+name: Full Six-Policy Experiment
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/conflict-client-sweep-20261020
+    paths:
+      - tools/full_experiment_trigger.txt
+
+permissions:
+  contents: read
+
+jobs:
+  full-experiment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+        with:
+          ref: research/conflict-client-sweep-20261020
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements-dev.txt
+
+      - name: Verify source before experiment
+        run: |
+          python -m compileall -q roughset main.py
+          python -m pytest -q | tee pytest_before_full_run.log
+
+      - name: Run complete six-policy matrix
+        run: |
+          set -o pipefail
+          python main.py --config config.json --all-policies 2>&1 | tee full_run.log
+
+      - name: Assemble deliverable
+        shell: bash
+        run: |
+          set -euo pipefail
+          RUN_DIR=$(find outputs/batch_runs -mindepth 1 -maxdepth 1 -type d -printf '%T@ %p\n' | sort -nr | head -1 | cut -d' ' -f2-)
+          echo "RUN_DIR=$RUN_DIR" >> "$GITHUB_ENV"
+          mkdir -p deliverable/results deliverable/code
+          cp -a "$RUN_DIR"/. deliverable/results/
+          cp full_run.log pytest_before_full_run.log deliverable/
+          cp main.py config.json requirements.txt requirements-dev.txt requirements-lock.txt deliverable/code/
+          cp -a roughset deliverable/code/
+          cp -a reference deliverable/code/
+          cp -a tests deliverable/code/
+          cp -a real_data deliverable/code/
+          mkdir -p deliverable/code/docs/research
+          cp -a docs/research/conflict_client_sweep_20261020 deliverable/code/docs/research/
+          git rev-parse HEAD > deliverable/GIT_COMMIT.txt
+          git status --short > deliverable/GIT_STATUS.txt
+
+      - name: Build human-readable result summary
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd
+          import json
+
+          root = Path('deliverable/results')
+          summary_path = root / 'batch_summary.csv'
+          if not summary_path.exists():
+              candidates = list(root.rglob('batch_summary.csv'))
+              if not candidates:
+                  raise SystemExit('batch_summary.csv not found')
+              summary_path = candidates[0]
+
+          df = pd.read_csv(summary_path)
+          out = []
+          out.append('# Full Six-Policy Experiment Results')
+          out.append('')
+          out.append('Protocol: 3 UCI datasets × client counts C={2,3,4,5} × 6 prediction policies; HOLDOUT test_ratio=0.2, seed=42.')
+          out.append('')
+          out.append(f'Rows in batch summary: {len(df)}')
+          out.append('')
+
+          cols = [c for c in [
+              'dataset','client_count','policy','train_rows','test_rows',
+              'balanced_accuracy','macro_f1','accuracy','recall_macro',
+              'overall_coverage','target_coverage_macro',
+              'conflict_balanced_accuracy','conflict_macro_f1',
+              'pre_resolution_conflict_case_rate'
+          ] if c in df.columns]
+          view = df[cols].copy()
+          view.to_csv('deliverable/SIX_POLICY_RESULTS_COMPACT.csv', index=False, encoding='utf-8-sig')
+
+          if {'dataset','client_count','policy','balanced_accuracy'}.issubset(df.columns):
+              valid = df.dropna(subset=['balanced_accuracy']).copy()
+              idx = valid.groupby(['dataset','client_count'])['balanced_accuracy'].idxmax()
+              winners = valid.loc[idx, ['dataset','client_count','policy','balanced_accuracy']].sort_values(['dataset','client_count'])
+              out.append('## Balanced Accuracy winners')
+              out.append('')
+              out.append(winners.to_markdown(index=False))
+              out.append('')
+              winners.to_csv('deliverable/BALANCED_ACCURACY_WINNERS.csv', index=False, encoding='utf-8-sig')
+
+          if {'dataset','client_count','policy','macro_f1'}.issubset(df.columns):
+              valid = df.dropna(subset=['macro_f1']).copy()
+              idx = valid.groupby(['dataset','client_count'])['macro_f1'].idxmax()
+              winners = valid.loc[idx, ['dataset','client_count','policy','macro_f1']].sort_values(['dataset','client_count'])
+              out.append('## Macro-F1 winners')
+              out.append('')
+              out.append(winners.to_markdown(index=False))
+              out.append('')
+              winners.to_csv('deliverable/MACRO_F1_WINNERS.csv', index=False, encoding='utf-8-sig')
+
+          for dataset, part in df.groupby('dataset'):
+              out.append(f'## {dataset}')
+              out.append('')
+              use = [c for c in ['client_count','policy','balanced_accuracy','macro_f1','overall_coverage','target_coverage_macro','conflict_balanced_accuracy'] if c in part.columns]
+              out.append(part[use].sort_values(['client_count','policy']).to_markdown(index=False))
+              out.append('')
+
+          Path('deliverable/RESULTS_README.md').write_text('\n'.join(out), encoding='utf-8')
+          PY
+
+      - name: Create source and combined archives
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import shutil
+          shutil.make_archive('deliverable/FEDERATED_LEM2_SIX_POLICY_CODE', 'zip', 'deliverable/code')
+          shutil.make_archive('FEDERATED_LEM2_SIX_POLICY_FULL_RUN', 'zip', 'deliverable')
+          Path('deliverable/FULL_ARCHIVE_SHA256.txt').write_text('', encoding='utf-8')
+          PY
+          sha256sum FEDERATED_LEM2_SIX_POLICY_FULL_RUN.zip > deliverable/FULL_ARCHIVE_SHA256.txt
+
+      - name: Upload complete deliverable
+        uses: actions/upload-artifact@v4
+        with:
+          name: federated-lem2-six-policy-full-run
+          path: |
+            deliverable/
+            FEDERATED_LEM2_SIX_POLICY_FULL_RUN.zip
+          retention-days: 30
+          if-no-files-found: error
