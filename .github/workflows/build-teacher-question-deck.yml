@@ -8,6 +8,7 @@ on:
     paths:
       - tools/build_teacher_question_deck.py
       - tools/reflow_teacher_deck_tables.py
+      - tools/enrich_teacher_target_backtrace.py
       - docs/research/conflict_client_sweep_20261020/evidence/20261023/teacher/**
       - .github/workflows/build-teacher-question-deck.yml
 
@@ -37,6 +38,7 @@ jobs:
         run: |
           python tools/build_teacher_question_deck.py
           python tools/reflow_teacher_deck_tables.py
+          python tools/enrich_teacher_target_backtrace.py
       - name: Validate and export PDF
         shell: bash
         run: |
@@ -46,8 +48,8 @@ jobs:
           from pptx import Presentation
           p=Path('docs/research/conflict_client_sweep_20261020/presentation/Federated_LEM2_Teacher_Questions_Complete_20261023.pptx')
           prs=Presentation(p)
-          assert len(prs.slides)==23, len(prs.slides)
-          assert p.stat().st_size > 50000, p.stat().st_size
+          assert len(prs.slides)==33, len(prs.slides)
+          assert p.stat().st_size > 80000, p.stat().st_size
           assert sum(1 for s in prs.slides for sh in s.shapes if getattr(sh, 'has_table', False)) == 0
           print('PPTX_VALIDATION=PASS', len(prs.slides), p.stat().st_size, 'tables=0')
           PY
@@ -66,5 +68,5 @@ jobs:
             echo 'No presentation changes.'
             exit 0
           fi
-          git commit -m "docs: reflow teacher deck tables for stable rendering"
+          git commit -m "docs: add target backtrace derivation to teacher deck"
           git push origin HEAD:research/conflict-client-sweep-20261020
