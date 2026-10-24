@@ -9,6 +9,7 @@ on:
       - tools/build_teacher_question_deck.py
       - tools/reflow_teacher_deck_tables.py
       - tools/enrich_teacher_target_backtrace.py
+      - tools/clarify_teacher_target_conflict.py
       - docs/research/conflict_client_sweep_20261020/evidence/20261023/teacher/**
       - .github/workflows/build-teacher-question-deck.yml
 
@@ -39,6 +40,7 @@ jobs:
           python tools/build_teacher_question_deck.py
           python tools/reflow_teacher_deck_tables.py
           python tools/enrich_teacher_target_backtrace.py
+          python tools/clarify_teacher_target_conflict.py
       - name: Validate and export PDF
         shell: bash
         run: |
@@ -68,5 +70,5 @@ jobs:
             echo 'No presentation changes.'
             exit 0
           fi
-          git commit -m "docs: add target backtrace derivation to teacher deck"
+          git commit -m "docs: clarify target backtrace and conflict-count mechanism"
           git push origin HEAD:research/conflict-client-sweep-20261020
