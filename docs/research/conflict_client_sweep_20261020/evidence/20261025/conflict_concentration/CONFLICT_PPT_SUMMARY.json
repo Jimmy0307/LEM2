@@ -1,0 +1,403 @@
+{
+  "total_conflict_occurrences": 908,
+  "total_configuration_test_evaluations": 1992,
+  "overall_conflict_rate": 0.45582329317269077,
+  "dataset_conflicts": {
+    "Balance Scale": 266,
+    "Car Evaluation": 598,
+    "Hayes-Roth": 44
+  },
+  "client_conflicts": {
+    "2": 135,
+    "3": 210,
+    "4": 253,
+    "5": 310
+  },
+  "true_candidate_missing_count": 45,
+  "unique_conflict_objects": 392,
+  "persistence_weighted_occurrences": 908,
+  "persistence_distribution": {
+    "1": 106,
+    "2": 123,
+    "3": 96,
+    "4": 67
+  },
+  "top_candidate_signatures": {
+    "Balance Scale": [
+      {
+        "candidate_signature": "L|R",
+        "conflict_count": 149
+      },
+      {
+        "candidate_signature": "B|L|R",
+        "conflict_count": 51
+      },
+      {
+        "candidate_signature": "B|L",
+        "conflict_count": 38
+      },
+      {
+        "candidate_signature": "B|R",
+        "conflict_count": 28
+      }
+    ],
+    "Car Evaluation": [
+      {
+        "candidate_signature": "acc|unacc",
+        "conflict_count": 335
+      },
+      {
+        "candidate_signature": "acc|good",
+        "conflict_count": 61
+      },
+      {
+        "candidate_signature": "acc|vgood",
+        "conflict_count": 45
+      },
+      {
+        "candidate_signature": "acc|good|unacc",
+        "conflict_count": 29
+      },
+      {
+        "candidate_signature": "acc|good|vgood",
+        "conflict_count": 29
+      }
+    ],
+    "Hayes-Roth": [
+      {
+        "candidate_signature": "1.0|2.0",
+        "conflict_count": 30
+      },
+      {
+        "candidate_signature": "1.0|2.0|3.0",
+        "conflict_count": 5
+      },
+      {
+        "candidate_signature": "2.0|3.0",
+        "conflict_count": 5
+      },
+      {
+        "candidate_signature": "1.0|3.0",
+        "conflict_count": 4
+      }
+    ]
+  },
+  "top_true_classes": {
+    "Balance Scale": [
+      {
+        "true_class": "R",
+        "conflict_count": 128
+      },
+      {
+        "true_class": "L",
+        "conflict_count": 106
+      },
+      {
+        "true_class": "B",
+        "conflict_count": 32
+      }
+    ],
+    "Car Evaluation": [
+      {
+        "true_class": "unacc",
+        "conflict_count": 374
+      },
+      {
+        "true_class": "acc",
+        "conflict_count": 151
+      },
+      {
+        "true_class": "good",
+        "conflict_count": 41
+      },
+      {
+        "true_class": "vgood",
+        "conflict_count": 32
+      }
+    ],
+    "Hayes-Roth": [
+      {
+        "true_class": "1.0",
+        "conflict_count": 18
+      },
+      {
+        "true_class": "3.0",
+        "conflict_count": 14
+      },
+      {
+        "true_class": "2.0",
+        "conflict_count": 12
+      }
+    ]
+  },
+  "top_factor_values_within_conflicts": {
+    "Balance Scale": [
+      {
+        "factor": "right_weight",
+        "value": "1",
+        "conflict_count": 73,
+        "share_within_dataset_conflicts": 0.2744360902255639
+      },
+      {
+        "factor": "right_distance",
+        "value": "4",
+        "conflict_count": 72,
+        "share_within_dataset_conflicts": 0.2706766917293233
+      },
+      {
+        "factor": "left_distance",
+        "value": "5",
+        "conflict_count": 65,
+        "share_within_dataset_conflicts": 0.24436090225563908
+      },
+      {
+        "factor": "left_weight",
+        "value": "1",
+        "conflict_count": 65,
+        "share_within_dataset_conflicts": 0.24436090225563908
+      },
+      {
+        "factor": "left_weight",
+        "value": "3",
+        "conflict_count": 63,
+        "share_within_dataset_conflicts": 0.23684210526315788
+      },
+      {
+        "factor": "right_distance",
+        "value": "5",
+        "conflict_count": 63,
+        "share_within_dataset_conflicts": 0.23684210526315788
+      },
+      {
+        "factor": "right_distance",
+        "value": "3",
+        "conflict_count": 61,
+        "share_within_dataset_conflicts": 0.22932330827067668
+      },
+      {
+        "factor": "right_weight",
+        "value": "2",
+        "conflict_count": 61,
+        "share_within_dataset_conflicts": 0.22932330827067668
+      },
+      {
+        "factor": "left_distance",
+        "value": "1",
+        "conflict_count": 55,
+        "share_within_dataset_conflicts": 0.20676691729323307
+      },
+      {
+        "factor": "left_distance",
+        "value": "4",
+        "conflict_count": 55,
+        "share_within_dataset_conflicts": 0.20676691729323307
+      },
+      {
+        "factor": "left_weight",
+        "value": "2",
+        "conflict_count": 54,
+        "share_within_dataset_conflicts": 0.20300751879699247
+      },
+      {
+        "factor": "right_weight",
+        "value": "3",
+        "conflict_count": 53,
+        "share_within_dataset_conflicts": 0.19924812030075187
+      }
+    ],
+    "Car Evaluation": [
+      {
+        "factor": "persons",
+        "value": "more",
+        "conflict_count": 240,
+        "share_within_dataset_conflicts": 0.4013377926421405
+      },
+      {
+        "factor": "safety",
+        "value": "high",
+        "conflict_count": 239,
+        "share_within_dataset_conflicts": 0.3996655518394649
+      },
+      {
+        "factor": "safety",
+        "value": "med",
+        "conflict_count": 235,
+        "share_within_dataset_conflicts": 0.39297658862876256
+      },
+      {
+        "factor": "persons",
+        "value": "4",
+        "conflict_count": 231,
+        "share_within_dataset_conflicts": 0.3862876254180602
+      },
+      {
+        "factor": "lug_boot",
+        "value": "big",
+        "conflict_count": 223,
+        "share_within_dataset_conflicts": 0.3729096989966555
+      },
+      {
+        "factor": "lug_boot",
+        "value": "med",
+        "conflict_count": 203,
+        "share_within_dataset_conflicts": 0.3394648829431438
+      },
+      {
+        "factor": "buying",
+        "value": "low",
+        "conflict_count": 195,
+        "share_within_dataset_conflicts": 0.32608695652173914
+      },
+      {
+        "factor": "maint",
+        "value": "low",
+        "conflict_count": 186,
+        "share_within_dataset_conflicts": 0.3110367892976589
+      },
+      {
+        "factor": "lug_boot",
+        "value": "small",
+        "conflict_count": 172,
+        "share_within_dataset_conflicts": 0.28762541806020064
+      },
+      {
+        "factor": "doors",
+        "value": "2",
+        "conflict_count": 166,
+        "share_within_dataset_conflicts": 0.27759197324414714
+      },
+      {
+        "factor": "buying",
+        "value": "med",
+        "conflict_count": 156,
+        "share_within_dataset_conflicts": 0.2608695652173913
+      },
+      {
+        "factor": "doors",
+        "value": "4",
+        "conflict_count": 155,
+        "share_within_dataset_conflicts": 0.2591973244147157
+      }
+    ],
+    "Hayes-Roth": [
+      {
+        "factor": "hobby",
+        "value": "3",
+        "conflict_count": 23,
+        "share_within_dataset_conflicts": 0.5227272727272727
+      },
+      {
+        "factor": "marital_status",
+        "value": "1",
+        "conflict_count": 23,
+        "share_within_dataset_conflicts": 0.5227272727272727
+      },
+      {
+        "factor": "educational_level",
+        "value": "2",
+        "conflict_count": 21,
+        "share_within_dataset_conflicts": 0.4772727272727273
+      },
+      {
+        "factor": "age",
+        "value": "1",
+        "conflict_count": 15,
+        "share_within_dataset_conflicts": 0.3409090909090909
+      },
+      {
+        "factor": "age",
+        "value": "2",
+        "conflict_count": 15,
+        "share_within_dataset_conflicts": 0.3409090909090909
+      },
+      {
+        "factor": "educational_level",
+        "value": "1",
+        "conflict_count": 13,
+        "share_within_dataset_conflicts": 0.29545454545454547
+      },
+      {
+        "factor": "hobby",
+        "value": "2",
+        "conflict_count": 13,
+        "share_within_dataset_conflicts": 0.29545454545454547
+      },
+      {
+        "factor": "age",
+        "value": "3",
+        "conflict_count": 10,
+        "share_within_dataset_conflicts": 0.22727272727272727
+      },
+      {
+        "factor": "marital_status",
+        "value": "2",
+        "conflict_count": 10,
+        "share_within_dataset_conflicts": 0.22727272727272727
+      },
+      {
+        "factor": "hobby",
+        "value": "1",
+        "conflict_count": 8,
+        "share_within_dataset_conflicts": 0.18181818181818182
+      },
+      {
+        "factor": "marital_status",
+        "value": "3",
+        "conflict_count": 7,
+        "share_within_dataset_conflicts": 0.1590909090909091
+      },
+      {
+        "factor": "educational_level",
+        "value": "4",
+        "conflict_count": 6,
+        "share_within_dataset_conflicts": 0.13636363636363635
+      }
+    ]
+  },
+  "policy_overall": {
+    "FIRST_MATCH": {
+      "correct": 655,
+      "conflict_count": 908,
+      "conflict_accuracy": 0.7213656387665198
+    },
+    "GLOBAL_STRENGTH": {
+      "correct": 661,
+      "conflict_count": 908,
+      "conflict_accuracy": 0.7279735682819384
+    },
+    "POPULATION_GLOBAL": {
+      "correct": 658,
+      "conflict_count": 908,
+      "conflict_accuracy": 0.724669603524229
+    },
+    "POPULATION_STANDARD": {
+      "correct": 696,
+      "conflict_count": 908,
+      "conflict_accuracy": 0.7665198237885462
+    },
+    "SIMPLE_VOTING": {
+      "correct": 622,
+      "conflict_count": 908,
+      "conflict_accuracy": 0.6850220264317181
+    },
+    "STANDARD_VOTING": {
+      "correct": 699,
+      "conflict_count": 908,
+      "conflict_accuracy": 0.7698237885462555
+    }
+  },
+  "transition_totals": {
+    "GS_TO_PG": {
+      "CHANGED_SAME_CORRECTNESS": 4,
+      "CORRECTED": 10,
+      "HARMED": 13,
+      "UNCHANGED": 881
+    },
+    "STD_TO_PS": {
+      "CHANGED_SAME_CORRECTNESS": 1,
+      "CORRECTED": 6,
+      "HARMED": 9,
+      "UNCHANGED": 892
+    }
+  }
+}

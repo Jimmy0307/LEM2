@@ -1,0 +1,57 @@
+﻿dataset,factor,value,conflict_count,share_within_dataset_conflicts
+Balance Scale,left_distance,1,55,0.20676691729323307
+Balance Scale,left_distance,2,39,0.14661654135338345
+Balance Scale,left_distance,3,52,0.19548872180451127
+Balance Scale,left_distance,4,55,0.20676691729323307
+Balance Scale,left_distance,5,65,0.24436090225563908
+Balance Scale,left_weight,1,65,0.24436090225563908
+Balance Scale,left_weight,2,54,0.20300751879699247
+Balance Scale,left_weight,3,63,0.23684210526315788
+Balance Scale,left_weight,4,52,0.19548872180451127
+Balance Scale,left_weight,5,32,0.12030075187969924
+Balance Scale,right_distance,1,37,0.13909774436090225
+Balance Scale,right_distance,2,33,0.12406015037593984
+Balance Scale,right_distance,3,61,0.22932330827067668
+Balance Scale,right_distance,4,72,0.2706766917293233
+Balance Scale,right_distance,5,63,0.23684210526315788
+Balance Scale,right_weight,1,73,0.2744360902255639
+Balance Scale,right_weight,2,61,0.22932330827067668
+Balance Scale,right_weight,3,53,0.19924812030075187
+Balance Scale,right_weight,4,46,0.17293233082706766
+Balance Scale,right_weight,5,33,0.12406015037593984
+Car Evaluation,buying,high,134,0.22408026755852842
+Car Evaluation,buying,low,195,0.32608695652173914
+Car Evaluation,buying,med,156,0.2608695652173913
+Car Evaluation,buying,vhigh,113,0.18896321070234115
+Car Evaluation,doors,2,166,0.27759197324414714
+Car Evaluation,doors,3,148,0.24749163879598662
+Car Evaluation,doors,4,155,0.2591973244147157
+Car Evaluation,doors,5more,129,0.2157190635451505
+Car Evaluation,lug_boot,big,223,0.3729096989966555
+Car Evaluation,lug_boot,med,203,0.3394648829431438
+Car Evaluation,lug_boot,small,172,0.28762541806020064
+Car Evaluation,maint,high,144,0.2408026755852843
+Car Evaluation,maint,low,186,0.3110367892976589
+Car Evaluation,maint,med,140,0.23411371237458195
+Car Evaluation,maint,vhigh,128,0.2140468227424749
+Car Evaluation,persons,2,127,0.21237458193979933
+Car Evaluation,persons,4,231,0.3862876254180602
+Car Evaluation,persons,more,240,0.4013377926421405
+Car Evaluation,safety,high,239,0.3996655518394649
+Car Evaluation,safety,low,124,0.20735785953177258
+Car Evaluation,safety,med,235,0.39297658862876256
+Hayes-Roth,age,1,15,0.3409090909090909
+Hayes-Roth,age,2,15,0.3409090909090909
+Hayes-Roth,age,3,10,0.22727272727272727
+Hayes-Roth,age,4,4,0.09090909090909091
+Hayes-Roth,educational_level,1,13,0.29545454545454547
+Hayes-Roth,educational_level,2,21,0.4772727272727273
+Hayes-Roth,educational_level,3,4,0.09090909090909091
+Hayes-Roth,educational_level,4,6,0.13636363636363635
+Hayes-Roth,hobby,1,8,0.18181818181818182
+Hayes-Roth,hobby,2,13,0.29545454545454547
+Hayes-Roth,hobby,3,23,0.5227272727272727
+Hayes-Roth,marital_status,1,23,0.5227272727272727
+Hayes-Roth,marital_status,2,10,0.22727272727272727
+Hayes-Roth,marital_status,3,7,0.1590909090909091
+Hayes-Roth,marital_status,4,4,0.09090909090909091
