@@ -1,0 +1,50 @@
+    add_rect(s,.92,3.53,7.25,1.55,PALE_BLUE,LIGHT2); add_text(s,'106×1 + 123×2 + 96×3 + 67×4 = 908 occurrences',1.15,3.82,6.8,.38,16,True,NAVY,PP_ALIGN.CENTER); add_text(s,'Persistence(x) = x 在 C={2,3,4,5} 中被判為 conflict 的 distinct client-count 數',1.18,4.35,6.75,.35,10,False,GRAY,PP_ALIGN.CENTER)
+    add_kpi(s,8.55,3.42,3.75,1.02,'286 / 392 = 73.0%','至少在 2 個 C 重複 conflict',TEAL); add_kpi(s,8.55,4.58,3.75,1.02,'67 / 392 = 17.1%','四種 C 全部 conflict',ORANGE)
+    add_text(s,'67 個 persistent objects 貢獻 268 / 908 = 29.5% 的 conflict occurrences。',1.02,5.42,7,.4,10.5,True,TEAL); add_text(s,'解讀邊界：這證明 frozen split 下存在「反覆出現」的 subset；它提示 structural overlap，但本身還不是 causal proof。',1.02,5.84,11.25,.38,9.2,False,GRAY)
+    add_conclusion(s,'Conflict 同時包含 partition-sensitive 與 persistent cases；不能把 908 全部直接叫成 structural conflict。'); return s
+
+def add_boundary_slide(prs,summary):
+    s=prs.slides.add_slide(prs.slide_layouts[6]); add_title(s,'Conflict 不是平均撞：高度集中在少數 decision boundaries','Candidate(x) 組合顯示 cross-decision overlap 有明顯結構，不是在所有 class pairs 均勻散開')
+    cfg=[('Balance Scale',TEAL,'R 128 · L 106 · B 32'),('Car Evaluation',BLUE,'unacc 374 · acc 151 · good 41 · vgood 32'),('Hayes-Roth',ORANGE,'class1 18 · class3 14 · class2 12')]
+    totals=summary['dataset_conflicts']
+    for i,(ds,col,truecounts) in enumerate(cfg):
+        top=summary['top_candidate_signatures'][ds][0]; sig=top['candidate_signature'].replace('|',' | '); n=top['conflict_count']; pct=100*n/totals[ds]; x=.78+i*4.15
+        add_rect(s,x,1.56,3.72,3.78,WHITE,LIGHT2); add_text(s,ds,x+.22,1.78,3.28,.30,12.2,True,NAVY,PP_ALIGN.CENTER); add_text(s,'Top candidate signature',x+.22,2.28,3.28,.24,8.7,False,GRAY,PP_ALIGN.CENTER); add_text(s,sig,x+.22,2.62,3.28,.50,20,True,col,PP_ALIGN.CENTER); add_text(s,f'{n} / {totals[ds]} = {pct:.1f}%',x+.22,3.21,3.28,.34,12.2,True,NAVY,PP_ALIGN.CENTER)
+        add_rect(s,x+.42,3.72,2.88,.18,LIGHT2,LIGHT2,False,0); bar=s.shapes.add_shape(MSO_SHAPE.RECTANGLE,Inches(x+.42),Inches(3.72),Inches(2.88*pct/100),Inches(.18)); bar.fill.solid(); bar.fill.fore_color.rgb=col; bar.line.fill.background(); add_text(s,'True-class conflict occurrences',x+.22,4.20,3.28,.23,8.4,False,GRAY,PP_ALIGN.CENTER); add_text(s,truecounts,x+.22,4.52,3.28,.55,9.4,True,NAVY,PP_ALIGN.CENTER)
+    add_rect(s,.92,5.58,11.42,.58,PALE_RED,PALE_RED); add_text(s,'注意：true-class / factor-value 目前都是「conflict 內部的出現次數」，沒有 non-conflict denominator，因此不能直接解讀成 class risk 或因果效果。',1.10,5.72,11.05,.28,9,False,RED,PP_ALIGN.CENTER); add_conclusion(s,'最主要的 conflict boundary 已可定位：Balance 的 L↔R、Car 的 acc↔unacc、Hayes 的 class 1↔2 最集中。'); return s
+
+def add_method_issues_slide(prs):
+    s=prs.slides.add_slide(prs.slide_layouts[6]); add_title(s,'同一個 Conflict，六種方法各自可能在哪裡出問題？','Conflict set 完全相同；差別不是「誰製造 conflict」，而是 resolver 使用哪種 evidence、因此產生哪種 bias')
+    items=[('FIRST_MATCH','Order bias：第一條 matching rule 直接決定 winner。\n較晚出現、即使證據更強的 rule 也可能完全被忽略。',PALE_ORANGE,ORANGE),('SIMPLE','Rule-count bias：每條 rule 等權。\n多條寬／重疊 rules 可用票數壓過較少但 evidence 更強的 rules。',RGBColor(0xF8,0xF3,0xDE),GOLD),('STANDARD','Duplication bias：比較 T_d = support occurrences。\n同一 training object 可跨多條 matching rules 被重複計價。',PALE_BLUE,BLUE),('GLOBAL','Relative-coverage sensitivity：比較 U_d / N_d。\n已對 object 去重，但看的是 class 內「相對覆蓋率」，不是絕對 evidence 量。',RGBColor(0xE6,0xF1,0xE7),GREEN),('POPULATION STANDARD','De-dup over-correction：只比較 unique U_d。\n16 次翻 winner：6 corrected · 9 harmed · 1 wrong→wrong。',PALE_TEAL,TEAL),('POPULATION GLOBAL','Redundancy-penalty over-correction：GS × U_d/T_d。\n27 次翻 winner：10 corrected · 13 harmed · 4 same correctness。',PALE_RED,RED)]
+    for i,(name,body,fill,col) in enumerate(items):
+        row=i//2; colidx=i%2; x=1.0+colidx*6.05; y=1.45+row*1.48; add_rect(s,x,y,5.65,1.16,fill,LIGHT2); stripe=s.shapes.add_shape(MSO_SHAPE.RECTANGLE,Inches(x+.12),Inches(y+.16),Inches(.07),Inches(.87)); stripe.fill.solid(); stripe.fill.fore_color.rgb=col; stripe.line.fill.background(); add_text(s,name,x+.34,y+.18,5.0,.28,11.2,True,NAVY); add_text(s,body,x+.34,y+.56,5.0,.49,9.4,False,NAVY)
+    add_text(s,'Mechanism-level failure modes',1.0,5.94,4.8,.28,9.2,True,GRAY,PP_ALIGN.CENTER); add_text(s,'Observed population-correction outcomes',7.1,5.94,4.8,.28,9.2,True,RED,PP_ALIGN.CENTER); add_conclusion(s,'同一 908 cases 的 resolver audit 已完成：整體 conflict-only accuracy 最高為 STANDARD 77.0%，但各 dataset 的最佳 resolver 不同。'); return s
+
+def add_resolver_slide(prs,summary):
+    s=prs.slides.add_slide(prs.slide_layouts[6]); add_title(s,'同一 908 個 Conflict：六種 Resolver 到底誰比較會選對？','Conflict-only accuracy；六種方法的分母完全相同 = 908，現在可以直接比較 resolver 本身')
+    order=[('STANDARD_VOTING','STANDARD',TEAL),('POPULATION_STANDARD','POPULATION STANDARD',GREEN),('GLOBAL_STRENGTH','GLOBAL STRENGTH',BLUE),('POPULATION_GLOBAL','POPULATION GLOBAL',GOLD),('FIRST_MATCH','FIRST MATCH',ORANGE),('SIMPLE_VOTING','SIMPLE VOTING',GRAY)]
+    add_rect(s,.72,1.47,7.52,4.72,WHITE,LIGHT2)
+    for i,(key,label,col) in enumerate(order):
+        rec=summary['policy_overall'][key]; acc=rec['conflict_accuracy']; correct=rec['correct']; y=1.78+i*.68; add_text(s,label,.98,y,2.2,.28,9.1,True,NAVY); bg=s.shapes.add_shape(MSO_SHAPE.RECTANGLE,Inches(3.08),Inches(y+.02),Inches(3.65),Inches(.22)); bg.fill.solid(); bg.fill.fore_color.rgb=LIGHT2; bg.line.fill.background(); fg=s.shapes.add_shape(MSO_SHAPE.RECTANGLE,Inches(3.08),Inches(y+.02),Inches(3.65*acc),Inches(.22)); fg.fill.solid(); fg.fill.fore_color.rgb=col; fg.line.fill.background(); add_text(s,f'{acc*100:.1f}%  ({correct}/908)',6.92,y-.03,1.05,.30,9,True,col,PP_ALIGN.RIGHT)
+    add_rect(s,8.52,1.47,3.82,2.35,PALE_BLUE,LIGHT2); add_text(s,'Dataset-specific best resolver',8.78,1.72,3.30,.30,11.2,True,NAVY,PP_ALIGN.CENTER); add_text(s,'Balance   PS  195/266 = 73.3%\nCar       FIRST 486/598 = 81.3%\nHayes     FIRST 36/44 = 81.8%',8.90,2.20,3.05,1.10,10.1,True,NAVY); add_text(s,'→ 沒有 universal winner',8.80,3.33,3.25,.25,9.8,True,TEAL,PP_ALIGN.CENTER)
+    t=summary['transition_totals']; add_rect(s,8.52,4.03,3.82,2.08,PALE_ORANGE,LIGHT2); add_text(s,'Population correction 的 net effect',8.78,4.25,3.30,.30,10.8,True,NAVY,PP_ALIGN.CENTER); add_text(s,f"STD → PS\n{t['STD_TO_PS']['CORRECTED']} corrected vs {t['STD_TO_PS']['HARMED']} harmed → net −3 correct\n\nGS → PG\n{t['GS_TO_PG']['CORRECTED']} corrected vs {t['GS_TO_PG']['HARMED']} harmed → net −3 correct",8.90,4.72,3.05,1.20,9.2,False,NAVY); add_conclusion(s,'Population correction 的行為符合去重設計，但在目前 frozen experiment 並沒有整體勝過原 Standard / Global baseline。'); return s
+
+def build(source:Path,summary_path:Path,output:Path):
+    summary=json.loads(summary_path.read_text(encoding='utf-8')); assert summary['total_conflict_occurrences']==908 and summary['unique_conflict_objects']==392
+    prs=Presentation(source)
+    # Refuse to double-add.
+    for t in ['908 個 Conflict 到底集中在哪裡？','同一個 Conflict，六種方法各自可能在哪裡出問題？']:
+        try: title_slide(prs,t); raise RuntimeError(f'source already contains generated slide: {t}')
+        except KeyError: pass
+    # Clarify the existing C→Conflict slide into direct vs structural causes.
+    cause = title_slide(prs,'為什麼 C 從 2 增加到 5，Conflict 通常會上升？')
+    for sh in cause.shapes:
+        if not hasattr(sh,'text'): continue
+        if sh.text.strip()=='為什麼 C 從 2 增加到 5，Conflict 通常會上升？': replace_text(sh,'Conflict 為什麼會產生？直接原因 vs. 結構性原因',23.5,NAVY,True)
+        elif sh.text.startswith('目前資料最一致的結構鏈'): replace_text(sh,'直接原因是 cross-decision rule overlap；client fragmentation 只是在目前資料中提高 overlap 的機率',12,TEAL)
+        elif sh.text.strip()=='直覺': replace_text(sh,'結構性原因',11,TEAL,True)
+        elif sh.text.startswith('同樣 80% training'): replace_text(sh,'同樣 80% training 切成更多 clients 後，每個 client 可見資料變少。\nLocal LEM2 在目前資料中傾向形成較短、較一般的 rules；UNION 後更容易同時覆蓋同一個 test x。',9.5,NAVY)
+        elif sh.text.strip()=='但不是定理': replace_text(sh,'直接原因',11,TEAL,True)
+        elif sh.text.startswith('Hayes test 只有'): replace_text(sh,'真正的 Conflict 條件永遠是 |Candidate(x)| > 1：同一個 x 同時命中「不同 decision」的 rules。\nFragmentation 本身不等於 conflict；Hayes C=3→4 的回落也顯示它不是單調定理。',9.5,NAVY)
+        elif sh.text.startswith('Conflict 上升是 rule structure'): replace_text(sh,'直接原因 = 同一 x 同時命中不同 decision rules；結構原因 = fragmentation 改變 rule generality / overlap。',9.2,NAVY)
+    sA=add_concentration_slide(prs,summary); sB=add_persistence_slide(prs,summary); sC=add_boundary_slide(prs,summary); sM=add_method_issues_slide(prs); sD=add_resolver_slide(prs,summary); new=[sA,sB,sC,sM,sD]

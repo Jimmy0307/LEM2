@@ -77,7 +77,14 @@ def validate_config(config: Mapping[str, Any]) -> Dict[str, Any]:
     if emode not in {"HOLDOUT", "K_FOLD_CV"}:
         raise ValueError("evaluation.mode must be HOLDOUT or K_FOLD_CV.")
     policy = str(cfg["experiment"]["prediction_policy"]).upper()
-    if policy not in {"FIRST_MATCH", "SIMPLE_VOTING", "STANDARD_VOTING", "GLOBAL_STRENGTH"}:
+    if policy not in {
+        "FIRST_MATCH",
+        "SIMPLE_VOTING",
+        "STANDARD_VOTING",
+        "GLOBAL_STRENGTH",
+        "POPULATION_STANDARD",
+        "POPULATION_GLOBAL",
+    }:
         raise ValueError("Unsupported prediction policy.")
     if not (cfg["experiment"]["run_centralized"] or cfg["experiment"]["run_federated"]):
         raise ValueError("Enable at least one of run_centralized/run_federated.")
@@ -498,7 +505,14 @@ def run_application(
         str(policy).strip().upper()
         for policy in (prediction_policies or [cfg["experiment"]["prediction_policy"]])
     ))
-    supported = {"FIRST_MATCH", "SIMPLE_VOTING", "STANDARD_VOTING", "GLOBAL_STRENGTH"}
+    supported = {
+        "FIRST_MATCH",
+        "SIMPLE_VOTING",
+        "STANDARD_VOTING",
+        "GLOBAL_STRENGTH",
+        "POPULATION_STANDARD",
+        "POPULATION_GLOBAL",
+    }
     unknown = set(policies) - supported
     if not policies or unknown:
         raise ValueError(f"Unsupported or empty prediction policy list: {sorted(unknown)}")

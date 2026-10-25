@@ -1,0 +1,96 @@
+name: Conflict Concentration Evidence
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/conflict-client-sweep-20261020
+    paths:
+      - roughset/conflict_concentration.py
+      - tools/analyze_conflict_concentration.py
+      - tests/test_conflict_concentration.py
+      - tests/test_conflict_concentration_cli.py
+      - tests/test_conflict_concentration_script_entrypoint.py
+      - .github/workflows/conflict-concentration.yml
+      - tools/conflict_concentration_trigger.txt
+
+permissions:
+  contents: write
+
+concurrency:
+  group: conflict-concentration-research
+  cancel-in-progress: false
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+        with:
+          ref: research/conflict-client-sweep-20261020
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements-dev.txt
+
+      - name: Verify code and tests
+        run: |
+          python -m compileall -q roughset main.py tools/analyze_conflict_concentration.py
+          python -m pytest -q
+
+      - name: Generate frozen conflict concentration evidence
+        shell: bash
+        run: |
+          set -o pipefail
+          python -m tools.analyze_conflict_concentration | tee conflict_concentration.log
+
+      - name: Verify headline reconciliation
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('docs/research/conflict_client_sweep_20261020/evidence/20261025/conflict_concentration/CONFLICT_PPT_SUMMARY.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          assert data['total_conflict_occurrences'] == 908, data
+          assert data['dataset_conflicts'] == {
+              'Balance Scale': 266,
+              'Car Evaluation': 598,
+              'Hayes-Roth': 44,
+          }, data
+          assert data['total_configuration_test_evaluations'] == 1992, data
+          assert data['persistence_weighted_occurrences'] == 908, data
+          assert data['true_candidate_missing_count'] == 45, data
+          for policy, row in data['policy_overall'].items():
+              assert row['conflict_count'] == 908, (policy, row)
+          print('CONFLICT_CONCENTRATION_RECONCILIATION=PASS')
+          PY
+
+      - name: Commit generated evidence if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/research/conflict_client_sweep_20261020/evidence/20261025/conflict_concentration
+          if git diff --cached --quiet; then
+            echo "No generated evidence changes."
+          else
+            git commit -m "research: publish conflict concentration evidence"
+            git push origin HEAD:research/conflict-client-sweep-20261020
+          fi
+
+      - name: Upload evidence artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lem2-conflict-concentration
+          path: |
+            docs/research/conflict_client_sweep_20261020/evidence/20261025/conflict_concentration/
+            conflict_concentration.log
+          retention-days: 30
+          if-no-files-found: error

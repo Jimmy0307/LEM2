@@ -1,0 +1,74 @@
+name: Build Teacher Question Deck
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/conflict-client-sweep-20261020
+    paths:
+      - tools/build_teacher_question_deck.py
+      - tools/reflow_teacher_deck_tables.py
+      - tools/enrich_teacher_target_backtrace.py
+      - tools/clarify_teacher_target_conflict.py
+      - docs/research/conflict_client_sweep_20261020/evidence/20261023/teacher/**
+      - .github/workflows/build-teacher-question-deck.yml
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: research/conflict-client-sweep-20261020
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          python -m pip install pandas numpy python-pptx
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk libreoffice-impress
+      - name: Build PPTX
+        run: |
+          python tools/build_teacher_question_deck.py
+          python tools/reflow_teacher_deck_tables.py
+          python tools/enrich_teacher_target_backtrace.py
+          python tools/clarify_teacher_target_conflict.py
+      - name: Validate and export PDF
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          from pptx import Presentation
+          p=Path('docs/research/conflict_client_sweep_20261020/presentation/Federated_LEM2_Teacher_Questions_Complete_20261023.pptx')
+          prs=Presentation(p)
+          assert len(prs.slides)==33, len(prs.slides)
+          assert p.stat().st_size > 80000, p.stat().st_size
+          assert sum(1 for s in prs.slides for sh in s.shapes if getattr(sh, 'has_table', False)) == 0
+          print('PPTX_VALIDATION=PASS', len(prs.slides), p.stat().st_size, 'tables=0')
+          PY
+          soffice --headless --convert-to pdf --outdir docs/research/conflict_client_sweep_20261020/presentation \
+            docs/research/conflict_client_sweep_20261020/presentation/Federated_LEM2_Teacher_Questions_Complete_20261023.pptx
+          test -s docs/research/conflict_client_sweep_20261020/presentation/Federated_LEM2_Teacher_Questions_Complete_20261023.pdf
+      - name: Commit presentation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/research/conflict_client_sweep_20261020/presentation/Federated_LEM2_Teacher_Questions_Complete_20261023.pptx \
+                  docs/research/conflict_client_sweep_20261020/presentation/Federated_LEM2_Teacher_Questions_Complete_20261023.pdf
+          if git diff --cached --quiet; then
+            echo 'No presentation changes.'
+            exit 0
+          fi
+          git commit -m "docs: clarify target backtrace and conflict-count mechanism"
+          git push origin HEAD:research/conflict-client-sweep-20261020

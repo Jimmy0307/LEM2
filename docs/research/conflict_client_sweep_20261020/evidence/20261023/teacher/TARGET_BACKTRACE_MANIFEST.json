@@ -1,0 +1,30 @@
+{
+  "datasets": [
+    "Balance Scale",
+    "Car Evaluation",
+    "Hayes-Roth"
+  ],
+  "selected_targets_per_dataset": 5,
+  "total_selected_targets": 15,
+  "all_conflict_cases": 908,
+  "policies": [
+    "FIRST_MATCH",
+    "SIMPLE_VOTING",
+    "STANDARD_VOTING",
+    "GLOBAL_STRENGTH",
+    "POPULATION_STANDARD",
+    "POPULATION_GLOBAL"
+  ],
+  "selection_is_descriptive_not_inferential": true,
+  "target_definition": "selected holdout test object for case-level mechanism backtrace",
+  "teacher_exports": [
+    "TEACHER_DATASET_METADATA.csv",
+    "TEACHER_SIX_POLICY_METRICS.csv",
+    "TEACHER_COVERAGE_BY_CLASS.csv",
+    "TEACHER_TARGET_1_TO_5.csv",
+    "TEACHER_STANDARD_TRANSITIONS.csv",
+    "TEACHER_GLOBAL_TRANSITIONS.csv",
+    "TEACHER_ERROR_DECOMPOSITION.csv",
+    "TEACHER_REDUNDANCY_ASYMMETRY.csv"
+  ]
+}

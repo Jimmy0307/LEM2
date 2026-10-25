@@ -20,6 +20,8 @@ from .evaluation import (
     majority_class_from_clients,
     matching_rules,
     pairwise_rule_jaccard,
+    target_coverage_by_class,
+    target_candidate_coverage_by_class,
 )
 from .federated import (
     aggregate_rule_support_context,
@@ -620,6 +622,43 @@ def _evaluate_system(
         rule_support_sets=supports,
         class_sizes=class_sizes,
     )
+    # Meeting-required HOLDOUT reporting is added outside evaluate_rule_model so
+    # the frozen V6.1 evaluation primitive remains AST-identical to the audited
+    # baseline.  These fields are descriptive outputs over the untouched test set.
+    metrics["recall_macro"] = metrics["balanced_accuracy"]
+    metrics["overall_coverage"] = metrics["coverage"]
+    target_coverage = target_coverage_by_class(
+        artifact.test[artifact.target], metrics["matched_rules"]
+    )
+    metrics["target_coverage_by_class"] = target_coverage
+    finite_target_coverage = [
+        value for value in target_coverage.values() if np.isfinite(value)
+    ]
+    metrics["target_coverage_macro"] = (
+        float(np.mean(finite_target_coverage))
+        if finite_target_coverage
+        else float("nan")
+    )
+
+    # Candidate coverage is stricter than ordinary coverage: the true class must
+    # be represented by at least one matching rule.  It is derived from the full
+    # matching-rule set rather than policy-specific matched output so FIRST_MATCH
+    # does not hide later candidate rules.
+    all_matching_rule_lists = [
+        matching_rules(row, rules) for _, row in artifact.test.iterrows()
+    ]
+    target_candidate_coverage = target_candidate_coverage_by_class(
+        artifact.test[artifact.target], all_matching_rule_lists
+    )
+    metrics["target_candidate_coverage_by_class"] = target_candidate_coverage
+    finite_candidate_coverage = [
+        value for value in target_candidate_coverage.values() if np.isfinite(value)
+    ]
+    metrics["target_candidate_coverage_macro"] = (
+        float(np.mean(finite_candidate_coverage))
+        if finite_candidate_coverage
+        else float("nan")
+    )
     flags = np.asarray(artifact.pre_resolution_conflict_flags, dtype=bool)
     if len(flags) != len(artifact.test):
         # Centralized evaluation uses its own rule workload; derive its flags when
@@ -659,7 +698,14 @@ def _evaluate_system(
 def evaluate_resolver(artifact: RuleSystemArtifact, policy: str) -> dict[str, Any]:
     """Evaluate one resolver without rebuilding reducts, rules, or conflicts."""
     name = str(policy).strip().upper()
-    if name not in {"FIRST_MATCH", "SIMPLE_VOTING", "STANDARD_VOTING", "GLOBAL_STRENGTH"}:
+    if name not in {
+        "FIRST_MATCH",
+        "SIMPLE_VOTING",
+        "STANDARD_VOTING",
+        "GLOBAL_STRENGTH",
+        "POPULATION_STANDARD",
+        "POPULATION_GLOBAL",
+    }:
         raise ValueError(f"Unsupported prediction policy: {policy}")
     results: dict[str, Any] = {"policy": name}
     if artifact.central_rules:

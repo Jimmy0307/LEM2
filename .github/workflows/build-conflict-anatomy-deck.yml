@@ -1,0 +1,151 @@
+name: Build Conflict Anatomy Deck
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/conflict-client-sweep-20261020
+    paths:
+      - tools/conflict_anatomy_builder_parts/**
+      - tools/conflict_anatomy_audit_payload_v3/**
+      - tools/apply_conflict_anatomy_audit.py
+      - .github/workflows/build-conflict-anatomy-deck.yml
+      - docs/research/conflict_client_sweep_20261020/evidence/20261025/conflict_concentration/CONFLICT_PPT_SUMMARY.json
+      - tools/conflict_anatomy_deck_trigger.txt
+
+permissions:
+  contents: write
+
+concurrency:
+  group: conflict-anatomy-deck-research
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+        with:
+          ref: research/conflict-client-sweep-20261020
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install presentation dependency
+        run: python -m pip install python-pptx==1.0.2
+
+      - name: Reconstruct versioned deck builder
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat tools/conflict_anatomy_builder_parts/part_*.pyfrag > tools/build_conflict_anatomy_deck.py
+          python -m py_compile tools/build_conflict_anatomy_deck.py
+          python -m py_compile tools/apply_conflict_anatomy_audit.py
+
+      - name: Build conflict anatomy deck
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/build_conflict_anatomy_deck.py \
+            --source docs/research/conflict_client_sweep_20261020/presentation/LEM2_Teacher_TargetConflict_Intuitive_20261024.pptx \
+            --summary docs/research/conflict_client_sweep_20261020/evidence/20261025/conflict_concentration/CONFLICT_PPT_SUMMARY.json \
+            --output docs/research/conflict_client_sweep_20261020/presentation/LEM2_Teacher_ConflictAnatomy_20261025.pptx \
+            | tee conflict_anatomy_deck.log
+
+      - name: Apply evidence-audit corrections
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/apply_conflict_anatomy_audit.py \
+            --source docs/research/conflict_client_sweep_20261020/presentation/LEM2_Teacher_ConflictAnatomy_20261025.pptx \
+            --payload-dir tools/conflict_anatomy_audit_payload_v3 \
+            --output docs/research/conflict_client_sweep_20261020/presentation/LEM2_Teacher_ConflictAnatomy_20261026_AUDITED.pptx \
+            | tee conflict_anatomy_audit.log
+
+      - name: Verify audited deck structure and claims
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from pptx import Presentation
+
+          path = Path('docs/research/conflict_client_sweep_20261020/presentation/LEM2_Teacher_ConflictAnatomy_20261026_AUDITED.pptx')
+          prs = Presentation(path)
+          assert len(prs.slides) == 38, len(prs.slides)
+          texts = []
+          for slide in prs.slides:
+              slide_text = '\n'.join(
+                  sh.text for sh in slide.shapes
+                  if hasattr(sh, 'text') and sh.text.strip()
+              )
+              texts.append(slide_text)
+              for sh in slide.shapes:
+                  assert sh.left >= 0 and sh.top >= 0, sh.name
+                  assert sh.left + sh.width <= prs.slide_width, (sh.name, 'x overflow')
+                  assert sh.top + sh.height <= prs.slide_height, (sh.name, 'y overflow')
+
+          all_text = '\n'.join(texts)
+          required = [
+              'Target 編號不帶語義',
+              'left_distance=4 · left_weight=3',
+              'lug_boot=big · safety=med',
+              'lug_boot=small · safety=high',
+              'educational_level=1 · marital_status=2',
+              '12 個 dataset×C configurations',
+              'fragmentation 機制仍是工作假說',
+              'Evidence-audited deck · 2026-10-26',
+              'policy-transition winner-change events',
+              '方向性 diagnostic，不是已驗證 predictor',
+          ]
+          for phrase in required:
+              assert phrase in all_text, phrase
+
+          forbidden = [
+              '代表 corrected',
+              '12 structural configurations',
+              '43 / 908 = 4.74%',
+              'A(x) > 0 · 較像 Corrected',
+              'A(x) < 0 · 較像 Harmed',
+          ]
+          for phrase in forbidden:
+              assert phrase not in all_text, phrase
+
+          print('CONFLICT_ANATOMY_AUDITED_VERIFICATION=PASS slides=38')
+          PY
+
+      - name: Commit audited deck and reproducibility files if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            tools/build_conflict_anatomy_deck.py \
+            tools/apply_conflict_anatomy_audit.py \
+            tools/conflict_anatomy_audit_payload_v3/ \
+            docs/research/conflict_client_sweep_20261020/presentation/LEM2_Teacher_ConflictAnatomy_20261025.pptx \
+            docs/research/conflict_client_sweep_20261020/presentation/LEM2_Teacher_ConflictAnatomy_20261025.pptx.sha256 \
+            docs/research/conflict_client_sweep_20261020/presentation/LEM2_Teacher_ConflictAnatomy_20261026_AUDITED.pptx \
+            docs/research/conflict_client_sweep_20261020/presentation/LEM2_Teacher_ConflictAnatomy_20261026_AUDITED.pptx.sha256 \
+            docs/research/conflict_client_sweep_20261020/presentation/LEM2_38_Slide_Audit_20261026.md
+          if git diff --cached --quiet; then
+            echo "No audited deck changes."
+          else
+            git commit -m "presentation: publish evidence-audited conflict anatomy deck"
+            git push origin HEAD:research/conflict-client-sweep-20261020
+          fi
+
+      - name: Upload audited deck artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lem2-conflict-anatomy-deck-audited
+          path: |
+            docs/research/conflict_client_sweep_20261020/presentation/LEM2_Teacher_ConflictAnatomy_20261026_AUDITED.pptx
+            docs/research/conflict_client_sweep_20261020/presentation/LEM2_Teacher_ConflictAnatomy_20261026_AUDITED.pptx.sha256
+            docs/research/conflict_client_sweep_20261020/presentation/LEM2_38_Slide_Audit_20261026.md
+            conflict_anatomy_deck.log
+            conflict_anatomy_audit.log
+          retention-days: 30
+          if-no-files-found: error

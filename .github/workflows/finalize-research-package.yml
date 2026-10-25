@@ -1,0 +1,132 @@
+name: Finalize Research Package
+
+on:
+  push:
+    branches:
+      - research/conflict-client-sweep-20261020
+    paths:
+      - tools/finalize_research_package_trigger.txt
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  RESEARCH_DIR: docs/research/conflict_client_sweep_20261020
+  EVIDENCE_DIR: docs/research/conflict_client_sweep_20261020/evidence/20261023
+  PRESENTATION_DIR: docs/research/conflict_client_sweep_20261020/presentation
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+        with:
+          ref: research/conflict-client-sweep-20261020
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install presentation dependency
+        run: python -m pip install python-pptx
+
+      - name: Download six-policy frozen artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: federated-lem2-six-policy-full-run
+          path: _artifacts/six_policy
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: Jimmy0307/LEM2
+          run-id: 39905627653
+
+      - name: Download target-backtrace artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: lem2-target-case-backtrace
+          path: _artifacts/backtrace
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: Jimmy0307/LEM2
+          run-id: 39912420604
+
+      - name: Collect evidence CSVs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR" "$PRESENTATION_DIR"
+
+          copy_first() {
+            local root="$1"
+            local name="$2"
+            local dest="$3"
+            local src
+            src="$(find "$root" -type f -name "$name" -print -quit)"
+            if [ -z "$src" ]; then
+              echo "Missing required artifact file: $name" >&2
+              exit 1
+            fi
+            cp "$src" "$dest"
+          }
+
+          copy_first _artifacts/six_policy SIX_POLICY_RESULTS_COMPACT.csv "$EVIDENCE_DIR/SIX_POLICY_RESULTS_COMPACT.csv"
+          copy_first _artifacts/six_policy BALANCED_ACCURACY_WINNERS.csv "$EVIDENCE_DIR/BALANCED_ACCURACY_WINNERS.csv"
+          copy_first _artifacts/six_policy MACRO_F1_WINNERS.csv "$EVIDENCE_DIR/MACRO_F1_WINNERS.csv"
+
+          copy_first _artifacts/backtrace SELECTED_5_TARGET_CASES_PER_DATASET.csv "$EVIDENCE_DIR/SELECTED_15_TARGET_CASES.csv"
+          copy_first _artifacts/backtrace SELECTED_TARGET_DECISION_SCORES.csv "$EVIDENCE_DIR/SELECTED_TARGET_DECISION_SCORES.csv"
+          copy_first _artifacts/backtrace SELECTED_TARGET_RULE_BACKTRACE.csv "$EVIDENCE_DIR/SELECTED_TARGET_RULE_BACKTRACE.csv"
+          copy_first _artifacts/backtrace ALL_CONFLICT_CASES.csv "$EVIDENCE_DIR/ALL_CONFLICT_CASES.csv"
+          copy_first _artifacts/backtrace ALL_CONFLICT_DECISION_SCORES.csv "$EVIDENCE_DIR/ALL_CONFLICT_DECISION_SCORES.csv"
+
+          printf '%s\n' \
+            'six_policy_source_commit=19983125a5daef4f7af1fb9f55554e6fbf747017' \
+            'six_policy_run_id=39905627653' \
+            'target_backtrace_source_commit=a2e5be8750a1a952281ccdded7ad2a664abf13e9' \
+            'target_backtrace_run_id=39912420604' \
+            > "$EVIDENCE_DIR/PROVENANCE.txt"
+
+      - name: Generate final PPTX
+        run: python tools/build_final_research_deck.py
+
+      - name: Validate generated PPTX structure
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from pptx import Presentation
+          p = Path('docs/research/conflict_client_sweep_20261020/presentation/Federated_LEM2_Final_Research_Update_20261023.pptx')
+          prs = Presentation(p)
+          assert len(prs.slides) == 19, len(prs.slides)
+          assert p.stat().st_size > 50_000, p.stat().st_size
+          assert len(prs.slides[0].shapes) > 0
+          print('PPTX_VALIDATION=PASS slides=', len(prs.slides), 'bytes=', p.stat().st_size)
+          PY
+
+      - name: Export PDF for mobile viewing
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! command -v soffice >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y -qq libreoffice-impress
+          fi
+          soffice --headless --convert-to pdf --outdir "$PRESENTATION_DIR" \
+            "$PRESENTATION_DIR/Federated_LEM2_Final_Research_Update_20261023.pptx"
+          test -s "$PRESENTATION_DIR/Federated_LEM2_Final_Research_Update_20261023.pdf"
+
+      - name: Commit final research package
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$EVIDENCE_DIR" "$PRESENTATION_DIR"
+          if git diff --cached --quiet; then
+            echo "No generated package changes."
+            exit 0
+          fi
+          git commit -m "research: package final evidence and presentation"
+          git push origin HEAD:research/conflict-client-sweep-20261020
