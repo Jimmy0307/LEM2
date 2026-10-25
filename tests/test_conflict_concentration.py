@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import math
 
+import pytest
+
 from roughset.conflict_concentration import (
     candidate_signature,
     summarize_candidate_signatures,
@@ -113,8 +115,11 @@ def test_configuration_true_class_candidate_and_persistence_summaries_reconcile(
     assert math.isclose(demo_c3_a["share_within_configuration"], 0.5)
 
     candidates = summarize_candidate_signatures(rows)
-    assert any(r["candidate_signature"] == "A|B" and r["conflict_count"] == 2 for r in candidates)
-    assert any(r["candidate_signature"] == "A|B|C" and r["conflict_count"] == 1 for r in candidates)
+    ab = [r for r in candidates if r["candidate_signature"] == "A|B"]
+    assert len(ab) == 2
+    assert {r["client_count"] for r in ab} == {2, 3}
+    assert all(r["conflict_count"] == 1 for r in ab)
+    assert any(r["candidate_signature"] == "A|B|C" and r["client_count"] == 3 and r["conflict_count"] == 1 for r in candidates)
 
     persistence = summarize_persistence(rows, expected_client_counts=(2, 3, 4, 5))
     row10 = next(r for r in persistence if r["row_id"] == "10")
@@ -178,3 +183,10 @@ def test_factor_policy_transition_and_decision_score_summaries_are_conflict_only
     competitor_row = next(r for r in score_summary if r["decision_role"] == "COMPETITOR")
     assert math.isclose(true_row["mean_redundancy_ratio"], 0.3)
     assert math.isclose(competitor_row["mean_redundancy_ratio"], 0.0)
+
+
+def test_policy_accuracy_rejects_missing_prediction_column():
+    rows = _rows()
+    del rows[1]["pred_population_global"]
+    with pytest.raises(KeyError, match="pred_population_global"):
+        summarize_policy_accuracy(rows, policy_columns=POLICY_COLUMNS)
