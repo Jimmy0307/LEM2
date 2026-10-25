@@ -1,0 +1,112 @@
+name: Build Conflict Anatomy Deck
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/conflict-client-sweep-20261020
+    paths:
+      - tools/conflict_anatomy_builder_parts/**
+      - .github/workflows/build-conflict-anatomy-deck.yml
+      - docs/research/conflict_client_sweep_20261020/evidence/20261025/conflict_concentration/CONFLICT_PPT_SUMMARY.json
+      - tools/conflict_anatomy_deck_trigger.txt
+
+permissions:
+  contents: write
+
+concurrency:
+  group: conflict-anatomy-deck-research
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+        with:
+          ref: research/conflict-client-sweep-20261020
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install presentation dependency
+        run: python -m pip install python-pptx==1.0.2
+
+      - name: Reconstruct versioned deck builder
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat tools/conflict_anatomy_builder_parts/part_*.pyfrag > tools/build_conflict_anatomy_deck.py
+          python -m py_compile tools/build_conflict_anatomy_deck.py
+
+      - name: Build conflict anatomy deck
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/build_conflict_anatomy_deck.py \
+            --source docs/research/conflict_client_sweep_20261020/presentation/LEM2_Teacher_TargetConflict_Intuitive_20261024.pptx \
+            --summary docs/research/conflict_client_sweep_20261020/evidence/20261025/conflict_concentration/CONFLICT_PPT_SUMMARY.json \
+            --output docs/research/conflict_client_sweep_20261020/presentation/LEM2_Teacher_ConflictAnatomy_20261025.pptx \
+            | tee conflict_anatomy_deck.log
+
+      - name: Verify deck structure and narrative
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from pptx import Presentation
+
+          path = Path('docs/research/conflict_client_sweep_20261020/presentation/LEM2_Teacher_ConflictAnatomy_20261025.pptx')
+          prs = Presentation(path)
+          assert len(prs.slides) == 38, len(prs.slides)
+          titles = []
+          for slide in prs.slides:
+              texts = [sh.text.strip() for sh in slide.shapes if hasattr(sh, 'text') and sh.text.strip()]
+              titles.append(texts[0] if texts else '')
+              for sh in slide.shapes:
+                  assert sh.left >= 0 and sh.top >= 0, (titles[-1], sh.name)
+                  assert sh.left + sh.width <= prs.slide_width, (titles[-1], sh.name, 'x overflow')
+                  assert sh.top + sh.height <= prs.slide_height, (titles[-1], sh.name, 'y overflow')
+          required = [
+              '908 個 Conflict 到底集中在哪裡？',
+              '908 次其實只有 392 個 unique objects：Conflict 會反覆出現',
+              'Conflict 不是平均撞：高度集中在少數 decision boundaries',
+              'Conflict 為什麼會產生？直接原因 vs. 結構性原因',
+              '同一個 Conflict，六種方法各自可能在哪裡出問題？',
+              '同一 908 個 Conflict：六種 Resolver 到底誰比較會選對？',
+          ]
+          for title in required:
+              assert title in titles, title
+          assert titles.index(required[0]) < titles.index(required[3]) < titles.index(required[-1])
+          print('CONFLICT_ANATOMY_DECK_VERIFICATION=PASS slides=38')
+          PY
+
+      - name: Commit generated deck and builder if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            tools/build_conflict_anatomy_deck.py \
+            docs/research/conflict_client_sweep_20261020/presentation/LEM2_Teacher_ConflictAnatomy_20261025.pptx \
+            docs/research/conflict_client_sweep_20261020/presentation/LEM2_Teacher_ConflictAnatomy_20261025.pptx.sha256
+          if git diff --cached --quiet; then
+            echo "No deck changes."
+          else
+            git commit -m "presentation: publish conflict anatomy deck"
+            git push origin HEAD:research/conflict-client-sweep-20261020
+          fi
+
+      - name: Upload deck artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lem2-conflict-anatomy-deck
+          path: |
+            docs/research/conflict_client_sweep_20261020/presentation/LEM2_Teacher_ConflictAnatomy_20261025.pptx
+            docs/research/conflict_client_sweep_20261020/presentation/LEM2_Teacher_ConflictAnatomy_20261025.pptx.sha256
+            conflict_anatomy_deck.log
+          retention-days: 30
+          if-no-files-found: error
