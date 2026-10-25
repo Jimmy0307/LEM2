@@ -1,0 +1,50 @@
+    add_text(slide,'Federated LEM2 · Conflict concentration audit · 2026-10-25',.62,7.13,10.5,.18,7.8,False,GRAY)
+    add_text(slide,str(page),12.2,7.13,.4,.18,7.8,False,GRAY,PP_ALIGN.RIGHT)
+
+def add_conclusion(slide,text):
+    add_text(slide,'結論：',.92,6.43,.8,.22,9.5,True,TEAL); add_text(slide,text,1.65,6.39,10.55,.32,9.4,False,NAVY)
+
+def add_kpi(slide,x,y,w,h,value,label,accent=TEAL,note=None):
+    add_rect(slide,x,y,w,h,WHITE,LIGHT2); stripe=slide.shapes.add_shape(MSO_SHAPE.RECTANGLE,Inches(x),Inches(y),Inches(.08),Inches(h)); stripe.fill.solid(); stripe.fill.fore_color.rgb=accent; stripe.line.fill.background()
+    add_text(slide,value,x+.22,y+.16,w-.32,.38,22,True,accent); add_text(slide,label,x+.22,y+.60,w-.32,.32,10.2,True,NAVY)
+    if note: add_text(slide,note,x+.22,y+.96,w-.32,h-1.02,8.8,False,GRAY)
+
+def set_cell(cell,text,size=10,bold=False,color=NAVY,fill=WHITE,align=PP_ALIGN.CENTER):
+    cell.fill.solid(); cell.fill.fore_color.rgb=fill; cell.text=''; tf=cell.text_frame; tf.clear(); tf.vertical_anchor=MSO_ANCHOR.MIDDLE; tf.margin_left=tf.margin_right=Inches(.04); tf.margin_top=tf.margin_bottom=Inches(.02)
+    p=tf.paragraphs[0]; p.alignment=align; r=p.add_run(); r.text=str(text); r.font.name=FONT; r.font.size=Pt(size); r.font.bold=bold; r.font.color.rgb=color
+
+def title_slide(prs,title):
+    for slide in prs.slides:
+        for sh in slide.shapes:
+            if hasattr(sh,'text') and sh.text.strip()==title: return slide
+    raise KeyError(title)
+
+def add_concentration_slide(prs, summary):
+    s=prs.slides.add_slide(prs.slide_layouts[6]); add_title(s,'908 個 Conflict 到底集中在哪裡？','不是平均分布：Car 佔 65.9%；高 client-count configurations 承擔更大的 conflict workload')
+    rows=[['Dataset','C=2','C=3','C=4','C=5','Total']]
+    names=[('Balance Scale','Balance'),('Car Evaluation','Car'),('Hayes-Roth','Hayes')]
+    for full,short in names:
+        vals=[short]
+        for c in [2,3,4,5]: n,r=FROZEN_CONFIG[full][c]; vals.append(f'{n}\n{r:.1f}%')
+        vals.append(str(summary['dataset_conflicts'][full])); rows.append(vals)
+    tab=s.shapes.add_table(4,6,Inches(.75),Inches(1.55),Inches(8),Inches(3.9)).table
+    for i,w in enumerate([1.45,1.15,1.15,1.15,1.15,1.35]): tab.columns[i].width=Inches(w)
+    for r,row in enumerate(rows):
+        tab.rows[r].height=Inches(.66 if r==0 else 1.08)
+        for c,val in enumerate(row):
+            if r==0: set_cell(tab.cell(r,c),val,10.2,True,WHITE,DARK)
+            elif c==0: set_cell(tab.cell(r,c),val,10.5,True,NAVY,LIGHT2,PP_ALIGN.LEFT)
+            elif c==5: set_cell(tab.cell(r,c),val,13.5,True,TEAL,PALE_TEAL)
+            else:
+                rate=float(val.split('\n')[1].strip('%')); fill=PALE_BLUE if rate<40 else (PALE_TEAL if rate<55 else PALE_ORANGE); set_cell(tab.cell(r,c),val,10.5,True,NAVY,fill)
+    add_text(s,'每格：conflict count / configuration-level conflict rate',.82,5.56,7.7,.28,8.8,False,GRAY)
+    add_kpi(s,9.05,1.55,3.4,1.28,'598 / 908','Car = 65.9% of all conflicts',BLUE,'workload 高度集中在 Car Evaluation')
+    add_kpi(s,9.05,3.02,3.4,1.28,'310 / 908','C=5 = 34.1%',ORANGE,'只看 C=5 就占全部 occurrences 三分之一')
+    add_kpi(s,9.05,4.49,3.4,1.28,'908 / 1,992','Overall workload = 45.6%',TEAL,'configuration-level test evaluations')
+    add_conclusion(s,'908 不是一個均質群體；先按 dataset × C 分解，才能判斷真正的 conflict workload 集中點。'); return s
+
+def add_persistence_slide(prs,summary):
+    s=prs.slides.add_slide(prs.slide_layouts[6]); add_title(s,'908 次其實只有 392 個 unique objects：Conflict 會反覆出現','同一 (dataset, fold, row_id) 可在不同 C 再次 conflict；occurrence 與 unique object 必須分開')
+    dist=summary['persistence_distribution']; cards=[('1 個 C',str(dist['1']),'SINGLE',BLUE),('2 個 C',str(dist['2']),'REPEATED',TEAL),('3 個 C',str(dist['3']),'REPEATED',GOLD),('4 個 C',str(dist['4']),'PERSISTENT',ORANGE)]
+    for i,(lab,val,status,col) in enumerate(cards):
+        x=.82+i*3.05; add_rect(s,x,1.62,2.6,1.52,WHITE,LIGHT2); add_text(s,val,x+.12,1.82,2.36,.42,24,True,col,PP_ALIGN.CENTER); add_text(s,'unique objects',x+.12,2.28,2.36,.26,9.5,False,GRAY,PP_ALIGN.CENTER); add_text(s,f'{lab} · {status}',x+.12,2.63,2.36,.28,9.5,True,NAVY,PP_ALIGN.CENTER)
