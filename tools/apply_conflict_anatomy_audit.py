@@ -116,6 +116,21 @@ def resolve_shape(
                 return named[0]
 
         tx, ty, tcx, tcy = target_geom
+
+        # The rebuilt deck may change textbox width/height while preserving the
+        # exact top-left anchor. Prefer that stable anchor before using broader
+        # reflow matching; this disambiguates repeated labels such as "good".
+        anchor_matches = []
+        for c in same_kind:
+            geom = shape_geometry(c)
+            if geom is None:
+                continue
+            x, y, _cx, _cy = geom
+            if x == tx and y == ty:
+                anchor_matches.append(c)
+        if len(anchor_matches) == 1:
+            return anchor_matches[0]
+
         relaxed = []
         for c in same_kind:
             geom = shape_geometry(c)
