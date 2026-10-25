@@ -115,9 +115,6 @@ def resolve_shape(
             if len(named) == 1:
                 return named[0]
 
-        # PowerPoint/python-pptx can reflow a textbox vertically while leaving
-        # its horizontal anchor effectively unchanged. Accept one unique nearby
-        # geometry candidate with the same x/width and a small y/height drift.
         tx, ty, tcx, tcy = target_geom
         relaxed = []
         for c in same_kind:
@@ -127,7 +124,7 @@ def resolve_shape(
             x, y, cx, cy = geom
             if (
                 abs(x - tx) <= 25000
-                and abs(cx - tcx) <= 25000
+                and abs(cx - tcx) <= 100000
                 and abs(y - ty) <= 250000
                 and abs(abs(cy) - abs(tcy)) <= 75000
             ):
