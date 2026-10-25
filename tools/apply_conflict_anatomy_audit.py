@@ -61,7 +61,6 @@ def shape_kind(element: etree._Element) -> str:
 
 
 def shape_geometry(element: etree._Element) -> tuple[int, int, int, int] | None:
-    # The shape's first xfrm is the relevant transform for all patched top-level shapes.
     xfrm = element.find(f".//{{{A_NS}}}xfrm")
     if xfrm is None:
         xfrm = element.find(f".//{{{P_NS}}}xfrm")
@@ -107,8 +106,6 @@ def resolve_shape(
     target_text = shape_text(target)
     same_kind = [c for c in children if shape_kind(c) == target_kind]
 
-    # Rebuilt decks can renumber cNvPr IDs. Geometry is stable for most audited
-    # text/style-only patches, so prefer an exact geometry match.
     if target_geom is not None:
         geom_matches = [c for c in same_kind if shape_geometry(c) == target_geom]
         if len(geom_matches) == 1:
@@ -118,14 +115,31 @@ def resolve_shape(
             if len(named) == 1:
                 return named[0]
 
+        # PowerPoint/python-pptx can reflow a textbox vertically while leaving
+        # its horizontal anchor effectively unchanged. Accept one unique nearby
+        # geometry candidate with the same x/width and a small y/height drift.
+        tx, ty, tcx, tcy = target_geom
+        relaxed = []
+        for c in same_kind:
+            geom = shape_geometry(c)
+            if geom is None:
+                continue
+            x, y, cx, cy = geom
+            if (
+                abs(x - tx) <= 25000
+                and abs(cx - tcx) <= 25000
+                and abs(y - ty) <= 250000
+                and abs(abs(cy) - abs(tcy)) <= 75000
+            ):
+                relaxed.append(c)
+        if len(relaxed) == 1:
+            return relaxed[0]
+
     if target_name:
         name_matches = [c for c in same_kind if shape_name(c) == target_name]
         if len(name_matches) == 1:
             return name_matches[0]
 
-    # Builder reflow can change a textbox's height. For text edits, match the
-    # unique semantically-similar textbox on the same slide before trusting a
-    # historical numeric ID. Require both a strong score and a clear margin.
     if target_text:
         scored = []
         for c in same_kind:
@@ -145,7 +159,6 @@ def resolve_shape(
     if direct is not None and shape_kind(direct) == target_kind:
         return direct
 
-    # Last-resort exact target-text match is useful for style-only patches.
     if target_text:
         text_matches = [c for c in same_kind if shape_text(c) == target_text]
         if len(text_matches) == 1:
@@ -196,9 +209,6 @@ def patch_deck(source: Path, output: Path, payload: dict[str, str]) -> str:
                         for shape_id, shape_xml in shape_map.items():
                             new = etree.fromstring(str(shape_xml).encode("utf-8"))
                             old = resolve_shape(slide_no, sp_tree, int(shape_id), new)
-                            # Preserve the rebuilt deck's cNvPr identity. The audit changes
-                            # visual/content properties, not object identity, and carrying a
-                            # historical ID into a clean rebuild can create duplicate IDs.
                             old_nv = old.find(f".//{{{P_NS}}}cNvPr")
                             new_nv = new.find(f".//{{{P_NS}}}cNvPr")
                             if old_nv is not None and new_nv is not None:
