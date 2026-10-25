@@ -10,6 +10,7 @@ on:
       - tools/analyze_conflict_concentration.py
       - tests/test_conflict_concentration.py
       - tests/test_conflict_concentration_cli.py
+      - tests/test_conflict_concentration_script_entrypoint.py
       - .github/workflows/conflict-concentration.yml
       - tools/conflict_concentration_trigger.txt
 
@@ -45,8 +46,10 @@ jobs:
           python -m pytest -q
 
       - name: Generate frozen conflict concentration evidence
+        shell: bash
         run: |
-          python tools/analyze_conflict_concentration.py | tee conflict_concentration.log
+          set -o pipefail
+          python -m tools.analyze_conflict_concentration | tee conflict_concentration.log
 
       - name: Verify headline reconciliation
         run: |
