@@ -16,7 +16,7 @@ SHAPE_TAGS = {
     f"{{{P_NS}}}{name}"
     for name in ("sp", "pic", "graphicFrame", "cxnSp", "grpSp", "contentPart")
 }
-PAYLOAD_SHA256 = "a403bc8f14d352dfa02fca740b377c371cf15ce50f7d2b08fa3b50d92e93f35c"
+PAYLOAD_SHA256 = "2156ea347eccdce359f8ec9dc7bb078a60b3aa233771c1352024ce2ff0435374"
 
 
 def load_payload(parts_dir: Path) -> dict[str, str]:
