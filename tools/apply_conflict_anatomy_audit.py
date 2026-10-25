@@ -12,11 +12,7 @@ from pathlib import Path
 from lxml import etree
 
 P_NS = "http://schemas.openxmlformats.org/presentationml/2006/main"
-SHAPE_TAGS = {
-    f"{{{P_NS}}}{name}"
-    for name in ("sp", "pic", "graphicFrame", "cxnSp", "grpSp", "contentPart")
-}
-PAYLOAD_SHA256 = "2156ea347eccdce359f8ec9dc7bb078a60b3aa233771c1352024ce2ff0435374"
+PAYLOAD_SHA256 = "d99d072479df81a120a2af88cf745ddb1fb4aed7c3f6ffba6aec89799dc79fdb"
 
 
 def load_payload(parts_dir: Path) -> dict[str, str]:
@@ -35,13 +31,22 @@ def group_payload(payload: dict[str, str]) -> dict[int, dict[str, object]]:
     for key, value in payload.items():
         if key.startswith("slide:"):
             slide_no = int(key.split(":", 1)[1])
-            grouped.setdefault(slide_no, {"whole": None, "tx": {}})["whole"] = value
+            grouped.setdefault(slide_no, {"whole": None, "shapes": {}})["whole"] = value
+        elif key.startswith("shape:"):
+            _, slide_s, shape_id_s = key.split(":")
+            shape_map = grouped.setdefault(int(slide_s), {"whole": None, "shapes": {}})["shapes"]
+            assert isinstance(shape_map, dict)
+            shape_map[int(shape_id_s)] = value
         else:
-            slide_no, shape_idx = map(int, key.split(":"))
-            tx = grouped.setdefault(slide_no, {"whole": None, "tx": {}})["tx"]
-            assert isinstance(tx, dict)
-            tx[shape_idx] = value
+            raise RuntimeError(f"unsupported audit payload key: {key}")
     return grouped
+
+
+def child_shape_id(element: etree._Element) -> int | None:
+    nv = element.find(f".//{{{P_NS}}}cNvPr")
+    if nv is None or nv.get("id") is None:
+        return None
+    return int(nv.get("id"))
 
 
 def patch_deck(source: Path, output: Path, payload: dict[str, str]) -> str:
@@ -66,18 +71,17 @@ def patch_deck(source: Path, output: Path, payload: dict[str, str]) -> str:
                         sp_tree = root.find(f".//{{{P_NS}}}spTree")
                         if sp_tree is None:
                             raise RuntimeError(f"slide {slide_no}: missing spTree")
-                        shapes = [child for child in sp_tree if child.tag in SHAPE_TAGS]
-                        tx_map = patch["tx"]
-                        assert isinstance(tx_map, dict)
-                        for shape_idx, tx_xml in tx_map.items():
-                            element = shapes[int(shape_idx)]
-                            old_tx = element.find(f"{{{P_NS}}}txBody")
-                            if old_tx is None:
+                        by_id = {sid: child for child in sp_tree if (sid := child_shape_id(child)) is not None}
+                        shape_map = patch["shapes"]
+                        assert isinstance(shape_map, dict)
+                        for shape_id, shape_xml in shape_map.items():
+                            old = by_id.get(int(shape_id))
+                            if old is None:
                                 raise RuntimeError(
-                                    f"slide {slide_no} shape {shape_idx}: missing txBody"
+                                    f"slide {slide_no}: missing shape id {shape_id}; available={sorted(by_id)}"
                                 )
-                            new_tx = etree.fromstring(str(tx_xml).encode("utf-8"))
-                            element.replace(old_tx, new_tx)
+                            new = etree.fromstring(str(shape_xml).encode("utf-8"))
+                            sp_tree.replace(old, new)
                         data = etree.tostring(
                             root,
                             xml_declaration=True,
