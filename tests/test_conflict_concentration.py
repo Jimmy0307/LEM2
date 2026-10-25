@@ -185,8 +185,8 @@ def test_factor_policy_transition_and_decision_score_summaries_are_conflict_only
     assert math.isclose(competitor_row["mean_redundancy_ratio"], 0.0)
 
 
-def test_policy_accuracy_rejects_missing_prediction_column():
+def test_policy_accuracy_rejects_missing_prediction_schema_column():
     rows = _rows()
-    del rows[1]["pred_population_global"]
+    del rows[0]["pred_population_global"]
     with pytest.raises(KeyError, match="pred_population_global"):
         summarize_policy_accuracy(rows, policy_columns=POLICY_COLUMNS)
