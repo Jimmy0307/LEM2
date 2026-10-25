@@ -7,6 +7,7 @@ import json
 import re
 import zipfile
 import zlib
+from difflib import SequenceMatcher
 from pathlib import Path
 
 from lxml import etree
@@ -106,7 +107,7 @@ def resolve_shape(
     target_text = shape_text(target)
     same_kind = [c for c in children if shape_kind(c) == target_kind]
 
-    # Rebuilt decks can renumber cNvPr IDs. Geometry is stable for these audited
+    # Rebuilt decks can renumber cNvPr IDs. Geometry is stable for most audited
     # text/style-only patches, so prefer an exact geometry match.
     if target_geom is not None:
         geom_matches = [c for c in same_kind if shape_geometry(c) == target_geom]
@@ -121,6 +122,24 @@ def resolve_shape(
         name_matches = [c for c in same_kind if shape_name(c) == target_name]
         if len(name_matches) == 1:
             return name_matches[0]
+
+    # Builder reflow can change a textbox's height. For text edits, match the
+    # unique semantically-similar textbox on the same slide before trusting a
+    # historical numeric ID. Require both a strong score and a clear margin.
+    if target_text:
+        scored = []
+        for c in same_kind:
+            source_text = shape_text(c)
+            if not source_text:
+                continue
+            score = SequenceMatcher(None, target_text, source_text).ratio()
+            scored.append((score, c))
+        scored.sort(key=lambda item: item[0], reverse=True)
+        if scored:
+            best_score, best = scored[0]
+            second_score = scored[1][0] if len(scored) > 1 else 0.0
+            if best_score >= 0.62 and (best_score - second_score) >= 0.08:
+                return best
 
     direct = by_id.get(desired_id)
     if direct is not None and shape_kind(direct) == target_kind:
