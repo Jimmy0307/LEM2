@@ -7,7 +7,7 @@ on:
       - research/conflict-client-sweep-20261020
     paths:
       - tools/conflict_anatomy_builder_parts/**
-      - tools/conflict_anatomy_audit_payload_v2/**
+      - tools/conflict_anatomy_audit_payload_v3/**
       - tools/apply_conflict_anatomy_audit.py
       - .github/workflows/build-conflict-anatomy-deck.yml
       - docs/research/conflict_client_sweep_20261020/evidence/20261025/conflict_concentration/CONFLICT_PPT_SUMMARY.json
@@ -63,7 +63,7 @@ jobs:
           set -euo pipefail
           python tools/apply_conflict_anatomy_audit.py \
             --source docs/research/conflict_client_sweep_20261020/presentation/LEM2_Teacher_ConflictAnatomy_20261025.pptx \
-            --payload-dir tools/conflict_anatomy_audit_payload_v2 \
+            --payload-dir tools/conflict_anatomy_audit_payload_v3 \
             --output docs/research/conflict_client_sweep_20261020/presentation/LEM2_Teacher_ConflictAnatomy_20261026_AUDITED.pptx \
             | tee conflict_anatomy_audit.log
 
@@ -124,7 +124,7 @@ jobs:
           git add \
             tools/build_conflict_anatomy_deck.py \
             tools/apply_conflict_anatomy_audit.py \
-            tools/conflict_anatomy_audit_payload_v2/ \
+            tools/conflict_anatomy_audit_payload_v3/ \
             docs/research/conflict_client_sweep_20261020/presentation/LEM2_Teacher_ConflictAnatomy_20261025.pptx \
             docs/research/conflict_client_sweep_20261020/presentation/LEM2_Teacher_ConflictAnatomy_20261025.pptx.sha256 \
             docs/research/conflict_client_sweep_20261020/presentation/LEM2_Teacher_ConflictAnatomy_20261026_AUDITED.pptx \
