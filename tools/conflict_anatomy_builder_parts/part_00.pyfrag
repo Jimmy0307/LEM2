@@ -1,0 +1,50 @@
+from __future__ import annotations
+import argparse, json, hashlib
+from pathlib import Path
+from pptx import Presentation
+from pptx.util import Inches, Pt
+from pptx.dml.color import RGBColor
+from pptx.enum.shapes import MSO_SHAPE
+from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
+
+NAVY=RGBColor(0x1F,0x29,0x33); DARK=RGBColor(0x23,0x31,0x3F); TEAL=RGBColor(0x2B,0x7A,0x78)
+BLUE=RGBColor(0x4A,0x78,0xA8); GREEN=RGBColor(0x4C,0x8A,0x61); ORANGE=RGBColor(0xC9,0x6A,0x3D)
+GOLD=RGBColor(0xA9,0x80,0x25); RED=RGBColor(0xB6,0x52,0x52); GRAY=RGBColor(0x6B,0x77,0x80)
+LIGHT2=RGBColor(0xEB,0xF1,0xF3); WHITE=RGBColor(0xFF,0xFF,0xFF)
+PALE_TEAL=RGBColor(0xE8,0xF3,0xF1); PALE_BLUE=RGBColor(0xE9,0xF0,0xF7); PALE_ORANGE=RGBColor(0xF8,0xEE,0xE9); PALE_RED=RGBColor(0xF8,0xE9,0xE9)
+FONT='Noto Sans'
+
+FROZEN_CONFIG = {
+    'Balance Scale': {2:(47,37.3),3:(62,49.2),4:(74,58.7),5:(83,65.9)},
+    'Car Evaluation': {2:(85,24.6),3:(134,38.7),4:(169,48.8),5:(210,60.7)},
+    'Hayes-Roth': {2:(3,11.5),3:(14,53.8),4:(10,38.5),5:(17,65.4)},
+}
+DATASET_BEST = {
+    'Balance Scale': ('PS',195,266,73.3),
+    'Car Evaluation': ('FIRST',486,598,81.3),
+    'Hayes-Roth': ('FIRST',36,44,81.8),
+}
+
+def add_text(slide,text,x,y,w,h,size=11,bold=False,color=NAVY,align=PP_ALIGN.LEFT,valign=MSO_ANCHOR.TOP):
+    box=slide.shapes.add_textbox(Inches(x),Inches(y),Inches(w),Inches(h)); tf=box.text_frame
+    tf.clear(); tf.word_wrap=True; tf.vertical_anchor=valign; tf.margin_left=tf.margin_right=Inches(.03); tf.margin_top=tf.margin_bottom=Inches(.02)
+    p=tf.paragraphs[0]; p.alignment=align; r=p.add_run(); r.text=str(text); r.font.name=FONT; r.font.size=Pt(size); r.font.bold=bold; r.font.color.rgb=color
+    return box
+
+def replace_text(shape,text,size=None,color=None,bold=None):
+    shape.text=str(text); shape.text_frame.word_wrap=True
+    for p in shape.text_frame.paragraphs:
+        for r in p.runs:
+            r.font.name=FONT
+            if size is not None: r.font.size=Pt(size)
+            if color is not None: r.font.color.rgb=color
+            if bold is not None: r.font.bold=bold
+
+def add_rect(slide,x,y,w,h,fill=WHITE,line=LIGHT2,radius=True,line_width=1):
+    sh=slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE if radius else MSO_SHAPE.RECTANGLE,Inches(x),Inches(y),Inches(w),Inches(h))
+    sh.fill.solid(); sh.fill.fore_color.rgb=fill; sh.line.color.rgb=line; sh.line.width=Pt(line_width); return sh
+
+def add_title(slide,title,subtitle):
+    add_text(slide,title,.62,.34,12.05,.48,23.5,True,NAVY); add_text(slide,subtitle,.64,.86,12,.34,12,False,TEAL)
+
+def add_footer(slide,page):
