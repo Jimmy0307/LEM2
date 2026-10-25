@@ -1,0 +1,43 @@
+    # existing edits
+    for sh in title_slide(prs,'數據真的有沿著這條鏈走嗎？Car / Balance：有').shapes:
+        if hasattr(sh,'text') and sh.text.startswith('這就是我們目前說'): replace_text(sh,'在 Car / Balance 的 frozen sweep 中，client fragmentation、rule generality、matching overlap 與 conflict workload 呈一致方向變化。',9.2,NAVY)
+    for sh in title_slide(prs,'六種方法到底改了什麼？它們只改「Conflict 發生後的排序」').shapes:
+        if hasattr(sh,'text') and sh.text.strip()=='908 = structural conflict occurrences': replace_text(sh,'908 = configuration-level conflict occurrences',11,TEAL,True)
+    for sh in title_slide(prs,'老師上次問題：現在逐題的最終答案').shapes:
+        if hasattr(sh,'text') and sh.text.startswith('Coverage 與 Conflict 都已改成'): replace_text(sh,'Coverage / Conflict 均已有可重現定義；908 occurrences 已進一步拆成 392 unique objects，且 conflict 高度集中在少數 candidate boundaries。',9,NAVY)
+    for sh in title_slide(prs,'Code / Evidence Closure').shapes:
+        if not hasattr(sh,'text'): continue
+        if sh.text.startswith('✓ Target Candidate Coverage'): replace_text(sh,'✓ Target Candidate Coverage\n✓ Redundancy Asymmetry helper\n✓ Conflict concentration / persistence audit\n✓ Candidate-signature / resolver audit\n✓ Standard / Global transition decomposition',9.2,NAVY)
+        elif sh.text.startswith('✓ dataset metadata'): replace_text(sh,'✓ dataset metadata / six-policy metrics\n✓ coverage by class / target 1–5\n✓ conflict anatomy bundle (10 files)\n✓ persistence / candidate / policy tables\n✓ error / asymmetry transitions',9.2,NAVY)
+        elif sh.text.startswith('TDD RED：'): replace_text(sh,'TDD RED：缺 function / entrypoint 時 CI fail\nGREEN：implementation 後\n124 tests passed · compile PASS\nConflict reconciliation PASS\nEvidence workflow SUCCESS',9.2,NAVY)
+        elif sh.text.startswith('這一輪完成的是 professor-question evidence layer'): replace_text(sh,'這一輪再補上 Conflict Concentration / Anatomy evidence layer；仍不修改 frozen main，也不新增第七種 prediction policy。',9.1,NAVY)
+        elif sh.text.startswith('Federated LEM2 · Professor-question closure'): replace_text(sh,'Federated LEM2 · Conflict concentration closure · 2026-10-25',7.8,GRAY)
+    for sh in title_slide(prs,'現在可以下什麼結論、還不能下什麼結論').shapes:
+        if not hasattr(sh,'text'): continue
+        if sh.text.startswith('• Population correction 會降低'): replace_text(sh,'• 908 occurrences 來自 392 unique objects；67 個在四種 C 都 conflict。\n• Candidate conflict 高度集中：Balance L|R 56%、Car acc|unacc 56%、Hayes 1|2 68%。\n• 同一 908 cases：STD 77.0%、PS 76.7%、GS 72.8%、PG 72.5%；沒有 universal resolver。\n• 43/43 changed winners 都往 lower-redundancy decision，但可 corrected 也可 harmed。\n• true class 不在 Candidate(x) 時，任何 voting 都救不了。',9.1,NAVY)
+        elif sh.text.startswith('• Population method universally better'): replace_text(sh,'• Population method universally better。\n• Client 數越多，conflict 就必然單調增加。\n• Persistent conflict 已被證明是 federation 的 causal effect。\n• Redundancy 本身就是 noise，或 A(x) 已是 causal predictor。\n• conflict 內 factor/value 頻率可直接解讀成 relative risk。\n• seed=42 的單次 split 可直接當獨立樣本做顯著性。',8.9,NAVY)
+        elif sh.text.startswith('Repeated matched seeds / splits'): sh.top=Inches(5.76); sh.height=Inches(.45); sh.rotation=0; replace_text(sh,'Repeated matched seeds / splits → 追蹤 conflict persistence、candidate boundary、T/U/P、score margin、A(x) → block-level Friedman / paired Wilcoxon。',9,NAVY)
+        elif sh.text.startswith('下一輪不加新方法'): replace_text(sh,'下一輪不加新方法；先驗證哪些 decision boundary / support structure 形成 persistent conflict，以及何時 Population correction corrected / over-correct。',9,NAVY)
+        elif sh.text.startswith('Federated LEM2 · Professor-question closure'): replace_text(sh,'Federated LEM2 · Conflict concentration closure · 2026-10-25',7.8,GRAY)
+    # reorder: A/B/C after 908; M after cause; D after M.
+    lst=prs.slides._sldIdLst; elems={int(el.id):el for el in list(lst)}; ids=[x.slide_id for x in new]
+    for sid in ids: lst.remove(elems[int(sid)])
+    anchor=elems[int(title_slide(prs,'908 怎麼來？為什麼看起來這麼大？').slide_id)]; idx=list(lst).index(anchor)+1
+    for sid in ids[:3]: lst.insert(idx,elems[int(sid)]); idx+=1
+    anchor=elems[int(title_slide(prs,'Conflict 為什麼會產生？直接原因 vs. 結構性原因').slide_id)]; idx=list(lst).index(anchor)+1; lst.insert(idx,elems[int(ids[3])]); idx+=1; lst.insert(idx,elems[int(ids[4])])
+    new_ids=set(ids)
+    for i,slide in enumerate(prs.slides,1):
+        if slide.slide_id in new_ids: add_footer(slide,i)
+        else:
+            found=False
+            for sh in slide.shapes:
+                if hasattr(sh,'text') and sh.text.strip().isdigit() and sh.top/914400>6.9 and sh.left/914400>11.7: replace_text(sh,str(i),7.8,GRAY); found=True
+            if not found: add_text(slide,str(i),12.2,7.13,.4,.18,7.8,False,GRAY,PP_ALIGN.RIGHT)
+    assert len(prs.slides)==38
+    output.parent.mkdir(parents=True,exist_ok=True); prs.save(output)
+    digest=hashlib.sha256(output.read_bytes()).hexdigest(); output.with_suffix(output.suffix+'.sha256').write_text(f'{digest}  {output.name}\n',encoding='utf-8')
+    print(f'DECK_BUILD=PASS slides={len(prs.slides)} sha256={digest}')
+
+def main():
+    ap=argparse.ArgumentParser(); ap.add_argument('--source',type=Path,required=True); ap.add_argument('--summary',type=Path,required=True); ap.add_argument('--output',type=Path,required=True); a=ap.parse_args(); build(a.source,a.summary,a.output)
+if __name__=='__main__': main()
