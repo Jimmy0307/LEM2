@@ -27,7 +27,7 @@ jobs:
 
       - name: Run full 210-row factorial experiment
         run: |
-          python teacher_demo/full_factorial_matrix.py \
+          python -m teacher_demo.full_factorial_matrix \
             --output outputs/teacher_full_factorial_20261029
 
       - name: Verify output contract
