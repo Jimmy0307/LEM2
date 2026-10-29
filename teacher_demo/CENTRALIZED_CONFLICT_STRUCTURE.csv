@@ -1,0 +1,4 @@
+dataset,central_rules,central_reduct,test,conflicts,conflict_rate,coverage,true_in_candidate
+Balance Scale,232,left_distance|left_weight|right_distance|right_weight,126,11,0.087,0.722,0.603
+Car Evaluation,180,buying|doors|lug_boot|maint|persons|safety,346,52,0.15,0.925,0.902
+Hayes-Roth,19,age|educational_level|hobby|marital_status,26,3,0.115,0.846,0.731
