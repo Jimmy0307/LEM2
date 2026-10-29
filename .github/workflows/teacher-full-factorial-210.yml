@@ -1,0 +1,66 @@
+name: Teacher Full Factorial 210
+
+on:
+  push:
+    branches:
+      - research/full-factorial-20261029
+  workflow_dispatch:
+
+jobs:
+  full-factorial:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements-dev.txt
+
+      - name: Red-green contract tests
+        run: python -m pytest -q teacher_demo/test_full_factorial_matrix.py
+
+      - name: Run full 210-row factorial experiment
+        run: |
+          python teacher_demo/full_factorial_matrix.py \
+            --output outputs/teacher_full_factorial_20261029
+
+      - name: Verify output contract
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd
+
+          root = Path('outputs/teacher_full_factorial_20261029')
+          df = pd.read_csv(root / 'FULL_FACTORIAL_RESULTS.csv')
+          assert len(df) == 210, len(df)
+          assert set(df['dataset']) == {'Hayes-Roth', 'Car Evaluation', 'Balance Scale'}
+          assert set(df['split_mode']) == {'FULL_DATA', 'HOLDOUT_80_20'}
+          assert set(df['system']) == {'CENTRALIZED', 'FEDERATED'}
+          assert set(df['selection_policy']) == {
+              'NONE', 'FIRST_MATCH', 'SIMPLE_VOTING', 'STANDARD_VOTING',
+              'GLOBAL_STRENGTH', 'POPULATION_STANDARD', 'POPULATION_GLOBAL'
+          }
+          none = df[df['selection_policy'] == 'NONE']
+          assert len(none) == 30, len(none)
+          assert none[['accuracy', 'balanced_accuracy', 'macro_f1']].isna().all().all()
+          selected = df[df['selection_policy'] != 'NONE']
+          assert len(selected) == 180, len(selected)
+          assert selected[['accuracy', 'balanced_accuracy', 'macro_f1']].notna().all().all()
+          print('FULL_FACTORIAL_VERDICT=PASS')
+          print('ROWS=', len(df))
+          print('BASELINE_ROWS=', len(none))
+          print('POLICY_ROWS=', len(selected))
+          PY
+
+      - name: Upload factorial evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lem2-full-factorial-20261029
+          path: outputs/teacher_full_factorial_20261029/
+          if-no-files-found: error
