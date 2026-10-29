@@ -7,57 +7,115 @@ on:
   workflow_dispatch:
 
 jobs:
-  full-factorial:
+  contract:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-
-      - name: Install dependencies
-        run: python -m pip install -r requirements-dev.txt
-
+      - run: python -m pip install -r requirements-dev.txt
       - name: Red-green contract tests
         run: python -m pytest -q teacher_demo/test_full_factorial_matrix.py
 
-      - name: Run full 210-row factorial experiment
+  partition:
+    needs: contract
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        include:
+          - dataset: Hayes-Roth
+            slug: hayes_roth
+            split: FULL_DATA
+          - dataset: Hayes-Roth
+            slug: hayes_roth
+            split: HOLDOUT_80_20
+          - dataset: Car Evaluation
+            slug: car_evaluation
+            split: FULL_DATA
+          - dataset: Car Evaluation
+            slug: car_evaluation
+            split: HOLDOUT_80_20
+          - dataset: Balance Scale
+            slug: balance_scale
+            split: FULL_DATA
+          - dataset: Balance Scale
+            slug: balance_scale
+            split: HOLDOUT_80_20
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Run one 35-row partition
         run: |
-          python -m teacher_demo.full_factorial_matrix \
-            --output outputs/teacher_full_factorial_20261029
+          python -m teacher_demo.full_factorial_partition \
+            --dataset "${{ matrix.dataset }}" \
+            --split-mode "${{ matrix.split }}" \
+            --output outputs/teacher_full_factorial_parts
+      - name: Upload partition
+        uses: actions/upload-artifact@v4
+        with:
+          name: lem2-part-${{ matrix.slug }}-${{ matrix.split }}
+          path: outputs/teacher_full_factorial_parts/PART_*.csv
+          if-no-files-found: error
 
-      - name: Verify output contract
+  aggregate:
+    needs: partition
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Download all partition artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: lem2-part-*
+          path: downloaded_parts
+          merge-multiple: true
+      - name: Aggregate, verify, and write final evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import pandas as pd
+          from teacher_demo.full_factorial_matrix import _validate_runtime_output, _write_outputs
+
+          files = sorted(Path('downloaded_parts').glob('PART_*.csv'))
+          assert len(files) == 6, files
+          frames = [pd.read_csv(path) for path in files]
+          df = pd.concat(frames, ignore_index=True)
+          _validate_runtime_output(df)
+          cfg = json.loads(Path('config.json').read_text(encoding='utf-8-sig'))
+          out = Path('outputs/teacher_full_factorial_20261029')
+          _write_outputs(df, out, cfg)
+          print('FULL_FACTORIAL_VERDICT=PASS')
+          print('PARTITIONS=', len(files))
+          print('ROWS=', len(df))
+          print('BASELINE_ROWS=', int((df['selection_policy'] == 'NONE').sum()))
+          print('POLICY_ROWS=', int((df['selection_policy'] != 'NONE').sum()))
+          PY
+      - name: Verify final output contract
         run: |
           python - <<'PY'
           from pathlib import Path
           import pandas as pd
-
           root = Path('outputs/teacher_full_factorial_20261029')
           df = pd.read_csv(root / 'FULL_FACTORIAL_RESULTS.csv')
-          assert len(df) == 210, len(df)
+          assert len(df) == 210
           assert set(df['dataset']) == {'Hayes-Roth', 'Car Evaluation', 'Balance Scale'}
           assert set(df['split_mode']) == {'FULL_DATA', 'HOLDOUT_80_20'}
           assert set(df['system']) == {'CENTRALIZED', 'FEDERATED'}
-          assert set(df['selection_policy']) == {
-              'NONE', 'FIRST_MATCH', 'SIMPLE_VOTING', 'STANDARD_VOTING',
-              'GLOBAL_STRENGTH', 'POPULATION_STANDARD', 'POPULATION_GLOBAL'
-          }
-          none = df[df['selection_policy'] == 'NONE']
-          assert len(none) == 30, len(none)
-          assert none[['accuracy', 'balanced_accuracy', 'macro_f1']].isna().all().all()
-          selected = df[df['selection_policy'] != 'NONE']
-          assert len(selected) == 180, len(selected)
-          assert selected[['accuracy', 'balanced_accuracy', 'macro_f1']].notna().all().all()
-          print('FULL_FACTORIAL_VERDICT=PASS')
-          print('ROWS=', len(df))
-          print('BASELINE_ROWS=', len(none))
-          print('POLICY_ROWS=', len(selected))
+          assert len(df[df['selection_policy'] == 'NONE']) == 30
+          assert len(df[df['selection_policy'] != 'NONE']) == 180
+          print('FINAL_OUTPUT_CONTRACT=PASS')
           PY
-
       - name: Upload factorial evidence
         uses: actions/upload-artifact@v4
         with:
