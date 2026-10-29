@@ -56,3 +56,19 @@ Overall descriptive mean across all 18 centralized rows:
 | Hayes-Roth | 3 | 26 | 11.5% |
 
 These values do not mean classical Rough Set failed. They mean the study's added matching/selection layer found more than one candidate decision for those objects.
+
+## Google Drive alignment
+
+Drive folder: `LEM2_Teacher_Demo_20261029`
+
+- Folder ID: `1tU9XF09suP7XNJdpmxMPkPTAJxvM57ka`
+- Metric summary Sheet ID: `1KsDZbbAFAsy2-thIAw5KRxESD6QA-DaEFz2-BTv9GYY`
+- Alignment Doc ID: `1Cb-8MjfUFEPFlSRAnXCpORa696Vv9-zc7Qal2ouGP8Y`
+- Code bundle ZIP ID: `1dwwGdBRgznfuiDUfIpbGhIN4rHTSDLoI`
+- `CENTRALIZED_VS_FEDERATED.csv` Drive ID: `1P60LGBxHt09fG0t8de1yOXiUVg88njF7`
+- `CENTRALIZED_CONFLICT_STRUCTURE.csv` Drive ID: `1v-0AwEa2LfHgxu0-AJ_NxIRHIq2NSOUa`
+
+Source CSV SHA-256 values used for cross-checking:
+
+- `CENTRALIZED_VS_FEDERATED.csv`: `f518c3815ad5c09addedd67fc3f680d887eaeea86696f200832ff2b124b5bf75`
+- `CENTRALIZED_CONFLICT_STRUCTURE.csv`: `0b3cac1e9e527777e3229f02c0169ce1c103e0395fe29715bb66dd01aa98df96`
