@@ -7,7 +7,20 @@ on:
 permissions:
   contents: write
 jobs:
+  smoke:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Verify pinned input snapshot reproduces frozen seed42
+        run: python -m teacher_demo.seed_sweep_runner --seed 42 --output outputs/seed_sweep_1_42
   seed:
+    needs: smoke
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     timeout-minutes: 120
