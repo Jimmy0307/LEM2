@@ -1,0 +1,89 @@
+name: LEM2 Non-IID Dirichlet Pilot
+on:
+  push:
+    branches: [research/seed-sweep-1-42-20261108]
+    paths: [.github/workflows/noniid-pilot.yml, teacher_demo/noniid_pilot.py]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        seed: [1, 42]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Run non-IID alpha 0.1 and 0.5 with preserved holdout
+        run: python -m teacher_demo.noniid_pilot --seed ${{ matrix.seed }} --output outputs/noniid_pilot
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lem2-noniid-pilot-seed-${{ matrix.seed }}
+          path: outputs/noniid_pilot/*.csv
+          retention-days: 90
+          if-no-files-found: error
+  aggregate:
+    needs: pilot
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-dev.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: lem2-noniid-pilot-seed-*
+          path: downloaded
+          merge-multiple: true
+      - name: Publish pilot and failed-configurations inventory
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          from pathlib import Path
+          inp=Path('downloaded')
+          rs=[pd.read_csv(p) for p in sorted(inp.glob('NONIID_RESULTS_seed*.csv'))]
+          es=[pd.read_csv(p) for p in sorted(inp.glob('NONIID_ERRORS_seed*.csv'))]
+          out=Path('docs/research/noniid_pilot')
+          out.mkdir(parents=True,exist_ok=True)
+          main=pd.concat(rs,ignore_index=True)
+          errors=pd.concat(es,ignore_index=True)
+          assert set(main.seed).issubset({1,42}) and set(main.dirichlet_alpha).issubset({0.1,0.5})
+          assert len(main)+7*len(errors)==2*3*4*2*7,(len(main),len(errors))
+          main.to_csv(out/'NONIID_PILOT_RESULTS.csv',index=False)
+          errors.to_csv(out/'NONIID_PILOT_ERRORS.csv',index=False)
+          baseline=pd.read_csv('docs/research/seed_sweep_1_42/tables/SEED_SWEEP_8820.csv')
+          bs=baseline[(baseline.seed.isin([1,42]))&(baseline.split_mode=='HOLDOUT_80_20')&
+                      (baseline.system=='FEDERATED')]
+          key=['seed','dataset','client_count','selection_policy']
+          x=main.merge(bs[key+['accuracy','balanced_accuracy','macro_f1','coverage','conflict_case_rate']],
+                       on=key,how='left',suffixes=('_noniid','_iid'),validate='many_to_one')
+          x.to_csv(out/'PAIRED_IID_VS_NONIID_PILOT.csv',index=False)
+          (out/'README.md').write_text(
+             '# Non-IID Pilot (NOT 42-seed evidence)\n'
+             'Only seeds 1 and 42; holdout 80/20; 3 datasets; C=2..5; Dirichlet alpha 0.1 or 0.5.\n'
+             'Invalid partitions are retained in NONIID_PILOT_ERRORS.csv. Never fill missing outcomes with zeros.\n'
+             'Compare with IID using matched dataset, seed, topology, policy and holdout evaluation.\n',
+             encoding='utf-8')
+          print('NONIID_PILOT_PASS',len(main),len(errors))
+          PY
+      - name: Commit pilot evidence
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/research/noniid_pilot
+          if ! git diff --cached --quiet; then
+            git commit -m "research: publish non-IID pilot results [skip ci]"
+            git push origin HEAD:${GITHUB_REF_NAME}
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lem2-noniid-pilot-combined
+          path: docs/research/noniid_pilot/
+          if-no-files-found: error
