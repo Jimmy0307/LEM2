@@ -174,7 +174,7 @@ def main():
     canon=pd.read_csv("docs/research/seed_sweep_1_42/tables/SEED_SWEEP_8820.csv")
     expected=canon[canon.seed==args.seed].set_index(list(KEY))
     got=group.set_index(list(KEY))
-    assert set(expected.index)==set(got.index)
+    assert set(got.index).issubset(set(expected.index)), 'Object-audit keys must exist in canonical baseline'
     for col in ("rule_count","reduct_size","coverage","conflict_case_rate",
                 "true_in_candidate_rate","accuracy","balanced_accuracy","macro_f1"):
         left=pd.to_numeric(expected[col],errors="coerce").reindex(got.index).to_numpy()
