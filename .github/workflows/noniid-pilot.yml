@@ -80,7 +80,9 @@ jobs:
           git add docs/research/noniid_pilot
           if ! git diff --cached --quiet; then
             git commit -m "research: publish non-IID pilot results [skip ci]"
-            git push origin HEAD:${GITHUB_REF_NAME}
+            git fetch origin "${GITHUB_REF_NAME}"
+            git rebase FETCH_HEAD
+            git push origin HEAD:"${GITHUB_REF_NAME}"
           fi
       - uses: actions/upload-artifact@v4
         with:
