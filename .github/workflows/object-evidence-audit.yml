@@ -1,0 +1,137 @@
+name: LEM2 Object Evidence Audit Seeds 1-42
+on:
+  push:
+    branches: [research/seed-sweep-1-42-20261108]
+    paths:
+      - .github/workflows/object-evidence-audit.yml
+      - teacher_demo/object_audit_runner.py
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Check true object/score audit on frozen Hayes-Roth holdout
+        run: python -m teacher_demo.object_audit_runner --seed 42 --dataset Hayes-Roth --split HOLDOUT_80_20 --output outputs/object_audit
+  seed:
+    needs: smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        seed: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Trace all 30 model systems at row level for one seed
+        run: python -m teacher_demo.object_audit_runner --seed \${{ matrix.seed }} --output outputs/object_audit
+      - name: Upload per-seed object, class, rule and baseline replay
+        uses: actions/upload-artifact@v4
+        with:
+          name: lem2-object-audit-seed-\${{ matrix.seed }}
+          path: outputs/object_audit/*.csv
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 9
+  aggregate:
+    needs: seed
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-dev.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: lem2-object-audit-seed-*
+          path: all_object_audits
+          merge-multiple: true
+      - name: Independently reconcile object counts and candidate/error partitions
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import pandas as pd
+          root=Path('all_object_audits')
+          out=Path('docs/research/object_evidence_1_42')
+          out.mkdir(parents=True,exist_ok=True)
+          classes=sorted(root.glob('CLASS_COVERAGE_seed*.csv'))
+          objects=sorted(root.glob('OBJECT_CASES_seed*.csv'))
+          refiles=sorted(root.glob('AGGREGATE_RECHECK_seed*.csv'))
+          rules=sorted(root.glob('RULE_INVENTORY_seed*.csv'))
+          assert all(len(z)==42 for z in (classes,objects,refiles,rules)),(len(classes),len(objects),len(refiles),len(rules))
+          baseline=pd.read_csv('docs/research/seed_sweep_1_42/tables/SEED_SWEEP_8820.csv')
+          replay=pd.concat([pd.read_csv(x) for x in refiles],ignore_index=True)
+          keys=['dataset','seed','split_mode','system','client_count','selection_policy']
+          a=baseline.set_index(keys).sort_index()
+          b=replay.set_index(keys).sort_index()
+          assert a.index.equals(b.index) and len(b)==8820
+          for m in ['rule_count','coverage','conflict_case_rate','true_in_candidate_rate','accuracy','balanced_accuracy','macro_f1']:
+              import numpy as np
+              assert np.allclose(a[m].values,b[m].values,atol=1e-10,rtol=1e-10,equal_nan=True),m
+          class_rows=pd.concat([pd.read_csv(x) for x in classes],ignore_index=True)
+          class_rows.to_csv(out/'TARGET_CLASS_METRICS_42SEEDS.csv',index=False)
+          parts=[]
+          sample=[]
+          for file in objects:
+              data=pd.read_csv(file)
+              expected=int((data['has_match']==0).sum())+int((data['has_match']>0).sum())
+              assert expected==len(data)
+              assert not data.duplicated(['seed','dataset','split_mode','system','client_count','row_id']).any()
+              data['gs_vs_std_switch']=data.policy_predictions.map(
+                  lambda v: json.loads(v)['GLOBAL_STRENGTH']!=json.loads(v)['STANDARD_VOTING'])
+              data['gs_vs_ps_switch']=data.policy_predictions.map(
+                  lambda v: json.loads(v)['GLOBAL_STRENGTH']!=json.loads(v)['POPULATION_GLOBAL'])
+              parts.append(data.groupby(['seed','dataset','split_mode','system','client_count'],as_index=False)
+                           .agg(n=('row_id','size'),none=('has_match',lambda x:int((x==0).sum())),
+                                candidate_missing=('case_type',lambda x:int((x=='TRUE_MISSING').sum())),
+                                conflict=('conflict','sum'),gs_std_switch=('gs_vs_std_switch','sum'),
+                                gs_pg_switch=('gs_vs_ps_switch','sum')))
+              chosen=data[(data.gs_vs_std_switch)&(data.split_mode=='HOLDOUT_80_20')]
+              sample.append(chosen.groupby(['dataset','system','client_count'],group_keys=False)
+                            .head(1))
+          object_metrics=pd.concat(parts,ignore_index=True)
+          object_metrics.to_csv(out/'OBJECT_ERROR_PARTITIONS_42SEEDS.csv',index=False)
+          excerpts=pd.concat(sample,ignore_index=True)
+          excerpts=excerpts.sort_values(['seed','dataset','system','client_count'])
+          excerpts.to_csv(out/'WINNER_TRANSITION_EXAMPLES.csv',index=False)
+          (out/'README.md').write_text(
+               '# Object-level evidence (Seeds 1–42)\n\n'
+               f'Object audit rows: {int(object_metrics.n.sum()):,}.\n'
+               f'Target-class metric rows: {len(class_rows):,}.\n'
+               f'Winner-change examples: {len(excerpts):,}.\n'
+               'Per-object rules, scores, candidates, predictions and source rows are kept in '
+               'GitHub Actions per-seed artifacts (90-day retention); this folder contains '
+               'the inspected summary. Full Data is in-sample; Holdout is held out.\n'
+               'Replayed 8,820 aggregate rows matched the canonical table within 1e-10.\n',
+               encoding='utf-8')
+          print('OBJECT_EVIDENCE_42SEEDS_PASS',len(class_rows),int(object_metrics.n.sum()))
+          PY
+      - name: Publish auditable class-level summaries
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/research/object_evidence_1_42
+          if ! git diff --cached --quiet; then
+            git commit -m "research: publish 42-seed object and class evidence [skip ci]"
+            git push origin HEAD:\${GITHUB_REF_NAME}
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lem2-42-seed-object-evidence-combined
+          path: docs/research/object_evidence_1_42/
+          if-no-files-found: error
