@@ -1,0 +1,83 @@
+name: LEM2 Client Order Permutation Pilot
+on:
+  push:
+    branches: [research/seed-sweep-1-42-20261108]
+    paths: [.github/workflows/client-order-pilot.yml, teacher_demo/client_order_pilot.py]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        seed: [1, 42]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Enumerate every FIRST_MATCH order
+        run: python -m teacher_demo.client_order_pilot --seed ${{ matrix.seed }} --output outputs/client_order_pilot
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lem2-order-pilot-seed-${{ matrix.seed }}
+          path: outputs/client_order_pilot/*.csv
+          retention-days: 90
+          if-no-files-found: error
+  aggregate:
+    needs: seed
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-dev.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: lem2-order-pilot-seed-*
+          path: downloaded
+          merge-multiple: true
+      - name: Audit and publish both exhaustive pilot seeds
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd
+          root=Path('downloaded')
+          ss=sorted(root.glob('ORDER_SUMMARY_seed*.csv'))
+          dd=sorted(root.glob('ORDER_DISTRIBUTION_seed*.csv'))
+          assert len(ss)==len(dd)==2
+          summary=pd.concat([pd.read_csv(p) for p in ss],ignore_index=True)
+          dist=pd.concat([pd.read_csv(p) for p in dd],ignore_index=True)
+          assert len(summary)==24 and len(dist)==2*3*(2+6+24+120),(len(summary),len(dist))
+          assert summary.order_sampling_complete.all()
+          out=Path('docs/research/client_order_pilot');out.mkdir(parents=True,exist_ok=True)
+          summary.to_csv(out/'CLIENT_ORDER_SUMMARY.csv',index=False)
+          dist.to_csv(out/'CLIENT_ORDER_FULL_PERMUTATIONS.csv',index=False)
+          (out/'README.md').write_text(
+           '# Client-order pilot (seeds 1, 42 only)\n'
+           'First Match can depend on UNION client arrival order. The five vote-based '
+           'resolvers depend on the unordered deduplicated rule set and support summaries, '
+           'and are invariant by current implementation. C2–C5 exhaustively enumerated '
+           '2/6/24/120 permutations for each dataset and each tested seed.\n',
+           encoding='utf-8')
+          print('ORDER_PILOT_AGGREGATE_PASS',len(summary),len(dist))
+          PY
+      - name: Commit order pilot results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/research/client_order_pilot
+          if ! git diff --cached --quiet; then
+            git commit -m "research: publish exhaustive client-order pilot [skip ci]"
+            git push origin HEAD:${GITHUB_REF_NAME}
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lem2-order-pilot-combined
+          path: docs/research/client_order_pilot/
+          if-no-files-found: error
