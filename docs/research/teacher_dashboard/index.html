@@ -20,7 +20,7 @@ details{border:1px solid #dae4e9;border-radius:10px;padding:10px 13px;margin:10p
  <span class="tag">TEACHER REVIEW · REPRODUCIBLE RESEARCH</span>
  <h1>LEM2 × Federated<br>研究證據與 CSV 模型試算控制台</h1>
  <p>把資料切分、純 LEM2 規則、規則候選衝突、六種選擇策略與最後答案分開呈現。先看 42 Seeds 的已驗證研究證據，再使用自己的 CSV 啟動原始 Python LEM2。</p>
- <nav><a href="#seeds">42 Seeds 實測</a><a href="#metrics">指標怎麼解讀</a><a href="#run">CSV 真正試算</a><a href="#conflict">Conflict 後怎麼辦</a><a href="#method">方法與來源</a></nav>
+ <nav><a href="#seeds">42 Seeds 實測</a><a href="#flow">完整流程</a><a href="#metrics">指標怎麼解讀</a><a href="#run">CSV 真正試算</a><a href="#conflict">Conflict 後怎麼辦</a><a href="#method">方法與來源</a></nav>
 </header>
 <main>
 <section id="seeds">
@@ -58,6 +58,35 @@ details{border:1px solid #dae4e9;border-radius:10px;padding:10px 13px;margin:10p
  <tr><td><b>Population T / U / P</b></td><td>T=支持次數；U=不重複支持物件；P=U/T</td><td>辨識重複計數；P 越小代表重疊越多</td><td>比較 STD 與 PS、GS 與 PG，不能保證修正有正增益</td></tr>
  </tbody></table></div>
  <div class="info warning"><b>避免誤用：</b>Conflict 高不等於 Accuracy 一定低；Conflict 0 不代表 Coverage 100%；真正需要分開比較的是「規則生成問題」與「已提出正確候選後的排序問題」。</div>
+</section>
+<section id="flow">
+<h2>03｜規則發掘與 Conflict 處理的正確流程（按順序）</h2>
+<p class="lead">此圖與原程式分層一致：Centralized 與 Federated 是兩條不同的規則產生路徑；一定要完成 Local LEM2 才能合併 Local Rule Sets。NONE 與六策略是在 Rule Set 產生後才分支，兩者不是先後順序。</p>
+<div class="info"><b>共同輸入</b>：原始決策表 → Full Data（回代）或 80/20（Train／Test 分離） → 訓練資料決定離散化邊界。Test 不參與 Reduct／LEM2 學習。</div>
+<div class="twocol">
+<div class="metric" style="text-align:center"><h3>Centralized</h3>
+<div class="info">完整 Train<br>↓</div>
+<div class="info">最小基數 Reduct <b>P*</b><br>↓</div>
+<div class="info"><b>LEM2</b> 規則歸納<br>↓</div>
+<div class="info"><b>R_central</b>（純規則集合）</div>
+<details><summary>對應程式</summary><p>roughset/reduct.py → roughset/core.py → roughset/pipeline.py。</p></details>
+</div>
+<div class="metric" style="text-align:center"><h3>Federated</h3>
+<div class="info">Train → 依類別分派 Client 1…C<br>↓</div>
+<div class="info">各 Client 獨立 Reduct <b>P_i*</b><br>↓</div>
+<div class="info">各 Client 分別執行 <b>LEM2</b><br>↓</div>
+<div class="info"><b>R₁, R₂, …, R_C</b> Local Rule Sets<br>↓</div>
+<div class="info"><b>Rule Union + Dedup</b><br>↓</div>
+<div class="info"><b>R_global</b>（合併後規則集合）</div>
+<details><summary>對應程式</summary><p>roughset/federated.py → roughset/reduct.py → roughset/core.py → roughset/pipeline.py。</p></details>
+</div>
+</div>
+<div class="info" style="margin-top:14px"><b>兩種 Rule Set 各自進入相同評估層</b>：Rule Matching → 候選決策集合。這裡會產生 Coverage、No Match、True-in-Candidate、Conflict 等診斷。接下來分成：</div>
+<div class="twocol">
+<div class="metric"><h3>NONE：只分析、不強迫選 Winner</h3><p>完整 Matching，測 Coverage 與 Conflict；沒有定義 Accuracy 或 Macro-F1。純 LEM2 則更早停在規則集合，不進入逐筆比對。</p></div>
+<div class="metric"><h3>六種分類方法：計算 Winner</h3><p>FIRST 依順序早停；其他五種完整收集命中規則後計分。比較 Accuracy、BA、Macro-F1 與每筆錯誤類型。</p></div>
+</div>
+<div class="info warning">研究邊界：本次 Reduct 為 Classical 正域保留，不是 DRSA Dominance。Federated 規則支持度由全部訓練 Client 的資料計算；對象不同，不能把「合併後支持度」誤寫成「僅來源 Client 支持度」。</div>
 </section>
 <section id="run">
  <h2>03｜上傳 CSV，真正執行 LEM2 與六種分類</h2>
