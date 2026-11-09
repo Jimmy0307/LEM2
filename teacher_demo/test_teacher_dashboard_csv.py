@@ -50,6 +50,17 @@ def main():
           "TRUE_CLASS_NOT_CANDIDATE","CANDIDATE_SELECTED_CORRECT",
           "CANDIDATE_PRESENT_BUT_SELECTED_WRONG"
         }
+    changed=example()
+    changed.update({"ignore":["left_distance"],"bins":2,"reduct_enabled":False})
+    d=evaluate(changed)
+    assert "left_distance" not in d["features"]
+    assert d["reduct_enabled"] is False and d["bins"]==2
+    assert d["rule_count"]>0
+    skew=example()
+    skew.update({"clients":3,"partition":"DIRICHLET_LABEL_SKEW","alpha":1.0})
+    e=evaluate(skew)
+    assert e["partition"]=="DIRICHLET_LABEL_SKEW" and len(e["local_rule_counts"])==3
+    assert sum(r["in_train"] for r in e["assignments"])==e["train_rows"]
     print("TEACHER_DASHBOARD_CSV_CANONICAL_SMOKE=PASS",flush=True)
 
 if __name__=="__main__":
