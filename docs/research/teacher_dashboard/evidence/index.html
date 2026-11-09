@@ -1,0 +1,42 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>42 Seeds × 8,820 筆實驗證據｜LEM2 Research</title><link rel="stylesheet" href="../site.css">
+<meta name="description" content="42 Seeds LEM2 全因子研究逐筆數據檢視，切換 Dataset、Seed、Split、Client、六策略，成對比較指標並匯出 CSV。"></head><body>
+<div class="site-top"><a class="brand" href="../">LEM2 Research · 完整證據</a><nav><a href="../">研究報告</a><a class="active" href="./">8,820 筆實測</a><a href="../methods/">方法／公式</a><a href="../lab/">CSV 試算實驗室</a><a href="https://github.com/Jimmy0307/LEM2/tree/research/report-ready-dashboard-20261109/docs/research/teacher_dashboard" target="_blank" rel="noopener">GitHub</a></nav></div>
+<header class="hero"><div class="eyebrow">Evidence inspector · Auditable data</div><h1>42 Seeds 全因子實測數據檢視</h1><p>這一頁只讀取正式封存的 8,820 列結果。所有篩選與 A/B 差值都來自已執行實驗，沒有用 CSV 切分模擬填補任何 Accuracy。要上傳新資料跑模型，請到獨立的 CSV 實驗室。</p>
+<div class="hero-actions"><a href="../" class="primary">返回報告</a><a href="../lab/">上傳 CSV 試算</a><a href="https://github.com/Jimmy0307/LEM2/blob/research/seed-sweep-1-42-20261108/docs/research/seed_sweep_1_42/tables/SEED_SWEEP_8820.csv">GitHub 原始 CSV</a></div></header>
+<main class="wrap">
+<section class="panel"><span class="section-tag">01 · VERIFIED EVIDENCE</span><h2>資料完整性與實驗因素</h2><div class="kpi-grid"><div class="kpi"><small>驗證狀態</small><strong id="validState">讀取中</strong><span>42 個 Seeds 各有 210 列</span></div><div class="kpi"><small>已載入配置</small><strong id="totalRows">—</strong><span>資料集 × Seed × Split × Topology × Policy</span></div><div class="kpi"><small>目前篩選列數</small><strong id="shownRows">—</strong><span>空值表示未定義，不等於零</span></div></div>
+<div class="callout">原始設計：3 資料集 × 42 Seeds × 2 種切分 × 5 種拓樸 × 7 個模式 = 8,820 列。NONE 有 1,260 列規則診斷，其他六種共 7,560 列分類結果。若資料無法校驗，表格不會顯示可能誤導的「已完成」。</div></section>
+<section class="panel"><span class="section-tag">02 · FACTOR CONTROL</span><h2>任意組合：從 Seed 1 到 42 查到每個指標</h2>
+<div class="filters">
+<label>資料集<select id="ds"><option value="ALL">全部資料集</option><option>Balance Scale</option><option>Car Evaluation</option><option>Hayes-Roth</option></select></label>
+<label>Seed<select id="seed"><option value="ALL">全部 1～42</option></select></label>
+<label>切分模式<select id="split"><option value="ALL">Full + 80/20</option><option value="FULL_DATA">FULL_DATA 回代</option><option value="HOLDOUT_80_20">HOLDOUT 80/20</option></select></label>
+<label>拓樸<select id="system"><option value="ALL">全部拓樸</option><option value="CENTRALIZED">Centralized</option><option value="FEDERATED">Federated</option></select></label>
+<label>Client 數<select id="clients"><option value="ALL">全部 Client</option><option value="0">C=0 Centralized</option><option value="2">C2</option><option value="3">C3</option><option value="4">C4</option><option value="5">C5</option></select></label>
+<label>策略<select id="policy"><option value="ALL">全部</option><option>NONE</option><option>FIRST_MATCH</option><option>SIMPLE_VOTING</option><option>STANDARD_VOTING</option><option>GLOBAL_STRENGTH</option><option>POPULATION_STANDARD</option><option>POPULATION_GLOBAL</option></select></label></div>
+<div class="filters"><label>繪圖指標<select id="metric"><option value="conflict_case_rate">Conflict rate</option><option value="coverage">Coverage</option><option value="true_in_candidate_rate">True-in-Candidate</option><option value="accuracy">Accuracy</option><option value="balanced_accuracy">Balanced Accuracy</option><option value="macro_f1">Macro-F1</option><option value="rule_count">Rule Count</option></select></label>
+<div style="flex:2"><button id="reset">重設條件</button> <button class="primary" id="download">下載目前篩選 CSV</button></div></div>
+<p id="selectionInfo" class="muted small">載入資料後會顯示篩選數量。</p>
+<svg id="trend" class="chart" viewBox="0 0 1100 290" role="img" aria-label="目前設定的42 Seeds指標趨勢"></svg>
+<div class="table-wrap"><table><thead><tr><th>Dataset</th><th>Seed</th><th>Split</th><th>System</th><th>C</th><th>Mode</th><th>Rules</th><th>Coverage</th><th>Conflict</th><th>Candidate</th><th>Accuracy</th><th>BA</th><th>Macro-F1</th></tr></thead><tbody id="dataRows"><tr><td colspan="13">載入中…</td></tr></tbody></table></div>
+<div class="filters"><span class="muted small" id="pageInfo">每頁最多 75 列</span><div><button id="prev">上一頁</button> <button id="next">下一頁</button></div></div></section>
+<section class="panel"><span class="section-tag">03 · PAIRED EXPERIMENT</span><h2>成對 A/B 對照：只改一個因素，保留相同 Seed</h2><p>例如固定 80/20、同資料集、相同 Seed 與 Client，僅將 STD 改為 GS，即可檢查 Balanced Accuracy 的成對差異。變更 Client 數量或 Full／80/20 時也會明確顯示是不同的研究設計，不能都當成相同測試基準。</p>
+<div class="filters"><label>成對比較<select id="comparison">
+<option value="GS_STD_BA">GS − STD：Balanced Accuracy</option>
+<option value="GS_STD_ACC">GS − STD：Accuracy</option>
+<option value="GS_STD_F1">GS − STD：Macro-F1</option>
+<option value="C5_C2_CONFLICT">Federated C5 − C2：Conflict rate</option>
+<option value="C5_C2_COVERAGE">Federated C5 − C2：Coverage</option>
+<option value="HOLDOUT_FULL_RULE">80/20 − Full：Rule Count</option>
+</select></label><label>資料集<select id="compareDs"><option value="ALL">三資料集等權</option><option>Balance Scale</option><option>Car Evaluation</option><option>Hayes-Roth</option></select></label></div>
+<div class="kpi-grid"><div class="kpi"><small>跨 Seed 成對平均差值</small><strong id="delta">—</strong><span>每個 Seed 先等權平均資料集與相關 Client，再做差值</span></div><div class="kpi"><small>42 Seeds 中正向差值次數</small><strong id="wins">—</strong><span>為描述性差異，不等於正式因果或獨立樣本檢定</span></div></div>
+<svg id="compareChart" class="chart" viewBox="0 0 1100 280" role="img" aria-label="兩個配置在42 Seeds上的成對指標差異"></svg>
+<div class="table-wrap"><table><thead><tr><th>Seed</th><th>A 值</th><th>B 值</th><th>B − A</th></tr></thead><tbody id="compareRows"></tbody></table></div>
+<div class="callout warn"><b>統計解讀：</b>這裡的 42 個點來自相同三個資料集上的重複切分，不可視為 42 個獨立研究樣本。Full/80:20 比較同時改變訓練量和評估口徑，不是單獨的泛化因果效果。</div></section>
+<section class="panel"><span class="section-tag">04 · NEXT ACTION</span><h2>從數據追到「為什麼」</h2>
+<div class="three"><div class="card"><h3>先讀公式</h3><p>釐清 Coverage 與 True-in-Candidate 的分母，和 T/U/N/P 的用法。</p><a href="../methods/">前往公式與變因定義</a></div>
+<div class="card"><h3>再查逐筆規則</h3><p>上傳有標籤的 CSV，指定 Seed/C/策略，直接顯示每筆測試物件的命中規則、分數與 Winner。</p><a href="../lab/">前往 CSV 模型實驗室</a></div>
+<div class="card"><h3>回到研究報告</h3><p>將證據放回研究問題與方法侷限，供教授完整閱讀。</p><a href="../">回到報告總覽</a></div></div>
+</section></main>
+<footer class="footer">LEM2 × Federated Research · <a href="../">研究報告</a> / <a href="../methods/">方法</a> / <a href="../lab/">試算</a></footer><script src="./evidence.js" defer></script></body></html>
