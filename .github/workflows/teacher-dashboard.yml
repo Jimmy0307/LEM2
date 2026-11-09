@@ -1,0 +1,63 @@
+name: Teacher Dashboard - Canonical CSV and 42 Seed Evidence
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - docs/research/teacher_dashboard/index.html
+      - docs/research/teacher_dashboard/dashboard.js
+      - docs/research/teacher_dashboard/browser_engine_worker.js
+      - docs/research/teacher_dashboard/runtime/engine.py
+      - teacher_demo/build_teacher_dashboard_data.py
+      - teacher_demo/test_teacher_dashboard_csv.py
+      - .github/workflows/teacher-dashboard.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  verify-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Syntax-check dashboard JavaScript
+        run: |
+          node --check docs/research/teacher_dashboard/dashboard.js
+          node --check docs/research/teacher_dashboard/browser_engine_worker.js
+          python -m py_compile docs/research/teacher_dashboard/runtime/engine.py
+      - name: Build & validate 8820 official experiment results for live Seed cells
+        run: python -m teacher_demo.build_teacher_dashboard_data
+      - name: Actual CSV model smoke (canonical Reduct + LEM2 + six classifiers)
+        run: python -m teacher_demo.test_teacher_dashboard_csv
+      - name: Compare JSON directly with frozen 8820 data
+        run: |
+          python - <<'PY'
+          import json
+          import pandas as pd
+          from pathlib import Path
+          src=pd.read_csv("docs/research/seed_sweep_1_42/tables/SEED_SWEEP_8820.csv")
+          j=json.loads(Path("docs/research/teacher_dashboard/data/baseline_8820.json").read_text())
+          assert len(src)==len(j["rows"])==8820
+          assert j["validated_seeds"]==42
+          assert len(j["columns"])==13
+          assert sum(row[j["columns"].index("selection_policy")]=="NONE" for row in j["rows"])==1260
+          print("DASHBOARD_RECONCILIATION=PASS",flush=True)
+          PY
+      - name: Persist verified static evidence without changing historical baseline
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/research/teacher_dashboard/data/baseline_8820.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: publish canonical 8820-row dashboard evidence [skip ci]"
+            git push origin HEAD:${GITHUB_REF_NAME}
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: teacher-dashboard-verified
+          path: |
+            docs/research/teacher_dashboard/
+          if-no-files-found: error
