@@ -1,0 +1,27 @@
+name: Teacher Row Evidence Trace (Seed 42 smoke)
+on:
+  push:
+    branches: [research/teacher-evidence-42-20261109]
+    paths: [teacher_demo/teacher_row_evidence.py, .github/workflows/teacher-row-evidence.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  seed42:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Trace every held-out and full-data object using original rules
+        run: python -m teacher_demo.teacher_row_evidence --seed 42
+      - name: Archive audited evidence (compressed)
+        uses: actions/upload-artifact@v4
+        with:
+          name: teacher-row-evidence-seed42
+          path: outputs/teacher_row_evidence/*.csv.gz
+          retention-days: 90
+          if-no-files-found: error
