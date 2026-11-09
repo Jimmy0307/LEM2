@@ -25,3 +25,73 @@ jobs:
           path: outputs/teacher_row_evidence/*.csv.gz
           retention-days: 90
           if-no-files-found: error
+
+  all_seeds:
+    needs: seed42
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        seed: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Per-object evidence and exact 8,820 baseline reconciliation
+        run: python -m teacher_demo.teacher_row_evidence --seed ${{ matrix.seed }}
+      - name: Upload row and class records for this seed
+        uses: actions/upload-artifact@v4
+        with:
+          name: teacher-trace-${{ matrix.seed }}
+          path: outputs/teacher_row_evidence/*.csv.gz
+          if-no-files-found: error
+          retention-days: 90
+  aggregate:
+    needs: all_seeds
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pandas
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: teacher-trace-*
+          path: downloaded_traces
+          merge-multiple: true
+      - name: Validate all 42 Seeds and class totals
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd
+          root=Path("downloaded_traces")
+          kinds=["ROW_CASES","RULE_CATALOG","PER_CLASS","RUN_AUDIT"]
+          for kind in kinds:
+              files=sorted(root.glob(f"{kind}_seed*.csv.gz"))
+              assert len(files)==42,(kind,len(files))
+          audits=pd.concat((pd.read_csv(f) for f in sorted(root.glob("RUN_AUDIT_seed*.csv.gz"))),ignore_index=True)
+          assert len(audits)==1260 and set(audits.seed)==set(range(1,43))
+          assert bool(audits.verified.all())
+          keys=["dataset","seed","split_mode","system","client_count"]
+          assert not audits.duplicated(keys).any()
+          classes=pd.concat((pd.read_csv(f) for f in sorted(root.glob("PER_CLASS_seed*.csv.gz"))),ignore_index=True)
+          summary=classes.groupby(keys,as_index=False)["n"].sum()
+          check=summary.merge(audits,on=keys,validate="1:1")
+          assert (check.n==check.evaluation_rows).all()
+          output=Path("outputs/teacher_row_audit")
+          output.mkdir(parents=True,exist_ok=True)
+          audits.to_csv(output/"AUDIT_42SEEDS.csv",index=False)
+          classes.to_csv(output/"PER_CLASS_42SEEDS.csv.gz",index=False,compression="gzip")
+          print("ROW_EVIDENCE_42_SEEDS_PASS",len(audits),len(classes),flush=True)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: teacher-trace-42-seeds-validated-index
+          path: outputs/teacher_row_audit/*
+          if-no-files-found: error
+          retention-days: 90
