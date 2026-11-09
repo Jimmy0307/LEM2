@@ -8,6 +8,14 @@ on:
       - docs/research/teacher_dashboard/dashboard.js
       - docs/research/teacher_dashboard/browser_engine_worker.js
       - docs/research/teacher_dashboard/runtime/engine.py
+      - docs/research/teacher_dashboard/report.js
+      - docs/research/teacher_dashboard/index.html
+      - docs/research/teacher_dashboard/site.css
+      - docs/research/teacher_dashboard/methods/**
+      - docs/research/teacher_dashboard/evidence/**
+      - docs/research/teacher_dashboard/figures/**
+      - docs/research/teacher_dashboard/lab/**
+      - docs/index.html
   workflow_dispatch:
 permissions:
   contents: read
