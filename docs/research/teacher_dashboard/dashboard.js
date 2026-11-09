@@ -57,7 +57,7 @@ function validateEvidence(rows){
 }
 async function loadBaseline(){
   try{
-    const response=await fetch("./data/baseline_8820.json",{cache:"no-cache"});
+    const response=await fetch("../data/baseline_8820.json",{cache:"no-cache"});
     if(!response.ok)throw Error("HTTP "+response.status+"，請確認 GitHub Actions 已發布資料");
     const j=await response.json();
     evidence=mapRows(j);
@@ -293,7 +293,7 @@ $("runButton").onclick=()=>{
   $("cancelButton").disabled=false;
   setStatus("runStatus","初始化運算中；模型計算在瀏覽器記憶體內進行。");
   if(worker)worker.terminate();
-  worker=new Worker("./browser_engine_worker.js",{type:"module"});
+  worker=new Worker("../browser_engine_worker.js",{type:"module"});
   worker.onmessage=({data})=>{
     if(data.kind==="status")setStatus("runStatus",data.message);
     else if(data.kind==="error"){setStatus("runStatus","試算失敗："+data.message,true);b.disabled=false;$("cancelButton").disabled=true;}
