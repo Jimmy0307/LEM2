@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="zh-Hant"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LEM2 CSV 試算實驗室｜原始 Python LEM2 與 Conflict 追溯</title>
+<meta name="description" content="已驗證 42 Seeds 8,820 筆實驗證據，真正使用原始 LEM2 Python 試算自訂 CSV，逐筆診斷規則衝突與六種決策策略。">
+<style>
+:root{--bg:#f4f7fa;--navy:#13263b;--teal:#117779;--ink:#1a2c40;--muted:#5c6d7e;--line:#d9e3ea;--panel:#fff;--good:#168468;--warn:#ad7133;--bad:#ac4650}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);font:15px/1.6 system-ui,"Noto Sans TC","Microsoft JhengHei",sans-serif;background:var(--bg)}a{color:var(--teal);text-decoration:none}a:hover{text-decoration:underline}button,select,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #f5bf65;outline-offset:2px}
+header{background:linear-gradient(135deg,#102033,#1c4350);color:#f7fbff;padding:32px max(22px,calc((100vw - 1240px)/2));border-bottom:4px solid #2ea89b}header h1{font-size:clamp(26px,4vw,42px);margin:8px 0;line-height:1.28}header p{max-width:850px;color:#cce0e7;margin:0 0 12px}.tag{display:inline-block;border:1px solid #6c999f;color:#d4f4ed;padding:4px 10px;border-radius:22px;font-size:12px;font-weight:700;letter-spacing:.05em}
+nav{display:flex;gap:15px;flex-wrap:wrap;margin-top:18px}nav a{color:#e1f4f3;border-bottom:1px solid #679b9a;padding:3px 0;font-size:13px}
+main{max-width:1270px;margin:auto;padding:24px 18px 64px}section{background:var(--panel);border:1px solid var(--line);border-radius:18px;margin:0 0 21px;padding:22px;box-shadow:0 5px 25px rgba(16,40,57,.045)}h2{font-size:21px;margin:0 0 5px}h3{font-size:16px;margin:7px 0 12px}.muted{color:var(--muted)}.lead{font-size:14px;color:var(--muted);margin:0 0 18px}.info{padding:12px 14px;border-left:4px solid var(--teal);background:#edf7f5;border-radius:6px;margin:12px 0}.warning{border-left-color:#ba8236;background:#fff7e9}.error{border-left-color:var(--bad);background:#fff1f1}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.metric{border:1px solid var(--line);border-radius:13px;padding:13px;background:#fafcfd}.metric small{display:block;color:var(--muted)}.metric strong{display:block;font-size:24px;color:#143e52}.metric span{display:block;color:var(--muted);font-size:12px}.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin:10px 0 15px}label{display:flex;flex-direction:column;font-size:13px;font-weight:650;gap:5px}input,select{padding:10px 9px;border:1px solid #cbd8df;border-radius:9px;background:#fff;min-width:0;width:100%;color:var(--ink)}button{padding:10px 14px;border:1px solid #b2cbd1;background:#edf5f6;border-radius:10px;color:#175c62;font-weight:700}button.primary{background:#156e71;color:white;border:1px solid #156e71}button:disabled{opacity:.5;cursor:not-allowed}
+.seed-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin:15px 0 9px}.seed-btn{font-size:13px;padding:8px 2px;background:#f3f4f6;border:1px solid #e0e3e8;color:#89939c;border-radius:8px}.seed-btn.measured{background:#e4f5ed;color:#246c55;border-color:#cae4d8}.seed-btn.selected{outline:3px solid #c99b49;outline-offset:0}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--muted)}.tinybox{display:inline-block;width:10px;height:10px;border-radius:2px;background:#e4f5ed;border:1px solid #cae4d8;margin-right:5px}.tinybox.off{background:#f1f2f4;border-color:#e1e3e8}
+.chart{display:block;max-width:100%;width:100%;height:auto;border:1px solid #edf0f2;border-radius:10px;background:#fff;min-height:140px}.chartbar{display:flex;gap:4px;height:24px;border-radius:6px;overflow:hidden}.chartbar div{min-width:1px}.twocol{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:15px}.table-wrap{overflow:auto;max-height:490px;border:1px solid #e3eaf0;border-radius:10px}table{border-collapse:collapse;width:100%;min-width:540px;font-size:12px}th,td{padding:8px 10px;text-align:left;border-bottom:1px solid #e7edf2;vertical-align:top}th{background:#edf3f5;color:#294d5e;position:sticky;top:0}tbody tr:hover{background:#f6fafc}td.num{text-align:right;font-variant-numeric:tabular-nums}.chip{padding:2px 7px;border-radius:9px;font-size:11px;background:#edf1f6;white-space:nowrap}.chip.good{background:#dff5ed;color:#116749}.chip.warn{background:#fff1d9;color:#8c5b20}.chip.bad{background:#ffe5e4;color:#a03840}.tabrow{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}.tabrow button.active{background:#176e72;color:white}.filebox{border:2px dashed #b6d2d5;padding:16px;border-radius:12px;background:#f7fcfc}.proof{font-size:12px;color:#436779}.foot{font-size:13px;color:#5f7180}
+details{border:1px solid #dae4e9;border-radius:10px;padding:10px 13px;margin:10px 0;background:#fbfcfd}summary{cursor:pointer;font-weight:700}code{background:#eff3f6;padding:1px 4px;border-radius:3px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f0f4f8;padding:12px;border-radius:10px;font-size:12px}dl{display:grid;grid-template-columns:minmax(170px,230px) 1fr;gap:6px 13px}dt{font-weight:700}dd{margin:0;color:#52677a}.status{color:#1a6754;font-weight:700}.loading{color:#905e29}.twoactions{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0}.selectedcase{margin-top:14px;padding:14px;background:#f3f8f9;border:1px solid #d8e8e8;border-radius:10px}
+@media(max-width:760px){.twocol{grid-template-columns:1fr}section{padding:15px}.seed-grid{grid-template-columns:repeat(7,minmax(0,1fr))}table{min-width:500px}header{padding:24px 18px}dl{display:block}dd{margin:2px 0 10px}}
+</style>
+</head><body>
+<header>
+ <span class="tag">TEACHER REVIEW · REPRODUCIBLE RESEARCH</span>
+ <h1>CSV 原始 LEM2 試算實驗室<br>逐筆規則、六策略、Conflict</h1>
+ <p>把資料切分、純 LEM2 規則、規則候選衝突、六種選擇策略與最後答案分開呈現。先看 42 Seeds 的已驗證研究證據，再使用自己的 CSV 啟動原始 Python LEM2。</p>
+ <nav><a href="../">← 回研究總報告</a><a href="../methods/">公式與變因定義</a><a href="#seeds">42 Seeds 實測</a><a href="#flow">完整流程</a><a href="#metrics">指標怎麼解讀</a><a href="#run">CSV 真正試算</a><a href="#conflict">Conflict 後怎麼辦</a><a href="#method">方法與來源</a></nav>
+</header>
+<main>
+<section id="seeds">
+ <h2>01｜Seed 1～42：真實實驗完成狀態</h2>
+ <p class="lead">狀態從 GitHub 驗證過的 8,820 筆矩陣逐組計算，不再使用舊版硬編碼清單。每個 Seed 必須有完整 210 筆、包含 30 筆 NONE 與 180 筆策略結果才會顯示綠色。</p>
+ <div class="grid" id="summaryCards"><div class="metric">載入完整實測證據…</div></div>
+ <div id="seedGrid" class="seed-grid" role="group" aria-label="42 個實測 Seed"></div>
+ <div class="legend"><span><i class="tinybox"></i>綠色：有完整 210 列實測</span><span><i class="tinybox off"></i>灰色：證據不完整或載入失敗</span><span id="seedStatus" class="status">載入中…</span></div>
+ <div class="controls">
+  <label>資料集<select id="dataset"><option value="ALL">三資料集等權平均</option><option>Balance Scale</option><option>Car Evaluation</option><option>Hayes-Roth</option></select></label>
+  <label>切分模式<select id="split"><option value="HOLDOUT_80_20">80/20 未見資料</option><option value="FULL_DATA">Full Data 回代</option></select></label>
+  <label>規則來源<select id="system"><option value="FEDERATED">Federated</option><option value="CENTRALIZED">Centralized</option></select></label>
+  <label>Client 數<select id="clients"><option value="5">C=5</option><option value="4">C=4</option><option value="3">C=3</option><option value="2">C=2</option><option value="ALL">C=2–5 等權</option></select></label>
+  <label>分類／診斷策略<select id="policy"><option>GLOBAL_STRENGTH</option><option>STANDARD_VOTING</option><option>POPULATION_STANDARD</option><option>POPULATION_GLOBAL</option><option>FIRST_MATCH</option><option>SIMPLE_VOTING</option><option>NONE</option></select></label>
+  <label>觀察指標<select id="metric"><option value="balanced_accuracy">Balanced Accuracy</option><option value="accuracy">Accuracy</option><option value="macro_f1">Macro-F1</option><option value="coverage">Coverage</option><option value="conflict_case_rate">Conflict rate</option><option value="true_in_candidate_rate">True-in-Candidate</option><option value="rule_count">Rule count</option></select></label>
+ </div>
+ <svg id="seedChart" viewBox="0 0 930 255" class="chart" role="img" aria-label="Seed 1 到 42 指標比較曲線"><text x="30" y="50">等待數據…</text></svg>
+ <div class="twoactions"><button id="baselineCsv">下載當前篩選結果 CSV</button><a href="https://github.com/Jimmy0307/LEM2/tree/research/seed-sweep-1-42-20261108/docs/research/seed_sweep_1_42" target="_blank" rel="noopener">開啟 GitHub 原始 8,820 筆數據</a></div>
+ <div class="table-wrap"><table><thead><tr><th>Seed</th><th>完整列數</th><th>目前指標</th><th>覆蓋</th><th>衝突</th><th>規則數</th></tr></thead><tbody id="seedTable"></tbody></table></div>
+ <p class="foot">重要：Full Data 是同資料回代，80/20 才是未見資料測試；「純 LEM2」只有規則集合，不存在單獨的 Accuracy。NONE 只做匹配診斷，Accuracy 欄位為未定義，不能寫 0%。</p>
+</section>
+<section id="metrics">
+ <h2>02｜每個指標究竟代表什麼？</h2>
+ <p class="lead">每個指標的分母、所處的計算階段，以及改善方向都不同。以下數值若沒有預測能力，會明確標記為「未定義」。</p>
+ <div class="table-wrap"><table><thead><tr><th>指標</th><th>公式／分母</th><th>代表的意義</th><th>可採取的改善措施</th></tr></thead><tbody>
+ <tr><td><b>Pure LEM2 Rule Count</b></td><td>|R|（條）</td><td>LEM2 產生的規則數量，不代表準確率</td><td>檢查規則冗餘、約簡與泛化能力；不能只求愈少愈好</td></tr>
+ <tr><td><b>Reduct</b></td><td>最小基數 P*，保持 POS 的大小</td><td>產生規則時保留哪些條件屬性</td><td>確認特徵是否造成失真；此處是 Classical，不是 DRSA</td></tr>
+ <tr><td><b>Coverage</b></td><td>#至少匹配一條規則 / #評估物件</td><td>模型是否有規則可用</td><td>先處理 No Match、特徵離散化或特定類別規則缺口</td></tr>
+ <tr><td><b>True-in-Candidate</b></td><td>#真實類別在匹配規則候選中 / #評估物件</td><td>正確答案是否有機會被選出</td><td>候選缺失時改規則學習與資料治理，靠投票救不了</td></tr>
+ <tr><td><b>Conflict</b></td><td>#候選決策類別 ≥2 的物件 / #評估物件</td><td>候選規則互相提出不同類別</td><td>先記錄衝突，再分析 six policies；不等於粗集合 Boundary</td></tr>
+ <tr><td><b>Accuracy</b></td><td>正確預測數 / #全部評估物件</td><td>整體正確率；類別不平衡時可能失真</td><td>同時看 BA、Macro-F1 與每類 Recall</td></tr>
+ <tr><td><b>Balanced Accuracy</b></td><td>(1/K)Σ 每一類 Recall</td><td>少數類別也獲等權重</td><td>檢查每類候選覆蓋與類別分母</td></tr>
+ <tr><td><b>Macro-F1</b></td><td>(1/K)Σ 2PR/(P+R)</td><td>所有類別的 Precision 與 Recall 折衷</td><td>看混淆矩陣、誤報與漏報</td></tr>
+ <tr><td><b>Conflict resolution Accuracy</b></td><td>正確預測且衝突 / #衝突物件</td><td>只考慮已進入衝突的物件</td><td>比較六策略在相同衝突集合下的表現</td></tr>
+ <tr><td><b>Population T / U / P</b></td><td>T=支持次數；U=不重複支持物件；P=U/T</td><td>辨識重複計數；P 越小代表重疊越多</td><td>比較 STD 與 PS、GS 與 PG，不能保證修正有正增益</td></tr>
+ </tbody></table></div>
+ <div class="info warning"><b>避免誤用：</b>Conflict 高不等於 Accuracy 一定低；Conflict 0 不代表 Coverage 100%；真正需要分開比較的是「規則生成問題」與「已提出正確候選後的排序問題」。</div>
+</section>
+<section id="flow">
+<h2>03｜規則發掘與 Conflict 處理的正確流程（按順序）</h2>
+<p class="lead">此圖與原程式分層一致：Centralized 與 Federated 是兩條不同的規則產生路徑；一定要完成 Local LEM2 才能合併 Local Rule Sets。NONE 與六策略是在 Rule Set 產生後才分支，兩者不是先後順序。</p>
+<div class="info"><b>共同輸入</b>：原始決策表 → Full Data（回代）或 80/20（Train／Test 分離） → 訓練資料決定離散化邊界。Test 不參與 Reduct／LEM2 學習。</div>
+<div class="twocol">
+<div class="metric" style="text-align:center"><h3>Centralized</h3>
+<div class="info">完整 Train<br>↓</div>
+<div class="info">最小基數 Reduct <b>P*</b><br>↓</div>
+<div class="info"><b>LEM2</b> 規則歸納<br>↓</div>
+<div class="info"><b>R_central</b>（純規則集合）</div>
+<details><summary>對應程式</summary><p>roughset/reduct.py → roughset/core.py → roughset/pipeline.py。</p></details>
+</div>
+<div class="metric" style="text-align:center"><h3>Federated</h3>
+<div class="info">Train → 依類別分派 Client 1…C<br>↓</div>
+<div class="info">各 Client 獨立 Reduct <b>P_i*</b><br>↓</div>
+<div class="info">各 Client 分別執行 <b>LEM2</b><br>↓</div>
+<div class="info"><b>R₁, R₂, …, R_C</b> Local Rule Sets<br>↓</div>
+<div class="info"><b>Rule Union + Dedup</b><br>↓</div>
+<div class="info"><b>R_global</b>（合併後規則集合）</div>
+<details><summary>對應程式</summary><p>roughset/federated.py → roughset/reduct.py → roughset/core.py → roughset/pipeline.py。</p></details>
+</div>
+</div>
+<div class="info" style="margin-top:14px"><b>兩種 Rule Set 各自進入相同評估層</b>：Rule Matching → 候選決策集合。這裡會產生 Coverage、No Match、True-in-Candidate、Conflict 等診斷。接下來分成：</div>
+<div class="twocol">
+<div class="metric"><h3>NONE：只分析、不強迫選 Winner</h3><p>完整 Matching，測 Coverage 與 Conflict；沒有定義 Accuracy 或 Macro-F1。純 LEM2 則更早停在規則集合，不進入逐筆比對。</p></div>
+<div class="metric"><h3>六種分類方法：計算 Winner</h3><p>FIRST 依順序早停；其他五種完整收集命中規則後計分。比較 Accuracy、BA、Macro-F1 與每筆錯誤類型。</p></div>
+</div>
+<div class="info warning">研究邊界：本次 Reduct 為 Classical 正域保留，不是 DRSA Dominance。Federated 規則支持度由全部訓練 Client 的資料計算；對象不同，不能把「合併後支持度」誤寫成「僅來源 Client 支持度」。</div>
+</section>
+<section id="run">
+ <h2>04｜上傳 CSV，真正執行 LEM2 與六種分類</h2>
+ <p class="lead">此功能透過 WebAssembly 的 Python 在你的瀏覽器中載入原始 GitHub 程式，執行 Reduct → LEM2 → Rule Matching → 六策略，不是先前只有切分的 JavaScript 示意。需連網下載 Python 執行環境；CSV 內容留在瀏覽器記憶體。</p>
+ <div class="filebox"><div class="controls">
+ <label>選擇有標籤的 CSV<input id="csvFile" type="file" accept=".csv,text/csv"></label>
+ <label>決策欄位<select id="csvTarget"><option value="">先上傳 CSV</option></select></label>
+ <label>Seed<select id="csvSeed"></select></label>
+ <label>切分<select id="csvSplit"><option value="HOLDOUT_80_20">80/20 真正測試</option><option value="FULL_DATA">全資料回代</option></select></label>
+ <label>規則來源<select id="csvClients"><option value="0">Centralized</option><option value="2">Federated C2</option><option value="3">Federated C3</option><option value="4">Federated C4</option><option value="5">Federated C5</option></select></label>
+ <label>排除欄位（逗號分隔）<input id="csvIgnore" placeholder="id,name,timestamp" aria-label="不進模型的欄位"></label>
+ <label>連續值離散化區間數<select id="csvBins"><option value="3">3（原始基準）</option><option value="2">2</option><option value="4">4</option><option value="5">5</option></select></label>
+ <label>Reduct 設定<select id="csvReduct"><option value="true">啟用最小基數約簡</option><option value="false">停用約簡（消融）</option></select></label>
+ <label>Client 分配<select id="csvPartition"><option value="STRATIFIED">依類別分層（正式主基準）</option><option value="DIRICHLET_LABEL_SKEW">Dirichlet non-IID（擴充）</option></select></label>
+ <label>Dirichlet α（僅 non-IID）<input id="csvAlpha" type="number" min="0.01" max="10" step="0.05" value="0.5" disabled></label>
+ </div>
+ <div class="twoactions"><button class="primary" id="runButton" disabled>開始原始 LEM2 試算</button><button id="cancelButton" disabled>中止運算</button><button id="demoButton">載入示範資料</button><button id="downloadModel" disabled>下載試算報告 JSON</button></div>
+ <p id="csvInfo" class="muted">CSV 需有表頭與決策欄位。瀏覽器上限：2,500 筆；啟用約簡時至多 8 個條件屬性；較大資料需用原始 Python CLI 運算；調整分割、離散化與 Reduct 後的新結果不屬於 8,820 筆正式基準。</p>
+ <p id="runStatus" aria-live="polite" class="proof">等待資料</p>
+ </div>
+ <div id="modelResults" hidden>
+  <div class="grid" id="modelCards"></div>
+  <h3>Python 真正切分後的逐筆資料流向（Train／Test／Client）</h3>
+  <p class="muted">分組和 Row ID 直接由原始 NumPy/Python 切分程式重新計算；這不是 JavaScript 假設性模擬。Full Data 時同一筆物件同時參與訓練與回代評估。</p>
+  <div id="assignmentBars" class="grid"></div>
+  <div class="twoactions"><button id="downloadAssignments">下載 Train／Test／Client 逐筆分配 CSV</button></div>
+  <div class="table-wrap" style="max-height:250px"><table><thead><tr><th>Row ID</th><th>真實類別</th><th>是否 Train</th><th>是否評估</th><th>Client／區域</th></tr></thead><tbody id="assignmentTable"></tbody></table></div>
+  <h3>六策略實測比較</h3><svg id="modelChart" class="chart" viewBox="0 0 930 270" role="img" aria-label="六策略分類績效比較圖"></svg>
+  <div class="table-wrap"><table><thead><tr><th>選擇策略</th><th>Accuracy</th><th>BA</th><th>Macro-F1</th><th>候選錯誤</th><th>Fallback 正確／錯誤</th></tr></thead><tbody id="modelPolicies"></tbody></table></div>
+  <h3>逐類別 Coverage 與候選機率</h3>
+  <div class="table-wrap"><table><thead><tr><th>真實類別</th><th>Test n</th><th>Coverage</th><th>True-in-Candidate</th><th>Conflict</th><th>GS Recall</th></tr></thead><tbody id="modelClasses"></tbody></table></div>
+  <h3>逐筆物件：哪裡產生 Conflict、最後怎麼選？</h3>
+  <div class="controls"><label>關注策略<select id="casePolicy"><option>GLOBAL_STRENGTH</option><option>STANDARD_VOTING</option><option>POPULATION_STANDARD</option><option>POPULATION_GLOBAL</option><option>FIRST_MATCH</option><option>SIMPLE_VOTING</option></select></label>
+    <label>只看哪類物件<select id="caseFilter"><option value="ALL">全部</option><option value="CONFLICT">Conflict</option><option value="NO_MATCH">No Match</option><option value="TRUE_ABSENT">真實類別未被提出</option><option value="WRONG_RANKING">候選有真實類別但選錯</option><option value="CORRECT">正確</option></select></label></div>
+  <div class="table-wrap"><table><thead><tr><th>Row ID</th><th>真實類別</th><th>候選集合</th><th>命中規則數</th><th>Conflict?</th><th>最終預測</th><th>診斷</th></tr></thead><tbody id="caseTable"></tbody></table></div>
+  <div id="caseDetail" class="selectedcase">點選一筆物件，可以看到實際 IF–THEN 規則與六策略計分。</div>
+ </div>
+</section>
+<section id="conflict">
+ <h2>05｜Conflict 後要怎麼辦？一個明確的決策流程</h2>
+ <div class="grid">
+ <div class="metric"><b>① 沒有規則命中</b><p>候選集合為空，六策略都使用訓練資料多數類別作 Fallback；須另外稽核其是否剛好正確。</p><span>改善：擴充規則／特徵、評估預設類別與 Abstain</span></div>
+ <div class="metric"><b>② 有規則，但正確類別不在候選</b><p>六種選擇方式都不能從現有候選中選出真實類別。</p><span>改善：改善 Reduct／LEM2 歸納、分割資料品質及局部類別偏斜</span></div>
+ <div class="metric"><b>③ 多個候選，其中包含正確類別</b><p>這才是六種選擇策略能真正施力的情況。保留命中規則並比較得分。</p><span>改善：比較 GS/STD/PS/PG，檢查類別支持比例與重複支持</span></div>
+ <div class="metric"><b>④ 不確定且風險高</b><p>可增加人工覆核或拒答門檻，但這是尚未驗證的新決策機制。</p><span>改善：先設定 Abstain／Review Gate，再做對照試驗</span></div>
+ </div>
+ <details><summary>六種策略計分與 Conflict 公式</summary>
+ <pre>M(x)={r ∈ R : Antecedent(r) matches x}
+Candidate(x)={decision(r):r ∈ M(x)}
+Conflict(x)=1 if |Candidate(x)| &gt; 1 else 0
+
+FIRST:         第一條命中的規則（依順序早停）
+SIMPLE:        Score(d)=命中且屬於類別 d 的規則條數
+STANDARD:      Score(d)=Σ weight(r)，weight 為條件匹配的訓練物件數
+GLOBAL:        Score(d)=U_d/N_d
+POP STANDARD:  Score(d)=U_d
+POP GLOBAL:    Score(d)=U_d²/(N_d × T_d)
+
+T_d=支持集合大小的總和（可重複）
+U_d=不重複支持訓練物件數
+N_d=類別 d 的訓練物件數
+P_d=U_d/T_d
+
+同分：訓練集多數類別若在同分集合則優先，否則依字串排序。</pre></details>
+ <div class="info warning">Conflict 是本研究的「跨類別命中」定義，不是 DRSA／Classical Rough Set 的近似邊界。候選衝突率屬於規則集合的屬性，不會因改用 GS 或 STD 而直接降低；它們改變的是選出的 Winner。</div>
+</section>
+<section id="method">
+ <h2>06｜研究界線與 GitHub 來源</h2>
+ <dl><dt>原始模型程式</dt><dd><a href="https://github.com/Jimmy0307/LEM2/tree/research/teacher-evidence-42-20261109/roughset">roughset 原始 Python 模組</a>（瀏覽器動態載入）</dd>
+ <dt>42 Seeds 已驗證證據</dt><dd><a href="https://github.com/Jimmy0307/LEM2/tree/research/seed-sweep-1-42-20261108/docs/research/seed_sweep_1_42">8,820 筆完整矩陣</a>；42 個 Seed，三種資料集、兩種切分、五種拓樸、NONE 與六策略。</dd>
+ <dt>逐筆規則證據</dt><dd><a href="https://github.com/Jimmy0307/LEM2/tree/research/teacher-evidence-42-20261109">Seed 42 追溯與 42 Seeds 擴充工作流程</a>；本網站的自訂 CSV 試算另有獨立實驗標籤。</dd>
+ <dt>文獻系譜</dt><dd>Pawlak (1982) Rough Sets；Grzymala-Busse (LEM2/LERS)；Greco、Matarazzo、Słowiński (DRSA)。Population 修正是本研究定義，不能冒稱文獻原始方法。</dd>
+ <dt>未完成研究線</dt><dd>LERS 原典分類法與 DRSA reduct 仍需獨立比較。自訂 CSV 得到的結果不會被加入既有 8,820 筆，避免混淆訓練來源。</dd></dl>
+ <p class="foot">展示注意：GitHub Pages 是靜態網站，不能在伺服器上直接跑 Python；本版本透過 Pyodide 在瀏覽器本機執行 Python，若企業網路封鎖 CDN／Raw GitHub，請使用 README 中的命令列替代方案。資料預處理沿用原始程式的欄位命名及三段等寬離散化。</p>
+</section>
+</main><script type="module" src="../dashboard.js"></script></body></html>
