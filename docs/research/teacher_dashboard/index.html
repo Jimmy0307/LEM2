@@ -97,9 +97,14 @@ details{border:1px solid #dae4e9;border-radius:10px;padding:10px 13px;margin:10p
  <label>Seed<select id="csvSeed"></select></label>
  <label>切分<select id="csvSplit"><option value="HOLDOUT_80_20">80/20 真正測試</option><option value="FULL_DATA">全資料回代</option></select></label>
  <label>規則來源<select id="csvClients"><option value="0">Centralized</option><option value="2">Federated C2</option><option value="3">Federated C3</option><option value="4">Federated C4</option><option value="5">Federated C5</option></select></label>
+ <label>排除欄位（逗號分隔）<input id="csvIgnore" placeholder="id,name,timestamp" aria-label="不進模型的欄位"></label>
+ <label>連續值離散化區間數<select id="csvBins"><option value="3">3（原始基準）</option><option value="2">2</option><option value="4">4</option><option value="5">5</option></select></label>
+ <label>Reduct 設定<select id="csvReduct"><option value="true">啟用最小基數約簡</option><option value="false">停用約簡（消融）</option></select></label>
+ <label>Client 分配<select id="csvPartition"><option value="STRATIFIED">依類別分層（正式主基準）</option><option value="DIRICHLET_LABEL_SKEW">Dirichlet non-IID（擴充）</option></select></label>
+ <label>Dirichlet α（僅 non-IID）<input id="csvAlpha" type="number" min="0.01" max="10" step="0.05" value="0.5" disabled></label>
  </div>
- <div class="twoactions"><button class="primary" id="runButton" disabled>開始原始 LEM2 試算</button><button id="demoButton">載入示範資料</button><button id="downloadModel" disabled>下載試算報告 JSON</button></div>
- <p id="csvInfo" class="muted">CSV 需有表頭與決策欄位。瀏覽器上限：600 筆、8 個條件屬性；較大資料需用原始 Python CLI 運算。</p>
+ <div class="twoactions"><button class="primary" id="runButton" disabled>開始原始 LEM2 試算</button><button id="cancelButton" disabled>中止運算</button><button id="demoButton">載入示範資料</button><button id="downloadModel" disabled>下載試算報告 JSON</button></div>
+ <p id="csvInfo" class="muted">CSV 需有表頭與決策欄位。瀏覽器上限：2,500 筆；啟用約簡時至多 8 個條件屬性；較大資料需用原始 Python CLI 運算；調整分割、離散化與 Reduct 後的新結果不屬於 8,820 筆正式基準。</p>
  <p id="runStatus" aria-live="polite" class="proof">等待資料</p>
  </div>
  <div id="modelResults" hidden>
