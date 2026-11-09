@@ -190,8 +190,35 @@ function scoreTable(scores){
     scores.map(r=>'<tr>'+keys.map(k=>'<td>'+esc(typeof r[k]==="number"?Number(r[k]).toFixed(k==="decision"?0:4):r[k])+'</td>').join("")+'</tr>').join("")+
     "</tbody></table></div>";
 }
+function renderAssignment(result){
+  const entries=result.assignments||[];
+  const labels=[...new Set(entries.map(x=>x.decision))].sort();
+  const colors={Test:"#d2a14a",Centralized:"#3c8fa0",Client_1:"#188777",Client_2:"#487cbb",Client_3:"#9b78b4",Client_4:"#d78065",Client_5:"#83965c"};
+  const summaries=labels.map(label=>{
+    const subset=entries.filter(x=>x.decision===label);
+    const counts={};
+    for(const r of subset){const group=r.in_train?r.client:"Test";counts[group]=(counts[group]||0)+1;}
+    return {label,count:subset.length,counts};
+  });
+  $("assignmentBars").innerHTML=summaries.map(s=>{
+    const bars=Object.entries(s.counts).map(([group,n])=>
+      '<div title="'+esc(group)+': '+n+' 筆" style="background:'+colors[group]+';flex:'+n+'"></div>').join("");
+    const caption=Object.entries(s.counts).map(([group,n])=>esc(group)+":"+n).join(" · ");
+    return '<div class="metric"><small>類別 '+esc(s.label)+'</small><strong>'+s.count+' 筆</strong><div class="chartbar">'+bars+'</div><span>'+caption+'</span></div>';
+  }).join("");
+  $("assignmentTable").innerHTML=entries.slice(0,600).map(r=>
+    '<tr><td>'+r.row_id+'</td><td>'+esc(r.decision)+'</td><td>'+(r.in_train?"是":"否")+'</td><td>'+(r.in_evaluation?"是":"否")+'</td><td>'+esc(r.client)+'</td></tr>').join("");
+}
+$("downloadAssignments").onclick=()=>{
+  if(!customResult)return;
+  const cols=["row_id","decision","in_train","in_evaluation","client"];
+  const csv=[cols.join(","),...(customResult.assignments||[]).map(r=>cols.map(k=>
+    '"'+String(r[k]??"").replace(/"/g,'""')+'"').join(","))].join("\n");
+  download("LEM2_exact_python_row_assignments.csv","\ufeff"+csv,"text/csv;charset=utf-8");
+};
 function renderModel(result){
   customResult=result;
+  renderAssignment(result);
   $("modelResults").hidden=false;$("downloadModel").disabled=false;
   $("modelCards").innerHTML=[
     ["原始列數",result.dataset_rows,"使用者提供"],
