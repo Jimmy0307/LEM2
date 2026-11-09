@@ -1,3 +1,13 @@
+## 研究報告入口｜42 Seeds 與 CSV 真正試算（2026-11-09）
+
+- **[教授報告控制台與操作說明](docs/research/teacher_dashboard/README.md)**
+- **[控制台網站原始檔](docs/research/teacher_dashboard/index.html)**：42/42 Seed 的 8,820 筆資料、可篩選圖表、指標定義、CSV 原始 Python LEM2 試算，以及 Conflict 後的決策分流。
+- **[正式驗證 GitHub Actions](https://github.com/Jimmy0307/LEM2/actions/workflows/teacher-dashboard.yml)**：檢查原始模型與頁面資料是否與 8,820 筆一致。
+
+GitHub Pages 須部署成功後才能當作公開互動網址；GitHub 的 HTML 原始檔頁面本身不會執行 JavaScript。
+
+---
+
 # RoughSet Research Software V1
 
 這是一個把原本 V6.1 單檔研究程式拆成可維護軟體架構的版本。
