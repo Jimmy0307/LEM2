@@ -158,7 +158,7 @@ function setupCSVSelectors(){
   const s=$("csvSeed");for(let seed=1;seed<=42;seed++){const opt=document.createElement("option");opt.value=String(seed);opt.textContent="Seed "+seed;s.append(opt);}s.value="42";
 }
 function acceptCustom(inp,label){
-  if(inp.rows.length>600||inp.columns.length>11)throw Error("瀏覽器模型支援至多 600 筆、最多 8 個條件欄。大資料請使用 GitHub 命令列。");
+  if(inp.rows.length>2500||inp.columns.length>40)throw Error("瀏覽器支援至多 2,500 筆、40 欄；開啟最小 Reduct 後條件欄最多 8 個。更大資料請用 Python CLI。");
   customInput=inp;customResult=null;
   $("downloadModel").disabled=true;
   $("modelResults").hidden=true;
@@ -172,7 +172,7 @@ function acceptCustom(inp,label){
 $("csvFile").onchange=async e=>{
   try{
     const file=e.target.files[0];if(!file)return;
-    if(file.size>1.5*1024*1024)throw Error("CSV 超過 1.5 MB，請用命令列版本。");
+    if(file.size>5*1024*1024)throw Error("CSV 超過 5 MB，請用命令列版本。");
     const txt=await file.text();
     acceptCustom(parseCSV(txt),file.name);
   }catch(err){customInput=null;$("runButton").disabled=true;setStatus("runStatus",err.message,true);}
@@ -290,22 +290,28 @@ $("runButton").onclick=()=>{
   if(!customInput)return;
   const b=$("runButton");b.disabled=true;
   $("modelResults").hidden=true;
+  $("cancelButton").disabled=false;
   setStatus("runStatus","初始化運算中；模型計算在瀏覽器記憶體內進行。");
   if(worker)worker.terminate();
   worker=new Worker("./browser_engine_worker.js",{type:"module"});
   worker.onmessage=({data})=>{
     if(data.kind==="status")setStatus("runStatus",data.message);
-    else if(data.kind==="error"){setStatus("runStatus","試算失敗："+data.message,true);b.disabled=false;}
+    else if(data.kind==="error"){setStatus("runStatus","試算失敗："+data.message,true);b.disabled=false;$("cancelButton").disabled=true;}
     else if(data.kind==="result"){
       setStatus("runStatus","原始 Python LEM2 試算完成。這是使用者 CSV 的新實驗，不會混入 8,820 筆已封存主矩陣。");
-      b.disabled=false;renderModel(data.result);
+      b.disabled=false;$("cancelButton").disabled=true;renderModel(data.result);
     }
   };
-  worker.onerror=e=>{setStatus("runStatus","模型工作執行器錯誤："+(e.message||"請檢查瀏覽器網路限制"),true);b.disabled=false;};
+  worker.onerror=e=>{setStatus("runStatus","模型工作執行器錯誤："+(e.message||"請檢查瀏覽器網路限制"),true);b.disabled=false;$("cancelButton").disabled=true;};
   worker.postMessage({kind:"execute",payload:{
     columns:customInput.columns,rows:customInput.rows,target:$("csvTarget").value,
-    seed:Number($("csvSeed").value),split:$("csvSplit").value,clients:Number($("csvClients").value)
+    seed:Number($("csvSeed").value),split:$("csvSplit").value,clients:Number($("csvClients").value),
+    ignore:$("csvIgnore").value.split(",").map(v=>v.trim()).filter(Boolean),
+    bins:Number($("csvBins").value),reduct_enabled:$("csvReduct").value==="true",
+    partition:$("csvPartition").value,alpha:Number($("csvAlpha").value)
   }});
 };
+$("csvPartition").onchange=()=>{$("csvAlpha").disabled=$("csvPartition").value!=="DIRICHLET_LABEL_SKEW";};
+$("cancelButton").onclick=()=>{if(worker)worker.terminate();worker=null;$("runButton").disabled=!customInput;$("cancelButton").disabled=true;setStatus("runStatus","已由使用者中止本機運算。");};
 $("downloadModel").onclick=()=>{if(customResult)download("LEM2_custom_csv_result.json",JSON.stringify(customResult,null,2),"application/json;charset=utf-8");};
 setupCSVSelectors();updateGrid();loadBaseline();
