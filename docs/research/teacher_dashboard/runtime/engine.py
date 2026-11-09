@@ -41,11 +41,11 @@ def prepare(raw):
     target = clean_column_name(raw["target"])
     if target not in cols:
         raise ValueError("找不到指定決策欄位。")
-    if not orig or len(orig) < 2 or len(orig) > 11:
-        raise ValueError("請使用 1～10 個條件屬性，加上一個決策欄位。")
+    if not orig or len(orig) < 2 or len(orig) > 40:
+        raise ValueError("CSV 至多支援 40 欄，請先排除識別欄與不必要欄位。")
     values = raw["rows"]
-    if len(values) < 4 or len(values) > 600:
-        raise ValueError("瀏覽器正式試算支援 4～600 筆。大資料請用 GitHub CLI 批次程式。")
+    if len(values) < 4 or len(values) > 2500:
+        raise ValueError("瀏覽器試算支援 4～2,500 筆；更大資料請使用 GitHub 原始 CLI。")
     if any(len(row) != len(cols) for row in values):
         raise ValueError("CSV 各列欄位數量不一致。")
     df = pd.DataFrame(values, columns=cols, dtype=str)
@@ -54,12 +54,20 @@ def prepare(raw):
     df = df.apply(lambda col: col.str.strip())
     if df[target].nunique() < 2:
         raise ValueError("決策欄至少要有兩種不同類別。")
-    features = [x for x in cols if x != target]
+    ignore = {clean_column_name(x) for x in raw.get("ignore", [])}
+    if target in ignore:
+        raise ValueError("決策欄位不能排除。")
+    unknown=ignore-set(cols)
+    if unknown:
+        raise ValueError("排除欄位不存在："+",".join(sorted(unknown)))
+    features = [x for x in cols if x != target and x not in ignore]
+    if not features:
+        raise ValueError("排除後沒有剩餘條件特徵。")
     if len(features) > 8:
         raise ValueError("啟用最小基數 Reduct 時，瀏覽器最多支援 8 個條件屬性，避免指數級搜尋。")
     return DatasetBundle(
         name="Custom CSV", frame=df, features=features, target=target,
-        schema=DatasetSchema(target=target, features=features), source="user-browser-memory"
+        schema=DatasetSchema(target=target, features=features, ignore=sorted(ignore)), source="user-browser-memory"
     )
 
 def one_case(row, rules, weights, support, sizes, default, predicted, target, features):
@@ -118,15 +126,25 @@ def run(raw):
         raise ValueError("Seed 應介於 1～42；Client 僅能為 0 或 2～5。")
     if split not in ("HOLDOUT_80_20","FULL_DATA"):
         raise ValueError("無效切分模式。")
+    partition = str(raw.get("partition","STRATIFIED")).upper()
+    alpha = float(raw.get("alpha",0.5))
+    bins = int(raw.get("bins",3))
+    reduct_enabled = bool(raw.get("reduct_enabled",True))
+    if partition not in ("STRATIFIED","DIRICHLET_LABEL_SKEW"):
+        raise ValueError("未知的 Client 分割方法。")
+    if not 0.01 <= alpha <= 10:
+        raise ValueError("Dirichlet alpha 請介於 0.01～10。")
+    if bins not in (2,3,4,5):
+        raise ValueError("離散化 bins 請選 2、3、4 或 5。")
     cfg={
         "evaluation":{"seed":seed,"mode":split,"test_ratio":0.2},
-        "preprocessing":{"auto_discretize":True,"unique_numeric_threshold":10,"n_bins":3},
-        "federated":{"n_clients":clients,"partition":"STRATIFIED",
-                     "dirichlet_alpha":0.5,"dirichlet_max_retries":100,
+        "preprocessing":{"auto_discretize":True,"unique_numeric_threshold":10,"n_bins":bins},
+        "federated":{"n_clients":clients,"partition":partition,
+                     "dirichlet_alpha":alpha,"dirichlet_max_retries":100,
                      "run_client_sweep":False,"order_sensitivity_max_permutations":1},
         "experiment":{"run_centralized":clients==0,
                       "run_federated":clients!=0,"prediction_policy":"FIRST_MATCH"},
-        "reduct":{"enabled":True,"method":"MINIMUM_CARDINALITY",
+        "reduct":{"enabled":reduct_enabled,"method":"MINIMUM_CARDINALITY",
                   "selection":"LEXICOGRAPHIC_FIRST","record_all_candidates":True},
     }
     raw_df=bundle.frame.copy().reset_index(drop=True)
@@ -175,7 +193,7 @@ def run(raw):
     if clients:
         original_client_tables=partition_clients(
             raw_train,target_col=bundle.target,n_clients=clients,seed=seed,
-            strategy="STRATIFIED",dirichlet_alpha=0.5,dirichlet_max_retries=100)
+            strategy=partition,dirichlet_alpha=alpha,dirichlet_max_retries=100)
         for client_name,frame in original_client_tables.items():
             for row_id in frame["__row_id__"]:
                 assigned[int(row_id)]=client_name
@@ -191,6 +209,8 @@ def run(raw):
         "provenance":"CANONICAL_PYTHON_IN_BROWSER; user CSV; not in frozen 8820",
         "dataset_rows":len(raw_df), "train_rows":len(raw_train),
         "test_rows":len(raw_test), "seed":seed, "split":split, "clients":clients,
+        "partition":partition,"alpha":alpha,"bins":bins,"reduct_enabled":reduct_enabled,
+        "ignored_columns":sorted({clean_column_name(x) for x in raw.get("ignore", [])}),
         "features":bundle.features, "target":bundle.target,
         "assignments":assignments,
         "condition_columns":list(art.condition_columns),
