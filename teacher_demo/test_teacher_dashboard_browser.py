@@ -33,7 +33,7 @@ def main():
             page.wait_for_url("**/research/teacher_dashboard/",timeout=15000)
             page.wait_for_function("document.querySelectorAll('#seedGrid .good').length===42",timeout=40000)
             assert "42" in page.locator("#seedKpi").inner_text()
-            assert "研究報告" in page.title()
+            assert "教授報告" in page.title()
             assert page.locator("#conflictChart rect").count()>=4
             assert page.locator("#policyTable tr").count()==6
             assert page.locator("#seedChart polyline").count()>=1
