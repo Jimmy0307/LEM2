@@ -4,13 +4,13 @@
 <meta name="description" content="研究報告主頁：從資料、Reduct/LEM2、Federated Rule Union、衝突到六策略 Winner，搭配 42 個 Seeds 8,820 筆真實實驗數據，連接獨立 CSV 實驗室。">
 <link rel="stylesheet" href="./site.css"></head><body>
 <div class="site-top"><a class="brand" href="./">LEM2 Research · 教授報告</a>
-<nav><a href="./" class="active">研究報告</a><a href="./evidence/">完整數據</a><a href="./methods/">方法／公式</a><a href="./lab/">CSV 試算實驗室</a><a href="https://github.com/Jimmy0307/LEM2/tree/research/report-ready-dashboard-20261109/docs/research/teacher_dashboard" target="_blank" rel="noopener">GitHub 原始碼</a></nav></div>
+<nav><a href="./" class="active">研究報告</a><a href="./evidence/">完整數據</a><a href="./methods/">方法／公式</a><a href="./figures/">九張原研究圖</a><a href="./lab/">CSV 試算實驗室</a><a href="https://github.com/Jimmy0307/LEM2/tree/research/report-ready-dashboard-20261109/docs/research/teacher_dashboard" target="_blank" rel="noopener">GitHub 原始碼</a></nav></div>
 <header class="hero"><div class="eyebrow">Research presentation · Complete analytical narrative</div>
 <h1>從規則產生到衝突解決：<br>完整解釋 42 Seeds × 8,820 組 LEM2 實驗</h1>
 <p>這是供教授直接閱讀的<strong>正式研究報告首頁</strong>，不是程式測試頁。由研究問題開始，逐步連結操作性定義、實際數據、公式、六種分類法、衝突後處理與仍未驗證的限制。可按章節報告，隨時切到資料檢視器或上傳 CSV 做現場演示。</p>
 <div class="hero-actions"><a class="primary" href="#conclusions">開始報告</a><a href="./evidence/">查看 8,820 筆數據</a><a href="./lab/">開啟 CSV 真實試算</a><a href="./methods/">檢查全部公式與變因</a></div></header>
 <nav class="floatnav" aria-label="報告章節">
-<a href="#conclusions">研究結論</a><a href="#questions">教授七題</a><a href="#process">演算法流程</a><a href="#design">實驗設計</a><a href="#results">42-Seed 結果</a><a href="#policies">六策略</a><a href="#conflict">Conflict</a><a href="#sensitivity">敏感性</a><a href="#limits">限制／待辦</a><a href="#references">參考依據</a>
+<a href="#conclusions">研究結論</a><a href="#questions">教授七題</a><a href="#process">演算法流程</a><a href="#design">實驗設計</a><a href="#results">42-Seed 結果</a><a href="#policies">六策略</a><a href="#conflict">Conflict</a><a href="#sensitivity">敏感性</a><a href="#original-figures">九張原圖</a><a href="#limits">限制／待辦</a><a href="#references">參考依據</a>
 </nav><main class="wrap">
 <section id="conclusions" class="panel"><span class="section-tag">01 · EXECUTIVE SUMMARY</span><h2>三分鐘研究結論：我們真正驗證了什麼？</h2>
 <div class="kpi-grid"><div class="kpi"><small>完整實驗數</small><strong>8,820</strong><span>42 Seeds × 每 Seed 210 配置</span></div><div class="kpi"><small>重複實驗 Seeds</small><strong id="seedKpi">42 / 42</strong><span id="evidenceState">正式證據載入中；不以舊硬編碼判定</span></div><div class="kpi"><small>無選擇器診斷</small><strong>1,260</strong><span>NONE：Coverage、Conflict，不產生預測 Accuracy</span></div><div class="kpi"><small>六策略分類列數</small><strong>7,560</strong><span>FIRST、SIMPLE、STD、GS、PS、PG</span></div></div>
@@ -105,6 +105,7 @@
 <div class="callout warn"><b>風險提醒：</b>若要宣稱方法有效，必須區分「資料同源重複切分的穩健性」與「跨獨立資料集的可推廣性」。非 IID 的結果也提醒我們，原先 IID 的 GS 平均優勢可能不適用於嚴重偏斜的 Client。</div>
 </section>
 
+<section id="original-figures" class="panel"><span class="section-tag">09 · ORIGINAL FIGURE EVIDENCE</span><h2>前一輪的九張正式研究圖：沒有刪掉，也不會誤當成 42 Seeds 結果</h2><p>前一輪已經交給老師的九張 SVG 仍由 GitHub 原研究資料夾提供。這裡保留兩張代表圖，完整九張與原始 SVG 在獨立圖庫：<a href="./figures/">開啟九張原研究圖</a>。</p><div class="two"><figure class="card" style="margin:0"><h3>原圖 01 · Conflict by regime</h3><img loading="lazy" src="../full_factorial_20261029/figures/fig01_conflict_rate_by_regime.svg" style="width:100%;height:auto" alt="原始基準下各種規則合併體制的衝突比較圖"><figcaption class="metric-note">來自原始研究圖；不是 42 Seeds 合併後重算的圖片。</figcaption></figure><figure class="card" style="margin:0"><h3>原圖 06 · Balanced Accuracy Heatmap</h3><img loading="lazy" src="../full_factorial_20261029/figures/fig06_policy_balanced_accuracy_heatmap.svg" style="width:100%;height:auto" alt="原始基準中六個分類方法的BA熱圖"><figcaption class="metric-note">和上方 42 Seeds 的新動態圖表分開保留。</figcaption></figure></div><div class="hero-actions"><a class="primary" href="./figures/">檢視全部九張原始 SVG</a><a href="./evidence/">對照 42 Seeds 統計數據</a></div></section>
 <section id="limits" class="panel"><span class="section-tag">09 · RESEARCH ASSURANCE</span><h2>哪些已經有證據？哪些仍不能當成完成？</h2>
 <div class="table-wrap"><table><thead><tr><th>成果</th><th>狀態</th><th>界線</th></tr></thead><tbody>
 <tr><td>42 Seeds × 210 = 8,820 主矩陣</td><td><span class="pill">已驗證</span></td><td>七策略欄中 NONE 是診斷，不具有分類 Accuracy</td></tr>
