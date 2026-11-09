@@ -3,8 +3,10 @@ on:
   push:
     branches: [research/report-ready-dashboard-20261109]
     paths:
-      - docs/research/teacher_dashboard/index.html
-      - docs/research/teacher_dashboard/dashboard.js
+      - docs/index.html
+      - docs/research/teacher_dashboard/**
+      - teacher_demo/test_teacher_dashboard_browser.py
+      - docs/research/full_factorial_20261029/figures/**
       - docs/research/teacher_dashboard/browser_engine_worker.js
       - docs/research/teacher_dashboard/runtime/engine.py
       - teacher_demo/build_teacher_dashboard_data.py
@@ -25,6 +27,8 @@ jobs:
       - run: python -m pip install -r requirements-dev.txt
       - name: Syntax-check dashboard JavaScript
         run: |
+          node --check docs/research/teacher_dashboard/report.js
+          node --check docs/research/teacher_dashboard/evidence/evidence.js
           node --check docs/research/teacher_dashboard/dashboard.js
           node --check docs/research/teacher_dashboard/browser_engine_worker.js
           python -m py_compile docs/research/teacher_dashboard/runtime/engine.py
@@ -59,5 +63,7 @@ jobs:
         with:
           name: teacher-dashboard-verified
           path: |
+            docs/index.html
             docs/research/teacher_dashboard/
+            docs/research/full_factorial_20261029/figures/*.svg
           if-no-files-found: error
