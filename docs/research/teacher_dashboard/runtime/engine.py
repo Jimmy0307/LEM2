@@ -49,8 +49,6 @@ def prepare(raw):
     if any(len(row) != len(cols) for row in values):
         raise ValueError("CSV 各列欄位數量不一致。")
     df = pd.DataFrame(values, columns=cols, dtype=str)
-    if df.isna().any().any() or (df.astype(str).apply(lambda col: col.str.strip()) == "").any().any():
-        raise ValueError("資料有缺值／空字串；此版本不自行補值，請先處理。")
     df = df.apply(lambda col: col.str.strip())
     if df[target].nunique() < 2:
         raise ValueError("決策欄至少要有兩種不同類別。")
@@ -63,6 +61,9 @@ def prepare(raw):
     features = [x for x in cols if x != target and x not in ignore]
     if not features:
         raise ValueError("排除後沒有剩餘條件特徵。")
+    selected=df[features+[target]]
+    if selected.isna().any().any() or (selected=="").any().any():
+        raise ValueError("保留的特徵或決策欄含缺值／空字串。請清理或將非必要欄位排除。")
     if len(features) > 8:
         raise ValueError("啟用最小基數 Reduct 時，瀏覽器最多支援 8 個條件屬性，避免指數級搜尋。")
     return DatasetBundle(
