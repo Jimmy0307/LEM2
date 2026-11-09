@@ -1,10 +1,20 @@
-## 研究報告入口｜42 Seeds 與 CSV 真正試算（2026-11-09）
+## 教授報告統一入口｜42 Seeds × 8,820 組實驗（2026-11-10）
 
-- **[教授報告控制台與操作說明](docs/research/teacher_dashboard/README.md)**
-- **[控制台網站原始檔](docs/research/teacher_dashboard/index.html)**：42/42 Seed 的 8,820 筆資料、可篩選圖表、指標定義、CSV 原始 Python LEM2 試算，以及 Conflict 後的決策分流。
-- **[正式驗證 GitHub Actions](https://github.com/Jimmy0307/LEM2/actions/workflows/teacher-dashboard.yml)**：檢查原始模型與頁面資料是否與 8,820 筆一致。
+**[開啟 GitHub Pages 正式研究報告](https://jimmy0307.github.io/LEM2/)**  
+本研究網站現在以完整報告為首頁。GitHub 的試算工具已獨立放進子路徑，不會再覆蓋報告內容。
 
-GitHub Pages 須部署成功後才能當作公開互動網址；GitHub 的 HTML 原始檔頁面本身不會執行 JavaScript。
+| 功能 | GitHub Pages |
+|---|---|
+| 正式研究報告 | [完整報告](https://jimmy0307.github.io/LEM2/research/teacher_dashboard/) |
+| 42 Seeds 全數據、成對比較 | [8,820 筆實驗證據](https://jimmy0307.github.io/LEM2/research/teacher_dashboard/evidence/) |
+| 公式、指標、變因定義 | [研究方法](https://jimmy0307.github.io/LEM2/research/teacher_dashboard/methods/) |
+| 前一輪正式九張 SVG | [原始研究圖](https://jimmy0307.github.io/LEM2/research/teacher_dashboard/figures/) |
+| 自訂 CSV／真正的 LEM2 | [試算實驗室](https://jimmy0307.github.io/LEM2/research/teacher_dashboard/lab/) |
+
+- [操作、研究邊界與版本路由說明](docs/research/teacher_dashboard/README.md)
+- [GitHub Pages 發布與完整瀏覽器驗證](https://github.com/Jimmy0307/LEM2/actions)
+- 此網站位於同一個研究分支 research/report-ready-dashboard-20261109，依 URL 子資料夾分功能，保持模型程式與正式 8,820 列資料的版本一致。
+
 
 ---
 
