@@ -39,6 +39,8 @@ def main():
             assert page.locator("#runButton").is_enabled()
             page.locator("#runButton").click()
             page.wait_for_function("!document.getElementById('modelResults').hidden",timeout=240000)
+            assert page.locator("#assignmentTable tr").count()==81
+            assert page.locator("#assignmentBars .metric").count()>=2
             assert page.locator("#modelPolicies tr").count()==6
             assert page.locator("#modelClasses tr").count()>=2
             assert page.locator("#caseTable tr").count()>=1
