@@ -1,10 +1,5 @@
 name: Publish Teacher Dashboard to GitHub Pages
 on:
-  push:
-    branches: [research/report-ready-dashboard-20261109]
-    paths:
-      - docs/research/teacher_dashboard/**
-      - .github/workflows/teacher-dashboard-pages.yml
   workflow_dispatch:
 permissions:
   contents: read
