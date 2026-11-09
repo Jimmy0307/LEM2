@@ -89,7 +89,7 @@ details{border:1px solid #dae4e9;border-radius:10px;padding:10px 13px;margin:10p
 <div class="info warning">研究邊界：本次 Reduct 為 Classical 正域保留，不是 DRSA Dominance。Federated 規則支持度由全部訓練 Client 的資料計算；對象不同，不能把「合併後支持度」誤寫成「僅來源 Client 支持度」。</div>
 </section>
 <section id="run">
- <h2>03｜上傳 CSV，真正執行 LEM2 與六種分類</h2>
+ <h2>04｜上傳 CSV，真正執行 LEM2 與六種分類</h2>
  <p class="lead">此功能透過 WebAssembly 的 Python 在你的瀏覽器中載入原始 GitHub 程式，執行 Reduct → LEM2 → Rule Matching → 六策略，不是先前只有切分的 JavaScript 示意。需連網下載 Python 執行環境；CSV 內容留在瀏覽器記憶體。</p>
  <div class="filebox"><div class="controls">
  <label>選擇有標籤的 CSV<input id="csvFile" type="file" accept=".csv,text/csv"></label>
@@ -121,7 +121,7 @@ details{border:1px solid #dae4e9;border-radius:10px;padding:10px 13px;margin:10p
  </div>
 </section>
 <section id="conflict">
- <h2>04｜Conflict 後要怎麼辦？一個明確的決策流程</h2>
+ <h2>05｜Conflict 後要怎麼辦？一個明確的決策流程</h2>
  <div class="grid">
  <div class="metric"><b>① 沒有規則命中</b><p>候選集合為空，六策略都使用訓練資料多數類別作 Fallback；須另外稽核其是否剛好正確。</p><span>改善：擴充規則／特徵、評估預設類別與 Abstain</span></div>
  <div class="metric"><b>② 有規則，但正確類別不在候選</b><p>六種選擇方式都不能從現有候選中選出真實類別。</p><span>改善：改善 Reduct／LEM2 歸納、分割資料品質及局部類別偏斜</span></div>
@@ -149,7 +149,7 @@ P_d=U_d/T_d
  <div class="info warning">Conflict 是本研究的「跨類別命中」定義，不是 DRSA／Classical Rough Set 的近似邊界。候選衝突率屬於規則集合的屬性，不會因改用 GS 或 STD 而直接降低；它們改變的是選出的 Winner。</div>
 </section>
 <section id="method">
- <h2>05｜研究界線與 GitHub 來源</h2>
+ <h2>06｜研究界線與 GitHub 來源</h2>
  <dl><dt>原始模型程式</dt><dd><a href="https://github.com/Jimmy0307/LEM2/tree/research/teacher-evidence-42-20261109/roughset">roughset 原始 Python 模組</a>（瀏覽器動態載入）</dd>
  <dt>42 Seeds 已驗證證據</dt><dd><a href="https://github.com/Jimmy0307/LEM2/tree/research/seed-sweep-1-42-20261108/docs/research/seed_sweep_1_42">8,820 筆完整矩陣</a>；42 個 Seed，三種資料集、兩種切分、五種拓樸、NONE 與六策略。</dd>
  <dt>逐筆規則證據</dt><dd><a href="https://github.com/Jimmy0307/LEM2/tree/research/teacher-evidence-42-20261109">Seed 42 追溯與 42 Seeds 擴充工作流程</a>；本網站的自訂 CSV 試算另有獨立實驗標籤。</dd>
