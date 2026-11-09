@@ -52,6 +52,7 @@ def main():
         }
     changed=example()
     changed.update({"ignore":["left_distance"],"bins":2,"reduct_enabled":False})
+    changed["rows"][0][1]=""  # ignored field can be blank without model leakage
     d=evaluate(changed)
     assert "left_distance" not in d["features"]
     assert d["reduct_enabled"] is False and d["bins"]==2
