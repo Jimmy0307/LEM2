@@ -32,10 +32,15 @@ def main():
     assert sum(v["n"] for v in a["classes"])==a["test_rows"]
     assert all(c["row_id"]>=0 for c in a["cases"])
     assert a["provenance"].startswith("CANONICAL_PYTHON")
+    assert len(a["assignments"])==a["dataset_rows"]
+    assert sum(x["in_train"] for x in a["assignments"])==a["train_rows"]
+    assert sum(x["in_evaluation"] for x in a["assignments"])==a["test_rows"]
+    assert len(set(x["row_id"] for x in a["assignments"]))==a["dataset_rows"]
     full=example();full["split"]="FULL_DATA";b=evaluate(full)
     assert b["train_rows"]==81 and b["test_rows"]==81
     fed=example();fed["clients"]=2;c=evaluate(fed)
     assert len(c["local_rule_counts"])==2
+    assert len(set(x["client"] for x in c["assignments"] if x["in_train"]))==2
     assert len(c["classes"])>0
     outcomes=a["cases"][0]["outcomes"]
     assert set(outcomes)==set(a["metrics"])
