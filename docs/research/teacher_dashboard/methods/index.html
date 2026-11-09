@@ -1,0 +1,92 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LEM2／Federated 數學公式與指標字典｜研究方法</title><link rel="stylesheet" href="../site.css"></head><body>
+<div class="site-top"><a class="brand" href="../">LEM2 Research · 方法與公式</a><nav><a href="../">研究報告</a><a href="../evidence/">完整數據</a><a class="active" href="./">方法／公式</a><a href="../figures/">九張原研究圖</a><a href="../lab/">CSV 試算</a></nav></div>
+<header class="hero"><div class="eyebrow">Method reference · Operational definitions</div><h1>演算法、六種策略與指標：<br>每個公式在整個流程的哪一段？</h1><p>這頁是老師追問「這個分子分母到底是什麼」時的共同規格。把文獻既有定義、本專案選擇策略、擴充指標、尚未完成的方法分開，避免把 Rule Matching、Rule Generation 和 Decision Selection 混為一談。</p><div class="hero-actions"><a class="primary" href="../">返回研究報告</a><a href="../lab/">帶入真實 CSV 計算</a><a href="../evidence/">查 8,820 筆配置</a></div></header>
+<main class="wrap">
+<section class="panel"><span class="section-tag">01 · DATA AND PREPROCESSING</span><h2>資料與變因的正確先後關係</h2>
+<div class="steps"><div class="step">原始 CSV（每列是一個物件 x，條件屬性集合 C，決策欄 d）</div><div class="arrow">↓</div>
+<div class="step">Seed 設定 → 類別分層 Full Data / 80:20 <br><span class="muted">在 Holdout 時：Train 是規則學習唯一來源，Test 不參與離散化與 Reduct</span></div><div class="arrow">↓</div>
+<div class="step">在 Train 確定離散化邊界／條件欄型態 → Classical Reduct → LEM2</div><div class="arrow">↓</div>
+<div class="step">Centralized Rule Set 或各 Client Local Rule Sets 合併的 Global Rule Set</div><div class="arrow">↓</div>
+<div class="step">Rule Matching → 候選與衝突診斷 → （可選）六策略 Winner</div></div>
+<div class="table-wrap"><table><thead><tr><th>變因</th><th>本次正式水準</th><th>控制效果／意義</th></tr></thead><tbody>
+<tr><td>Dataset</td><td>Balance 625；Car 1,728；Hayes 132</td><td>資料結構、類別分布、特徵型態</td></tr>
+<tr><td>Seed</td><td>1～42</td><td>控制 Train/Test 和 Client 的隨機分配；同一原始資料重複切分</td></tr>
+<tr><td>Split</td><td>FULL_DATA / HOLDOUT_80_20</td><td>回代與 80/20 未見資料，評估口徑不同</td></tr>
+<tr><td>System</td><td>Centralized / Federated</td><td>單一模型學習 vs Client 分別學習後 Rule Union</td></tr>
+<tr><td>Client count</td><td>2, 3, 4, 5</td><td>局部樣本量、局部約簡、規則多樣性與合併衝突</td></tr>
+<tr><td>Selection policy</td><td>NONE + 六策略</td><td>NONE 不選 Winner；其餘方法使用固定 Rule Set</td></tr>
+<tr><td>固定 Reduct</td><td>Minimum-cardinality + lexicographic first</td><td>正域保持；不是 DRSA reduct</td></tr>
+<tr><td>固定 Client 分割</td><td>STRATIFIED</td><td>non-IID Dirichlet α 為獨立擴充試驗</td></tr>
+<tr><td>其他消融因素</td><td>離散化 bins、Reduct on/off、α</td><td>CSV 試算可操作，但不屬原 8,820 固定主矩陣</td></tr>
+</tbody></table></div></section>
+
+<section class="panel"><span class="section-tag">02 · ROUGH SET AND LEM2</span><h2>Rough Set／Reduct／LEM2 的數學位置</h2>
+<p>對同一決策表，令 U 為物件全集，C 為條件屬性，d 為決策欄，P ⊆ C。對傳統不可分辨關係：</p>
+<div class="callout"><span class="formula">IND(P) = {(x,y) ∈ U×U : ∀a ∈ P, f<sub>a</sub>(x)=f<sub>a</sub>(y)}</span><br>
+<span class="formula">Lower<sub>P</sub>(X) = {x ∈ U : [x]<sub>P</sub> ⊆ X}</span><br>
+<span class="formula">POS<sub>P</sub>(d) = ⋃<sub>decision class X</sub> Lower<sub>P</sub>(X)</span><br>
+<span class="formula">γ<sub>P</sub>(d) = |POS<sub>P</sub>(d)|/|U|</span></div>
+<p><b>本次程式的約簡準則：</b>在所有 P ⊆ C 中，找最小基數且滿足 <span class="formula">|POS<sub>P</sub>(d)| = |POS<sub>C</sub>(d)|</span> 的候選。若有多組同樣大小，保留全部候選並依標準化的字典順序取一組給 LEM2 使用。</p>
+<p><b>LEM2：</b>在約簡後的條件空間針對決策概念的確定區域形成局部覆蓋，輸出 IF–THEN 規則。這個規則集合 R 本身不會自動等於唯一分類答案。</p>
+<div class="two"><div class="card"><h3>集中式</h3><span class="formula">Train → P* → LEM2 → R<sub>central</sub></span><p>只對整份 Train 建一個 Rule Set。</p></div><div class="card"><h3>聯邦式</h3><span class="formula">Train → {D<sub>i</sub>} → {P<sub>i</sub>*} → {R<sub>i</sub>} → Union/Dedup → R<sub>global</sub></span><p>Local Rule Sets 先各自完成，合併後才進入共同評估層。當前 Global 支持度在所有訓練 Client 的資料上核對。</p></div></div>
+<div class="callout warn"><b>重要界線：</b>上述是 Classical Rough Set 的相等不可分辨關係與正域約簡。DRSA（Dominance-based Rough Set Approach）必須另外定義準則單調方向、優勢關係及向上／向下近似；目前不應將 Classical reduct 的結果稱作 DRSA reduct。</div></section>
+
+<section class="panel"><span class="section-tag">03 · MATCHING AND CONFLICT</span><h2>Match、候選集合與 Conflict 的操作性定義</h2>
+<div class="callout"><span class="formula">M<sub>R</sub>(x) = {r ∈ R : Antecedent(r) 符合 x}</span><br>
+<span class="formula">Candidate<sub>R</sub>(x) = {decision(r) : r ∈ M<sub>R</sub>(x)}</span><br>
+<span class="formula">Conflict<sub>R</sub>(x) = 1[|Candidate<sub>R</sub>(x)| &gt; 1]</span></div>
+<div class="table-wrap"><table><thead><tr><th>指標</th><th>公式／分母</th><th>意義及限制</th></tr></thead><tbody>
+<tr><td><b>Overall Coverage</b></td><td>#有任一匹配規則的物件 / #全部評估物件</td><td>是否有規則可用；與預測是否正確不同</td></tr>
+<tr><td><b>Target Coverage by Class</b></td><td>各真實類別 d 中有任一匹配規則的物件數 / 該類測試物件數</td><td>按類別分組的 Coverage；不能冒充正確候選覆蓋</td></tr>
+<tr><td><b>True-in-Candidate</b></td><td>#真實類別在 Candidate(x) 的物件 / #全部評估物件</td><td>真實答案有沒有被任何匹配規則提出</td></tr>
+<tr><td><b>Target Candidate Coverage by Class</b></td><td>各真實類別 d 中 d∈Candidate(x) 的物件數 / 該類測試筆數</td><td>比 Target Coverage 更嚴格</td></tr>
+<tr><td><b>Conflict Case Rate</b></td><td>#候選類別至少 2 種 / #全部評估物件</td><td>候選歧義，不等於預測錯誤，也不是 Boundary Region</td></tr>
+<tr><td><b>Conflict-resolution Accuracy</b></td><td>#衝突物件中答對的筆數 / #衝突物件</td><td>只有衝突子集的預測準確率</td></tr>
+<tr><td><b>No Match</b></td><td>M<sub>R</sub>(x) = ∅</td><td>原程式以訓練多數類別作 Fallback；可能答對或答錯</td></tr>
+</tbody></table></div>
+<h3>Conflict 後真正能處理的四種情況</h3>
+<div class="grid"><div class="card"><b>無匹配規則</b><p>處理 Coverage、規則泛化、缺失與 Fallback。</p></div><div class="card"><b>正解不在 Candidate</b><p>回頭改善規則生成；換策略也選不到不存在的正解。</p></div><div class="card"><b>正解在 Candidate，但 Winner 錯</b><p>對照六策略分數、重複支持與類別分母。</p></div><div class="card"><b>最後 Winner 正確</b><p>仍需標記是否因 Fallback，及對 Seed／Client 順序的穩健性。</p></div></div></section>
+
+<section class="panel"><span class="section-tag">04 · CLASSIFICATION POLICIES</span><h2>六種決策策略在同一個 Rule Set 上怎麼算？</h2>
+<p>令 M<sub>d</sub>(x) = {r∈M<sub>R</sub>(x) : decision(r)=d}。對各決策類別 d 的規則支持度：</p>
+<div class="callout"><span class="formula">T<sub>d</sub> = Σ<sub>r∈M<sub>d</sub></sub> |S(r)|</span>（可重複支持數量）<br>
+<span class="formula">U<sub>d</sub> = |⋃<sub>r∈M<sub>d</sub></sub> S(r)|</span>（唯一支持人口）<br>
+<span class="formula">N<sub>d</sub> = #訓練資料中決策為 d 的物件</span><br>
+<span class="formula">P<sub>d</sub> = U<sub>d</sub>/T<sub>d</sub></span>（非冗餘比例，T=0 時由程式按 0 處理）</div>
+<div class="table-wrap"><table><thead><tr><th>策略</th><th>當前程式定義</th><th>主要特性</th></tr></thead><tbody>
+<tr><td>FIRST_MATCH</td><td>按順序找到第一條符合 antecedent 的規則，即回傳其 decision</td><td>早停；Client 到達／規則順序可能影響 Winner</td></tr>
+<tr><td>SIMPLE_VOTING</td><td>Score(d) = |M<sub>d</sub>(x)|</td><td>每條規則一票</td></tr>
+<tr><td>STANDARD_VOTING</td><td>Score(d) = Σ<sub>r∈M<sub>d</sub></sub> weight(r)</td><td>規則支持權重加總；聯邦式使用全訓練 Client 的真實支持集合</td></tr>
+<tr><td>GLOBAL_STRENGTH</td><td>Score(d) = U<sub>d</sub> / N<sub>d</sub></td><td>類別人口正規化；對少數類別更有利，但不保證普遍最優</td></tr>
+<tr><td>POPULATION_STANDARD</td><td>Score(d) = U<sub>d</sub></td><td>去除重複支持人口</td></tr>
+<tr><td>POPULATION_GLOBAL</td><td>Score(d) = U<sub>d</sub>²/(N<sub>d</sub> T<sub>d</sub>)</td><td>GS × P<sub>d</sub>，額外懲罰支持重複</td></tr>
+</tbody></table></div>
+<div class="callout warn"><b>文獻界線：</b>Population 修正是本研究自訂方法。不能說它是原典 LERS，也不能以此直接宣稱改善。不同比較應使用同一 Rule Set、相同測試物件，且保存最後 Winner、分數、同分決策。</div>
+<div class="callout"><b>同分處理：</b>在得分相同的類別中，若訓練多數類別也在同分集合就選它；否則依決策值字串排序。當無規則命中，選訓練多數類別 Fallback。</div></section>
+
+<section class="panel"><span class="section-tag">05 · EVALUATION AND INFERENCE</span><h2>分類績效、統計檢定與解讀界線</h2>
+<div class="table-wrap"><table><thead><tr><th>指標</th><th>數學定義</th><th>如何處理？</th></tr></thead><tbody>
+<tr><td>Accuracy</td><td>(TP+TN)/N（二元時）；多類別為全部答對數／全部評估筆數</td><td>整體平均；多數類別比例高時可能虛高</td></tr>
+<tr><td>Recall<sub>d</sub></td><td>TP<sub>d</sub>/(TP<sub>d</sub>+FN<sub>d</sub>)</td><td>真實類別 d 中被正確辨識的比例</td></tr>
+<tr><td>Balanced Accuracy</td><td>(1/K) Σ<sub>d</sub> Recall<sub>d</sub></td><td>各類別等權平均</td></tr>
+<tr><td>Precision<sub>d</sub></td><td>TP<sub>d</sub>/(TP<sub>d</sub>+FP<sub>d</sub>)</td><td>被預測為 d 的結果中，真正為 d 的比例</td></tr>
+<tr><td>Macro-F1</td><td>(1/K) Σ<sub>d</sub> 2P<sub>d</sub>R<sub>d</sub>/(P<sub>d</sub>+R<sub>d</sub>)</td><td>類別等權，兼顧錯誤預報與漏報</td></tr>
+<tr><td>Paired seed delta</td><td>Δ<sub>s</sub> = Metric(A,s) − Metric(B,s)</td><td>相同資料、Seed、切分與 Client 的條件下比較；先定義每 Seed 跨資料集的等權平均</td></tr>
+</tbody></table></div>
+<p><b>研究限制：</b>42 Seeds 為固定三資料集的重複切分，不能把 8,820 列當成 8,820 個獨立樣本；即使做成對 Wilcoxon 或 bootstrap，也必須處理同源資料的依賴與多重檢定。</p>
+<div class="callout warn"><b>Full Data / 80:20：</b>FULL_DATA 用全部資料訓練又評估，是回代指標。HOLDOUT_80_20 用 80% 訓練與 20% 未見資料測試。兩者 Accuracy 差異不能簡單解讀為切分造成的因果效應。</div></section>
+
+<section class="panel"><span class="section-tag">06 · SOURCE TRACEABILITY</span><h2>重要文獻與研究程式連結</h2>
+<div class="table-wrap"><table><thead><tr><th>來源</th><th>本研究引用範圍</th><th>核對方式</th></tr></thead><tbody>
+<tr><td>Pawlak（1982）Rough Sets</td><td>不可分辨關係、上下近似、正域</td><td><a href="https://doi.org/10.1007/BF01001956" target="_blank" rel="noopener">原始論文 DOI</a></td></tr>
+<tr><td>Grzymala-Busse LEM2／LERS</td><td>規則歸納及規則分類系統的歷史研究脈絡</td><td>需區分本 repo 的六策略與完整原典 LERS 分類法</td></tr>
+<tr><td>Greco／Matarazzo／Słowiński DRSA</td><td>優勢關係與偏好順序擴充</td><td>此處尚未實作，不與 Classical 結果混算</td></tr>
+<tr><td>本研究 Reduct 實作</td><td>最小基數、POS 保留、候選集及字典序選擇</td><td><a href="https://github.com/Jimmy0307/LEM2/blob/research/report-ready-dashboard-20261109/roughset/reduct.py">roughset/reduct.py</a></td></tr>
+<tr><td>本研究 LEM2 核心</td><td>Lower approximation、blocks、complex、local covering</td><td><a href="https://github.com/Jimmy0307/LEM2/blob/research/report-ready-dashboard-20261109/roughset/core.py">roughset/core.py</a></td></tr>
+<tr><td>本研究六策略</td><td>Rule Matching、支持度、候選與 Winner</td><td><a href="https://github.com/Jimmy0307/LEM2/blob/research/report-ready-dashboard-20261109/roughset/evaluation.py">roughset/evaluation.py</a></td></tr>
+<tr><td>本研究規則合併</td><td>Client 分派、Union、provenance、順序</td><td><a href="https://github.com/Jimmy0307/LEM2/blob/research/report-ready-dashboard-20261109/roughset/federated.py">roughset/federated.py</a></td></tr>
+<tr><td>42 Seeds 正式資料</td><td>8,820 筆全因子結果，沒有未執行列</td><td><a href="https://github.com/Jimmy0307/LEM2/tree/research/seed-sweep-1-42-20261108/docs/research/seed_sweep_1_42">GitHub 實驗證據</a></td></tr>
+</tbody></table></div>
+<div class="hero-actions"><a class="primary" href="../">返回完整研究報告</a><a href="../lab/">進行實際 CSV 試算</a></div>
+</section></main><footer class="footer">LEM2 Research · 僅將研究證據支持的說法視為實驗結論。<a href="../">返回報告</a></footer></body></html>
