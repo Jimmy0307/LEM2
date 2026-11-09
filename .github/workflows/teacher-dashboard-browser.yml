@@ -1,0 +1,26 @@
+name: Teacher Dashboard - Real Browser QA
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - teacher_demo/test_teacher_dashboard_browser.py
+      - .github/workflows/teacher-dashboard-browser.yml
+      - docs/research/teacher_dashboard/dashboard.js
+      - docs/research/teacher_dashboard/browser_engine_worker.js
+      - docs/research/teacher_dashboard/runtime/engine.py
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  chromium:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Browser driver
+        run: python -m pip install playwright
+      - name: Real browser end-to-end CSV trial
+        run: python -m teacher_demo.test_teacher_dashboard_browser
