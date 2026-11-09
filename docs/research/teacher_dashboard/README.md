@@ -1,5 +1,19 @@
 # LEM2 × Federated｜教授報告入口
 
+## GitHub Pages 實際部署狀態（需由儲存庫管理者啟用）
+
+網站原始碼及資料已在 GitHub；目前自動部署曾回報「Get Pages site failed ... Not Found」，代表此 repo 尚未啟用 Pages，**尚未有可確認使用的公開網站網址**。
+
+要直接在 GitHub 發表給老師：
+
+1. 開啟 GitHub 的 Jimmy0307/LEM2 → Settings → Pages。
+2. Build and deployment → Source 選 **Deploy from a branch**。
+3. Branch 選 **research/report-ready-dashboard-20261109**，資料夾選 **/docs**，儲存。
+4. 待 GitHub Pages 顯示已發布網址，再打開 /LEM2/research/teacher_dashboard/。網站是有互動的 HTML，不是 GitHub blob 原始碼頁。
+5. 自訂 CSV 的 Python 試算需可連 Pyodide CDN 與 GitHub Raw；若公司網路封鎖，依下方 CLI 指引使用。
+
+也可以將 Source 改選 **GitHub Actions** 後執行此分支的 Pages 發布 workflow；這條路徑需要先啟用 Pages。
+
 ## 1. 開啟互動網站
 
 本目錄的 [index.html](./index.html) 是研究控制台。若 GitHub Pages 已啟用並指向本研究分支的 /docs，預期網站路徑為：
