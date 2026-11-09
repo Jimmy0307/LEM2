@@ -16,6 +16,7 @@ from roughset.schema import DatasetSchema, clean_column_name
 from roughset.app import _run_split
 from roughset.splitting import stratified_train_test_split
 from roughset.evaluation import matching_rules, population_support_summary
+from roughset.federated import partition_clients
 
 POLICIES = (
     "FIRST_MATCH", "SIMPLE_VOTING", "STANDARD_VOTING",
@@ -170,11 +171,28 @@ def run(raw):
             typ=c["outcomes"][policy]["error_type"]
             counts[typ]=counts.get(typ,0)+1
         failure_counts[policy]=counts
+    assigned={}
+    if clients:
+        original_client_tables=partition_clients(
+            raw_train,target_col=bundle.target,n_clients=clients,seed=seed,
+            strategy="STRATIFIED",dirichlet_alpha=0.5,dirichlet_max_retries=100)
+        for client_name,frame in original_client_tables.items():
+            for row_id in frame["__row_id__"]:
+                assigned[int(row_id)]=client_name
+    train_ids=set(int(x) for x in raw_train["__row_id__"])
+    test_ids=set(int(x) for x in raw_test["__row_id__"])
+    assignments=[
+        {"row_id":i,"decision":safe_str(raw_df.iloc[i][bundle.target]),
+         "in_train":i in train_ids,"in_evaluation":i in test_ids,
+         "client":assigned.get(i,"Centralized" if i in train_ids else "Test")}
+        for i in range(len(raw_df))
+    ]
     return {
         "provenance":"CANONICAL_PYTHON_IN_BROWSER; user CSV; not in frozen 8820",
         "dataset_rows":len(raw_df), "train_rows":len(raw_train),
         "test_rows":len(raw_test), "seed":seed, "split":split, "clients":clients,
         "features":bundle.features, "target":bundle.target,
+        "assignments":assignments,
         "condition_columns":list(art.condition_columns),
         "rule_count":len(rules), "rules":[{"if":[[str(k),safe_str(v)] for k,v in r.conditions],
                                           "then":safe_str(r.decision)} for r in rules[:80]],
