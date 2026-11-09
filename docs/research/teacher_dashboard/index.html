@@ -75,6 +75,11 @@ details{border:1px solid #dae4e9;border-radius:10px;padding:10px 13px;margin:10p
  </div>
  <div id="modelResults" hidden>
   <div class="grid" id="modelCards"></div>
+  <h3>Python 真正切分後的逐筆資料流向（Train／Test／Client）</h3>
+  <p class="muted">分組和 Row ID 直接由原始 NumPy/Python 切分程式重新計算；這不是 JavaScript 假設性模擬。Full Data 時同一筆物件同時參與訓練與回代評估。</p>
+  <div id="assignmentBars" class="grid"></div>
+  <div class="twoactions"><button id="downloadAssignments">下載 Train／Test／Client 逐筆分配 CSV</button></div>
+  <div class="table-wrap" style="max-height:250px"><table><thead><tr><th>Row ID</th><th>真實類別</th><th>是否 Train</th><th>是否評估</th><th>Client／區域</th></tr></thead><tbody id="assignmentTable"></tbody></table></div>
   <h3>六策略實測比較</h3><svg id="modelChart" class="chart" viewBox="0 0 930 270" role="img" aria-label="六策略分類績效比較圖"></svg>
   <div class="table-wrap"><table><thead><tr><th>選擇策略</th><th>Accuracy</th><th>BA</th><th>Macro-F1</th><th>候選錯誤</th><th>Fallback 正確／錯誤</th></tr></thead><tbody id="modelPolicies"></tbody></table></div>
   <h3>逐類別 Coverage 與候選機率</h3>
