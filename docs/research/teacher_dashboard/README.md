@@ -1,80 +1,62 @@
-# LEM2 × Federated｜教授報告入口
+# LEM2 × Federated：教授報告整合網站
 
-## GitHub Pages 實際部署狀態（需由儲存庫管理者啟用）
+**這是完整的研究報告入口，不是純 CSV 測試頁。** 原本分開的完整報告與 CSV 試算頁已整合成一個 GitHub Pages 網站：同一份 8,820 列實測基線、統一導覽、按功能分 URL 子路徑。
 
-網站原始碼及資料已在 GitHub；目前自動部署曾回報「Get Pages site failed ... Not Found」，代表此 repo 尚未啟用 Pages，**尚未有可確認使用的公開網站網址**。
+## 主入口
 
-要直接在 GitHub 發表給老師：
+- [正式研究報告](./)
+- GitHub Pages 根網址：https://jimmy0307.github.io/LEM2/
+- 研究分支：https://github.com/Jimmy0307/LEM2/tree/research/report-ready-dashboard-20261109
 
-1. 開啟 GitHub 的 Jimmy0307/LEM2 → Settings → Pages。
-2. Build and deployment → Source 選 **Deploy from a branch**。
-3. Branch 選 **research/report-ready-dashboard-20261109**，資料夾選 **/docs**，儲存。
-4. 待 GitHub Pages 顯示已發布網址，再打開 /LEM2/research/teacher_dashboard/。網站是有互動的 HTML，不是 GitHub blob 原始碼頁。
-5. 自訂 CSV 的 Python 試算需可連 Pyodide CDN 與 GitHub Raw；若公司網路封鎖，依下方 CLI 指引使用。
+Git branch 管理整份網站的版本。不同功能用同一分支內的子目錄（網站 URL path）分開，不用另外建立分支導致報告與工具失去一致性。
 
-也可以將 Source 改選 **GitHub Actions** 後執行此分支的 Pages 發布 workflow；這條路徑需要先啟用 Pages。
+## 網站功能路由
 
-## 1. 開啟互動網站
-
-本目錄的 [index.html](./index.html) 是研究控制台。若 GitHub Pages 已啟用並指向本研究分支的 /docs，預期網站路徑為：
-
-https://jimmy0307.github.io/LEM2/research/teacher_dashboard/
-
-**未驗證部署完成前，以上只是預期路徑。** 可以 clone GitHub repo，然後在本目錄使用 python -m http.server 8000，開啟 http://localhost:8000/ 使用。
-
-## 2. 真正的 42 Seeds
-
-舊版畫面錯誤地硬編碼 Seeds 1～6 和 42 為綠色；新網站從數據資料逐筆檢查每個 Seed 的完整 210 列（30 NONE + 180 六策略），因此 42/42 全部才會顯示綠色。
-
-資料檔 data/baseline_8820.json 由 teacher_demo/build_teacher_dashboard_data.py 從 GitHub 42 Seeds 正式 8,820 列 CSV 生成，沒有更改基準實驗。
-
-[42 Seeds 原始證據](../../seed_sweep_1_42/tables/SEED_SWEEP_8820.csv)
-
-## 3. 上傳 CSV：真正執行 LEM2
-
-Web Worker 透過 Pyodide 載入原 GitHub roughset Python 模組，並在瀏覽器記憶體中執行：
-
-CSV → 依決策分層切分 → Train-only 離散化 → 最小基數 Reduct → LEM2 規則 → Federated Rule Union（選用）→ Rule Matching → 六策略 Winner → Coverage／Conflict／Accuracy／BA／Macro-F1／逐筆診斷。
-
-自訂 CSV 不會上傳伺服器，也不會寫進 8,820 筆原實驗。
-
-**限制：** 需能連上 Pyodide CDN 與 GitHub Raw；瀏覽器試算支援 4～600 筆及至多 8 個條件欄位。大資料請使用原本 repo 的 Python CLI：
-
-1. 把 CSV 放到 real_data/local/。
-2. 在 real_data/schemas/ 補充 target 等欄位資訊，或使用 class／label／decision／target 之一。
-3. 調整 config.json 的切分模式、Seed 與 Federated 設定。
-4. 在 Windows 執行 run.bat，並檢查 outputs/ 輸出及 run_manifest.json。
-
-Pyodide 的 pandas／numpy 版本可能與 CI 的鎖定版本不同；正式論文結果以鎖定 CPython 重跑作準。
-
-## 4. 指標定義
-
-| 指標 | 操作性定義 | 解讀 |
+| 網址（在 /LEM2/research/teacher_dashboard/ 之後） | GitHub 檔案 | 用途 |
 |---|---|---|
-| Rule Count | LEM2 結果的 IF–THEN 規則條數 | 不等於 Accuracy |
-| Coverage | 任何規則命中數／全部測試物件 | 分辨 No Match |
-| True-in-Candidate | 真實類別在匹配候選集合的物件數／全部測試物件 | 分辨候選生成失敗 |
-| Conflict | 命中兩個以上不同候選類別的測試物件比例 | 不等於 Rough Set 的 Boundary |
-| Accuracy | 全部評估物件中答對比例 | 類別失衡時可能誤導 |
-| Balanced Accuracy | 每類 Recall 的算術平均 | 少數類別等權 |
-| Macro-F1 | 每類 F1 的算術平均 | 統合 Precision 與 Recall |
-| T / U / P | 支持總次數／唯一支持人口／U÷T | 評估跨規則重複支持 |
+| 根 /LEM2/ | docs/index.html | 直接導向研究報告 |
+| / | teacher_dashboard/index.html | **正式研究報告**：研究問題、流程、42 Seeds、六策略、Conflict、研究限制 |
+| /evidence/ | evidence/index.html | **8,820 列完整實測資料**：依 Seed／資料集／拓樸／Client／策略篩選、成對 A/B 比較、下載 CSV |
+| /methods/ | methods/index.html | **數學與方法**：Rough Set、Reduct、LEM2、T/U/N/P、指標定義及研究變因 |
+| /figures/ | figures/index.html | **前一輪九張原始 SVG**：從 GitHub 原圖檔讀取，與新版 42 Seeds 重算圖分開 |
+| /lab/ | lab/index.html | **原始 Python CSV 試算**：分割、Local Rule Union、六策略、逐筆 Conflict 與 Winner |
 
-**Conflict 後的處理順序：**
+## 這次的合併方式
 
-1. 無規則命中 → 記錄 NO_MATCH；目前程式使用訓練多數類別 Fallback（可能答對，不能當成必錯）。
-2. 命中規則但沒有正確類別 → 改善特徵與規則歸納；現有六策略沒有能力選不存在的候選。
-3. 正確類別在候選集合，但最後選錯 → 比較 STD／GS／PS／PG 等打分與 Winner。
-4. 高風險衝突 → 人工審查／拒答作為待驗證的未來機制，不可當成已完成改良。
+**原本完整研究報告：** 保留老師七問、Centralized/Federated 雙路徑、42 Seeds 8,820 筆、四張動態圖、六策略公式、Full Data/80:20 與 Conflict 解釋、non-IID／順序敏感性，以及正式九張歷史研究圖。
 
-## 5. CI 與研究界線
+**原本「蒜的」試算網頁：** 移到獨立 /lab/。上傳 CSV，選 target、Seed、Full Data/80:20、Centralized/Federated C2-5、IID/non-IID、離散化 bins、Reduct 啟停，執行 repo 原始 LEM2 Python，展示 Train/Test/Client 逐筆切分、Rule Count、Coverage、Accuracy、BA、Macro-F1、匹配規則、支持度與六個 Winner。
 
-[Teacher Dashboard CI](https://github.com/Jimmy0307/LEM2/actions/workflows/teacher-dashboard.yml)
+**新增完整數據頁：** /evidence/ 嚴格取自已驗證的 8,820 列，與 CSV 自訂試算各自保存；可以對同一 Seed、Dataset、Client 做成對比較。
 
-檢查命令：
+## 數據可信度與方法界線
 
-- python -m teacher_demo.build_teacher_dashboard_data
-- python -m teacher_demo.test_teacher_dashboard_csv
-- node --check docs/research/teacher_dashboard/dashboard.js
+- 凍結原始資料：docs/research/seed_sweep_1_42/tables/SEED_SWEEP_8820.csv
+- 網站 JSON：data/baseline_8820.json。由 teacher_demo/build_teacher_dashboard_data.py 生成；逐 Seed 確認 210 列，NONE 30 列。
+- 42 Seeds × 210 = 8,820 列；其中 NONE 1,260 列是規則診斷，不定義 Accuracy，六策略有 7,560 列。
+- Full Data 是同資料回代；80/20 是未見資料測試。
+- Conflict 是候選類別至少兩種，不是 Rough Set Boundary。應區分 No Match、True Not in Candidate、Candidate Present But Wrong Ranking。
+- Reduct 為 Classical positive-region minimum-cardinality reduct，與 DRSA reduct 不是同一方法。
+- LERS 原典分類器、DRSA reduct、高風險 Abstain Gate 未在本主矩陣中完成。
+- 使用者上傳 CSV 跑出的結果是新實驗，不回填 8,820 列。
 
-42 Seeds 8,820 列主矩陣已完成。non-IID、Client 順序是獨立擴充試驗。LERS 文獻分類基準與 DRSA reduct 尚未完成，不能當作本網站已驗證的成果。FULL_DATA 是回代，不可直接用來宣稱泛化優於 80/20。
+## 建議教授報告順序
+
+1. 先開主報告，三分鐘看研究問題。
+2. 確認 Centralized 和 Federated 的規則產生路徑；先 LEM2 再 Rule Union。
+3. 用 42 Seeds 動態圖說明 Coverage／True-in-Candidate／Conflict 的取捨。
+4. 切到 /evidence/，針對 Seed、Dataset、Client、Policy 查核數字與成對比較。
+5. 用 /methods/ 說清楚每個分母和六種 Winner 公式。
+6. 用 /figures/ 對照原研究九張正式 SVG。
+7. 在 /lab/ 現場上傳 CSV，展示逐筆的 Train/Test／Client 分配、規則、Conflict 與 Winner。
+8. 以 LERS、DRSA、non-IID 的限制結案，不冒稱未完成成果。
+
+## 驗證與發布
+
+- Chromium 多路由實測：https://github.com/Jimmy0307/LEM2/actions/workflows/teacher-dashboard-browser.yml
+- Python CSV 與 8,820 列資料驗證：https://github.com/Jimmy0307/LEM2/actions/workflows/teacher-dashboard.yml
+- GitHub Pages 自動部署紀錄：https://github.com/Jimmy0307/LEM2/actions
+
+瀏覽器 QA 檢查首頁直接導向報告，42 Seeds 格子與圖表、evidence Seed 27 的 210 筆、公式頁、九張 SVG，以及 /lab/ 使用 81 筆資料真正執行 Python LEM2，得到六策略、逐筆 Winner 與資料切分。
+
+自訂 CSV 的 Python 執行環境由 Pyodide 載入；需可連 CDN 與 GitHub Raw。大型資料或企業網路受限時，請改用 repo 的正式 Python CLI／run.bat。若要本機預覽，進入 docs 資料夾執行 python -m http.server 8000，再開 http://localhost:8000/。
