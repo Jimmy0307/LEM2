@@ -1,181 +1,165 @@
-/* 42 Seed professor report: chart every figure directly from frozen 8820-row baseline. */
-(() => {
-"use strict";
-const root="data/baseline_8820.json";
-const $=id=>document.getElementById(id);
-const ns="http://www.w3.org/2000/svg";
-const esc=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const pol=["GLOBAL_STRENGTH","STANDARD_VOTING","POPULATION_GLOBAL","POPULATION_STANDARD","FIRST_MATCH","SIMPLE_VOTING"];
-const pnames={"GLOBAL_STRENGTH":"GS","STANDARD_VOTING":"STD","POPULATION_GLOBAL":"PG","POPULATION_STANDARD":"PS","FIRST_MATCH":"FIRST","SIMPLE_VOTING":"SIMPLE"};
-const fields=["dataset","seed","split_mode","system","client_count","selection_policy","rule_count","coverage","conflict_case_rate","true_in_candidate_rate","accuracy","balanced_accuracy","macro_f1"];
-let data=[],valid=new Set(),currentSeed=42;
-const colors={teal:"#14847a",blue:"#557da7",gold:"#c18a42",red:"#bf6263",muted:"#6d7f8c"};
-function el(name,attrs={},text){
- const n=document.createElementNS(ns,name);
- for(const [k,v] of Object.entries(attrs))n.setAttribute(k,String(v));
- if(text!==undefined)n.textContent=text;
- return n;
+/* LEM2 professor report: one shared, validated experimental contract across the entire site.
+   Source: SEED_SWEEP_8820.csv. Data points are completed experiments, not model projections.
+   No interpolated Seed scores, no independent-sample claims, no conflated support weights. */
+(()=>{"use strict";
+const $=id=>document.getElementById(id),NS="http://www.w3.org/2000/svg";
+const LABELS={
+ rule_count:"規則數",coverage:"規則命中率（Coverage）",true_in_candidate_rate:"真實類別候選率（True-in-Candidate）",conflict_case_rate:"物件層級衝突率（Conflict）",accuracy:"整體正確率（Accuracy）",balanced_accuracy:"類別平衡正確率（BA）",macro_f1:"類別等權 F1（Macro-F1）",conflict_resolution_accuracy:"衝突子集正確率",reduct_size:"集中式 Reduct 大小",mean_local_reduct_size:"平均 Local Reduct 大小",mean_local_rule_count:"平均 Local 規則數",rule_heterogeneity:"Local 規則異質性",mean_matching_rules:"平均命中規則數",mean_candidate_decisions:"平均候選類別數",train_rows:"訓練筆數",evaluation_rows:"評估筆數",dataset_rows:"資料總筆數"};
+const STRUCTURAL=new Set(["rule_count","coverage","true_in_candidate_rate","conflict_case_rate","reduct_size","mean_local_reduct_size","mean_local_rule_count","rule_heterogeneity","mean_matching_rules","mean_candidate_decisions","dataset_rows","train_rows","evaluation_rows"]);
+const COUNT=new Set(["rule_count","reduct_size","mean_local_reduct_size","mean_local_rule_count","mean_matching_rules","mean_candidate_decisions","dataset_rows","train_rows","evaluation_rows"]);
+const COLORS={teal:"#127a75",blue:"#517da7",gold:"#c48d41",red:"#bd645d",light:"#d6e7e7",mid:"#70909a",green:"#3ca089"};
+const POLICIES=["FIRST_MATCH","SIMPLE_VOTING","STANDARD_VOTING","GLOBAL_STRENGTH","POPULATION_STANDARD","POPULATION_GLOBAL"];
+let rows=[],valid=new Set(),stage="data",allExpanded=false;
+const STEPS=["data","split","preprocess","central-reduct","central-lem2","central-rules","clients","local-reduct","local-lem2","union","match","none","selection","audit"];
+function esc(v){return String(v??"").replace(/[&<>\"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function svg(tag,attrs={},str){const e=document.createElementNS(NS,tag);for(const [k,v] of Object.entries(attrs))e.setAttribute(k,String(v));if(str!==undefined)e.textContent=str;return e;}
+function fmt(x,key){if(x===null||x===undefined||!Number.isFinite(Number(x)))return "未定義";return COUNT.has(key)?Number(x).toLocaleString("zh-TW",{maximumFractionDigits:2}):(Number(x)*100).toFixed(2)+"%";}
+const percentage=(x)=>x===null||!Number.isFinite(+x)?"—":(x*100).toFixed(2)+"%";
+function num(x){return x===null||!Number.isFinite(+x)?"—":Number(x).toLocaleString("zh-TW",{maximumFractionDigits:2});}
+const avg=(v)=>{const a=v.filter(x=>x!==null&&x!==undefined&&Number.isFinite(+x)).map(Number);return a.length?a.reduce((x,y)=>x+y,0)/a.length:null;};
+const sd=(v)=>{const a=v.filter(x=>x!==null&&Number.isFinite(+x)).map(Number);if(a.length<2)return null;const m=avg(a);return Math.sqrt(a.reduce((s,x)=>s+(x-m)**2,0)/(a.length-1));};
+function median(v){const a=v.filter(x=>x!==null).slice().sort((x,y)=>x-y);return !a.length?null:a.length%2?a[(a.length-1)/2]:(a[a.length/2-1]+a[a.length/2])/2;}
+function q(){return {dataset:$("gDataset").value,seed:$("gSeed").value,split:$("gSplit").value,system:$("gSystem").value,client:Number($("gClient").value),policy:$("gPolicy").value,metric:$("traceMetric").value};}
+function cfgRows(cfg,metric,seedOverride){const effectivePolicy=STRUCTURAL.has(metric)?"NONE":cfg.policy;
+ const seed=seedOverride===undefined?cfg.seed:seedOverride;
+ return rows.filter(r=>r.split_mode===cfg.split&&r.selection_policy===effectivePolicy&&r.system===cfg.system&&(cfg.system==="CENTRALIZED"||Number(r.client_count)===cfg.client)&&(cfg.dataset==="ALL"||r.dataset===cfg.dataset)&&(seed==="ALL"||Number(r.seed)===Number(seed)));
 }
-function text(svg,x,y,value,extra={}){const n=el("text",{x,y,"font-size":"11",fill:"#557282",...extra},value);svg.append(n);return n;}
-function clear(svg){svg.replaceChildren();}
-function line(svg,x1,y1,x2,y2,stroke="#e7edf0",width=1){svg.append(el("line",{x1,y1,x2,y2,stroke,"stroke-width":width}));}
-function mean(rows,key){const a=rows.map(r=>r[key]).filter(v=>v!=null&&Number.isFinite(+v)).map(Number);return a.length?a.reduce((x,y)=>x+y,0)/a.length:null;}
-function pct(x){return x==null||!Number.isFinite(+x)?"—":(100*x).toFixed(2)+"%";}
-function number(x){return x==null||!Number.isFinite(+x)?"—":(+x).toLocaleString("zh-TW",{maximumFractionDigits:2});}
-function source(mode){return data.filter(r=>r.selection_policy==="NONE"&&r.split_mode===mode);}
-function filter(rows,dataset){return dataset==="ALL"?rows:rows.filter(r=>r.dataset===dataset);}
-function matchTopology(rows,id){return id===0?rows.filter(r=>r.system==="CENTRALIZED"):rows.filter(r=>r.system==="FEDERATED"&&Number(r.client_count)===id);}
-function config(){return {dataset:$("datasetFilter").value,split:$("splitFilter").value,metric:$("seedMetric").value,client:Number($("topologyFilter").value)};}
-function scaleAxes(svg,values,{left=54,right=585,top=34,bottom=270,min=0,max=1,percent=true}={}){
- const yy=v=>bottom-(v-min)/(max-min||1)*(bottom-top);
- for(let i=0;i<=4;i++){
-  const v=min+(max-min)*i/4,y=yy(v);
-  line(svg,left,y,right,y);
-  text(svg,left-9,y+4,percent?(v*100).toFixed(0)+"%":v.toFixed(0),{"text-anchor":"end"});
+function observed(metric,cfg,seedOverride){return avg(cfgRows(cfg,metric,seedOverride).map(r=>r[metric]));}
+function withConfig(changes){return {...q(),...changes};}
+function optionScope(cfg){return (cfg.dataset==="ALL"?"三資料集等權":cfg.dataset)+"｜"+(cfg.seed==="ALL"?"42 Seeds 等權平均":"Seed "+cfg.seed)+"｜"+(cfg.split==="FULL_DATA"?"Full Data 回代":"80/20 未見資料")+"｜"+(cfg.system==="CENTRALIZED"?"集中式":"Federated C="+cfg.client)+"｜"+cfg.policy;}
+function validate(data){if(!Array.isArray(data)||data.length!==8820)throw Error("完整基準應有 8,820 列");const counts=new Map(),none=new Map(),keys=new Set();for(const r of data){const seed=Number(r.seed);const k=[r.dataset,seed,r.split_mode,r.system,r.client_count,r.selection_policy].join("|");if(keys.has(k))throw Error("出現重複的實驗因素鍵值："+k);keys.add(k);counts.set(seed,(counts.get(seed)||0)+1);if(r.selection_policy==="NONE")none.set(seed,(none.get(seed)||0)+1);}
+ const good=new Set();for(let s=1;s<=42;s++)if(counts.get(s)===210&&none.get(s)===30)good.add(s);if(good.size!==42)throw Error("42 個 Seed 未全部具有 210 列與 30 列 NONE");return good;}
+function metricRows(metric,cfg){return cfgRows(cfg,metric);}
+function tooltip(el,value){el.append(svg("title",{},value));}
+function ax(svgNode,{left=55,right=610,top=30,bottom=280,min=0,max=1,axisKey="coverage",n=4}={}){
+ const y=v=>bottom-(v-min)/(max-min||1)*(bottom-top);
+ for(let i=0;i<=n;i++){const v=min+(max-min)*i/n, yy=y(v);svgNode.append(svg("line",{x1:left,y1:yy,x2:right,y2:yy,stroke:"#e4edee","stroke-width":1}));svgNode.append(svg("text",{x:left-8,y:yy+4,"font-size":11,fill:"#66808a","text-anchor":"end"},COUNT.has(axisKey)?v.toFixed(0):(v*100).toFixed(0)+"%"));}
+ return {y};}
+function allSeeds(metric,cfg){return Array.from({length:42},(_,i)=>({seed:i+1,value:observed(metric,cfg,i+1)}));}
+function updateContract(){const cfg=q(),struct=cfgRows(cfg,"coverage");const calc=cfgRows(cfg,"accuracy");$("gClient").disabled=cfg.system==="CENTRALIZED";$("contractLine").innerHTML=`<b>目前固定條件：</b>${esc(optionScope(cfg))}。<b>結構指標</b>讀取 ${struct.length} 筆 NONE 診斷；<b>預測指標</b>讀取 ${calc.length} 筆 ${esc(cfg.policy)} 分類。此兩組是同一批 Rule Sets 的不同評估層，不是兩次獨立訓練。`;
+ $("centralLane").classList.toggle("is-dim",cfg.system!=="CENTRALIZED");$("fedLane").classList.toggle("is-dim",cfg.system!=="FEDERATED");}
+const STAGES={
+ data:{title:"資料輸入：Decision Table",tag:"INPUT",input:"三個有類別標籤的離散／混合屬性資料集；每列為物件 x，每欄為條件屬性或決策 d。",formula:"D = (U, C ∪ {d})；U 為物件集合，C 為條件屬性。",output:"保留 row ID、決策類別與條件欄；未進行 LEM2。",variable:"Dataset 會改變樣本總數、特徵數、類別不平衡與規則學習難度。",limit:"原始主矩陣使用 Balance Scale（625）、Car Evaluation（1,728）、Hayes-Roth（處理後 132）。此處不能用不同大小樣本的總筆數直接加權宣稱方法普遍優劣。",code:"roughset/adapters.py",metrics:["dataset_rows","train_rows"]},
+ split:{title:"Seed 與 Full Data／80:20",tag:"SPLIT",input:"原始決策表。Seed 是偽隨機分派種子，不是時間刻度或連續自變數。",formula:"每個類別 g 的 Test 數 ≈ round(0.20 × |U_g|)，至少 1 筆、並保留至少 1 筆 Train。",output:"Full Data：Train=Test=全部資料（回代）；80/20：Train、Test 不重疊，Test 不參與 Reduct 或 LEM2。",variable:"同 Seed 下比較 FULL_DATA／HOLDOUT_80_20，會同時改變訓練量與測試口徑。",limit:"各類別分層後按類別整數四捨五入，總體 Test 不必恰好等於全部樣本的 20%；Holdout 才有未見資料測試解讀。",code:"roughset/splitting.py",metrics:["train_rows","evaluation_rows"]},
+ preprocess:{title:"前處理：只用 Train 估計轉換",tag:"PREPROCESS",input:"Train／Test 與欄位型態。",formula:"Transform_test 使用 Transform_train 的欄位定義／離散化邊界。",output:"一致的條件值表示，供 Reduct、LEM2 與測試物件 Match。",variable:"離散化區間數與欄位選擇目前不是 8,820 主矩陣的自由因子；可到 CSV 實驗室做消融。",limit:"8,820 列主表沒有保存每筆離散化邊界；此處只能展示規則學習後的結果，不宣稱已從摘要資料回推出轉換參數。",code:"roughset/preprocessing.py",metrics:["rule_count"]},
+ "central-reduct":{title:"集中式 Reduct：先縮小條件屬性",tag:"CLASSICAL REDUCT",input:"整份 Train 與完整條件集合 C。",formula:"P* ∈ arg min_{P ⊆ C}|P|，subject to |POS_P(d)| = |POS_C(d)|。",output:"最小基數且維持正域大小的選定屬性子集 P*；同基數有多組時依字典序選取。",variable:"此處只比較集中式 Reduct；和 Federated 的各 Client Reduct 是不同的計算對象。",limit:"這是 Classical Rough Set 正域，不是 DRSA 優勢關係約簡。最小基數搜尋有指數級組合成本。",code:"roughset/reduct.py",metrics:["reduct_size","rule_count"],system:"CENTRALIZED"},
+ "central-lem2":{title:"集中式 LEM2：從概念歸納規則",tag:"RULE INDUCTION",input:"Train、Selected Reduct 與決策類別。",formula:"Induce: Decision Table → {IF antecedent THEN class}。",output:"單一 R_central，包含 antecedent 條件與 decision。",variable:"改變 Seed／Full／Holdout 會改變 Train，因而改變 Reduct 和 Rule Set。",limit:"LEM2 此步輸出規則集合，而不是唯一分類答案；不能直接定義 Accuracy。",code:"roughset/core.py",metrics:["rule_count","reduct_size"],system:"CENTRALIZED"},
+ "central-rules":{title:"集中式 Rule Set：R_central",tag:"RULE OUTPUT",input:"Central LEM2 的輸出。",formula:"R_central = LEM2(Train, P*)。",output:"規則條數與可匹配的 antecedents；後續才用 Test 進行 Matching。",variable:"可以與 R_global 比 Rule Count 和 Coverage，但不是說兩套規則皆從同一個 Reduct 得到。",limit:"Rule Count 少不代表效果好，也不代表低 Conflict。",code:"roughset/pipeline.py",metrics:["rule_count","coverage"],system:"CENTRALIZED"},
+ clients:{title:"Federated：Train 如何分到 Client",tag:"PARTITION",input:"只有 Train，不能將 Test 混入 Local Client。",formula:"Train = D₁ ⊔ D₂ ⊔ ⋯ ⊔ D_C，C ∈ {2,3,4,5}。",output:"多個 Local Decision Tables。正式 8,820 主矩陣用類別分層分派；Dirichlet α 是另外的 non-IID 試驗。",variable:"Client 數 C 不表示網路圖論的『拓樸』，而是規則學習的配置。改 C 同時改變本地樣本量與規則合併機會。",limit:"這裡不包含真實傳輸協定、跨裝置 latency 或完整保密運算評估。",code:"roughset/federated.py",metrics:["train_rows","mean_local_rule_count"],system:"FEDERATED"},
+ "local-reduct":{title:"Local Reduct：每個 Client 分別計算",tag:"LOCAL REDUCT",input:"D₁…D_C，各 Client 可能看到不同的類別分布與條件組合。",formula:"P_i* ∈ arg min |P|，subject to |POS_P^{D_i}(d)| = |POS_C^{D_i}(d)|。",output:"P₁*…P_C*，各自保留規則學習需要的屬性。",variable:"這裡報告的是『平均 Local Reduct 大小』，不是 Global Reduct。",limit:"不同 Local Reduct 不代表一定是錯誤，只代表局部資料約簡的最小屬性子集可能不同。",code:"roughset/reduct.py；roughset/pipeline.py",metrics:["mean_local_reduct_size","mean_local_rule_count"],system:"FEDERATED"},
+ "local-lem2":{title:"Local LEM2：先有 R₁…R_C",tag:"LOCAL INDUCTION",input:"各個 Client 的 Train 子集及 P_i*。",formula:"R_i = LEM2(D_i, P_i*)；i = 1…C。",output:"每個 Client 自己產生的局部 IF–THEN 規則集合。",variable:"Local Rule Count 和 Global Rule Count 是兩個不同欄位；不能在合併之前先稱呼 R_global。",limit:"此時還未將各 Client 規則做 Union。",code:"roughset/core.py；roughset/pipeline.py",metrics:["mean_local_rule_count","mean_local_reduct_size"],system:"FEDERATED"},
+ union:{title:"Rule Union：局部規則合併與去重",tag:"RULE MERGE",input:"R₁…R_C 及規則來源紀錄。",formula:"R_global = dedup(R₁ ∪ ⋯ ∪ R_C)；依規則條件與決策鍵去重。",output:"可應用到 Test 的全域 Rule Set，後續計算訓練支持度及 Match。",variable:"改 C 會改變 Local Rule Set 的來源及合併後的重疊；FIRST_MATCH 對規則順序敏感。",limit:"Rule Union 增加候選並不代表增加真正有效的候選；需要分開檢查 True-in-Candidate 和 Conflict。",code:"roughset/federated.py；roughset/pipeline.py",metrics:["rule_count","rule_heterogeneity","coverage"],system:"FEDERATED"},
+ match:{title:"Rule Matching：候選與衝突在這一步形成",tag:"INFERENCE DIAGNOSTIC",input:"固定的 Rule Set 和待評估物件 x。",formula:"M(x)={r∈R: Antecedent(r) 符合 x}；Cand(x)={decision(r):r∈M(x)}；Conflict=1[|Cand(x)|≥2]。",output:"每筆物件的命中規則、候選類別與是否衝突（還不是唯一 Winner）。",variable:"同一組規則及相同 Test 下，換六種策略不改變這裡的基礎 Coverage 和 Conflict。",limit:"不能把 Conflict 說成分類錯誤或 Rough Set 邊界；Matching 有無命中與是否提出真實類別也不同。",code:"roughset/evaluation.py",metrics:["coverage","true_in_candidate_rate","conflict_case_rate"]},
+ none:{title:"NONE：只做規則比對診斷",tag:"DIAGNOSTIC",input:"完整 Rule Matching 結果。",formula:"Coverage=|M(x)≠∅|/n；CandidateRecall=|y∈Cand(x)|/n；Conflict=||Cand(x)|≥2|/n。",output:"Coverage、Conflict、True-in-Candidate、規則條數及相關結構性指標。",variable:"用 NONE 做比較時，不能把缺少的 Accuracy 當 0%。",limit:"NONE 的 prediction_defined=False；六策略結果雖共用規則，仍是不同的評估列。",code:"teacher_demo/full_factorial_matrix.py",metrics:["coverage","true_in_candidate_rate","conflict_case_rate"]},
+ selection:{title:"六種 Selection Policies：Conflict 後才決定 Winner",tag:"CLASSIFICATION",input:"Rule Set、命中規則與各類別支持統計。",formula:"FIRST / SIMPLE / STANDARD / GS / PS / PG。計分完成選最高分；無 Match 使用訓練多數類別 Fallback。",output:"唯一預測類別 ŷ(x) 及 Accuracy、Balanced Accuracy、Macro-F1。",variable:"固定同一個 Rule Set，比較同一批測試物件下不同 Winner 策略；GS/STD/Population 數學作用不同。",limit:"只有 Candidate 含真實類別而 Winner 選錯，才是候選排序可直接修正的情況。",code:"roughset/evaluation.py",metrics:["accuracy","balanced_accuracy","macro_f1","conflict_resolution_accuracy"]},
+ audit:{title:"42 Seeds 研究驗證：控制變因與邊界",tag:"RESEARCH AUDIT",input:"42 個 Seed 的相同因素配置、每個 Seed 的 210 列結果。",formula:"Δ_s = Metric(A,seed=s) − Metric(B,seed=s)；先成對，後評估分布。",output:"觀測均值、跨 Seed 變動、最小最大、改變單一因素的比較與相依性限制。",variable:"Seed 不是時間；Dataset ALL 時採三資料集等權；不同架構與 Split 要明示控制條件。",limit:"42 Seeds 仍是同三資料集的重複切分，不是 42 個獨立資料集，也不能直接證明跨場景因果。",code:"teacher_demo/seed_sweep_runner.py",metrics:["accuracy","balanced_accuracy","conflict_case_rate"]}
+};
+const CODE_ROOT="https://github.com/Jimmy0307/LEM2/blob/research/report-ready-dashboard-20261109/";
+function stageCfg(st){const c=q(),requested=STAGES[st].system;return requested?{...c,system:requested}:c;}
+function stageHTML(st){const x=STAGES[st],c=stageCfg(st),alternate=Boolean(x.system&&x.system!==q().system),values=x.metrics.map(k=>[k,observed(k,c)]);
+ const primary=values.find(([k,v])=>v!==null),scope=optionScope(c);
+ const sourceText=x.code.split("；").map(path=>`<a href="${CODE_ROOT+path.trim()}" target="_blank" rel="noopener">${esc(path.trim())}</a>`).join(" · ");
+ return `<div class="eyebrow">${esc(x.tag)} · ORIGINAL IMPLEMENTATION</div><h3>${esc(x.title)}</h3>${alternate?'<div class="special-note">這是另一條規則學習架構，顯示對照路徑的實測值，沒有更改全站設定。</div>':""}
+ <div class="stage-live"><small>所選配置：${esc(scope)}</small>${primary?`<strong>${esc(fmt(primary[1],primary[0]))}</strong><small>${esc(LABELS[primary[0]]||primary[0])}｜真實實測</small>`:"<strong>摘要未存此欄</strong><small>原始 8,820 筆 CSV 才可能提供完整計算細節</small>"}</div>
+ <div class="stage-grid">${values.map(([k,v])=>`<div><strong>${esc(fmt(v,k))}</strong><span>${esc(LABELS[k]||k)}</span></div>`).join("")}</div>
+ <div class="stage-field"><b>INPUT｜進入此階段的資料</b><p>${esc(x.input)}</p></div>
+ <div class="stage-field"><b>FORMULA｜計算定義</b><div class="stage-formula">${esc(x.formula)}</div></div>
+ <div class="stage-field"><b>OUTPUT｜完成後實際得到什麼</b><p>${esc(x.output)}</p></div>
+ <div class="stage-field"><b>VARIABLE｜改哪個因素才會影響此階段</b><p>${esc(x.variable)}</p></div>
+ <div class="stage-field"><b>BOUNDARY｜不能過度推論的事</b><p>${esc(x.limit)}</p></div>
+ <div class="stage-field tagged-source"><b>原始程式位置</b><p>${sourceText}</p></div>`;}
+function activeStagePath(){return q().system==="CENTRALIZED"?
+ ["data","split","preprocess","central-reduct","central-lem2","central-rules","match","none","selection","audit"]:
+ ["data","split","preprocess","clients","local-reduct","local-lem2","union","match","none","selection","audit"];}
+function stageRender(){const cfg=q();document.querySelectorAll("[data-stage]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.stage===stage)));$("stagePanel").innerHTML=stageHTML(stage);$("flowPosition").textContent="目前："+STAGES[stage].title;const path=activeStagePath(),i=path.indexOf(stage);$("flowPrev").disabled=i<=0;$("flowNext").disabled=i===path.length-1;
+ if(allExpanded)$("allStages").innerHTML=`<div class="all-stage-list">${STEPS.map(k=>`<article><h4>${esc(STAGES[k].title)}</h4><p><b>公式：</b>${esc(STAGES[k].formula)}</p><p><b>輸出：</b>${esc(STAGES[k].output)}</p><p><b>注意：</b>${esc(STAGES[k].limit)}</p></article>`).join("")}</div>`;
+}
+function renderSeedGrid(){const c=q(),metric=c.metric,grid=$("seedGridLive");grid.replaceChildren();for(const row of allSeeds(metric,c)){
+ const b=document.createElement("button");b.type="button";b.setAttribute("aria-pressed",String(c.seed===String(row.seed)));b.innerHTML=`<span class="seednum">Seed ${row.seed}</span><span class="seedval">${esc(fmt(row.value,metric))}</span>`;
+ b.title="Seed "+row.seed+" · "+LABELS[metric]+" = "+fmt(row.value,metric)+"；點選同步更新所有面板";
+ b.onclick=()=>{$("gSeed").value=String(row.seed);updateEverything();};grid.append(b);
  }
- return {left,right,top,bottom,yy};
+ $("seedSelectedDesc").textContent=c.seed==="ALL"?"目前：42 Seeds 等權平均（不是時間序列）":"目前：Seed "+c.seed+"；上下所有圖表、流程節點與結論均已同步";
+ $("traceProof").textContent="PASS · "+valid.size+" / 42 Seeds；每 Seed 210 列";
 }
-function graphConflict(dataset,mode){
- const svg=$("conflictChart");clear(svg);
- const vals=[0,2,3,4,5].map(c=>mean(matchTopology(filter(source(mode),dataset),c),"conflict_case_rate"));
- const {left,right,yy}=scaleAxes(svg,vals);
- const w=(right-left)/5,positions=[];
- vals.forEach((v,i)=>{
-  const x=left+10+i*w;
-  const h=(v||0)*(270-34),y=270-h;
-  svg.append(el("rect",{x,y,width:w-20,height:h,rx:5,fill:i===0?colors.blue:colors.teal,opacity:".89"}));
-  text(svg,x+(w-20)/2,Math.max(21,y-7),pct(v),{"text-anchor":"middle","font-size":"12",fill:colors.teal});
-  text(svg,x+(w-20)/2,295,i===0?"Central":"C"+(i+1),{"text-anchor":"middle"});
- });
+function chartSeed(){const c=q(),metric=c.metric,points=allSeeds(metric,c),vs=points.map(x=>x.value).filter(x=>x!==null);const box=$("seedScatter");box.replaceChildren();if(!vs.length){box.append(svg("text",{x:35,y:75},"所選指標無法從此配置計算"));return;}
+ const raw=COUNT.has(metric);const min=raw?Math.max(0,Math.min(...vs)*.84):0,max=raw?Math.max(...vs)*1.08:1;
+ const plot={left:48,right:634,top:38,bottom:267};const yy=v=>plot.bottom-(v-min)/(max-min||1)*(plot.bottom-plot.top),xx=s=>plot.left+(s-1)*(plot.right-plot.left)/41;
+ for(let i=0;i<5;i++){const v=min+(max-min)*i/4,y=yy(v);box.append(svg("line",{x1:plot.left,y1:y,x2:plot.right,y2:y,stroke:"#e4eeee"}));box.append(svg("text",{x:plot.left-7,y:y+4,"font-size":11,fill:COLORS.mid,"text-anchor":"end"},raw?v.toFixed(0):(v*100).toFixed(0)+"%"));}
+ const meanValue=avg(vs);box.append(svg("line",{x1:plot.left,y1:yy(meanValue),x2:plot.right,y2:yy(meanValue),stroke:COLORS.gold,"stroke-width":1.8,"stroke-dasharray":"5 4"}));
+ points.forEach(p=>{if(p.value===null)return;const chosen=c.seed===String(p.seed);const circle=svg("circle",{cx:xx(p.seed),cy:yy(p.value),r:chosen?7:4.4,fill:chosen?COLORS.gold:COLORS.teal,stroke:chosen?"#a37422":"#fff","stroke-width":chosen?2:1,tabindex:0,role:"button","aria-label":"Seed "+p.seed+" "+fmt(p.value,metric)});
+ tooltip(circle,`Seed ${p.seed}：${fmt(p.value,metric)}`);circle.onclick=()=>{$("gSeed").value=String(p.seed);updateEverything();};circle.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();circle.onclick();}});box.append(circle);});
+ for(const s of [1,7,14,21,28,35,42])box.append(svg("text",{x:xx(s),y:302,"text-anchor":"middle",fill:COLORS.mid,"font-size":12},String(s)));
+ const local=c.seed==="ALL"?null:points.find(p=>String(p.seed)===c.seed);
+ $("seedScatterCaption").textContent="42 Seeds 的觀測點（每點 1 個 Seed） · 虛線為 42-Seed 平均 "+fmt(meanValue,metric)+(local?" · Seed "+c.seed+" = "+fmt(local.value,metric):"")+"。點選任意點查看該次實驗。";
 }
-function graphCoverage(dataset,mode){
- const svg=$("coverageChart");clear(svg);
- const {left,right,yy}=scaleAxes(svg,[],{});
- const ids=[0,2,3,4,5],space=(right-left)/5;
- ids.forEach((c,i)=>{
-  const rows=matchTopology(filter(source(mode),dataset),c);
-  const vals=[mean(rows,"coverage"),mean(rows,"true_in_candidate_rate")];
-  vals.forEach((v,j)=>{
-   const w=space*.26,x=left+i*space+space*.24+j*(w+5),y=yy(v||0);
-   svg.append(el("rect",{x,y,width:w,height:270-y,rx:3,fill:j===0?colors.blue:colors.gold}));
-   const circle=el("title",{},(c?("C"+c):"Central")+" · "+(j===0?"Coverage":"True-in-Candidate")+" "+pct(v));
-   svg.lastChild.append(circle);
-  });
-  text(svg,left+i*space+space*.5,295,c?"C"+c:"Central",{"text-anchor":"middle"});
- });
- text(svg,340,18,"■ Coverage",{fill:colors.blue,"font-size":"13"});text(svg,444,18,"■ True-in-Candidate",{fill:colors.gold,"font-size":"13"});
+function chartClient(){const cfg=q(),metric=cfg.metric,plot=$("clientBars");plot.replaceChildren();const config=[{system:"CENTRALIZED",c:0,label:"Central"},...([2,3,4,5].map(c=>({system:"FEDERATED",c,label:"C"+c})))];const values=config.map(z=>observed(metric,{...cfg,system:z.system,client:z.c}));const raw=COUNT.has(metric);const nonnull=values.filter(v=>v!==null),max=raw?Math.max(1,...nonnull)*1.11:1,min=0,y=v=>275-(v-min)/(max-min||1)*225;
+ for(let k=0;k<=4;k++){const v=k*max/4,yy=y(v);plot.append(svg("line",{x1:53,y1:yy,x2:630,y2:yy,stroke:"#e5eeee"}));plot.append(svg("text",{x:50,y:yy+3,"text-anchor":"end",fill:COLORS.mid,"font-size":11},raw?v.toFixed(0):(v*100).toFixed(0)+"%"));}
+ values.forEach((val,i)=>{const x=75+i*111,selected=(cfg.system===config[i].system&&(cfg.system==="CENTRALIZED"||cfg.client===config[i].c)),yy=val===null?275:y(val),r=svg("rect",{x,y:yy,width:67,height:275-yy,rx:5,fill:selected?COLORS.gold:i===0?COLORS.blue:COLORS.teal});tooltip(r,config[i].label+" "+fmt(val,metric));plot.append(r);plot.append(svg("text",{x:x+33.5,y:Math.max(24,yy-9),fill:"#41626b","text-anchor":"middle","font-size":12},val===null?"N/A":raw?num(val):String((100*val).toFixed(1))+"%"));plot.append(svg("text",{x:x+33.5,y:309,"text-anchor":"middle",fill:COLORS.mid,"font-size":13},config[i].label));});}
+function cardsTrace(){const cfg=q(),metric=cfg.metric,items=allSeeds(metric,cfg),vs=items.map(p=>p.value).filter(v=>v!==null),global=avg(vs),local=cfg.seed==="ALL"?global:items.find(p=>String(p.seed)===cfg.seed)?.value,ci=vs.length?Math.min(...vs):null,ca=vs.length?Math.max(...vs):null;
+ const cards=[[cfg.seed==="ALL"?"目前 42 Seeds 平均":"Seed "+cfg.seed+" 實測",fmt(local,metric),LABELS[metric]||metric],["全 42 Seeds 平均",fmt(global,metric),"同資料集、切分、架構、方法"],["42 Seeds 樣本標準差",fmt(sd(vs),metric),"描述性波動，不是跨資料集信賴區間"],["觀測範圍",fmt(ci,metric)+" ～ "+fmt(ca,metric),"42 個種子之最小與最大"]];
+ $("traceCards").innerHTML=cards.map(([label,val,foot])=>`<div class="kpi"><small>${esc(label)}</small><strong>${esc(val)}</strong><span>${esc(foot)}</span></div>`).join("");
+ const values=allSeeds(metric,cfg);$("seedDetailTable").innerHTML=values.map(item=>{const s=item.seed,cur=withConfig({seed:String(s)}),st=cfg.seed===String(s)?" class='selected-row'":"";
+ const cells=[fmt(item.value,metric),fmt(observed("rule_count",cur),"rule_count"),fmt(observed("coverage",cur),"coverage"),fmt(observed("true_in_candidate_rate",cur),"true_in_candidate_rate"),fmt(observed("conflict_case_rate",cur),"conflict_case_rate"),fmt(observed("accuracy",cur),"accuracy"),fmt(observed("balanced_accuracy",cur),"balanced_accuracy"),fmt(observed("macro_f1",cur),"macro_f1")];
+ return `<tr data-seed-detail="${s}"${st}><td><button type="button" data-seed-detail="${s}">Seed ${s}</button></td>${cells.map(v=>`<td class="n">${esc(v)}</td>`).join("")}</tr>`;}).join("");
 }
-function graphSeed(dataset,mode,client,metric){
- const svg=$("seedChart");clear(svg);
- const pol=metric==="accuracy"||metric==="balanced_accuracy"?"GLOBAL_STRENGTH":"NONE";
- const sub=filter(data.filter(r=>r.split_mode===mode&&r.selection_policy===pol),dataset);
- const items=Array.from({length:42},(_,i)=>{
-  const seed=i+1;
-  return {seed,value:mean(matchTopology(sub.filter(r=>Number(r.seed)===seed),client),metric)};
- });
- const raw=items.map(r=>r.value).filter(v=>v!=null);
- if(!raw.length){text(svg,50,60,"此組合的指標沒有定義");return;}
- const count=metric==="rule_count";const min=count?Math.max(0,Math.floor(Math.min(...raw)*.78)):0;const max=count?Math.ceil(Math.max(...raw)*1.08):1;
- const left=58,right=1080,top=30,bottom=240;
- const yy=v=>bottom-(v-min)/(max-min||1)*(bottom-top);
- for(let i=0;i<=4;i++){const v=min+(max-min)*i/4,y=yy(v);line(svg,left,y,right,y);text(svg,left-12,y+4,count?v.toFixed(0):(v*100).toFixed(0)+"%",{"text-anchor":"end"});}
- const xx=s=>left+(s-1)*(right-left)/41;
- const pts=items.filter(r=>r.value!=null).map(r=>xx(r.seed)+","+yy(r.value)).join(" ");
- svg.append(el("polyline",{points:pts,fill:"none",stroke:colors.teal,"stroke-width":"2.6","stroke-linecap":"round"}));
- items.forEach(r=>{if(r.value==null)return;
-   const circ=el("circle",{cx:xx(r.seed),cy:yy(r.value),r:r.seed===currentSeed?6:3.4,fill:r.seed===currentSeed?colors.gold:colors.teal,tabindex:"0",role:"button","aria-label":"Seed "+r.seed});
-   circ.append(el("title",{},"Seed "+r.seed+"："+(count?number(r.value):pct(r.value))));
-   const go=()=>{currentSeed=r.seed;updateGrid();graphSeed(dataset,mode,client,metric);};
-   circ.addEventListener("click",go);circ.addEventListener("keydown",e=>{if(e.key==="Enter")go();});
-   svg.append(circ);
- });
- for(const n of [1,7,14,21,28,35,42])text(svg,xx(n),270,String(n),{"text-anchor":"middle","font-size":"12"});
- const row=items.find(r=>r.seed===currentSeed);
- $("seedChartCaption").innerHTML="選定 Seed <b>"+currentSeed+"</b>："+
-  (row.value==null?"未定義":count?number(row.value):pct(row.value))+
-  "；此處每個點對應相同資料／同一種切分／同一拓樸。"+
-  ' <a href="./evidence/?seed='+currentSeed+'">查看 Seed '+currentSeed+' 的全部配置</a>';
+const metricSummary={
+ rule_count:"規則集合的大小；不是分類準確率，規則較少不必然較好。",coverage:"測試物件至少命中一條規則的比例；沒有正確類別與否仍需看候選。",true_in_candidate_rate:"在全部評估物件中，真實決策類別被至少一條匹配規則提出的比例。",conflict_case_rate:"在全部評估物件中，同時命中至少兩個不同決策類別規則的比例。",accuracy:"全部測試物件中預測正確的比例。類別不平衡時不能單獨使用。",balanced_accuracy:"對測試資料中各個真實類別的 Recall 等權平均。",macro_f1:"依每類 Precision、Recall 算 F1，然後對 true ∪ predicted 類別等權平均。"};
+function diagCards(){const cfg=q(),cov=observed("coverage",cfg),cand=observed("true_in_candidate_rate",cfg),conflict=observed("conflict_case_rate",cfg),acc=observed("accuracy",cfg);const missing=cov===null?null:1-cov,candidateAbsent=cov===null||cand===null?null:Math.max(0,cov-cand);
+ $("diagnosticCards").innerHTML=[["至少一規則命中",pctFixed(cov),"Coverage"],["正確類別有被提出",pctFixed(cand),"True-in-Candidate"],["跨決策候選歧義",pctFixed(conflict),"Conflict ≠ Error"],["最終預測答對",pctFixed(acc),cfg.policy+" · Accuracy"]].map(([title,v,foot])=>`<div class="kpi"><small>${esc(title)}</small><strong>${esc(v)}</strong><span>${esc(foot)}</span></div>`).join("");
+ $("diagnosticLogic").innerHTML=`候選階段（同一 Test 的互斥分解）：<b>沒有規則 ${esc(pctFixed(missing))}</b> ＋ <b>有規則卻無正解候選 ${esc(pctFixed(candidateAbsent))}</b> ＋ <b>有正確候選 ${esc(pctFixed(cand))}</b> = 100%。<br> <b>Conflict ${esc(pctFixed(conflict))}</b> 是另一個交疊維度，不能與這三段直接相加；最後 Accuracy 由已選的 <b>${esc(cfg.policy)}</b> 決定。`;
+ return {cov,cand,conflict,acc,missing,candidateAbsent};}
+function pctFixed(x){return x===null||!Number.isFinite(+x)?"—":(100*x).toFixed(2)+"%";}
+function chartCandidate(d){const box=$("candidateStack");box.replaceChildren();const parts=[{label:"No Match",val:d.missing,fill:"#cbd5de"},{label:"命中但沒有正解",val:d.candidateAbsent,fill:COLORS.gold},{label:"正解在 Candidate",val:d.cand,fill:COLORS.teal}];const total=parts.reduce((s,p)=>s+(p.val||0),0);if(Math.abs(total-1)>.0001){box.append(svg("text",{x:25,y:70},"無法從當前資料得到完整候選分解"));return;}
+ let x=35;for(const p of parts){const w=580*p.val;const rect=svg("rect",{x,y:64,width:w,height:75,fill:p.fill});tooltip(rect,p.label+" "+pctFixed(p.val));box.append(rect);x+=w;}
+ box.append(svg("text",{x:37,y:48,fill:COLORS.mid,"font-size":14},"候選生成階段 · 全部評估物件 = 100%"));parts.forEach((p,i)=>{const y=165+i*27;box.append(svg("rect",{x:40,y:y-12,width:16,height:16,rx:2,fill:p.fill}));box.append(svg("text",{x:64,y:y,fill:"#405e68","font-size":14},p.label+"："+pctFixed(p.val)));});box.append(svg("text",{x:42,y:259,fill:COLORS.mid,"font-size":12},"另有 Conflict = "+pctFixed(d.conflict)+"（與候選分解交疊，不相加）"));}
+function policyRows(cfg){return POLICIES.map(p=>({policy:p,accuracy:observed("accuracy",{...cfg,policy:p}),balanced_accuracy:observed("balanced_accuracy",{...cfg,policy:p}),macro_f1:observed("macro_f1",{...cfg,policy:p}),conflict_resolution_accuracy:observed("conflict_resolution_accuracy",{...cfg,policy:p})}));}
+function chartPolicy(arr){const box=$("policyGrouped");box.replaceChildren();const keys=["accuracy","balanced_accuracy","macro_f1"],cols=[COLORS.teal,COLORS.gold,COLORS.blue],plot={left:44,right:640,top:35,bottom:267};for(let i=0;i<=4;i++){const y=plot.bottom-i*(plot.bottom-plot.top)/4;box.append(svg("line",{x1:plot.left,y1:y,x2:plot.right,y2:y,stroke:"#e4ebef"}));box.append(svg("text",{x:plot.left-7,y:y+3,fill:COLORS.mid,"font-size":11,"text-anchor":"end"},i*25+"%"));}
+ const barw=24,width=(plot.right-plot.left)/6;arr.forEach((r,i)=>{keys.forEach((key,j)=>{const v=r[key];if(v===null)return;const x=plot.left+width*i+8+j*(barw+1),y=plot.bottom-v*(plot.bottom-plot.top),rect=svg("rect",{x,y,width:barw,height:plot.bottom-y,rx:3,fill:cols[j]});tooltip(rect,r.policy+"："+LABELS[key]+" "+pctFixed(v));box.append(rect);});box.append(svg("text",{x:plot.left+width*i+width/2,y:296,fill:COLORS.mid,"text-anchor":"middle","font-size":11},r.policy.replace("GLOBAL_STRENGTH","GS").replace("STANDARD_VOTING","STD").replace("POPULATION_STANDARD","PS").replace("POPULATION_GLOBAL","PG").replace("SIMPLE_VOTING","SIMPLE").replace("FIRST_MATCH","FIRST")));});
+ keys.forEach((k,i)=>{box.append(svg("rect",{x:86+i*160,y:13,width:13,height:13,fill:cols[i]}));box.append(svg("text",{x:105+i*160,y:24,"font-size":12,fill:COLORS.mid},k==="balanced_accuracy"?"Balanced Accuracy":k==="macro_f1"?"Macro-F1":"Accuracy"));});
 }
-function topologyTable(dataset,mode){
- const rows=filter(source(mode),dataset);const t=[];
- for(const c of [0,2,3,4,5]){
-  const rr=matchTopology(rows,c);
-  t.push("<tr><td>"+(c?"Federated C"+c:"Centralized")+"</td><td class='n'>"+
-   number(mean(rr,"rule_count"))+"</td><td class='n'>"+pct(mean(rr,"coverage"))+"</td><td class='n'>"+
-   pct(mean(rr,"true_in_candidate_rate"))+"</td><td class='n'>"+pct(mean(rr,"conflict_case_rate"))+"</td></tr>");
- }
- $("topologyTable").innerHTML=t.join("");
+function renderPolicies(){const cfg=q(),pp=policyRows(cfg);chartPolicy(pp);const descr={FIRST_MATCH:"早停，可能受規則順序影響",SIMPLE_VOTING:"每條命中規則 1 票",STANDARD_VOTING:"集中式：前件匹配數；聯邦式：正確支持數",GLOBAL_STRENGTH:"唯一正確支持人口／類別訓練數",POPULATION_STANDARD:"唯一正確支持人口",POPULATION_GLOBAL:"GS × 正確支持非冗餘比例"};$("policyCompareRows").innerHTML=pp.map(p=>`<tr${cfg.policy===p.policy?' class="selected-row"':''}><td><button type="button" data-policy="${p.policy}">${p.policy}</button></td><td class="n">${esc(pctFixed(p.accuracy))}</td><td class="n">${esc(pctFixed(p.balanced_accuracy))}</td><td class="n">${esc(pctFixed(p.macro_f1))}</td><td>是，同一個 Rule Set</td><td>${descr[p.policy]}</td></tr>`).join("");}
+const DICTIONARY=[
+ {name:"Rule Count｜規則數",type:"規則結構",formula:"|R|（規則條數）",def:"在指定 Seed、Dataset、Split、學習配置中完成 LEM2（及可能的 Rule Union）後，Rule Set 的規則條數。",example:"有 200 條規則不表示有 200 筆測試物件，也不代表準確率 200%。",use:"量測規則複雜度與可能的重複；需搭配 Coverage 與規則精確度。",source:"rule_count"},
+ {name:"Reduct Size｜約簡大小",type:"規則生成",formula:"|P*|；P* 為保持 |POS_P(d)| 的最小基數子集。",def:"Classical Rough Set 以保持正域物件數為條件尋找最少條件屬性；集中式為 reduct_size，聯邦式 mean_local_reduct_size 是 Local Reduct 的平均。",example:"若四個條件屬性中三個可保持正域，則大小可能為 3；若有多組最小子集，依字典序選一組。",use:"說明規則學習的特徵選擇，不可冒稱 DRSA reduct。",source:"reduct_size"},
+ {name:"Coverage｜規則命中率",type:"候選生成",formula:"(1/n) Σₓ 1[|M(x)|>0] = covered_count/evaluation_rows",def:"分母為全部評估物件 n（含沒有命中規則者）。只問有沒有任何規則命中，不問命中規則提出的類別是否正確。",example:"100 個物件有 95 個至少符合一條規則：Coverage=95%，即使其中有 20 個候選沒有正解仍可能 Coverage 高。",use:"先定位 No Match；不應解讀成預測正確率。",source:"coverage"},
+ {name:"True-in-Candidate｜真實類別候選率",type:"候選生成",formula:"(1/n) Σₓ 1[yₓ∈Cand(x)] = true_in_candidate_count/evaluation_rows",def:"在全部評估物件中，真實決策類別至少被一條匹配規則提出。候選可包含多個類別；這是 oracle 候選可達率，不是分類 Accuracy。",example:"100 個測試物件中 88 個正確類別在候選：88%。其餘 12 個靠現有匹配規則策略無法選出正解；No Match 的 fallback 例外需另記錄。",use:"衡量規則產生階段是否有提供正確候選。",source:"true_in_candidate_rate"},
+ {name:"Conflict Case Rate｜物件層級衝突率",type:"候選生成",formula:"(1/n) Σₓ 1[|Cand(x)|≥2] = conflict_case_count/evaluation_rows",def:"同一評估物件命中不同 decision 的規則；分母為所有評估物件（含 No Match），不是只含已命中的物件。",example:"100 個物件中 40 個同時命中至少兩個不同類別的規則：Conflict=40%；這 40 個仍可能被 GS 選對。",use:"解釋候選歧義與合併成本；它不是 Classical/DRSA Boundary，也不是 Rule antecedent 完全相同的 conflict。",source:"conflict_case_rate"},
+ {name:"Accuracy｜整體正確率",type:"最終分類",formula:"(1/n) Σₓ 1[ŷ(x)=yₓ]",def:"分母為評估集合全部 n 筆，包含 No Match／Fallback 的預測。只在六種有 Winner 的分類策略有定義。",example:"100 筆測試資料裡 80 筆 Winner 等於真實類別 → Accuracy=80%。類別失衡時可能掩蓋少數類別錯誤。",use:"比較最終預測整體績效，但需要 BA 和 Macro-F1 搭配。",source:"accuracy"},
+ {name:"Balanced Accuracy｜類別平衡正確率",type:"最終分類",formula:"BA=(1/K_true) Σ_{d∈classes(y_true)} TP_d/(TP_d+FN_d)",def:"只對真實測試資料中出現的 K_true 個類別計算平均 Recall；每類等權，不按該類測試筆數加權。",example:"兩類 Recall 分別為 0.9、0.4，即使樣本比例 9:1，BA=(0.9+0.4)/2=65%。",use:"衡量少數類別是否被錯誤犧牲；GS 的優勢在部分資料集常反映於此。",source:"balanced_accuracy"},
+ {name:"Macro-F1｜類別等權 F1",type:"最終分類",formula:"F1_d=2 P_d R_d/(P_d+R_d)；Macro-F1=(1/K_union) Σ_{d∈y_true∪y_pred} F1_d",def:"本專案程式對真實或預測曾出現的所有類別排序，逐類別計算 Precision 與 Recall，再取等權平均。分母為 0 時該類精確率／召回率視為 0。",example:"兩個類別的 F1=0.8、0.4，Macro-F1=0.6；它和 Accuracy、BA 可能有不同排名。",use:"檢查誤報（Precision）與漏報（Recall）的折衷。",source:"macro_f1"},
+ {name:"Conflict-resolution Accuracy｜衝突子集準確率",type:"衝突後分類",formula:"Σₓ 1[Conflict(x)=1∧ŷ(x)=yₓ] / Σₓ 1[Conflict(x)=1]",def:"只看 Rule Matching 已發生跨決策衝突的物件中，最後策略有多少選對。若完全沒有衝突，此值未定義（NULL），不能寫成 0%。",example:"100 筆評估物件有 40 筆 Conflict，其中 30 筆策略選對，則 Conflict-resolution Accuracy=75%（不是 30%）。",use:"直接比較選擇器在衝突子集下的能力；比全體 Accuracy 更貼近老師的追問。",source:"conflict_resolution_accuracy"},
+ {name:"W_d、T_d、U_d、N_d、P_d｜支持度與重複計數",type:"分類計分",formula:"Central: W_d=Σ|A(r)|；Federated: W_d=T_d=Σ|S(r)|；U_d=|⋃S(r)|；N_d=#Train(d)；P_d=U_d/T_d。",def:"A(r) 是符合規則前件的訓練物件；S(r) 是同時符合前件與規則後件的訓練物件。集中式 STANDARD 權重取 |A(r)|；聯邦式的 global_rule_support_context 將所有 Client 的 S(r) 合併後，STANDARD 權重取 |S(r)|，即 W_d=T_d。GLOBAL 使用 U_d/N_d；POP STANDARD 使用 U_d；POP GLOBAL 使用 U_d²/(N_d×T_d)。",example:"如果某規則前件符合 10 筆、其中正確決策有 7 筆：集中式 STANDARD 的該規則權重為 10，聯邦式 GLOBAL STANDARD 權重為 7，T_d 的該規則貢獻為 7。",use:"先確認架構：聯邦式 PS 相對 STANDARD 去除重複正確支持（W=T），集中式若前件與後件支持範圍不同，PS 同時改變支持範圍及去重計分；不可把兩者都寫成同一種校正。",source:"evaluation.py"}
+];
+function dictionary(){const root=$("metricDictionary");root.className="metric-dictionary";root.innerHTML=DICTIONARY.map((m,i)=>`<details${i===3||i===8?" open":""}><summary>${esc(m.name)} <span class="category">${esc(m.type)}</span></summary><div class="stage-formula">${esc(m.formula)}</div><p><b>精確定義：</b>${esc(m.def)}</p><p><b>數值例子：</b>${esc(m.example)}</p><p><b>操作決策：</b>${esc(m.use)}</p><p class="source">對應程式／資料欄位：${esc(m.source)}</p></details>`).join("");}
+function triage(){const c=q(),conf=observed("conflict_case_rate",c),cover=observed("coverage",c),truecand=observed("true_in_candidate_rate",c);const nomatch=cover===null?null:1-cover,missing=cover===null||truecand===null?null:Math.max(0,cover-truecand);const parts=[
+ {label:"01 · M(x) = ∅",title:"沒有命中任何規則",rate:nomatch,decision:"先走 Fallback；再追究 Coverage 缺口",desc:"原程式回傳訓練多數類別。此路徑可能剛好選對，不可一律算錯。",action:"檢查資料型態／離散化／規則缺口；研究增加規則或 Abstain。"},
+ {label:"02 · M(x) ≠ ∅，y 不在候選",title:"規則命中，但正解不存在",rate:missing,decision:"六種 Winner 公式都救不回缺失的候選",desc:"這是規則生成／特徵表達的問題，不是候選排名問題。",action:"回查 Reduct、Local LEM2、資料偏斜及 Rule Union。"},
+ {label:"03 · y 在候選，|Cand(x)|≥2",title:"有衝突，也有機會選正解",rate:conf,decision:"比較六策略如何對相同候選計分",desc:"顯示的百分比為全部物件的 Conflict，不等於「此條件且正解在候選」的交集，因摘要表沒有交集欄位。",action:"看規則命中清單、W/T/U/N/P、同分與 Winner，查逐筆 trace。"},
+ {label:"04 · ŷ(x) 已算出",title:"判定預測正確與否",rate:observed("accuracy",c),decision:"最後才能算 Accuracy／BA／Macro-F1",desc:"正確／錯誤都需分清是否出現 Conflict 或 Fallback。",action:"按照資料風險加上審查門檻（目前屬待驗證方案）。"}
+ ];$("triageFlow").innerHTML=parts.map(p=>`<div class="triage-step"><span class="section-tag">${esc(p.label)}</span><h3>${esc(p.title)}</h3><div class="kpi"><small>本次實測相關指標</small><strong>${esc(pctFixed(p.rate))}</strong></div><span class="decision">${esc(p.decision)}</span><p>${esc(p.desc)}</p><p><b>下一步：</b>${esc(p.action)}</p></div>`).join("");}
+function conclusions(){const c=q(),count=observed("rule_count",c),coverage=observed("coverage",c),candidate=observed("true_in_candidate_rate",c),conf=observed("conflict_case_rate",c),acc=observed("accuracy",c),ba=observed("balanced_accuracy",c),confAcc=observed("conflict_resolution_accuracy",c);
+ $("finalKpis").innerHTML=[["Rule Count",fmt(count,"rule_count"),"完成 LEM2／可能的 Union 之後"],["Coverage",fmt(coverage,"coverage"),"是否有匹配規則"],["Conflict Rate",fmt(conf,"conflict_case_rate"),"原始規則候選歧義"],["Accuracy",fmt(acc,"accuracy"),c.policy+" 最後 Winner"],["Balanced Accuracy",fmt(ba,"balanced_accuracy"),"按真實類別等權"],["Conflict-resolution Accuracy",fmt(confAcc,"conflict_resolution_accuracy"),"只在發生 Conflict 的測試物件上計算"]].map(([title,value,sub])=>`<div class="kpi"><small>${esc(title)}</small><strong>${esc(value)}</strong><span>${esc(sub)}</span></div>`).join("");
+ $("finalNarrative").innerHTML=`<b>目前條件：</b>${esc(optionScope(c))}。規則產生後得到 <b>${esc(fmt(count,"rule_count"))}</b> 條規則（若選三資料集等權則是各資料集規則數的平均），其中規則命中率為 <b>${esc(fmt(coverage,"coverage"))}</b>，正確類別進入候選的比例為 <b>${esc(fmt(candidate,"true_in_candidate_rate"))}</b>，跨決策候選衝突為 <b>${esc(fmt(conf,"conflict_case_rate"))}</b>。使用 <b>${esc(c.policy)}</b> 的最後 Accuracy 為 <b>${esc(fmt(acc,"accuracy"))}</b>。<br><br><b>這代表什麼？</b>規則有命中、候選有正解、最後策略選對，是三個不同的驗收門檻。高 Conflict 不等於高 Error；要證明策略改善「衝突解消」，應在相同測試物件上另看 <b>Conflict-resolution Accuracy = ${esc(fmt(confAcc,"conflict_resolution_accuracy"))}</b>。<br><br><b>不可直接推論：</b>${c.split==="FULL_DATA"?"這是 Full Data 回代，不能當作對未見資料的泛化能力。":"這是 80/20 的未見資料測試，但只涉及三個資料集。"} ${c.seed==="ALL"?"42 Seeds 是同原始資料重複切分，不是 42 個獨立資料集。":"目前只顯示 Seed "+c.seed+"，不可用單次結果代表 42 Seeds 整體穩健性。"} 本網站主基準也未納入完整 LERS／DRSA 對照。`;
 }
-function graphPolicy(dataset,mode){
- const rows=filter(data.filter(r=>r.split_mode===mode&&r.system==="FEDERATED"&&r.selection_policy!=="NONE"),dataset);
- const svg=$("policyChart");clear(svg);
- const left=75,right=1100,top=40,bottom=306;const w=(right-left)/pol.length;
- const met=["accuracy","balanced_accuracy","macro_f1"],c=[colors.teal,colors.gold,colors.blue];
- for(let i=0;i<=4;i++){
-  const v=i/4,y=bottom-v*(bottom-top);line(svg,left,y,right,y);
-  text(svg,left-12,y+5,Math.round(v*100)+"%",{"text-anchor":"end"});
- }
- const output=[];
- pol.forEach((name,i)=>{
-  const slice=rows.filter(r=>r.selection_policy===name);
-  const values=met.map(m=>mean(slice,m));
-  values.forEach((v,j)=>{
-   const bw=30,x=left+i*w+26+j*34,y=bottom-(v||0)*(bottom-top);
-   const r=el("rect",{x,y,width:bw,height:bottom-y,rx:3,fill:c[j]});
-   r.append(el("title",{},name+" "+met[j]+" "+pct(v)));svg.append(r);
-  });
-  text(svg,left+i*w+w/2,334,pnames[name],{"text-anchor":"middle","font-size":"14",fill:"#335970"});
-  const hint=name==="GLOBAL_STRENGTH"?"類別權重平衡較佳（但未普遍優於 STD）":name==="FIRST_MATCH"?"可能受 Client 規則順序影響":name.startsWith("POPULATION")?"去除重複支持≠保證提升":"依當前規則投票";
-  output.push("<tr><td>"+name+"</td>"+values.map(v=>"<td class='n'>"+pct(v)+"</td>").join("")+"<td>"+hint+"</td></tr>");
- });
- $("policyTable").innerHTML=output.join("");
- text(svg,800,20,"■ Accuracy",{fill:colors.teal,"font-size":"14"});text(svg,920,20,"■ BA",{fill:colors.gold,"font-size":"14"});text(svg,998,20,"■ Macro-F1",{fill:colors.blue,"font-size":"14"});
+function metricIntro(){const metric=q().metric;$("traceMetricMeaning").innerHTML=`<b>${esc(LABELS[metric])}：</b>${esc(metricSummary[metric]||"依原始實驗資料定義的指標。")}`;}
+function updateEverything(){if(rows.length===0)return;const c=q();updateContract();stageRender();metricIntro();renderSeedGrid();cardsTrace();chartSeed();chartClient();const d=diagCards();chartCandidate(d);renderPolicies();triage();conclusions();}
+function bind(){document.querySelectorAll("[data-stage]").forEach(b=>b.addEventListener("click",()=>{stage=b.dataset.stage;stageRender();}));
+ ["gDataset","gSeed","gSplit","gSystem","gClient","gPolicy","traceMetric"].forEach(k=>$(k).addEventListener("change",updateEverything));
+ $("resetFilters").onclick=()=>{$("gDataset").value="ALL";$("gSeed").value="ALL";$("gSplit").value="HOLDOUT_80_20";$("gSystem").value="FEDERATED";$("gClient").value="5";$("gPolicy").value="GLOBAL_STRENGTH";$("traceMetric").value="conflict_case_rate";stage="data";updateEverything();};
+ $("seedAll").onclick=()=>{$("gSeed").value="ALL";updateEverything();};
+ $("flowPrev").onclick=()=>{const path=activeStagePath(),i=path.indexOf(stage);if(i>0){stage=path[i-1];stageRender();}};$("flowNext").onclick=()=>{const path=activeStagePath(),i=path.indexOf(stage);if(i>=0&&i<path.length-1){stage=path[i+1];stageRender();}};
+ $("flowAll").onclick=()=>{allExpanded=!allExpanded;$("allStages").hidden=!allExpanded;$("flowAll").textContent=allExpanded?"收合所有階段":"展開所有階段說明";stageRender();};
+ $("seedDetailTable").onclick=e=>{const t=e.target.closest("[data-seed-detail]");if(t){$("gSeed").value=t.dataset.seedDetail;updateEverything();}};
+ $("policyCompareRows").onclick=e=>{const t=e.target.closest("[data-policy]");if(t){$("gPolicy").value=t.dataset.policy;updateEverything();}};}
+async function init(){for(let s=1;s<=42;s++){const opt=document.createElement("option");opt.value=String(s);opt.textContent="Seed "+s;$("gSeed").append(opt);}
+ dictionary();bind();const endpoint="./data/baseline_8820.json";
+ try{const response=await fetch(endpoint,{cache:"no-cache"});if(!response.ok)throw Error("數據 HTTP "+response.status);const j=await response.json();if(!Array.isArray(j.rows)||!Array.isArray(j.columns))throw Error("資料格式不符");const data=j.rows.map(r=>Object.fromEntries(j.columns.map((k,i)=>[k,r[i]])));valid=validate(data);rows=data;
+ const essential=["dataset_rows","train_rows","evaluation_rows","reduct_size","mean_local_reduct_size","conflict_resolution_accuracy"];
+ const missing=essential.filter(k=>!j.columns.includes(k));if(missing.length)throw Error("網站目前只有摘要資料，缺少："+missing.join(", ")+"。請先完成 CI 的完整 37 欄資料發布。");
+ $("dataState").textContent=`已核對：8,820 筆、42 / 42 Seeds、完整 ${j.columns.length} 欄原始指標`;
+ updateEverything();
+ }catch(e){rows=[];$("dataState").textContent="資料驗證失敗："+e.message;$("contractLine").textContent="無法確認正式 8,820 筆資料，故不會標記為已完成，也不會填入推測數值。";$("traceProof").textContent="資料尚未可用";$("seedGridLive").textContent="資料載入失敗；請檢查 GitHub Pages、data/baseline_8820.json 與 CI 發布紀錄。";$("stagePanel").textContent="資料載入失敗："+e.message;}
 }
-function updateGrid(){
- const g=$("seedGrid");g.replaceChildren();
- for(let s=1;s<=42;s++){
-  const b=document.createElement("button");
-  b.textContent=String(s);b.type="button";b.className=(valid.has(s)?"good":"missing")+(s===currentSeed?" active":"");
-  b.title="Seed "+s+"： "+(valid.has(s)?"210 筆通過驗證":"缺少完整證據");
-  b.setAttribute("aria-pressed",String(s===currentSeed));
-  b.onclick=()=>{currentSeed=s;updateGrid();const c=config();graphSeed(c.dataset,c.split,c.client,c.metric);};
-  g.appendChild(b);
- }
-}
-function update(){
- const c=config();graphConflict(c.dataset,c.split);graphCoverage(c.dataset,c.split);
- graphSeed(c.dataset,c.split,c.client,c.metric);topologyTable(c.dataset,c.split);
- graphPolicy(c.dataset,c.split);
-}
-function verified(data){
- const counts=new Map(),none=new Map(),keys=new Set();
- for(const r of data){
-  const k=[r.seed,r.dataset,r.split_mode,r.system,r.client_count,r.selection_policy].join("|");
-  if(keys.has(k))throw Error("實驗鍵重複："+k);keys.add(k);
-  const n=Number(r.seed);counts.set(n,(counts.get(n)||0)+1);
-  if(r.selection_policy==="NONE")none.set(n,(none.get(n)||0)+1);
- }
- const s=new Set();for(let n=1;n<=42;n++)if(counts.get(n)===210&&none.get(n)===30)s.add(n);
- if(data.length!==8820||s.size!==42)throw Error("8,820 筆或 42 Seeds 驗證不完整");
- return s;
-}
-async function load(){
- try{
-  const res=await fetch(root,{cache:"no-cache"});if(!res.ok)throw Error("HTTP "+res.status);
-  const input=await res.json();if(!Array.isArray(input.columns)||!Array.isArray(input.rows))throw Error("證據 JSON 格式不正確");
-  const output=input.rows.map(row=>Object.fromEntries(input.columns.map((k,i)=>[k,row[i]])));
-  valid=verified(output);data=output;
-  $("seedKpi").textContent=valid.size+" / 42";$("evidenceState").textContent="8,820 筆資料檢查 PASS";
-  $("seedEvidenceStatus").textContent="42/42 Seeds 完整，逐個 Seed 210 筆（其中 30 NONE、180 六策略）；綠色由數據即時計算。";
-  updateGrid();update();
- }catch(e){
-  $("seedKpi").textContent="未能驗證";$("evidenceState").textContent="證據載入失敗";
-  $("seedEvidenceStatus").textContent="無法讀取已凍結數據："+e.message+"。以下靜態段落仍可閱讀，但不顯示虛假的動態圖表。";
-  for(const id of ["conflictChart","coverageChart","seedChart","policyChart"]){
-   const svg=$(id);clear(svg);text(svg,35,60,"無法讀取實驗檔，請檢查 GitHub Pages / data/baseline_8820.json",{fill:colors.red,"font-size":"17"});
-  }
- }
-}
-for(const id of ["datasetFilter","splitFilter","seedMetric","topologyFilter"])$(id).addEventListener("change",()=>{if(data.length)update();});
-updateGrid();load();
+init();
 })();
