@@ -31,15 +31,30 @@ def main():
             # The Pages root is a report gateway, NOT the CSV model test app.
             page.goto(base,wait_until="domcontentloaded",timeout=45000)
             page.wait_for_url("**/research/teacher_dashboard/",timeout=15000)
-            page.wait_for_function("document.querySelectorAll('#seedGrid .good').length===42",timeout=40000)
-            assert "42" in page.locator("#seedKpi").inner_text()
-            assert "教授報告" in page.title()
-            assert page.locator("#conflictChart rect").count()>=4
-            assert page.locator("#policyTable tr").count()==6
-            assert page.locator("#seedChart polyline").count()>=1
-            page.locator("#datasetFilter").select_option("Car Evaluation")
-            page.locator("#splitFilter").select_option("FULL_DATA")
-            assert page.locator("#topologyTable tr").count()==5
+            page.wait_for_function("document.querySelectorAll('#seedGridLive button').length===42",timeout=40000)
+            assert "37 欄" in page.locator("#dataState").inner_text()
+            assert "互動研究流程" in page.title()
+            assert page.locator("button[data-stage]").count()==14
+            assert page.locator("#seedScatter circle").count()==42
+            assert page.locator("#seedDetailTable tr").count()==42
+            assert page.locator("#policyCompareRows tr").count()==6
+            assert page.locator("#metricDictionary details").count()>=9
+            assert page.locator("#triageFlow .triage-step").count()==4
+            baseline=page.locator("#finalNarrative").inner_text()
+            page.locator("#gSeed").select_option("27")
+            assert "Seed 27" in page.locator("#finalNarrative").inner_text()
+            assert page.locator("#seedGridLive button[aria-pressed='true']").count()==1
+            assert page.locator("#seedDetailTable tr.selected-row").count()==1
+            assert page.locator("#finalNarrative").inner_text()!=baseline
+            page.locator("button[data-stage='union']").click()
+            assert "Rule Union" in page.locator("#stagePanel").inner_text()
+            page.locator("#traceMetric").select_option("balanced_accuracy")
+            assert page.locator("#seedScatter circle").count()==42
+            page.locator("#gSystem").select_option("CENTRALIZED")
+            assert page.locator("#gClient").is_disabled()
+            page.locator("#flowAll").click()
+            assert page.locator("#allStages article").count()==14
+            print("REPORT_SEED27_LIVE_NUMBERS_PIPELINE_CHARTS=PASS",flush=True)
             print("REPORT_HOME_42SEEDS_NARRATIVE_CHARTS=PASS",flush=True)
 
             # Independent evidence drilldown: complete matrix with real selectors.
