@@ -54,10 +54,11 @@
 <span class="formula">U<sub>d</sub> = |⋃<sub>r∈M<sub>d</sub></sub> S(r)|</span>（唯一支持人口）<br>
 <span class="formula">N<sub>d</sub> = #訓練資料中決策為 d 的物件</span><br>
 <span class="formula">P<sub>d</sub> = U<sub>d</sub>/T<sub>d</sub></span>（非冗餘比例，T=0 時由程式按 0 處理）</div>
+<div class="callout warn"><b>程式核對後的權重更正：</b>集中式 <b>STANDARD</b> 透過 fit_rule_weights 計算符合 Antecedent 的所有訓練物件數；聯邦式 <b>STANDARD</b> 透過 global_rule_support_context 重新在所有 Client 上計算符合 Antecedent <i>及</i>規則決策的支持數。因此，聯邦式的 STANDARD 類別分數等於 T<sub>d</sub>，但集中式不一定等於 T<sub>d</sub>。PS、GS、PG 的 U／N／T 仍根據正確支持集合計算。</div>
 <div class="table-wrap"><table><thead><tr><th>策略</th><th>當前程式定義</th><th>主要特性</th></tr></thead><tbody>
 <tr><td>FIRST_MATCH</td><td>按順序找到第一條符合 antecedent 的規則，即回傳其 decision</td><td>早停；Client 到達／規則順序可能影響 Winner</td></tr>
 <tr><td>SIMPLE_VOTING</td><td>Score(d) = |M<sub>d</sub>(x)|</td><td>每條規則一票</td></tr>
-<tr><td>STANDARD_VOTING</td><td>Score(d) = Σ<sub>r∈M<sub>d</sub></sub> weight(r)</td><td>規則支持權重加總；聯邦式使用全訓練 Client 的真實支持集合</td></tr>
+<tr><td>STANDARD_VOTING</td><td>Score(d) = Σ<sub>r∈M<sub>d</sub></sub> weight(r)</td><td>規則權重加總：集中式為符合前件的訓練物件數；聯邦式為所有 Client 中前件且決策一致的支持數</td></tr>
 <tr><td>GLOBAL_STRENGTH</td><td>Score(d) = U<sub>d</sub> / N<sub>d</sub></td><td>類別人口正規化；對少數類別更有利，但不保證普遍最優</td></tr>
 <tr><td>POPULATION_STANDARD</td><td>Score(d) = U<sub>d</sub></td><td>去除重複支持人口</td></tr>
 <tr><td>POPULATION_GLOBAL</td><td>Score(d) = U<sub>d</sub>²/(N<sub>d</sub> T<sub>d</sub>)</td><td>GS × P<sub>d</sub>，額外懲罰支持重複</td></tr>
