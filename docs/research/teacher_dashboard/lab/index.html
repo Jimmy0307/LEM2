@@ -140,7 +140,7 @@ Conflict(x)=1 if |Candidate(x)| &gt; 1 else 0
 
 FIRST:         第一條命中的規則（依順序早停）
 SIMPLE:        Score(d)=命中且屬於類別 d 的規則條數
-STANDARD:      Score(d)=Σ weight(r)，weight 為條件匹配的訓練物件數
+STANDARD:      Score(d)=Σ weight(r)，集中式為前件匹配數；聯邦式為全Client正確支持數
 GLOBAL:        Score(d)=U_d/N_d
 POP STANDARD:  Score(d)=U_d
 POP GLOBAL:    Score(d)=U_d²/(N_d × T_d)
