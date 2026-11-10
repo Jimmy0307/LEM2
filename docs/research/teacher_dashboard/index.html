@@ -1,140 +1,80 @@
-<!doctype html><html lang="zh-Hant"><head>
+<!doctype html>
+<html lang="zh-Hant"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LEM2 × Federated｜教授報告總覽：42 Seeds、規則、Conflict 與六策略</title>
-<meta name="description" content="研究報告主頁：從資料、Reduct/LEM2、Federated Rule Union、衝突到六策略 Winner，搭配 42 個 Seeds 8,820 筆真實實驗數據，連接獨立 CSV 實驗室。">
-<link rel="stylesheet" href="./site.css"></head><body>
-<div class="site-top"><a class="brand" href="./">LEM2 Research · 教授報告</a>
-<nav><a href="./" class="active">研究報告</a><a href="./evidence/">完整數據</a><a href="./methods/">方法／公式</a><a href="./figures/">九張原研究圖</a><a href="./lab/">CSV 試算實驗室</a><a href="https://github.com/Jimmy0307/LEM2/tree/research/report-ready-dashboard-20261109/docs/research/teacher_dashboard" target="_blank" rel="noopener">GitHub 原始碼</a></nav></div>
-<header class="hero"><div class="eyebrow">Research presentation · Complete analytical narrative</div>
-<h1>從規則產生到衝突解決：<br>完整解釋 42 Seeds × 8,820 組 LEM2 實驗</h1>
-<p>這是供教授直接閱讀的<strong>正式研究報告首頁</strong>，不是程式測試頁。由研究問題開始，逐步連結操作性定義、實際數據、公式、六種分類法、衝突後處理與仍未驗證的限制。可按章節報告，隨時切到資料檢視器或上傳 CSV 做現場演示。</p>
-<div class="hero-actions"><a class="primary" href="#conclusions">開始報告</a><a href="./evidence/">查看 8,820 筆數據</a><a href="./lab/">開啟 CSV 真實試算</a><a href="./methods/">檢查全部公式與變因</a></div></header>
-<nav class="floatnav" aria-label="報告章節">
-<a href="#conclusions">研究結論</a><a href="#questions">教授七題</a><a href="#process">演算法流程</a><a href="#design">實驗設計</a><a href="#results">42-Seed 結果</a><a href="#policies">六策略</a><a href="#conflict">Conflict</a><a href="#sensitivity">敏感性</a><a href="#original-figures">九張原圖</a><a href="#limits">限制／待辦</a><a href="#references">參考依據</a>
-</nav><main class="wrap">
-<section id="conclusions" class="panel"><span class="section-tag">01 · EXECUTIVE SUMMARY</span><h2>三分鐘研究結論：我們真正驗證了什麼？</h2>
-<div class="kpi-grid"><div class="kpi"><small>完整實驗數</small><strong>8,820</strong><span>42 Seeds × 每 Seed 210 配置</span></div><div class="kpi"><small>重複實驗 Seeds</small><strong id="seedKpi">42 / 42</strong><span id="evidenceState">正式證據載入中；不以舊硬編碼判定</span></div><div class="kpi"><small>無選擇器診斷</small><strong>1,260</strong><span>NONE：Coverage、Conflict，不產生預測 Accuracy</span></div><div class="kpi"><small>六策略分類列數</small><strong>7,560</strong><span>FIRST、SIMPLE、STD、GS、PS、PG</span></div></div>
-<div class="callout"><b>研究核心：</b>Local LEM2 規則合併後通常提高覆蓋率，同時也讓更多物件命中跨決策候選。是否真正改善分類，取決於候選中是否包含真實類別，以及後續選擇策略如何計分。<strong>衝突率本身不是模型錯誤率，也不是 Rough Set 的 Boundary Region。</strong></div>
-<div class="three"><article class="card"><h3>研究問題 A｜規則從哪裡來？</h3><p>資料先切分，Reduct／LEM2 再歸納規則。Centralized 與 Federated 的差異發生在<strong>規則產生階段</strong>；不是在最後才換一個投票方法。</p></article><article class="card"><h3>研究問題 B｜合併後發生什麼？</h3><p>Federated 的 Local Rule Sets 先合併成全域 Rule Set。命中規則愈多，可能提高候選涵蓋，也可能引入跨類別衝突。</p></article><article class="card"><h3>研究問題 C｜Conflict 後怎麼選？</h3><p>NONE 只做診斷；六策略選 Winner。若正解根本不在 Candidate，改投票方式也無法救回；若正解已在候選，才能比較排序／投票策略。</p></article></div>
-<div class="callout warn"><b>報告範圍：</b>這是三個資料集的重複切分研究。42 個 Seeds 不是 42 個獨立資料集；Full Data 是同資料回代，不能當成泛化能力；尚未補齊 LERS 原典分類與 DRSA reduct。</div>
-</section>
-
-<section id="questions" class="panel"><span class="section-tag">02 · RESEARCH QUESTIONS</span><h2>先回答老師的七項問題</h2><p class="muted">這裡對應前一輪老師問的細項。標示「已可回答」代表有可核對證據，不代表外部推廣性已證明。</p>
-<div class="table-wrap"><table><thead><tr><th>問題</th><th>目前回答</th><th>需要看的證據</th></tr></thead><tbody>
-<tr><td>① 資料到底有多少？</td><td>Balance 625；Car 1,728；本次處理後 Hayes 132 筆，決策欄明確設定。</td><td><a href="#design">資料與設計矩陣</a></td></tr>
-<tr><td>② 80/20 如何切？20% 參與學習嗎？</td><td>依決策類別分層抽樣，只有 Train 用於離散化、約簡、規則學習；Test 只評估。Full Data 是獨立的回代模式。</td><td><a href="./lab/">逐筆切分演示</a></td></tr>
-<tr><td>③ 六種分類方式差在哪？</td><td>同一組規則，改變 FIRST／SIMPLE／STD／GS／PS／PG 的 Winner 決策方式，使用 Accuracy／BA／F1 對照。</td><td><a href="#policies">公式與實測表</a></td></tr>
-<tr><td>④ Coverage、Target、Candidate 如何定義？</td><td>整體命中、按真實類別分組的命中、以及正解是否出現在候選集合；分母不同，必須分開。</td><td><a href="./methods/">指標字典</a></td></tr>
-<tr><td>⑤ Standard 重複支持「3+3」怎麼看？</td><td>T 是支持次數加總；U 是唯一支持物件數，P=U/T。STD 與 PS 的分數不一樣，平均表現未必改善。</td><td><a href="#conflict">Conflict 的計分</a></td></tr>
-<tr><td>⑥ Global 改法怎麼影響 Winner？</td><td>GS = U/N；PG = U²/(NT)。類別大小與重複支持會改變候選排名。</td><td><a href="./lab/">逐筆支持度與 Winner</a></td></tr>
-<tr><td>⑦ 三資料集個案能不能對上規則？</td><td>Seed 42 有逐筆規則及 Winner 證據；主網站保留與個案機制的對照入口。</td><td><a href="https://github.com/Jimmy0307/LEM2/actions/runs/42643611581">Seed 42 驗證紀錄</a></td></tr>
-</tbody></table></div></section>
-
-<section id="process" class="panel"><span class="section-tag">03 · CORRECT PIPELINE</span><h2>演算法順序不能畫反：先有規則，才有 Matching 與 Selection</h2>
-<div class="callout">完整模型是 <b>原始決策表 → 依 Seed 切分 → Train-only 前處理 → Reduct → LEM2 → Rule Set → Rule Matching → NONE 或六種策略</b>。Federated 必須在各 Client 分別做完 LEM2 之後，才能合併 Local Rules。</div>
-<div class="two">
- <div class="card"><h3>Centralized 路徑</h3><div class="steps"><div class="step"><strong>整份 Train</strong><br>相同資料，單一學習者</div><div class="arrow">↓</div><div class="step">Classical <strong>Reduct P*</strong><br>保持正域大小的最小基數子集</div><div class="arrow">↓</div><div class="step"><strong>LEM2</strong> 歸納<br>從近似的確定區域產生條件規則</div><div class="arrow">↓</div><div class="step"><strong>R_central</strong><br>集中式 Rule Set（純 LEM2 輸出）</div></div></div>
- <div class="card"><h3>Federated 路徑</h3><div class="steps"><div class="step"><strong>Train 分到 Client 1…C</strong><br>分層／non-IID（獨立實驗）</div><div class="arrow">↓</div><div class="step">各 Client 各算 <strong>Pᵢ*</strong><br>各自建立 Local Decision Table</div><div class="arrow">↓</div><div class="step">各 Client 各跑 <strong>LEM2</strong><br>得到 R₁, R₂, …, R_C</div><div class="arrow">↓</div><div class="step"><strong>Rule Union + 去重</strong><br>保留來源記錄，建立支持度統計</div><div class="arrow">↓</div><div class="step"><strong>R_global</strong><br>合併後 Rule Set</div></div></div>
+<title>LEM2 × Federated｜互動研究流程與 42 Seeds 實證報告</title>
+<meta name="description" content="可逐步點選的 LEM2／Federated 研究流程、42 Seeds 即時數值追蹤、嚴謹指標定義與衝突決策解釋。">
+<link rel="stylesheet" href="./site.css"><link rel="stylesheet" href="./report-v2.css">
+</head><body>
+<div class="site-top"><a class="brand" href="./">LEM2 Research · 互動研究報告</a>
+<nav><a class="active" href="./">主流程／報告</a><a href="./evidence/">8,820 筆證據</a><a href="./methods/">公式與定義</a><a href="./figures/">原始九圖</a><a href="./lab/">CSV 實跑</a><a href="https://github.com/Jimmy0307/LEM2/tree/research/report-ready-dashboard-20261109/docs/research/teacher_dashboard" target="_blank" rel="noopener">GitHub</a></nav></div>
+<header class="hero hero-v2"><div class="eyebrow">GUIDED RESEARCH REPORT · VERSION 2</div>
+<h1>一張流程圖，講清楚規則怎麼來、<br>Conflict 怎麼發生、最後怎麼選答案</h1>
+<p>首頁就是研究流程。按任一節點，右側會同步展開<strong>這一步的輸入、數學定義、實際使用的變因、結果數值與程式證據</strong>；改變 Seed／資料集／切分／學習架構，所有實驗區塊同時更新。</p>
+<div class="hero-actions"><a class="primary" href="#pipeline">開始點選流程</a><a href="#trace">42 Seeds 即時追蹤</a><a href="#definitions">指標精確定義</a><a href="#conclusions">最後總結</a></div>
+<div class="hero-subline"><span id="dataState" aria-live="polite">正在核對 GitHub 正式實驗數據…</span><span>研究基線：3 資料集 × 42 Seeds × 2 切分 × 5 學習配置 × 7 模式</span></div>
+</header>
+<main class="wrap v2-main">
+<section class="panel control-dock" aria-labelledby="controlTitle"><div class="section-heading"><div><span class="section-tag">全站共用 · EXPERIMENT CONTRACT</span><h2 id="controlTitle">先鎖定比較條件，再看每一層的真實數值</h2></div><button id="resetFilters" type="button">重設至 42 Seeds／80:20／Federated C5</button></div>
+<div class="global-controls">
+<label>資料集<select id="gDataset"><option value="ALL">三資料集等權</option><option>Balance Scale</option><option>Car Evaluation</option><option>Hayes-Roth</option></select></label>
+<label>資料切分<select id="gSplit"><option value="HOLDOUT_80_20">80/20：未見資料</option><option value="FULL_DATA">Full Data：回代</option></select></label>
+<label>規則學習架構<select id="gSystem"><option value="FEDERATED">Federated：各 Client 分別學習</option><option value="CENTRALIZED">Centralized：集中式</option></select></label>
+<label>Client 數<select id="gClient"><option value="5">5 個 Client</option><option value="4">4 個 Client</option><option value="3">3 個 Client</option><option value="2">2 個 Client</option></select></label>
+<label>最後分類方法<select id="gPolicy"><option>GLOBAL_STRENGTH</option><option>STANDARD_VOTING</option><option>POPULATION_GLOBAL</option><option>POPULATION_STANDARD</option><option>FIRST_MATCH</option><option>SIMPLE_VOTING</option></select></label>
+<label>Seed 範圍<select id="gSeed"><option value="ALL">42 Seeds 平均／分布</option></select></label>
 </div>
-<div class="card" style="margin-top:13px;text-align:center"><h3>共同評估層（兩種 Rule Set 各自進入）</h3><div class="step"><b>Rule Matching</b>：M(x) = 所有 Antecedent 命中 x 的規則 → Candidate(x) = 規則提出的決策類別</div><div class="arrow">↓</div><div class="two"><div class="step"><b>NONE：完整匹配診斷</b><br>Coverage、Conflict、候選是否包含正確類別<br><span class="muted small">不選 Winner，也不報 Accuracy</span></div><div class="step"><b>六種策略：產生 Winner</b><br>FIRST 依規則順序早停；其他五種計分後決策<br><span class="muted small">比較 Accuracy／BA／Macro-F1</span></div></div></div>
-<p class="source">原始程式：<a href="https://github.com/Jimmy0307/LEM2/blob/research/report-ready-dashboard-20261109/roughset/reduct.py">reduct.py</a>、<a href="https://github.com/Jimmy0307/LEM2/blob/research/report-ready-dashboard-20261109/roughset/core.py">core.py</a>、<a href="https://github.com/Jimmy0307/LEM2/blob/research/report-ready-dashboard-20261109/roughset/pipeline.py">pipeline.py</a>、<a href="https://github.com/Jimmy0307/LEM2/blob/research/report-ready-dashboard-20261109/roughset/evaluation.py">evaluation.py</a>。</p>
+<div class="contract-line" id="contractLine" aria-live="polite">載入資料後，此處會列出目前被固定的變因與有效列數。</div>
 </section>
-
-<section id="design" class="panel"><span class="section-tag">04 · FACTORIAL DESIGN</span><h2>42 個 Seeds、所有設定與變因定義</h2>
-<div class="kpi-grid"><div class="kpi"><small>資料集</small><strong>3</strong><span>625 / 1728 / 132 records</span></div><div class="kpi"><small>Seed</small><strong>42</strong><span>1～42 逐次重跑</span></div><div class="kpi"><small>切分</small><strong>2</strong><span>Full Data / 80:20</span></div><div class="kpi"><small>學習拓樸</small><strong>5</strong><span>Centralized / C2, C3, C4, C5</span></div><div class="kpi"><small>規則應用</small><strong>7</strong><span>NONE + 6 策略</span></div></div>
-<div class="callout"><strong>3 × 42 × 2 × 5 × 7 = 8,820</strong>。原始主矩陣全部是已執行的配置結果，除了 1,260 筆 NONE 本來就不具備分類 Accuracy。不要把「純 LEM2 的額外規則結構呈現」誤當成第七種分類器。</div>
-<div class="table-wrap"><table><thead><tr><th>因素</th><th>這次水準</th><th>改變什麼？</th><th>應固定／留意什麼？</th></tr></thead><tbody>
-<tr><td>Dataset</td><td>Balance／Car／Hayes</td><td>樣本數、特徵種類、類別分布</td><td>不能只算全資料列加權平均；主結論採三資料集等權</td></tr>
-<tr><td>Seed</td><td>1～42</td><td>同一資料的抽樣與 Client 分派位置</td><td>重複切分結果彼此不是獨立資料集</td></tr>
-<tr><td>Split</td><td>FULL_DATA／80:20</td><td>規則來源的訓練資料量、測試是否未見</td><td>前者是回代；不能當成 test 泛化比較</td></tr>
-<tr><td>Topology</td><td>Centralized／Federated</td><td>規則從整份 Train 或 Local Client 各自產生</td><td>相同 Seed／資料集／切分下成對對照</td></tr>
-<tr><td>Client count</td><td>2、3、4、5</td><td>每個 Client 訓練量及合併 Rule Set 的異質性</td><td>Local 規則先誘導，才 union</td></tr>
-<tr><td>Selection</td><td>NONE + FIRST、SIMPLE、STD、GS、PS、PG</td><td>同一批規則如何產生唯一 Winner</td><td>不要重訓六套 LEM2；NONE 不報 Accuracy</td></tr>
-<tr><td>固定控制</td><td>Classical reduct、分層切分、同一程式版本</td><td>讓主要變因可以比較</td><td>Dirichlet α、Reduct 停用等是獨立消融</td></tr>
-</tbody></table></div>
-<h3>42 個 Seed 的實際完成追蹤（從 GitHub 正式 8,820 筆校驗）</h3><div id="seedGrid" class="seed-grid" role="group" aria-label="42 Seeds 實際完成狀態"></div><p id="seedEvidenceStatus" class="muted small">讀取已凍結的實驗資料中…</p>
+<section class="panel process-panel" id="pipeline" aria-labelledby="pipelineTitle">
+<div class="section-heading"><div><span class="section-tag">01 · RESEARCH FLOW · CLICK TO EXPLORE</span><h2 id="pipelineTitle">完整研究流程總圖｜每一個方塊都可以點</h2></div><div class="chip">有選取狀態 · 全站連動</div></div>
+<p class="muted">核心關係：<strong>LEM2 先產生 Rule Set</strong>；Centralized 與 Federated 是兩種規則生成架構；<strong>Matching／NONE／六分類策略</strong>都在規則產生之後。灰色虛線表示分析分支，不表示新的模型訓練。</p>
+<div class="flow-layout"><div class="flow-map" role="group" aria-label="互動式 LEM2 實驗流程圖">
+<div class="flow-common"><button class="flow-node" data-stage="data" type="button"><small>01 · INPUT</small><strong>Decision Table</strong><span>物件、條件屬性、決策欄</span></button><div class="flow-arrow">↓</div>
+<button class="flow-node" data-stage="split" type="button"><small>02 · SPLIT</small><strong>Seed／Full／80:20</strong><span>Train → Test；分層抽樣</span></button><div class="flow-arrow">↓</div>
+<button class="flow-node" data-stage="preprocess" type="button"><small>03 · TRANSFORM</small><strong>Train-only 前處理</strong><span>離散化與欄位對齊</span></button><div class="flow-arrow">↓</div></div>
+<div class="flow-branch-title">兩條<strong>替代</strong>規則生成路徑（依上方架構設定選一條）</div>
+<div class="flow-branches"><div class="flow-lane" id="centralLane"><span class="lane-label">CENTRALIZED</span><button class="flow-node" data-stage="central-reduct" type="button"><small>04A · ATTRIBUTE</small><strong>集中式 Reduct</strong><span>Train 上保留正域</span></button><div class="flow-arrow">↓</div><button class="flow-node" data-stage="central-lem2" type="button"><small>05A · LEARN</small><strong>集中式 LEM2</strong><span>產生 IF–THEN 規則</span></button><div class="flow-arrow">↓</div><button class="flow-node rule-node" data-stage="central-rules" type="button"><small>06A · OUTPUT</small><strong>R<sub>central</sub></strong><span>Central Rule Set</span></button></div>
+<div class="flow-lane" id="fedLane"><span class="lane-label">FEDERATED · C2–C5</span><button class="flow-node" data-stage="clients" type="button"><small>04B · PARTITION</small><strong>Client 資料分派</strong><span>Train → D₁ … D<sub>C</sub></span></button><div class="flow-arrow">↓</div><button class="flow-node" data-stage="local-reduct" type="button"><small>05B · ATTRIBUTE</small><strong>每個 Client 的 Reduct</strong><span>P₁* … P<sub>C</sub>*</span></button><div class="flow-arrow">↓</div><button class="flow-node" data-stage="local-lem2" type="button"><small>06B · LEARN</small><strong>每個 Client 的 LEM2</strong><span>各自產生 R₁ … R<sub>C</sub></span></button><div class="flow-arrow">↓</div><button class="flow-node rule-node" data-stage="union" type="button"><small>07B · MERGE</small><strong>Rule Union／去重</strong><span>R<sub>global</sub></span></button></div></div>
+<div class="flow-join">兩種路徑各自完成 Rule Set 後才進入這一段</div>
+<div class="flow-common"><button class="flow-node" data-stage="match" type="button"><small>08 · APPLY RULES</small><strong>Rule Matching</strong><span>M(x)／Candidate(x)／Conflict(x)</span></button><div class="flow-arrow">↓</div></div>
+<div class="flow-branches flow-end"><div class="flow-lane"><span class="lane-label">診斷支線（不分類）</span><button class="flow-node" data-stage="none" type="button"><small>09A · DIAGNOSTIC</small><strong>NONE</strong><span>Coverage／Conflict／候選</span></button></div><div class="flow-lane"><span class="lane-label">預測支線（選答案）</span><button class="flow-node" data-stage="selection" type="button"><small>09B · DECISION</small><strong>六種 Selection Policies</strong><span>Winner → Accuracy／BA／F1</span></button></div></div>
+<div class="flow-arrow">↓</div><button class="flow-node flow-last" data-stage="audit" type="button"><small>10 · RESEARCH EVALUATION</small><strong>42 Seeds 穩健性／錯誤歸因／方法比較</strong><span>跨變因成對比較，不等於所有配置獨立</span></button>
+</div><aside class="stage-pane" id="stagePanel" aria-live="polite"><div class="stage-intro">點左邊任一方塊，右側會顯示它實際讀取什麼資料、計算什麼、如何比較，以及這次選定條件下的數值。</div></aside></div>
+<div class="flow-bottom-nav"><button type="button" id="flowPrev">← 上一階段</button><span id="flowPosition">請點選流程節點</span><button type="button" id="flowNext">下一階段 →</button><button type="button" id="flowAll">展開所有階段說明</button></div>
+<div id="allStages" hidden></div>
 </section>
-
-<section id="results" class="panel"><span class="section-tag">05 · QUANTITATIVE EVIDENCE</span><h2>數字怎麼說：規則衝突、覆蓋與 42-Seed 穩健性</h2>
-<p>以下整體趨勢採<strong>三資料集等權 × 42 Seeds</strong>；不同 Client 的 FULL_DATA 是回代診斷，80/20 是未見資料診斷。可改變資料集與切分，直接檢查結論有無變化。</p>
-<div class="filters"><label>觀察資料集<select id="datasetFilter"><option value="ALL">三資料集等權</option><option>Balance Scale</option><option>Car Evaluation</option><option>Hayes-Roth</option></select></label><label>資料切分<select id="splitFilter"><option value="HOLDOUT_80_20">80/20 未見資料</option><option value="FULL_DATA">FULL_DATA 回代</option></select></label><label>42 Seeds 曲線指標<select id="seedMetric"><option value="conflict_case_rate">Conflict rate</option><option value="coverage">Coverage</option><option value="true_in_candidate_rate">True-in-Candidate</option><option value="rule_count">Rule Count</option><option value="balanced_accuracy">GS Balanced Accuracy</option><option value="accuracy">GS Accuracy</option></select></label><label>拓樸<select id="topologyFilter"><option value="5">Federated C5</option><option value="4">Federated C4</option><option value="3">Federated C3</option><option value="2">Federated C2</option><option value="0">Centralized</option></select></label></div>
-<div class="two"><div class="card"><h3>圖 1 · Client 數 vs Conflict rate</h3><svg id="conflictChart" class="chart" viewBox="0 0 620 320" role="img" aria-label="Client數與衝突率平均圖"></svg><p class="metric-note">不代表錯誤率；依當前選擇的分割模式及資料集重新計算。</p></div><div class="card"><h3>圖 2 · Coverage 與 True-in-Candidate</h3><svg id="coverageChart" class="chart" viewBox="0 0 620 320" role="img" aria-label="規則覆蓋率和候選正確率比較圖"></svg><p class="metric-note">增加 Coverage 但沒有增加正確候選，未必有分類效益。</p></div></div>
-<div class="card" style="margin-top:14px"><h3>圖 3 · 42 Seeds 逐次趨勢</h3><svg id="seedChart" class="chart" viewBox="0 0 1120 280" role="img" aria-label="42個Seeds逐次模型趨勢圖"></svg><p class="metric-note" id="seedChartCaption">同一資料集反覆切分，屬於切分穩健性，而非 42 個獨立資料集。</p></div>
-<div class="table-wrap"><table><thead><tr><th>拓樸</th><th>Rule Count</th><th>Coverage</th><th>True-in-Candidate</th><th>Conflict Rate</th></tr></thead><tbody id="topologyTable"></tbody></table></div>
-<div class="callout"><b>正式主結論（80/20、三資料集等權、42 Seeds）：</b>集中式 Conflict <b>10.57%</b>，Federated C2 <b>27.75%</b>、C3 <b>46.07%</b>、C4 <b>59.72%</b>、C5 <b>68.67%</b>。同時 C2→C5 的 Coverage 約從 94.87% 到 99.87%。這說明候選覆蓋與候選歧義存在取捨，不能以 Conflict 單一指標決定方法優劣。</div>
+<section class="panel" id="trace"><div class="section-heading"><div><span class="section-tag">02 · REAL-TIME SEED INSPECTOR</span><h2>42 Seeds 完整追蹤｜每個格子直接顯示實測值</h2></div><span id="traceProof" class="chip">正在核對 42 × 210 列</span></div>
+<p>點選 Seed 1～42：<strong>數值、流程節點、策略比較、下方結論全部同時更新</strong>。選「42 Seeds 平均」可返回整體研究。因 Seed 不是時間序列，這裡用散點分布而不把它解讀成時間趨勢。</p>
+<div class="trace-top"><div><label>Seed 追蹤指標（每格顯示該值）<select id="traceMetric"><option value="conflict_case_rate">Conflict：命中跨決策候選率</option><option value="coverage">Coverage：至少一條規則命中</option><option value="true_in_candidate_rate">True-in-Candidate：正解有被提出</option><option value="accuracy">Accuracy：全部答對率</option><option value="balanced_accuracy">Balanced Accuracy：各類 Recall 等權</option><option value="macro_f1">Macro-F1：各類 F1 等權</option><option value="rule_count">Rule Count：規則數</option></select></label></div><div class="trace-context" id="traceMetricMeaning"> </div></div>
+<div id="seedGridLive" class="seed-numeric-grid" role="group" aria-label="42 個 Seed 的逐次實測數值"></div>
+<div class="seed-actions"><button type="button" id="seedAll">切回全部 42 Seeds</button><span id="seedSelectedDesc" aria-live="polite"> </span><a href="./evidence/">逐列檢查 8,820 筆原始結果 →</a></div>
+<div class="kpi-grid" id="traceCards"></div>
+<div class="two v2-charts"><div class="card"><h3>Seed 分布（不是時間趨勢）</h3><svg id="seedScatter" class="chart" viewBox="0 0 650 330" role="img" aria-label="每一 Seed 一個點，點選可更新全部數值"></svg><p class="metric-note" id="seedScatterCaption"> </p></div><div class="card"><h3>同一條件下：五種學習配置</h3><svg id="clientBars" class="chart" viewBox="0 0 650 330" role="img" aria-label="Centralized 與 Federated C2 到 C5 的指標對照"></svg><p class="metric-note">比較架構時，其餘 Dataset／Seed／Split／Policy 不變；Client 數指局部規則學習的節點數量，並非網路圖論的拓樸。</p></div></div>
+<div class="table-wrap"><table><thead><tr><th>Seed</th><th>當前指標</th><th>規則數</th><th>Coverage</th><th>True-in-Candidate</th><th>Conflict</th><th>Accuracy</th><th>BA</th><th>Macro-F1</th></tr></thead><tbody id="seedDetailTable"></tbody></table></div>
+<div class="legend"><span>數值為所選配置真實實測；「三資料集等權」時先計算各資料集，再取算術平均。</span><span>若選 Full Data，表示訓練樣本回代，不是 Holdout 泛化。</span></div>
 </section>
-
-<section id="policies" class="panel"><span class="section-tag">06 · SELECTION POLICY COMPARISON</span><h2>六種方法不是在「產生規則」，而是在「如何選答案」</h2>
-<div class="policy-grid">
-<div class="card"><h3>FIRST_MATCH</h3><span class="formula">第一個匹配規則的 decision</span><p>找到第一條就返回；規則順序可能改變答案。</p></div>
-<div class="card"><h3>SIMPLE_VOTING</h3><span class="formula">Score(d) = |{r ∈ M : dec(r)=d}|</span><p>命中的規則各算 1 票；忽略支持人口。</p></div>
-<div class="card"><h3>STANDARD_VOTING</h3><span class="formula">Score(d) = Σᵣ weight(r)</span><p>每條規則的權重加總，可能重複計數。</p></div>
-<div class="card"><h3>GLOBAL_STRENGTH</h3><span class="formula">Score(d) = U<sub>d</sub> / N<sub>d</sub></span><p>某類別不重複支持人口，除以該類訓練人口。</p></div>
-<div class="card"><h3>POPULATION_STANDARD</h3><span class="formula">Score(d) = U<sub>d</sub></span><p>以唯一支持人口取代重複支持次數。</p></div>
-<div class="card"><h3>POPULATION_GLOBAL</h3><span class="formula">Score(d) = U<sub>d</sub>² / (N<sub>d</sub>T<sub>d</sub>)</span><p>GS 分數乘以非冗餘比例 P = U/T。</p></div>
-</div>
-<h3>圖 4 · 六策略的 Accuracy／Balanced Accuracy／Macro-F1</h3><p class="muted small">圖表以 80/20 未見資料為預設；可在上方改變資料集。此處 Federated 採 C2～C5 等權平均，不把 NONE 的 Accuracy 當作 0。</p>
-<svg id="policyChart" class="chart" viewBox="0 0 1120 365" role="img" aria-label="六種策略的Accuracy Balanced Accuracy Macro-F1比較"></svg>
-<div class="table-wrap"><table><thead><tr><th>方法</th><th>Accuracy</th><th>Balanced Accuracy</th><th>Macro-F1</th><th>解讀</th></tr></thead><tbody id="policyTable"></tbody></table></div>
-<div class="callout warn"><b>避免把平均排名當成全域最優：</b>42 Seeds、Federated 80/20 平均，GS Accuracy 80.94%、BA 69.25%、F1 67.26%，而 STD 約 80.54%、64.09%、64.80%。GS 主要在 BA 拉開差距；分資料集看，Balance Scale 的 GS−STD BA 約為 −0.11 個百分點，並非每個任務都改善。Population 修正也不保證比原方法更好。</div>
+<section class="panel" id="comparison"><span class="section-tag">03 · COORDINATED COMPARISON</span><h2>三張圖講同一件事：候選品質 → Conflict → 六策略 Winner</h2>
+<p>不再讓不同表格各自有不同篩選範圍。這一區與上方共用所有設定；<strong>變更 Seed 或資料集會立即反映</strong>。</p>
+<div class="kpi-grid" id="diagnosticCards"></div>
+<div class="callout" id="diagnosticLogic">資料讀取後，這裡會用三個互斥區段表示「No Match／有匹配但正解不在候選／正解在候選」，並解釋為何 Conflict 不等於錯誤。</div>
+<div class="two v2-charts"><div class="card"><h3>候選品質：一張圖拆成三種狀態</h3><svg id="candidateStack" viewBox="0 0 650 280" class="chart" aria-label="未命中、候選缺正解及有正確候選的分解圖"></svg><p class="metric-note">三段比例相加為 100%。無匹配時的多數類別 Fallback 仍有機會答對。</p></div><div class="card"><h3>六策略：同一 Rule Set 比 Accuracy／BA／F1</h3><svg id="policyGrouped" viewBox="0 0 650 340" class="chart" aria-label="六種選擇方法的Accuracy、Balanced Accuracy與Macro-F1並列"></svg><p class="metric-note">策略只改 Winner；規則數／Coverage／原始 Conflict 在同一設定下應保持一致。NONE 不定義這三個分類指標。</p></div></div>
+<div class="table-wrap"><table><thead><tr><th>決策方法</th><th>Accuracy</th><th>Balanced Accuracy</th><th>Macro-F1</th><th>同一組規則？</th><th>什麼時候適用</th></tr></thead><tbody id="policyCompareRows"></tbody></table></div>
+<div class="two"><div class="card"><h3>該怎麼讀「學習架構」？</h3><p>本研究的比較單位是 <strong>Centralized</strong> 和 <strong>Federated C2～C5</strong>，代表規則在哪裡學、由多少個 Client 提供 Local Rules。不是網路拓樸圖的節點連線結構。</p></div><div class="card"><h3>該怎麼讀「曲線指標」？</h3><p>指的是 Y 軸觀測變數（Coverage、Conflict、Rule Count 或預測績效），不是要比較「曲線」本身。Seed 1～42 是重複抽樣標籤，<strong>不能解讀為隨時間增加或改良</strong>。</p></div></div>
 </section>
-
-<section id="conflict" class="panel"><span class="section-tag">07 · WHAT HAPPENS AFTER CONFLICT?</span><h2>Conflict 後怎麼辦？先診斷失敗位置，再選擇改善手段</h2>
-<div class="callout"><b>定義：</b> M(x) 是匹配規則集合；Candidate(x) 是這些規則所提出的不同決策；若 |Candidate(x)| ≥ 2，這筆有跨決策 Conflict。六種策略處理的是 <b>Winner</b>，不會自動消除既有規則集合的 Conflict。</div>
-<div class="two">
-<div class="card"><span class="pill pending">類型 A · 沒規則</span><h3>No Match</h3><p>M(x) = ∅。現有程式使用訓練資料多數類別 Fallback，可能剛好答對，也可能答錯。</p><p><b>工程措施：</b>檢查低 Coverage 類別、離散化邊界、規則學習完整性；高風險時研究 Abstain／人工審查。</p></div>
-<div class="card"><span class="pill pending">類型 B · 候選生成失敗</span><h3>正確類別不在 Candidate</h3><p>有規則命中，但正確類別未被任何匹配規則提出。<b>換投票規則也無法選出不存在的答案。</b></p><p><b>工程措施：</b>檢查 Reduct、資料偏斜、Local LEM2、Rule Union 與特徵品質。</p></div>
-<div class="card"><span class="pill">類型 C · 衝突選擇失敗</span><h3>正確類別在 Candidate，但 Winner 錯</h3><p>這才是六種決策選擇策略能直接改善的部分。逐項核對命中規則、T、U、N、P、分數與同分處理。</p><p><b>工程措施：</b>STD ↔ GS、PS ↔ PG 成對測試，檢查重複支持與類別不平衡。</p></div>
-<div class="card"><span class="pill">類型 D · 選對但仍需驗證</span><h3>正確選出 Winner</h3><p>不能只報 Accuracy。仍要記錄這一筆有無 Conflict、是否為 fallback、對 Client 順序／Seed 是否敏感。</p><p><b>工程措施：</b>建立 Rule Receipt、信心與責任追溯；未來可加入驗證後的審查 Gate。</p></div>
-</div>
-<h3>報告時可以用的公式與觀察</h3><div class="table-wrap"><table><thead><tr><th>指標</th><th>分子／分母</th><th>告訴我們哪一段有問題？</th></tr></thead><tbody>
-<tr><td>Coverage</td><td>有任何匹配規則的測試筆數 / 測試總筆數</td><td>是否有規則可用</td></tr>
-<tr><td>True-in-Candidate</td><td>真實類別被任一匹配規則提出的筆數 / 測試總筆數</td><td>規則是否有提供正確候選</td></tr>
-<tr><td>Conflict rate</td><td>命中 ≥2 個不同決策的筆數 / 測試總筆數</td><td>候選規則的歧義程度，不等於分類錯誤</td></tr>
-<tr><td>Conflict-resolution Accuracy</td><td>有 Conflict 的物件中正確預測比例</td><td>特別看「衝突後」誰選對</td></tr>
-<tr><td>Balanced Accuracy</td><td>每個真實類別 Recall 的平均</td><td>減少多數類別主導</td></tr>
-<tr><td>Macro-F1</td><td>每個類別 F1 的平均</td><td>兼顧錯誤預報及漏報</td></tr>
-</tbody></table></div>
-<div class="hero-actions"><a class="primary" href="./lab/">把自己的 CSV 上傳 → 檢視每筆 Conflict 和六個 Winner</a><a href="./methods/">查看 T / U / N / P 完整公式</a></div>
+<section class="panel" id="definitions"><span class="section-tag">04 · FORMAL METRIC DICTIONARY</span><h2>每個指標：先講分子分母，再說研究用途與誤讀風險</h2><p>以下定義按「純規則結構 → 候選集合 → 最終預測」順序排列；點選任一項可展開精確定義、例子和它能解決哪一類研究問題。</p>
+<div id="metricDictionary"></div>
+<div class="callout warn"><b>一項重要更正：</b>現有程式的 STANDARD 權重 <strong>W<sub>d</sub></strong> 統計「符合前件的訓練物件」；Population 的支持度 <strong>T<sub>d</sub>、U<sub>d</sub></strong> 則要求「前件成立且決策類別一致」。有不一致資料時 W<sub>d</sub> 不必等於 T<sub>d</sub>。因此不能直接宣稱 PS 是對程式 STANDARD 權重逐項去重。</div>
 </section>
-
-<section id="sensitivity" class="panel"><span class="section-tag">08 · ROBUSTNESS & ABLATION</span><h2>Seed 之外還要確認兩個敏感因素</h2>
-<div class="two">
-<div class="card"><h3>① non-IID 的分配偏斜</h3><p>額外七 Seeds（1～6、42）實驗，用 Dirichlet α = 0.5／0.1、C3／C5，比較 IID 分層與偏斜分派。</p><div class="table-wrap"><table><thead><tr><th>配置</th><th>Conflict</th><th>GS Accuracy</th><th>GS BA</th></tr></thead><tbody><tr><td>IID 分層</td><td>58.1%</td><td>80.0%</td><td>68.5%</td></tr><tr><td>α = 0.5</td><td>80.8%</td><td>66.0%</td><td>56.0%</td></tr><tr><td>α = 0.1</td><td>93.7%</td><td>41.6%</td><td>35.2%</td></tr></tbody></table></div><p class="metric-note">7 Seeds 的探索性試驗，尚不等於 42 Seeds 全部完成 non-IID。</p></div>
-<div class="card"><h3>② FIRST_MATCH 的 Client 順序</h3><p>固定同一訓練資料及 Local Rules，只改 Client 規則合併順序。Seed 42 中，C2/C3/C4/C5 完整枚舉每組 2/6/24/120 種，三資料集共 456 組。</p><div class="table-wrap"><table><thead><tr><th>資料集，C5</th><th>FIRST Accuracy 範圍</th></tr></thead><tbody><tr><td>Balance Scale</td><td>62.70%～71.43%</td></tr><tr><td>Car Evaluation</td><td>83.82%～87.86%</td></tr><tr><td>Hayes-Roth</td><td>65.38%～84.62%</td></tr></tbody></table></div><p class="metric-note">順序試驗只檢驗 FIRST 的順序敏感性；不能直接外推到其他策略。</p></div></div>
-<div class="callout warn"><b>風險提醒：</b>若要宣稱方法有效，必須區分「資料同源重複切分的穩健性」與「跨獨立資料集的可推廣性」。非 IID 的結果也提醒我們，原先 IID 的 GS 平均優勢可能不適用於嚴重偏斜的 Client。</div>
+<section class="panel" id="conflict"><span class="section-tag">05 · CONFLICT DECISION PLAYBOOK</span><h2>Conflict 不是直接「消掉」｜先判斷問題在哪個階段</h2><div class="callout">當新物件 x 進來，先取得命中規則 M(x) 和候選類別 C(x)。<strong>有多個候選只代表有決策歧義，不代表已經預測錯。</strong>必須按下方順序判斷，才能對症改動規則學習或 Winner 計分。</div>
+<div class="triage" id="triageFlow"></div>
+<h3>從目前的實驗總表，能不能直接知道每種錯誤有多少？</h3><p id="errorLimitText" class="muted">正式 8,820 列包含覆蓋率、正確候選率、衝突率與策略績效，但<strong>沒有每筆的完整 Winner／Matched Rule 證據</strong>。這裡能精確分解候選階段的互斥比例；「正確候選卻選錯」的筆數必須查逐筆 trace，不能用 1 − Accuracy 直接冒充。</p>
+<div class="hero-actions"><a class="primary" href="./lab/">用 CSV 看單筆 Rule / Candidate / Winner</a><a href="https://github.com/Jimmy0307/LEM2/tree/research/teacher-evidence-42-20261109" target="_blank" rel="noopener">GitHub 逐筆研究證據</a></div>
 </section>
-
-<section id="original-figures" class="panel"><span class="section-tag">09 · ORIGINAL FIGURE EVIDENCE</span><h2>前一輪的九張正式研究圖：沒有刪掉，也不會誤當成 42 Seeds 結果</h2><p>前一輪已經交給老師的九張 SVG 仍由 GitHub 原研究資料夾提供。這裡保留兩張代表圖，完整九張與原始 SVG 在獨立圖庫：<a href="./figures/">開啟九張原研究圖</a>。</p><div class="two"><figure class="card" style="margin:0"><h3>原圖 01 · Conflict by regime</h3><img loading="lazy" src="../full_factorial_20261029/figures/fig01_conflict_rate_by_regime.svg" style="width:100%;height:auto" alt="原始基準下各種規則合併體制的衝突比較圖"><figcaption class="metric-note">來自原始研究圖；不是 42 Seeds 合併後重算的圖片。</figcaption></figure><figure class="card" style="margin:0"><h3>原圖 06 · Balanced Accuracy Heatmap</h3><img loading="lazy" src="../full_factorial_20261029/figures/fig06_policy_balanced_accuracy_heatmap.svg" style="width:100%;height:auto" alt="原始基準中六個分類方法的BA熱圖"><figcaption class="metric-note">和上方 42 Seeds 的新動態圖表分開保留。</figcaption></figure></div><div class="hero-actions"><a class="primary" href="./figures/">檢視全部九張原始 SVG</a><a href="./evidence/">對照 42 Seeds 統計數據</a></div></section>
-<section id="limits" class="panel"><span class="section-tag">09 · RESEARCH ASSURANCE</span><h2>哪些已經有證據？哪些仍不能當成完成？</h2>
-<div class="table-wrap"><table><thead><tr><th>成果</th><th>狀態</th><th>界線</th></tr></thead><tbody>
-<tr><td>42 Seeds × 210 = 8,820 主矩陣</td><td><span class="pill">已驗證</span></td><td>七策略欄中 NONE 是診斷，不具有分類 Accuracy</td></tr>
-<tr><td>Centralized／Federated LEM2 路徑</td><td><span class="pill">已核對</span></td><td>本專案 Classical positive-region reduct，非 DRSA</td></tr>
-<tr><td>六種選擇策略、公式及平均表現</td><td><span class="pill">已實測</span></td><td>同資料集重複切分，不等於普遍最優</td></tr>
-<tr><td>Seed 42 逐筆規則及 Winner 追溯</td><td><span class="pill">已驗證</span></td><td>可在研究分支與試算實驗室查詢個案機制</td></tr>
-<tr><td>7 Seeds non-IID × α 敏感性</td><td><span class="pill">探索完成</span></td><td>尚非 42 Seeds 全覆蓋</td></tr>
-<tr><td>Seed 42 FIRST 合併順序窮舉</td><td><span class="pill">探索完成</span></td><td>同一固定模型內的順序敏感性</td></tr>
-<tr><td>完整 LERS 原典分類基準</td><td><span class="pill pending">尚未執行</span></td><td>不能以 GS/STD 當作 LERS 原典的完整替身</td></tr>
-<tr><td>DRSA Dominance reduct</td><td><span class="pill pending">尚未完成</span></td><td>與 Classical reduct 是不同研究線</td></tr>
-<tr><td>高風險 Conflict 人工 Gate／拒答</td><td><span class="pill pending">研究提案</span></td><td>目前沒有宣稱其績效已經驗證</td></tr>
-</tbody></table></div>
-<h3>下次教授報告，建議依此順序展示</h3>
-<ol><li><b>先定義 LEM2 的輸出：</b>規則集合不是分類器，NONE 不是第七種投票法。</li>
-<li><b>講兩條規則產生路徑：</b>Centralized 和 Local LEM2 → Rule Union。</li>
-<li><b>用 8,820 筆說明差異：</b>Seed、80/20、Client 數、規則數、Coverage、Conflict。</li>
-<li><b>比較六個 Winner 公式：</b>尤其 STD vs GS、PS vs PG。</li>
-<li><b>讓老師點選一筆 Conflict：</b>展示 Rule Matching、T/U/N/P、六策略 Winner。</li>
-<li><b>最後呈現研究限制：</b>non-IID、順序、LERS、DRSA，分清楚已完成與未完成。</li></ol>
-<div class="hero-actions"><a class="primary" href="./lab/">直接開啟現場 CSV 實驗</a><a href="./evidence/">直接檢查 8,820 筆實測</a></div>
+<section class="panel" id="conclusions"><span class="section-tag">06 · FINAL SUMMARY · PROPOSED RESEARCH DIRECTION</span><h2>最後總覽｜把目前看到的流程、數字、限制一次收斂</h2>
+<div class="kpi-grid" id="finalKpis"></div><div class="callout" id="finalNarrative">資料讀取後，這裡會依照目前的選擇輸出相對應的研究解讀，並說明不能下的結論。</div>
+<div class="two"><div class="card"><h3>這次已回答</h3><p>規則生成的兩條路徑、Reduct/LEM2/Rule Set 的先後、42 Seeds 8,820 筆完整矩陣、Coverage 和 Candidate 的關係、六策略分類差異、Conflict 後的處理方向。</p><p><a href="./evidence/">完整數據／成對比較 →</a></p></div><div class="card"><h3>仍要獨立驗證</h3><p>完整 LERS 原典分類基準、DRSA dominance reduct、跨資料集外部有效性、拒答／人工 Gate 的成本與效能。non-IID 與 Client 順序已做過擴充試驗，但不代表所有 42 Seeds 全因素都測完。</p><p><a href="./methods/">研究公式與方法限制 →</a></p></div></div>
+<h3>老師報告建議：一條路徑走到底</h3><p>從上方「資料 → 切分 → Reduct → LEM2 → Rule Set → Matching → NONE／六策略 → 結論」依序點選；遇到數字疑問直接按 Seed 格子查看即時數值，若要逐筆分析可開 <a href="./lab/">CSV 實驗室</a>。</p>
+<p class="source">資料來源：<a href="https://github.com/Jimmy0307/LEM2/blob/research/seed-sweep-1-42-20261108/docs/research/seed_sweep_1_42/tables/SEED_SWEEP_8820.csv">42-Seed 原始 CSV</a>；此頁直接載入由 CI 驗證的 JSON 版 8,820 列。上一版 <a href="./figures/">九張原始 SVG</a> 完整保留。</p>
 </section>
-
-<section id="references" class="panel"><span class="section-tag">10 · SOURCES & REPRODUCIBILITY</span><h2>結論不是憑記憶：所有實驗都要能回 GitHub 核對</h2>
-<div class="grid">
-<div class="card"><h3>正式基線</h3><p><a href="https://github.com/Jimmy0307/LEM2/blob/research/seed-sweep-1-42-20261108/docs/research/seed_sweep_1_42/tables/SEED_SWEEP_8820.csv">42 Seeds／8,820 列 CSV</a></p><p>網站的圖與平均值從同一份凍結數據 JSON 重算，沒有把新上傳 CSV 的結果混入。</p></div>
-<div class="card"><h3>程式實作</h3><p><a href="https://github.com/Jimmy0307/LEM2/tree/research/report-ready-dashboard-20261109/roughset">原始 LEM2／Reduct／Federated 模組</a></p><p><a href="https://github.com/Jimmy0307/LEM2/actions/workflows/teacher-dashboard.yml">資料及 CSV 試算 CI</a>、<a href="https://github.com/Jimmy0307/LEM2/actions/workflows/teacher-dashboard-browser.yml">真實瀏覽器 QA</a></p></div>
-<div class="card"><h3>學術來源</h3><p>Pawlak（1982）Rough Sets；Grzymala-Busse 的 LEM2／LERS；Greco、Matarazzo 與 Słowiński 的 DRSA 理論。</p><p>本專案 Population 修正屬研究自訂，不應誤稱 LERS 原典。</p></div>
-<div class="card"><h3>版控與研究資產</h3><p><a href="./methods/">方法和變因詳解</a>／<a href="./evidence/">逐 Seed 完整指標</a>／<a href="./lab/">上傳資料實跑</a></p><p>本次網站屬 GitHub Pages 靜態入口，CSV 試算在使用者瀏覽器內執行。</p></div>
-</div><p class="source">原始指標是指定條件下的觀測；圖表會區分「實測」「描述性比較」「需要更多實驗的推論」。研究日期：2026-11-10。</p>
-</section>
-</main><footer class="footer">LEM2 × Federated Research · Report / Evidence / Methods / Lab · <a href="https://github.com/Jimmy0307/LEM2/tree/research/report-ready-dashboard-20261109">GitHub 研究分支</a></footer>
+</main><footer class="footer">LEM2 × Federated · <a href="./">互動報告</a> · <a href="./evidence/">完整數據</a> · <a href="./methods/">定義</a> · <a href="./figures/">原始九圖</a> · <a href="./lab/">CSV 實驗</a></footer>
 <script src="./report.js" defer></script></body></html>
