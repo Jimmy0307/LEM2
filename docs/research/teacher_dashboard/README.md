@@ -1,3 +1,19 @@
+## 2026-11-11｜教授報告 V2：以可點選全流程為主視覺
+
+本次修復六個報告問題：
+1. 42 Seeds 每格顯示指定條件的真實數值；選 Seed 立即同步更新流程節點、42-Seed 分布、五種學習配置、六策略及最後結論。
+2. 所有報告圖共用同一套 Dataset／Seed／Split／System／Client／Policy 控制條件；原 8,820 筆仍可在 /evidence/ 查完整列。
+3. 原「拓樸」更精確稱「規則學習架構」（Centralized vs Federated C2–C5）；Seed 是隨機抽樣重複，不是時間；42-Seed 圖採散點，不宣稱趨勢。
+4. 將 37 欄正式基準資料完整導入網站：Train/Test 筆數、Reduct 大小、Local Rule 指標、No Match／Conflict 筆數與衝突子集準確率都有明確分母。
+5. 將 Conflict 解釋成有順序的判斷：No Match → 正確類別未入候選 → 正確候選存在但選錯 → 最終評估。候選分解可由 Coverage／True-in-Candidate 推導，但「候選有正解卻選錯的筆數」不能從 8,820 列摘要單憑 Accuracy 還原，須用逐筆 trace。
+6. 完整流程（Train／Reduct／LEM2／Local Rule Set／Union／Matching／NONE／六策略／42 Seeds）移到報告首頁，按節點看輸入、公式、輸出、實測數值、程式位置；可展開全部階段；總結集中在最末章。
+
+**重大公式註記：** 舊版把 STANDARD 權重和 Population 的 T/U 當成普遍相同。原始程式實際上：集中式 STANDARD 使用符合 Antecedent 的訓練物件數；聯邦式 STANDARD 的 Global Rule 權重由所有 Client 的 Antecedent 且 Consequent 正確支持數組成。因此在 Federated 上 W_d=T_d，但 Centralized 不必成立。需依據 roughset/evaluation.py 與 roughset/pipeline.py 各自描述，不能混用。
+
+GitHub Pages 入口仍固定：https://jimmy0307.github.io/LEM2/ 。本次沒有更動原始 8,820 列觀測結果，只擴充可視化資料契約與解釋。
+
+---
+
 # LEM2 × Federated：教授報告整合網站
 
 **這是完整的研究報告入口，不是純 CSV 測試頁。** 原本分開的完整報告與 CSV 試算頁已整合成一個 GitHub Pages 網站：同一份 8,820 列實測基線、統一導覽、按功能分 URL 子路徑。
