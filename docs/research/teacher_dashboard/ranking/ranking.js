@@ -49,7 +49,7 @@ function winnerUI(list,metric){
  if(!winner){$("winnerCards").innerHTML="這組條件沒有可排名的實測數據。";return;}
  const lead=winner.scores[metric],gap=second?(lead-second.scores[metric])*order(metric):null;
  const relevant=[
- ["最佳配置",configName(winner),"只比較相同的 80/20 測試協定"],
+ ["最佳配置",structural.has(metric)?(winner.client_count?"Federated C"+winner.client_count:"Centralized"):configName(winner),"只比較相同的 80/20 測試協定"],
  ["目標平均分數",pct(lead),"42 Seeds 的配置等權平均"],
  ["優於第二名",gap==null?"—":pp(gap),"未做跨資料集獨立性推論"],
  ["跨 Seed 波動",pp(winner.sds[metric]),"標準差，不是 95% 信賴區間"]
@@ -61,7 +61,7 @@ function barChart(list,metric){
  const svg=$("rankingChart");svg.replaceChildren();
  const leaders=list.slice(0,6);if(!leaders.length)return;
  const max=Math.max(.01,...leaders.map(o=>o.scores[metric]||0)),lo=Math.min(0,...leaders.map(o=>o.scores[metric]));
- const domain=metric==="conflict_case_rate"||metric==="coverage"?1:1;
+ const domain=1;
  const x0=310,width=660,top=36,h=52,scale=v=>Math.max(0,Math.min(1,(v-lo)/(domain-lo||1)))*width;
  t(svg,x0,18,"平均分數（條紋誤差線＝Seed 標準差）",{"font-size":13});
  leaders.forEach((o,i)=>{
@@ -147,7 +147,7 @@ async function externalResults(){
 function render(){
  if(!rows.length)return;
  const ds=$("dataset").value,metric=$("objective").value,arch=$("architect").value,pol=$("policy").value;
- const all=allStats(ds,arch,pol),list=sorted(all,metric);
+ const all=allStats(ds,arch,pol),comparison=structural.has(metric)?all.filter(o=>o.selection_policy===((pol==="ALL")?"GLOBAL_STRENGTH":pol)):all,list=sorted(comparison,metric);
  winnerUI(list,metric);barChart(list,metric);table(list,metric);frontier(all);champions();
 }
 async function load(){
