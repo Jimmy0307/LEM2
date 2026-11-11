@@ -19,7 +19,12 @@ def main():
             errs=[]
             page.on("pageerror",lambda x:errs.append(str(x)))
             page.goto("http://127.0.0.1:8779/research/teacher_dashboard/",wait_until="domcontentloaded")
-            page.wait_for_function("document.querySelectorAll('#bestRows tr').length===10",timeout=60000)
+            page.wait_for_timeout(6000)
+            print("DEBUG_PAGE_ERRORS",errors,flush=True)
+            print("DEBUG_HEALTH",page.locator("#remediationHealth").inner_text(),flush=True)
+            print("DEBUG_BEST",page.locator("#bestKpis").inner_text()[:800],flush=True)
+            print("DEBUG_ROWS",page.locator("#bestRows tr").count(),flush=True)
+            page.wait_for_function("document.querySelectorAll('#bestRows tr').length===10",timeout=20000)
             page.wait_for_function("document.querySelectorAll('#triageConflictTable tr').length===3",timeout=60000)
             page.wait_for_function("document.querySelectorAll('#protocolRows tr').length===5",timeout=60000)
             page.wait_for_function("document.querySelectorAll('#seedGridLive button').length===42",timeout=60000)
