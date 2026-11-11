@@ -9,7 +9,7 @@ const STRUCTURAL=new Set(["rule_count","coverage","true_in_candidate_rate","conf
 const COUNT=new Set(["rule_count","reduct_size","mean_local_reduct_size","mean_local_rule_count","mean_matching_rules","mean_candidate_decisions","dataset_rows","train_rows","evaluation_rows"]);
 const COLORS={teal:"#127a75",blue:"#517da7",gold:"#c48d41",red:"#bd645d",light:"#d6e7e7",mid:"#70909a",green:"#3ca089"};
 const POLICIES=["FIRST_MATCH","SIMPLE_VOTING","STANDARD_VOTING","GLOBAL_STRENGTH","POPULATION_STANDARD","POPULATION_GLOBAL"];
-let rows=[],valid=new Set(),stage="data",allExpanded=false;
+let rows=[],valid=new Set(),stage="data",allExpanded=false,exactRows=[];
 const STEPS=["data","split","preprocess","central-reduct","central-lem2","central-rules","clients","local-reduct","local-lem2","union","match","none","selection","audit"];
 function esc(v){return String(v??"").replace(/[&<>\"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function svg(tag,attrs={},str){const e=document.createElementNS(NS,tag);for(const [k,v] of Object.entries(attrs))e.setAttribute(k,String(v));if(str!==undefined)e.textContent=str;return e;}
@@ -132,10 +132,29 @@ const DICTIONARY=[
  {name:"W_d、T_d、U_d、N_d、P_d｜支持度與重複計數",type:"分類計分",formula:"Central: W_d=Σ|A(r)|；Federated: W_d=T_d=Σ|S(r)|；U_d=|⋃S(r)|；N_d=#Train(d)；P_d=U_d/T_d。",def:"A(r) 是符合規則前件的訓練物件；S(r) 是同時符合前件與規則後件的訓練物件。集中式 STANDARD 權重取 |A(r)|；聯邦式的 global_rule_support_context 將所有 Client 的 S(r) 合併後，STANDARD 權重取 |S(r)|，即 W_d=T_d。GLOBAL 使用 U_d/N_d；POP STANDARD 使用 U_d；POP GLOBAL 使用 U_d²/(N_d×T_d)。",example:"如果某規則前件符合 10 筆、其中正確決策有 7 筆：集中式 STANDARD 的該規則權重為 10，聯邦式 GLOBAL STANDARD 權重為 7，T_d 的該規則貢獻為 7。",use:"先確認架構：聯邦式 PS 相對 STANDARD 去除重複正確支持（W=T），集中式若前件與後件支持範圍不同，PS 同時改變支持範圍及去重計分；不可把兩者都寫成同一種校正。",source:"evaluation.py"}
 ];
 function dictionary(){const root=$("metricDictionary");root.className="metric-dictionary";root.innerHTML=DICTIONARY.map((m,i)=>`<details${i===3||i===8?" open":""}><summary>${esc(m.name)} <span class="category">${esc(m.type)}</span></summary><div class="stage-formula">${esc(m.formula)}</div><p><b>精確定義：</b>${esc(m.def)}</p><p><b>數值例子：</b>${esc(m.example)}</p><p><b>操作決策：</b>${esc(m.use)}</p><p class="source">對應程式／資料欄位：${esc(m.source)}</p></details>`).join("");}
+function exactTriageRate(field,cfg){
+ const d=exactRows.filter(r=>r.split_mode===cfg.split&&r.system===cfg.system&&r.selection_policy===cfg.policy&&
+ (cfg.system==="CENTRALIZED"||Number(r.client_count)===cfg.client)&&
+ (cfg.dataset==="ALL"||r.dataset===cfg.dataset)&&
+ (cfg.seed==="ALL"||Number(r.seed)===Number(cfg.seed)));
+ if(!d.length)return null;
+ return avg(d.map(r=>+r[field]/+r.evaluation_rows));
+}
+async function loadExactConflict(){
+ try{
+ const resp=await fetch("./data/CONFLICT_EXACT_42SEEDS.csv",{cache:"no-cache"});
+ if(!resp.ok)return;
+ const lines=(await resp.text()).trim().split(/\r?\n/),hdr=lines.shift().split(",");
+ const parsed=lines.map(line=>Object.fromEntries(line.split(",").map((v,i)=>[hdr[i],v])));
+ if(parsed.length!==7560||new Set(parsed.map(r=>r.seed)).size!==42)return;
+ exactRows=parsed;
+ if(rows.length)triage();
+ }catch(e){console.warn("Exact conflict evidence unavailable:",e.message);}
+}
 function triage(){const c=q(),conf=observed("conflict_case_rate",c),cover=observed("coverage",c),truecand=observed("true_in_candidate_rate",c);const nomatch=cover===null?null:1-cover,missing=cover===null||truecand===null?null:Math.max(0,cover-truecand);const parts=[
  {label:"01 · M(x) = ∅",title:"沒有命中任何規則",rate:nomatch,decision:"先走 Fallback；再追究 Coverage 缺口",desc:"原程式回傳訓練多數類別。此路徑可能剛好選對，不可一律算錯。",action:"檢查資料型態／離散化／規則缺口；研究增加規則或 Abstain。"},
  {label:"02 · M(x) ≠ ∅，y 不在候選",title:"規則命中，但正解不存在",rate:missing,decision:"六種 Winner 公式都救不回缺失的候選",desc:"這是規則生成／特徵表達的問題，不是候選排名問題。",action:"回查 Reduct、Local LEM2、資料偏斜及 Rule Union。"},
- {label:"03 · y 在候選，|Cand(x)|≥2",title:"有衝突，也有機會選正解",rate:conf,decision:"比較六策略如何對相同候選計分",desc:"顯示的百分比為全部物件的 Conflict，不等於「此條件且正解在候選」的交集，因摘要表沒有交集欄位。",action:"看規則命中清單、W/T/U/N/P、同分與 Winner，查逐筆 trace。"},
+ {label:"03 · 先區分 Conflict 的交集",title:"衝突且正解在候選：六策略才有機會選對",rate:exactTriageRate("conflict_true_candidate_count",c),decision:"全體 Conflict＝"+pctFixed(conf)+"；其中真正有正解候選的交集＝"+pctFixed(exactTriageRate("conflict_true_candidate_count",c)),desc:"此百分比的分母為全部評估物件；不含正解的衝突比率為 "+pctFixed(exactTriageRate("conflict_no_true_candidate_count",c))+"。"+(exactRows.length?"數字來自 42 Seeds 真實逐筆匹配紀錄。":"逐筆交集資料尚未通過完整驗證，因此不填造交集百分比。"),action:"先檢查正解是否出現在候選；在有正解的衝突物件中，再比較 Winner 與衝突解消正確率。"},
  {label:"04 · ŷ(x) 已算出",title:"判定預測正確與否",rate:observed("accuracy",c),decision:"最後才能算 Accuracy／BA／Macro-F1",desc:"正確／錯誤都需分清是否出現 Conflict 或 Fallback。",action:"按照資料風險加上審查門檻（目前屬待驗證方案）。"}
  ];$("triageFlow").innerHTML=parts.map(p=>`<div class="triage-step"><span class="section-tag">${esc(p.label)}</span><h3>${esc(p.title)}</h3><div class="kpi"><small>本次實測相關指標</small><strong>${esc(pctFixed(p.rate))}</strong></div><span class="decision">${esc(p.decision)}</span><p>${esc(p.desc)}</p><p><b>下一步：</b>${esc(p.action)}</p></div>`).join("");}
 function conclusions(){const c=q(),count=observed("rule_count",c),coverage=observed("coverage",c),candidate=observed("true_in_candidate_rate",c),conf=observed("conflict_case_rate",c),acc=observed("accuracy",c),ba=observed("balanced_accuracy",c),confAcc=observed("conflict_resolution_accuracy",c);
@@ -158,7 +177,7 @@ async function init(){for(let s=1;s<=42;s++){const opt=document.createElement("o
  const essential=["dataset_rows","train_rows","evaluation_rows","reduct_size","mean_local_reduct_size","conflict_resolution_accuracy"];
  const missing=essential.filter(k=>!j.columns.includes(k));if(missing.length)throw Error("網站目前只有摘要資料，缺少："+missing.join(", ")+"。請先完成 CI 的完整 37 欄資料發布。");
  $("dataState").textContent=`已核對：8,820 筆、42 / 42 Seeds、完整 ${j.columns.length} 欄原始指標`;
- updateEverything();
+ updateEverything();loadExactConflict();
  }catch(e){rows=[];$("dataState").textContent="資料驗證失敗："+e.message;$("contractLine").textContent="無法確認正式 8,820 筆資料，故不會標記為已完成，也不會填入推測數值。";$("traceProof").textContent="資料尚未可用";$("seedGridLive").textContent="資料載入失敗；請檢查 GitHub Pages、data/baseline_8820.json 與 CI 發布紀錄。";$("stagePanel").textContent="資料載入失敗："+e.message;}
 }
 init();
