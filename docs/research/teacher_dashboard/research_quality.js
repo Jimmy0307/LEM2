@@ -173,7 +173,7 @@ function renderProtocols(){
     const protocols=[
       ["原 132 筆重複 80/20",null,"基準 42 Seeds，Test=26；Train/Test 可能特徵重疊"],
       ["官方固定 132／28","OFFICIAL_132_28","官方另給 28 筆；不是從 132 筆隨機切出"],
-      ["特徵組合不重疊", "GROUP_DISJOINT_80_20","按四個模型條件屬性分組，Test=24"]
+      ["特徵組合不重疊", "GROUP_DISJOINT_80_20","按四個模型條件屬性分組，Test=26"]
     ];
     const grid=$("protocolRows");grid.innerHTML="";
     let totals=[];
@@ -196,7 +196,7 @@ function renderProtocols(){
       note(g,154+i*175,346,o.client===0?"Central":"C"+o.client,{"text-anchor":"middle","font-size":14});
     });
     const explain=$("protocolMeaning");
-    explain.textContent="同一個 LEM2 計算程式、不同評估協定的條件性結果。官方 Test=28、原基準 Test=26、分組 Test=24，資料構成和 Train 量不同，不應把它們的差異直接稱為『重複模式造成的偏差量』。"+
+    explain.textContent="同一個 LEM2 計算程式、不同評估協定的條件性結果。官方 Test=28、原基準 Test=26、分組 Test=26，資料構成和 Train 量不同，不應把它們的差異直接稱為『重複模式造成的偏差量』。"+
       "三個數字保留在不同實驗系列，不能合併成 8,820 筆主矩陣。";
     $("protocolSource").textContent="官方檔來源：UCI 44 hayes-roth.test（獨立鏡像 SHA 2d8f77f...）｜補實驗 42 Seeds × 2 協定 × 5 架構 × 六策略 = 2,520 列。";
 }
