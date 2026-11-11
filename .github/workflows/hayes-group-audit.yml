@@ -4,6 +4,7 @@ on:
     branches: [research/audit-remediation-20261111]
     paths:
       - teacher_demo/audit_hayes_group_splits.py
+      - teacher_demo/teacher_hayes_remediation.py
       - .github/workflows/hayes-group-audit.yml
   workflow_dispatch:
 permissions:
