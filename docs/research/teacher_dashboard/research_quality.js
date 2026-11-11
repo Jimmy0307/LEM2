@@ -58,6 +58,25 @@ function renderBest(){
       '<td class="n">'+pct(r.conflict_case_rate)+'</td><td class="n">'+pct(r.coverage)+'</td>'+
       '<td class="n">'+diff.toFixed(2)+' pp</td></tr>';
     }).join("");
+    const independent=["Balance Scale","Car Evaluation","Hayes-Roth"];
+    $("datasetWinners").innerHTML=independent.map(ds=>{
+      const candidates=ranking.by_dataset.filter(r=>r.dataset===ds);
+      const win=[...candidates].sort((a,b)=>(b[metric]-a[metric])||(a.conflict_case_rate-b.conflict_case_rate))[0];
+      const caveat=ds==="Hayes-Roth"?"原 132 筆反覆 80/20；請另看官方與分組不重疊測試":"固定資料集 42 Seeds 切分；不代表跨資料集普遍性";
+      return '<tr><td>'+esc(ds)+'</td><td><b>'+esc(namescope(win))+'</b></td>'+
+             '<td class="n">'+pct(win[metric])+'</td><td class="n">'+pct(win.conflict_case_rate)+'</td>'+
+             '<td class="n">'+pct(win.coverage)+'</td><td>'+esc(caveat)+'</td></tr>';
+    }).join("");
+    const pareto=all.filter(a=>!all.some(b=>b!==a&&b[metric]>=a[metric]-1e-12&&
+      b.conflict_case_rate<=a.conflict_case_rate+1e-12&&
+      (b[metric]>a[metric]+1e-12||b.conflict_case_rate<a.conflict_case_rate-1e-12)));
+    pareto.sort((a,b)=>a.conflict_case_rate-b.conflict_case_rate);
+    $("paretoCards").innerHTML=pareto.map(a=>
+        '<div class="card"><small>非支配折衷方案（Pareto）</small><h3>'+esc(namescope(a))+'</h3>'+
+        '<p><b>'+pct(a[metric])+'</b> · '+esc(metnames[metric])+'</p>'+
+        '<p>Conflict：'+pct(a.conflict_case_rate)+' · Coverage：'+pct(a.coverage)+'</p>'+
+        '<p class="metric-note">找不到另一個配置同時具有更高（或相等）'+esc(metnames[metric])+
+        '及更低（或相等）Conflict，並至少一項嚴格更好。</p></div>').join("");
     $("bestInterpretation").innerHTML=
       '以 <b>'+esc(metnames[metric])+'</b> 為決策目標，<b>'+esc(namescope(winner))+'</b> 暫列第一（<b>'+pct(winner[metric])+'</b>）。'+
       '但其衝突率 <b>'+pct(winner.conflict_case_rate)+'</b>，覆蓋率 <b>'+pct(winner.coverage)+'</b>。'+
