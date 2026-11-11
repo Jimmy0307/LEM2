@@ -1,0 +1,86 @@
+name: Hayes-Roth Official and Group-disjoint Protocol Validation
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - teacher_demo/hayes_protocol_validation.py
+      - research/seed_sweep_inputs/uci_44_hayes_roth_official_test.data
+      - .github/workflows/teacher-hayes-protocols.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        seed: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Real original LEM2 on official 28 + disjoint-feature holdout
+        run: python -m teacher_demo.hayes_protocol_validation --seed ${{ matrix.seed }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hayes-protocol-seed-${{ matrix.seed }}
+          path: outputs/hayes_protocols/*.csv
+          if-no-files-found: error
+          retention-days: 90
+  aggregate:
+    needs: seed
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pandas
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: hayes-protocol-seed-*
+          path: downloaded
+          merge-multiple: true
+      - name: Verify 42 seeds and record genuinely disjoint protocols
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd
+          files=sorted(Path('downloaded').glob('HAYES_PROTOCOL_seed*.csv'))
+          assert len(files)==42,len(files)
+          d=pd.concat([pd.read_csv(f) for f in files],ignore_index=True)
+          keys=['protocol','seed','system','client_count','selection_policy']
+          assert len(d)==2520 and not d.duplicated(keys).any()
+          assert set(d.seed)==set(range(1,43))
+          assert d.groupby(['protocol','seed']).size().eq(30).all()
+          assert set(d.protocol)=={'UCI_OFFICIAL_132_28','GROUP_HOLDOUT_80_20'}
+          assert (d[d.protocol=='UCI_OFFICIAL_132_28'].evaluation_rows==28).all()
+          assert d['accuracy'].between(0,1).all()
+          out=Path('docs/research/teacher_dashboard/data')
+          out.mkdir(parents=True,exist_ok=True)
+          d.to_csv(out/'HAYES_HOLDOUT_PROTOCOLS_42SEEDS.csv',index=False)
+          print('HAYES_42_OFFICIAL_AND_GROUPED=PASS',len(d),flush=True)
+          PY
+      - name: Commit independent new protocol results (not frozen 8820 rows)
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git fetch origin ${GITHUB_REF_NAME}
+          git checkout -B ${GITHUB_REF_NAME} origin/${GITHUB_REF_NAME}
+          cp docs/research/teacher_dashboard/data/HAYES_HOLDOUT_PROTOCOLS_42SEEDS.csv /tmp/LEM2_HAYES_HOLDOUT_PROTOCOLS_42SEEDS.csv
+          cp /tmp/LEM2_HAYES_HOLDOUT_PROTOCOLS_42SEEDS.csv docs/research/teacher_dashboard/data/
+          git add docs/research/teacher_dashboard/data/HAYES_HOLDOUT_PROTOCOLS_42SEEDS.csv
+          if ! git diff --cached --quiet; then
+            git commit -m 'evidence: verified 42-seed Hayes official and disjoint holdouts [skip ci]'
+            git push origin HEAD:${GITHUB_REF_NAME}
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hayes-protocol-42-seeds-verified
+          path: docs/research/teacher_dashboard/data/HAYES_HOLDOUT_PROTOCOLS_42SEEDS.csv
+          if-no-files-found: error
