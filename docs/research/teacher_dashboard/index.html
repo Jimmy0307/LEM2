@@ -43,6 +43,28 @@
 <div class="flow-bottom-nav"><button type="button" id="flowPrev">← 上一階段</button><span id="flowPosition">請點選流程節點</span><button type="button" id="flowNext">下一階段 →</button><button type="button" id="flowAll">展開所有階段說明</button></div>
 <div id="allStages" hidden></div>
 </section>
+
+<section class="panel" id="quality"><div class="section-heading"><div>
+<span class="section-tag">02 · BEST CONDITIONS · EXPLICIT DECISION CRITERIA</span>
+<h2>哪一種條件最好？先選評估目標，再比較最佳值與代價</h2>
+</div><span class="chip">42 Seeds · 80/20 未見資料</span></div>
+<p>這裡是用來回答老師「哪個方法最準」的 <b>統一決策看板</b>：它<strong>固定使用未見資料的 80/20</strong>，比較全部 5 種學習架構 × 六種分類策略；資料集則沿用上方設定。若你在流程中選擇 Full Data，這裡仍不將回代成績放進最佳排名。</p>
+<div class="global-controls quality-controls"><label>排序標準<select id="bestMetric"><option value="balanced_accuracy">Balanced Accuracy：各類別等權（推薦主指標）</option><option value="accuracy">Accuracy：整體答對比例</option><option value="macro_f1">Macro-F1：精確率與召回率等權</option></select></label>
+<div><span id="bestScope" class="chip">等待數據來源…</span><p class="metric-note">42 Seeds 是同一資料集的重複切分，排名為條件性描述統計，非跨資料集普遍顯著性。</p></div></div>
+<div class="kpi-grid" id="bestKpis"></div>
+<div class="two v2-charts"><div class="card"><h3>準確度 vs Conflict：可以同時最好嗎？</h3><svg id="bestScatter" class="chart" viewBox="0 0 1050 410" aria-label="全部30個規則架構和分類方法的準確與衝突率散點圖"></svg>
+<p class="metric-note">縱軸愈高，分類表現愈好；橫軸愈左，候選歧義愈低。每個點代表一種「架構 × 分類方法」，不是一個獨立資料集；重疊點屬正常。</p></div>
+<div class="card"><h3>如何挑選「最好」</h3>
+<div class="quality-explain"><p><b>① 若重視整體答對率：</b>用 Accuracy，但要防止多數類別誤導。</p>
+<p><b>② 若重視少數類別：</b>用 Balanced Accuracy；不能只依總體 Accuracy 排名。</p>
+<p><b>③ 若同時考慮誤報、漏報：</b>用 Macro-F1；不同模型可能換榜首。</p>
+<p><b>④ 若考慮規則治理成本：</b>看 Conflict、Coverage、Rule Count；高 Coverage 不是一定最準，低 Conflict 也不一定最佳。</p>
+<p><b>⑤ 若要說明可推廣性：</b>分開看三個資料集、42 Seeds 與 Hayes 官方／分組測試。不要把各組回代與未見資料混算。</p></div>
+<button type="button" id="bestJump" class="primary">直接看前十名與差距 ↓</button></div></div>
+<div id="bestTableWrap" class="table-wrap"><table><thead><tr><th>名次</th><th>完整條件</th><th>目前排序指標</th><th>Accuracy</th><th>BA</th><th>Macro-F1</th><th>Conflict</th><th>Coverage</th><th>落後第一名</th></tr></thead><tbody id="bestRows"></tbody></table></div>
+<div id="bestInterpretation" class="callout">載入後會自動寫出第一名、競爭對手差距，以及成本與限制。</div>
+<div class="callout warn"><b>統計解釋：</b>「第一名」只代表當前 <b>3 個固定資料集 × 42 Seeds × 80/20</b> 的平均排序。42 個 Seeds 非 42 個獨立研究樣本，跨任務獨立資料集只有 3 個；此排序不附加「普遍顯著優勢」宣稱。若某資料集的測試樣本特徵與訓練樣本重疊，仍須另外核對官方測試與分組切分。</div>
+</section>
 <section class="panel" id="trace"><div class="section-heading"><div><span class="section-tag">02 · REAL-TIME SEED INSPECTOR</span><h2>42 Seeds 完整追蹤｜每個格子直接顯示實測值</h2></div><span id="traceProof" class="chip">正在核對 42 × 210 列</span></div>
 <p>點選 Seed 1～42：<strong>數值、流程節點、策略比較、下方結論全部同時更新</strong>。選「42 Seeds 平均」可返回整體研究。因 Seed 不是時間序列，這裡用散點分布而不把它解讀成時間趨勢。</p>
 <div class="trace-top"><div><label>Seed 追蹤指標（每格顯示該值）<select id="traceMetric"><option value="conflict_case_rate">Conflict：命中跨決策候選率</option><option value="coverage">Coverage：至少一條規則命中</option><option value="true_in_candidate_rate">True-in-Candidate：正解有被提出</option><option value="accuracy">Accuracy：全部答對率</option><option value="balanced_accuracy">Balanced Accuracy：各類 Recall 等權</option><option value="macro_f1">Macro-F1：各類 F1 等權</option><option value="rule_count">Rule Count：規則數</option></select></label></div><div class="trace-context" id="traceMetricMeaning"> </div></div>
@@ -61,6 +83,24 @@
 <div class="table-wrap"><table><thead><tr><th>決策方法</th><th>Accuracy</th><th>Balanced Accuracy</th><th>Macro-F1</th><th>同一組規則？</th><th>什麼時候適用</th></tr></thead><tbody id="policyCompareRows"></tbody></table></div>
 <div class="two"><div class="card"><h3>該怎麼讀「學習架構」？</h3><p>本研究的比較單位是 <strong>Centralized</strong> 和 <strong>Federated C2～C5</strong>，代表規則在哪裡學、由多少個 Client 提供 Local Rules。不是網路拓樸圖的節點連線結構。</p></div><div class="card"><h3>該怎麼讀「曲線指標」？</h3><p>指的是 Y 軸觀測變數（Coverage、Conflict、Rule Count 或預測績效），不是要比較「曲線」本身。Seed 1～42 是重複抽樣標籤，<strong>不能解讀為隨時間增加或改良</strong>。</p></div></div>
 </section>
+
+<section class="panel" id="triage-investigation"><span class="section-tag">CONFLICT · VERIFIED DECISION DECOMPOSITION</span>
+<h2>Conflict 到底是「規則出錯」還是「選擇器選錯」？用 42 Seeds 逐筆答案拆開</h2>
+<p>這裡不用由 Coverage、Conflict 的邊際百分比推測，而是讀取 42 Seeds 的實際 <b>Row ID × Rule Matching × 六策略預測</b> 記錄。符合上方共用篩選：資料集、Seed、80/20／Full、架構、Client 與所選策略。</p>
+<p id="triageStatus" class="source">讀取已稽核逐筆資料…</p><div class="kpi-grid" id="triageMetrics"></div>
+<div class="two v2-charts">
+<div class="card"><h3>A｜全部 Test 物件：四種互斥的規則狀態</h3>
+<div id="triageStack" class="triage-stacked" aria-label="全部測試物件按互斥規則狀態拆分"></div>
+<div id="triageLegend" class="triage-legend"></div>
+<p class="metric-note">這四類相加 100%。類別內再記錄最後分類正確／錯誤。Conflict 可能與「正解不在候選」同時發生，不能直接用 Coverage 減 Conflict 算出來。</p></div>
+<div class="card"><h3>B｜只看已發生 Conflict 的物件：還能做什麼？</h3>
+<div id="triageConflictBar" class="triage-stacked" aria-label="衝突子集中的正解缺失與選擇成敗"></div>
+<div class="table-wrap"><table><thead><tr><th>衝突後分類結果</th><th>占 Conflict 子集</th><th>占全部 Test</th></tr></thead><tbody id="triageConflictTable"></tbody></table></div>
+<p class="metric-note">衝突子集內三類互斥、總和 100%；沒有衝突時顯示「未定義」，不能報成零。</p></div>
+</div>
+<div class="callout" id="triageDecision">模型規則能不能提出正確候選，決定下一步應改善「規則生成」還是「Winner 評分」。</div>
+<div class="callout warn"><b>實務判斷：</b>在真正部署時並不知道這筆資料的正確答案，因此「正解是否在候選」是<b>離線評估用的診斷（oracle）</b>，不能直接讓模型據此自動選擇策略。要導入人工覆核／拒答門檻，必須另外定義可在推論當下計算的訊號並驗證。</div>
+</section>
 <section class="panel" id="definitions"><span class="section-tag">04 · FORMAL METRIC DICTIONARY</span><h2>每個指標：先講分子分母，再說研究用途與誤讀風險</h2><p>以下定義按「純規則結構 → 候選集合 → 最終預測」順序排列；點選任一項可展開精確定義、例子和它能解決哪一類研究問題。</p>
 <div id="metricDictionary"></div>
 <div class="callout warn"><b>一項重要更正：</b>現有程式的 STANDARD 權重 <strong>W<sub>d</sub></strong> 統計「符合前件的訓練物件」；Population 的支持度 <strong>T<sub>d</sub>、U<sub>d</sub></strong> 則要求「前件成立且決策類別一致」。有不一致資料時 W<sub>d</sub> 不必等於 T<sub>d</sub>。因此不能直接宣稱 PS 是對程式 STANDARD 權重逐項去重。</div>
@@ -70,6 +110,18 @@
 <h3>從目前的實驗總表，能不能直接知道每種錯誤有多少？</h3><p id="errorLimitText" class="muted">正式 8,820 列包含覆蓋率、正確候選率、衝突率與策略績效，但<strong>沒有每筆的完整 Winner／Matched Rule 證據</strong>。這裡能精確分解候選階段的互斥比例；「正確候選卻選錯」的筆數必須查逐筆 trace，不能用 1 − Accuracy 直接冒充。</p>
 <div class="hero-actions"><a class="primary" href="./lab/">用 CSV 看單筆 Rule / Candidate / Winner</a><a href="https://github.com/Jimmy0307/LEM2/tree/research/teacher-evidence-42-20261109" target="_blank" rel="noopener">GitHub 逐筆研究證據</a></div>
 </section>
+
+<section class="panel" id="hayes-protocol"><span class="section-tag">P0 FIX · THREE NON-EQUIVALENT EVALUATION PROTOCOLS</span>
+<h2>Hayes-Roth 真的能泛化嗎？把原切分、官方 28 筆、特徵不重疊測試分開</h2>
+<p>原本 132 筆反覆分層 80/20 的成績是真實計算，但不能代表官方外部 Test。新增兩個獨立實驗：<b>官方固定 132 Train／28 Test</b>，以及<b>依四個模型條件屬性分組、避免同特徵組合跨 Train/Test 的 42 Seeds 分割</b>。</p>
+<div class="global-controls quality-controls"><label>要比較的指標<select id="protocolMetric"><option value="balanced_accuracy">Balanced Accuracy</option><option value="accuracy">Accuracy</option><option value="macro_f1">Macro-F1</option></select></label>
+<div><span id="protocolSource" class="source">讀取官方與分組試驗資料…</span></div></div>
+<svg class="chart" id="protocolChart" viewBox="0 0 1050 375" aria-label="Hayes Roth 的原始、官方與分組不重疊試驗比較"></svg>
+<div class="legend"><span><i class="quality-dot blue"></i>原 132 筆的重複 80/20</span><span><i class="quality-dot orange"></i>官方 132／28 固定 Test</span><span><i class="quality-dot teal"></i>依特徵分組避免相同模式跨 Train/Test</span></div>
+<div class="table-wrap"><table><thead><tr><th>規則架構</th><th>原 80/20</th><th>官方 132／28</th><th>Group-disjoint</th><th>最後策略</th></tr></thead><tbody id="protocolRows"></tbody></table></div>
+<div class="callout warn" id="protocolMeaning">不同協定的測試集難度與大小不一樣；不能把觀測差異直接當成資料洩漏造成的偏差量。</div>
+<p class="source">來源：<a href="https://archive.ics.uci.edu/dataset/44/hayes%2Broth" target="_blank" rel="noopener">UCI Hayes-Roth (#44)</a>；每列完整保留訓練／測試大小、Seed、Client、策略、Accuracy、BA、Macro-F1 與每類錯誤。此補實驗不更改原始 8,820 筆基線。</p>
+</section>
 <section class="panel" id="conclusions"><span class="section-tag">06 · FINAL SUMMARY · PROPOSED RESEARCH DIRECTION</span><h2>最後總覽｜把目前看到的流程、數字、限制一次收斂</h2>
 <div class="kpi-grid" id="finalKpis"></div><div class="callout" id="finalNarrative">資料讀取後，這裡會依照目前的選擇輸出相對應的研究解讀，並說明不能下的結論。</div>
 <div class="two"><div class="card"><h3>這次已回答</h3><p>規則生成的兩條路徑、Reduct/LEM2/Rule Set 的先後、42 Seeds 8,820 筆完整矩陣、Coverage 和 Candidate 的關係、六策略分類差異、Conflict 後的處理方向。</p><p><a href="./evidence/">完整數據／成對比較 →</a></p></div><div class="card"><h3>仍要獨立驗證</h3><p>完整 LERS 原典分類基準、DRSA dominance reduct、跨資料集外部有效性、拒答／人工 Gate 的成本與效能。non-IID 與 Client 順序已做過擴充試驗，但不代表所有 42 Seeds 全因素都測完。</p><p><a href="./methods/">研究公式與方法限制 →</a></p></div></div>
@@ -77,4 +129,4 @@
 <p class="source">資料來源：<a href="https://github.com/Jimmy0307/LEM2/blob/research/seed-sweep-1-42-20261108/docs/research/seed_sweep_1_42/tables/SEED_SWEEP_8820.csv">42-Seed 原始 CSV</a>；此頁直接載入由 CI 驗證的 JSON 版 8,820 列。上一版 <a href="./figures/">九張原始 SVG</a> 完整保留。</p>
 </section>
 </main><footer class="footer">LEM2 × Federated · <a href="./">互動報告</a> · <a href="./evidence/">完整數據</a> · <a href="./methods/">定義</a> · <a href="./figures/">原始九圖</a> · <a href="./lab/">CSV 實驗</a></footer>
-<script src="./report.js" defer></script></body></html>
+<script src="./report.js" defer></script><script src="./research_quality.js" defer></script></body></html>
