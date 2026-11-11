@@ -1,0 +1,33 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>哪個條件最好？｜LEM2 42 Seeds 績效決策看板</title><meta name="description" content="依資料集與評估目標比較 LEM2 Centralized/Federated C2-C5、六種分類器的 42 Seeds 平均、波動、差距、候選衝突及其他獨立測試。">
+<link rel="stylesheet" href="../site.css"><style>
+.score-hero{background:linear-gradient(125deg,#102b40,#176f75);color:#fff;padding:35px max(20px,calc((100vw - 1240px)/2))}.score-hero h1{font-size:clamp(27px,4vw,43px);margin:5px 0}.score-hero p{max-width:850px;color:#d9edec}.score-note{border-left:4px solid #bc8843;background:#fff5e6;padding:13px 16px;border-radius:6px}.score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(218px,1fr));gap:13px}.score-box{border:1px solid #dbe8eb;border-radius:12px;padding:16px;background:#f9fcfc}.score-box small{display:block;color:#607b84}.score-box strong{font-size:24px;color:#116e71}.rankchart{width:100%;height:auto;border:1px solid #e7ebee;border-radius:10px}.pill-warn{color:#925b24;background:#fff1d9;padding:3px 8px;border-radius:10px}.score-table td:first-child{font-weight:700}.positive{color:#187658}.negative{color:#b54755}.compare-note{padding:12px;background:#eff7f7;border-radius:9px}.toolbar{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:12px;margin:14px 0}.toolbar label{display:flex;flex-direction:column;gap:5px}.toolbar select{width:100%}.rank-svg{width:100%;height:auto;min-height:210px}.evidence{font-size:12px;color:#6b7983}
+</style></head><body>
+<div class="site-top"><a class="brand" href="../">LEM2 Research · 條件績效決策看板</a><nav><a href="../">研究總報告</a><a class="active" href="./">最佳條件比較</a><a href="../evidence/">原始 8,820 列</a><a href="../methods/">公式</a><a href="../lab/">新 CSV 試算</a></nav></div>
+<header class="score-hero"><div class="eyebrow">MODEL SELECTION · DATA-BOUND EVIDENCE</div><h1>哪個條件最好？先選目標，再看排名與代價</h1><p>不是把 8,820 列資料堆在一起，而是以<strong>相同資料集、相同 80/20 測試協定、42 個 Seed</strong>比較每個學習配置。一次看清最準、最公平、F1 最好，以及選擇這個配置付出的衝突／規則複雜度成本。</p></header>
+<main class="wrap">
+<section class="panel"><span class="section-tag">01 · FAIR COMPARISON CONTRACT</span><h2>固定公平比較條件</h2>
+<div class="toolbar">
+<label>比較哪個資料集<select id="dataset"><option value="ALL">三資料集等權比較</option><option>Balance Scale</option><option>Car Evaluation</option><option>Hayes-Roth</option></select></label>
+<label>最優先追求什麼？<select id="objective"><option value="balanced_accuracy">Balanced Accuracy｜類別公平</option><option value="accuracy">Accuracy｜整體最準</option><option value="macro_f1">Macro-F1｜綜合表現</option><option value="conflict_resolution_accuracy">Conflict Resolution｜衝突後答對率</option><option value="conflict_case_rate">Conflict rate｜候選衝突最低</option><option value="coverage">Coverage｜規則命中最高</option></select></label>
+<label>比較架構<select id="architect"><option value="ALL">集中式＋聯邦式 C2～C5</option><option value="CENTRALIZED">僅集中式</option><option value="FEDERATED">僅聯邦式</option></select></label>
+<label>決策策略<select id="policy"><option value="ALL">全部六種</option><option value="GLOBAL_STRENGTH">Global Strength</option><option value="STANDARD_VOTING">Standard</option><option value="POPULATION_STANDARD">Population Standard</option><option value="POPULATION_GLOBAL">Population Global</option><option value="FIRST_MATCH">First Match</option><option value="SIMPLE_VOTING">Simple</option></select></label>
+</div>
+<div class="score-note"><b>排名規則：</b>只使用 80/20 未見資料，不混入 Full Data 回代。每個配置先對同一 Seed 的資料集等權平均，再對 42 Seeds 求平均；標準差反映同一批資料反覆切分的波動，<b>不是外部泛化信賴區間</b>。Conflict 和 Coverage 為規則結構指標，不能直接解讀成分類 Accuracy。</div><p class="evidence" id="evidenceStatus">讀取已封存 8,820 筆實際計算…</p></section>
+<section class="panel"><span class="section-tag">02 · WINNER AND TRADE-OFFS</span><h2>目前目標下的最佳配置</h2><div class="score-grid" id="winnerCards"></div><div id="winnerNarrative" class="compare-note"></div>
+<h3>前六名：不只看分數，還看排名差距</h3><svg id="rankingChart" class="rank-svg" viewBox="0 0 1030 390" role="img" aria-label="六個最高績效配置，顯示平均與跨Seed波動"></svg>
+<div class="table-wrap"><table class="score-table"><thead><tr><th>名次</th><th>學習架構</th><th>決策策略</th><th>目標均值</th><th>42-Seed SD</th><th>Accuracy</th><th>BA</th><th>F1</th><th>Conflict</th><th>Coverage</th><th>與第一名差距</th></tr></thead><tbody id="rankTable"></tbody></table></div>
+<p class="evidence">表中所有數值皆為描述性均值。排名差距即使很小也會列出，不代表有統計顯著差異；同分時會標示並列。</p></section>
+<section class="panel"><span class="section-tag">03 · MODEL FRONTIER</span><h2>精確率與類別公平的取捨</h2><p>每個圓點是一個「學習架構 × 分類策略」配置。橫軸 Accuracy，縱軸 Balanced Accuracy；右上角表示在目前資料集及 42 Seeds 中兩者同時較高。點選圓點可看到它的完整解讀。</p>
+<svg id="frontier" class="rank-svg" viewBox="0 0 940 440" role="img" aria-label="準確率與類別平衡準確率散布圖"></svg><div id="selectedConfig" class="compare-note">點選圖中的配置查看比較與風險。</div></section>
+<section class="panel"><span class="section-tag">04 · PER-DATASET WINNERS</span><h2>為什麼不能只選一個總冠軍？</h2>
+<div class="table-wrap"><table><thead><tr><th>資料集</th><th>Accuracy 最佳配置</th><th>Accuracy</th><th>Balanced Accuracy 最佳配置</th><th>BA</th><th>F1 最佳配置</th><th>F1</th><th>評估限制</th></tr></thead><tbody id="datasetChampions"></tbody></table></div>
+<div class="score-note"><b>Hayes-Roth 限制：</b>原 8,820 筆使用的是 132 筆內的 80/20 重複切分；存在 Test/Train 重複特徵組合。這張表描述<b>原基準排名</b>，不代表已通過官方 28 筆獨立測試。補充官方測試與特徵不重疊測試必須另列協定，不能混排名。</div></section>
+<section class="panel"><span class="section-tag">05 · EXTERNAL PROTOCOL GATE</span><h2>Hayes-Roth 修補：官方獨立測試與不重疊分割</h2><p>以下是**獨立新增**的比較，不會重新覆寫原本 8,820 列。只有在 GitHub Actions 真正通過且發布完整計算成果後，才會顯示正式數字。</p>
+<p id="hayesGate" class="evidence">讀取 UCI 132/28 與 feature-group-disjoint 驗證資料…</p>
+<div class="table-wrap"><table><thead><tr><th>評估協定</th><th>配置</th><th>Accuracy</th><th>BA</th><th>F1</th><th>Test 筆數</th><th>Seed 重複</th></tr></thead><tbody id="hayesResults"><tr><td colspan="7">等待通過資料驗證後顯示；不得引用不存在的最佳分數。</td></tr></tbody></table></div></section>
+<section class="panel"><span class="section-tag">06 · DECISION RULES</span><h2>怎麼選才不會被單一數字誤導？</h2>
+<div class="grid"><div class="card"><h3>追求整體命中率</h3><p>排序 Accuracy，但同時檢查 BA，避免只把多數類別猜對。</p></div><div class="card"><h3>少數類別重要</h3><p>優先 BA，並檢查 Macro-F1，避免雖然 Recall 高卻產生太多誤報。</p></div><div class="card"><h3>聯邦式衝突過高</h3><p>分開看 Conflict 與 Conflict-resolution Accuracy；降低 Conflict 不等於預測更準。</p></div><div class="card"><h3>要主張新方法勝出</h3><p>比較同一測試協定、相同 Seed 的差值，列示差距及同源切分限制；不能只選排名最高的一列。</p></div></div>
+<div class="hero-actions"><a class="primary" href="../">回到完整研究報告</a><a href="../evidence/">檢查每一筆配置</a><a href="../lab/">帶入自訂資料再驗證</a></div></section>
+</main><footer class="footer">所有排名均可追到凍結 8,820 筆數據｜<a href="https://github.com/Jimmy0307/LEM2/tree/research/report-ready-dashboard-20261109">GitHub 研究分支</a></footer>
+<script src="./ranking.js" defer></script></body></html>
