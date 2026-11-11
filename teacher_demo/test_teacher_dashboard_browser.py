@@ -40,6 +40,9 @@ def main():
             assert page.locator("#policyCompareRows tr").count()==6
             assert page.locator("#metricDictionary details").count()>=9
             assert page.locator("#triageFlow .triage-step").count()==4
+            page.wait_for_function("document.querySelector('#triageFlow').textContent.includes('逐筆匹配紀錄')",timeout=30000)
+            assert "正解在候選" in page.locator("#triageFlow").inner_text()
+            print("CONFLICT_EXACT_CANDIDATE_INTERSECTION=PASS",flush=True)
             baseline=page.locator("#finalNarrative").inner_text()
             page.locator("#gSeed").select_option("27")
             assert "Seed 27" in page.locator("#finalNarrative").inner_text()
@@ -67,6 +70,20 @@ def main():
             assert page.locator("#compareRows tr").count()==42
             assert page.locator("#trend polyline").count()>=1
             print("EVIDENCE_FULL_MATRIX_PAIRED_COMPARISON=PASS",flush=True)
+
+            # Decision-oriented leaderboard uses actual 42-seed data, not invented winners.
+            page.goto(report+"ranking/",wait_until="domcontentloaded")
+            page.wait_for_function("document.getElementById('evidenceStatus').textContent.includes('PASS')",timeout=30000)
+            assert page.locator("#rankTable tr").count()>=6
+            assert page.locator("#datasetChampions tr").count()==3
+            assert page.locator("#frontier circle").count()>=25
+            page.locator("#dataset").select_option("Car Evaluation")
+            page.locator("#objective").select_option("accuracy")
+            assert "90.10%" in page.locator("#rankTable").inner_text()
+            page.locator("#dataset").select_option("Hayes-Roth")
+            page.wait_for_function("document.querySelectorAll('#hayesResults tr').length>=2",timeout=20000)
+            assert "89.74%" in page.locator("#hayesResults").inner_text()
+            print("RANKING_ACTUAL_SEEDS_HAYES_EXTERNAL_PROTOCOLS=PASS",flush=True)
 
             page.goto(report+"methods/",wait_until="domcontentloaded")
             assert "正域" in page.locator("body").inner_text()
