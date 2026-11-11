@@ -89,7 +89,7 @@ def run(inputs: Path, output: Path):
     assert all(a["configs"]==30 for a in integrity)
     result.to_csv(output/"CONFLICT_TRIAGE_42SEEDS.csv",index=False)
     # Web summary: follow user controls from canonical 8820; no cross-scope averaging on the viewer.
-    records=result.where(pd.notnull(result),None).to_dict(orient="records")
+    records=result.astype(object).where(pd.notna(result),None).to_dict(orient="records")
     summary={
         "schema_version":1,
         "source_run":"https://github.com/Jimmy0307/LEM2/actions/runs/42644663319",
