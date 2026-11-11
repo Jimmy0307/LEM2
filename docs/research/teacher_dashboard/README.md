@@ -18,6 +18,12 @@ GitHub Pages 入口仍固定：https://jimmy0307.github.io/LEM2/ 。本次沒有
 
 **這是完整的研究報告入口，不是純 CSV 測試頁。** 原本分開的完整報告與 CSV 試算頁已整合成一個 GitHub Pages 網站：同一份 8,820 列實測基線、統一導覽、按功能分 URL 子路徑。
 
+## 2026-11-11 已稽核修正與最佳條件
+
+- **[最佳配置與決策看板](ranking/)**：依 Accuracy、Balanced Accuracy、Macro-F1、Coverage、Conflict 自動排名；每個資料集獨立顯示前幾名、42 Seed 標準差與差距。
+- **[研究修正完整說明](VALIDATION_20261111.md)**：Hayes-Roth 新增 UCI 132/28 及四特徵組合不重疊 80/20，共 2,520 列獨立證據；42 Seed 7,560 組逐筆 Conflict 精確交集；限制推論措辭。
+- [Hayes 額外協定 CSV](data/HAYES_HOLDOUT_PROTOCOLS_42SEEDS.csv)｜[Conflict 精確分解 CSV](data/CONFLICT_EXACT_42SEEDS.csv)。原 8,820 筆不變。
+
 ## 主入口
 
 - [正式研究報告](./)
