@@ -16,7 +16,7 @@ from teacher_demo.seed_sweep_runner import pinned_bundles
 from teacher_demo.full_factorial_matrix import POLICIES, _candidate_diagnostics
 
 ROOT=Path("research/seed_sweep_inputs")
-FEATURES=("hobby","age","educational level","marital status")
+FEATURES=("hobby","age","educational_level","marital_status")
 
 def external_rows():
     p=ROOT/"uci_44_hayes_roth_official_test.data"
