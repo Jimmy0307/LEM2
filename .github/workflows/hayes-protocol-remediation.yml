@@ -1,0 +1,116 @@
+name: Hayes-Roth split protocol remediation (official vs disjoint)
+on:
+  push:
+    branches: [research/audit-remediation-20261111]
+    paths:
+      - teacher_demo/teacher_hayes_remediation.py
+      - research/seed_sweep_inputs/uci_44_hayes_roth_official28.test
+      - .github/workflows/hayes-protocol-remediation.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Official 132/28 and group-disjoint smoke
+        run: python -m teacher_demo.teacher_hayes_remediation --seeds 42
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hayes-remediation-smoke
+          path: outputs/teacher_hayes_remediation/HAYES_REMEDIATION_seed42.csv
+          if-no-files-found: error
+  sweep:
+    needs: smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        first: [1,4,7,10,13,16,19,22,25,28,31,34,37,40]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Fixed official and feature-group-disjoint evaluation
+        run: python -m teacher_demo.teacher_hayes_remediation --seeds ${{ matrix.first }} $(( ${{ matrix.first }} + 1 )) $(( ${{ matrix.first }} + 2 ))
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hayes-remediation-batch-${{ matrix.first }}
+          path: outputs/teacher_hayes_remediation/HAYES_REMEDIATION_seed*.csv
+          if-no-files-found: error
+  aggregate:
+    needs: sweep
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m pip install pandas numpy
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: hayes-remediation-batch-*
+          path: output_batch
+          merge-multiple: true
+      - name: Validate 42 seeds and build website-sourced experiment records
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd, json
+          files=sorted(Path('output_batch').glob('HAYES_REMEDIATION_seed*.csv'))
+          assert len(files)==42,len(files)
+          a=pd.concat([pd.read_csv(f) for f in files],ignore_index=True)
+          keys=['seed','holdout_protocol','client_count','policy']
+          assert len(a)==2520 and not a.duplicated(keys).any()
+          assert set(a.seed)==set(range(1,43))
+          assert set(a.holdout_protocol)=={'OFFICIAL_132_28','GROUP_DISJOINT_80_20'}
+          assert set(a.client_count)=={0,2,3,4,5}
+          assert (a.groupby(keys[:3]).size()==6).all()
+          assert (a[a.holdout_protocol=='OFFICIAL_132_28'].test_rows==28).all()
+          assert (a[a.holdout_protocol=='OFFICIAL_132_28'].train_rows==132).all()
+          assert (a[a.holdout_protocol=='GROUP_DISJOINT_80_20'].test_rows.between(18,32)).all()
+          for _,r in a.iterrows():
+              assert int(r.n_evaluated)==int(r.test_rows)
+              assert sum(int(r[k]) for k in ('no_match','matched_true_absent','matched_true_present_nonconflict','matched_true_present_conflict'))==int(r.test_rows)
+              assert abs(r.total_correct/r.test_rows-r.accuracy)<1e-10
+              assert r.conflict_cases == r.conflict_true_absent + r.conflict_true_present_wrong_selection + r.conflict_true_present_correct_selection
+          output=Path('docs/research/teacher_dashboard/data')
+          output.mkdir(parents=True,exist_ok=True)
+          a.to_csv(output/'HAYES_SPLIT_PROTOCOLS_42SEEDS.csv',index=False)
+          summaries=a.groupby(['holdout_protocol','client_count','policy'],as_index=False)[['accuracy','balanced_accuracy','macro_f1','coverage','conflict_rate']].mean()
+          payload={'source':'teacher_demo/teacher_hayes_remediation.py','source_original':'UCI 44 hayes-roth.test, mirrored SHA 2d8f77ff7a8626ae6beaadf01de400a6a3ddb46e',
+                   'protocol_warning':'These official and pattern-disjoint conditions are new controlled evaluations on Hayes-Roth, not new rows in the frozen 8820 baseline.',
+                   'seeds':42,'configurations':2520,'summary':summaries.to_dict(orient='records'),
+                   'per_seed':a.to_dict(orient='records')}
+          (output/'hayes_remediation.json').write_text(json.dumps(payload,ensure_ascii=False,separators=(',',':')))
+          print('HAYES_REMEDIATION_42_SEEDS_PASS',len(a),flush=True)
+          PY
+      - run: python -m teacher_demo.build_teacher_comparison
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hayes-remediation-42-seeds-audited
+          path: |
+            docs/research/teacher_dashboard/data/HAYES_SPLIT_PROTOCOLS_42SEEDS.csv
+            docs/research/teacher_dashboard/data/hayes_remediation.json
+            docs/research/teacher_dashboard/data/model_comparison.json
+          if-no-files-found: error
+      - name: Commit only new evidence; never modify 8820 frozen CSV
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/research/teacher_dashboard/data/HAYES_SPLIT_PROTOCOLS_42SEEDS.csv
+          git add docs/research/teacher_dashboard/data/hayes_remediation.json
+          git add docs/research/teacher_dashboard/data/model_comparison.json
+          git commit -m "data: validated Hayes official and group-disjoint tests plus decision leaderboard [skip ci]"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
