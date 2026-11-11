@@ -13,6 +13,9 @@ on:
       - docs/research/teacher_dashboard/site.css
       - docs/research/teacher_dashboard/methods/**
       - docs/research/teacher_dashboard/evidence/**
+      - docs/research/teacher_dashboard/ranking/**
+      - docs/research/teacher_dashboard/data/HAYES_HOLDOUT_PROTOCOLS_42SEEDS.csv
+      - docs/research/teacher_dashboard/data/CONFLICT_EXACT_42SEEDS.csv
       - docs/research/teacher_dashboard/figures/**
       - docs/research/teacher_dashboard/lab/**
       - docs/index.html
