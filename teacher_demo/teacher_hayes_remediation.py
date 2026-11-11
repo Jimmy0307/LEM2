@@ -61,20 +61,20 @@ def grouped_partition(bundle,seed):
     selected=[];remaining=list(grouped); totals=np.zeros(len(classes),dtype=float)
     def score(counts):
         return sum(abs((counts-desired)/(desired+1.)))+0.60*abs(sum(counts)-desired_total)/(desired_total+1.)
-    while remaining and sum(totals)<desired_total-2:
+    while remaining and sum(totals)<desired_total:
         candidates=[]
         for i,(key,ix) in enumerate(remaining):
             c=df.loc[ix,bundle.target].value_counts()
             delta=np.asarray([int(c.get(k,0)) for k in classes])
             new=totals+delta
-            if sum(new)>desired_total+5:continue
+            if sum(new)>desired_total:continue
             candidates.append((score(new),i,delta))
         if not candidates:break
         candidates.sort(key=lambda x:(x[0],x[1]))
         _,idx,delta=candidates[0]
         selected.extend(int(i) for i in remaining.pop(idx)[1]);totals+=delta
     test=df.iloc[sorted(selected)].copy();train=df.drop(df.index[sorted(selected)]).copy()
-    assert 18<=len(test)<=32,(seed,len(test))
+    assert len(test)==desired_total==26,(seed,len(test))
     assert train[bundle.target].nunique()==3 and test[bundle.target].nunique()>=2,(seed,len(train),len(test))
     tr=set(map(tuple,train[bundle.features].astype(str).to_numpy()))
     te=set(map(tuple,test[bundle.features].astype(str).to_numpy()))
