@@ -20,7 +20,7 @@ def main():
             page.on("pageerror",lambda x:errs.append(str(x)))
             page.goto("http://127.0.0.1:8779/research/teacher_dashboard/",wait_until="domcontentloaded")
             page.wait_for_timeout(6000)
-            print("DEBUG_PAGE_ERRORS",errors,flush=True)
+            print("DEBUG_PAGE_ERRORS",errs,flush=True)
             print("DEBUG_HEALTH",page.locator("#remediationHealth").inner_text(),flush=True)
             print("DEBUG_BEST",page.locator("#bestKpis").inner_text()[:800],flush=True)
             print("DEBUG_ROWS",page.locator("#bestRows tr").count(),flush=True)
