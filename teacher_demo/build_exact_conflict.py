@@ -32,7 +32,7 @@ def main():
             conflict=group.conflict.astype(bool)
             n=len(group)
             a=int(no.sum())
-            b=int((~no&~have).sum())
+            b=int((~no&~have&~conflict).sum())
             c=int((~no&have&~conflict).sum())
             d=int((~no&have&conflict).sum())
             e=int((~no&~have&conflict).sum())
@@ -58,7 +58,7 @@ def main():
                     "conflict_total_count":d+e,
                     "fallback_correct_count":int((no&correct).sum()),
                     "fallback_wrong_count":int((no&~correct).sum()),
-                    "candidate_absent_wrong_count":b,
+                    "candidate_absent_wrong_count":b+e,
                     "single_candidate_true_correct_count":int((~no&have&~conflict&correct).sum()),
                     "single_candidate_true_wrong_count":int((~no&have&~conflict&~correct).sum()),
                     "conflict_true_correct_count":int((conflict&have&correct).sum()),
