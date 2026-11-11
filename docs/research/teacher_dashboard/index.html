@@ -61,6 +61,10 @@
 <p><b>④ 若考慮規則治理成本：</b>看 Conflict、Coverage、Rule Count；高 Coverage 不是一定最準，低 Conflict 也不一定最佳。</p>
 <p><b>⑤ 若要說明可推廣性：</b>分開看三個資料集、42 Seeds 與 Hayes 官方／分組測試。不要把各組回代與未見資料混算。</p></div>
 <button type="button" id="bestJump" class="primary">直接看前十名與差距 ↓</button></div></div>
+<h3>避免只看單一名次：不同評估目標的 Pareto 折衷組合</h3>
+<div id="paretoCards" class="grid quality-pareto"></div>
+<h3>三個資料集，各自的最佳條件（與上方同一指標）</h3>
+<div class="table-wrap"><table><thead><tr><th>資料集</th><th>第一名配置</th><th>對應指標</th><th>Conflict</th><th>Coverage</th><th>研究限制</th></tr></thead><tbody id="datasetWinners"></tbody></table></div>
 <div id="bestTableWrap" class="table-wrap"><table><thead><tr><th>名次</th><th>完整條件</th><th>目前排序指標</th><th>Accuracy</th><th>BA</th><th>Macro-F1</th><th>Conflict</th><th>Coverage</th><th>落後第一名</th></tr></thead><tbody id="bestRows"></tbody></table></div>
 <div id="bestInterpretation" class="callout">載入後會自動寫出第一名、競爭對手差距，以及成本與限制。</div>
 <div class="callout warn"><b>統計解釋：</b>「第一名」只代表當前 <b>3 個固定資料集 × 42 Seeds × 80/20</b> 的平均排序。42 個 Seeds 非 42 個獨立研究樣本，跨任務獨立資料集只有 3 個；此排序不附加「普遍顯著優勢」宣稱。若某資料集的測試樣本特徵與訓練樣本重疊，仍須另外核對官方測試與分組切分。</div>
