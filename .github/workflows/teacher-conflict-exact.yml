@@ -1,0 +1,45 @@
+name: Verify Exact Conflict Intersections (42 Seeds)
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths: [teacher_demo/build_exact_conflict.py, .github/workflows/teacher-conflict-exact.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pandas numpy
+      - name: Download authoritative row traces from original completed 42-seed run
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p downloaded_traces
+          gh run download 42644663319 --repo ${{ github.repository }} --pattern 'teacher-trace-*' --dir downloaded_traces
+      - name: Count exact conflict partitions and reconcile to frozen baseline
+        run: python -m teacher_demo.build_exact_conflict --input downloaded_traces
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verified-conflict-exact-42-seeds
+          path: docs/research/teacher_dashboard/data/CONFLICT_EXACT_42SEEDS.csv
+          if-no-files-found: error
+      - name: Publish independent verified conflict evidence
+        run: |
+          cp docs/research/teacher_dashboard/data/CONFLICT_EXACT_42SEEDS.csv /tmp/CONFLICT_EXACT_42SEEDS.csv
+          git fetch origin ${GITHUB_REF_NAME}
+          git checkout -B ${GITHUB_REF_NAME} origin/${GITHUB_REF_NAME}
+          cp /tmp/CONFLICT_EXACT_42SEEDS.csv docs/research/teacher_dashboard/data/
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/research/teacher_dashboard/data/CONFLICT_EXACT_42SEEDS.csv
+          if ! git diff --cached --quiet; then
+            git commit -m 'evidence: exact 42-seed conflict intersections and resolver errors [skip ci]'
+            git push origin HEAD:${GITHUB_REF_NAME}
+          fi
