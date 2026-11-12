@@ -1,0 +1,24 @@
+{
+  "status": "EXPLORATORY_4_SEED",
+  "number_of_seeds": 4,
+  "seeds": [
+    1,
+    7,
+    21,
+    42
+  ],
+  "total_configurations": 84,
+  "method": "Classical positive-region reduct + LEM2; second-layer K=4 partial matching",
+  "denominator": "Test strict coverage = >=1 exact matched rule divided by all held-out Test cases",
+  "K4_notice": "K=4 is an author-defined top-four partially matched rules fallback with <=1 mismatching antecedent, NOT a verified literature K4 algorithm.",
+  "abstention_notice": "Current system predicts train-majority on unmatched cases and has no formal reject policy. The pilot evaluates operational acceptance if no-match were rejected, rather than an existing reject_rate.",
+  "leakage": "No test labels used to fit model, rules, or K4 ranking. Ground truth used only in outcome evaluation.",
+  "no_equivalence": "Assisted coverage is NOT strict rule coverage. Do not compare them as same metric.",
+  "data_source": "Original pinned UCI 12/19/44; not newly acquired external datasets.",
+  "source_files": [
+    "TRAIN_TEST_K4_seed01.csv",
+    "TRAIN_TEST_K4_seed07.csv",
+    "TRAIN_TEST_K4_seed21.csv",
+    "TRAIN_TEST_K4_seed42.csv"
+  ]
+}
