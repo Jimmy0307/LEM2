@@ -1,0 +1,15 @@
+{
+  "method": "Classical reduct + LEM2",
+  "status": "EXPLORATORY_3_SEEDS_NOT_42",
+  "seeds": [
+    1,
+    7,
+    42
+  ],
+  "source": "pinned existing three datasets, 80/20, clean test",
+  "train_coverage": "Train matched by same fixed trained rules, not Full Data resubstitution",
+  "new_method": "Partial-match proposal only on true no-match cases, predeclared thresholds 0.50 and 0.75; not verified original MLEM2 supplementary algorithm",
+  "leakage": "No test labels used to fit model or choose threshold; report both accuracy and effective coverage",
+  "rows": 54,
+  "invalid_configs": 0
+}
