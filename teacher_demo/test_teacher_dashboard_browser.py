@@ -83,6 +83,25 @@ def main():
             assert not errors, errors
             print("CONFLICT_NO_MATCH_NON_CONFLICT_TIE_METRICS=PASS",flush=True)
 
+            # Classical/Federated evidence lineage: 42 seeds, six policies, 1/7/21/42 stability and pp.
+            page.goto(report+"versions/",wait_until="domcontentloaded")
+            page.wait_for_function("document.querySelector('#dataStatus').textContent.includes('PASS')",timeout=30000)
+            assert page.locator("#architectureRows tr").count()==5
+            assert page.locator("#policyMatrix tr").count()==6
+            assert page.locator("#seedGrowthRows tr").count()==4
+            assert "42/42" in page.locator("#architectureRows tr").first.inner_text()
+            assert "7,056" in page.locator("#lineage").inner_text()
+            assert "+5 pp" in page.locator("#pp").inner_text()
+            page.locator("#nseed").select_option("7")
+            assert "7/7" in page.locator("#architectureRows tr").first.inner_text()
+            assert page.locator("#policyMatrix tr").count()==6  # matrix still full 42 seeds
+            page.locator("#metric").select_option("conflict_case_rate")
+            assert "42" in page.locator("#dataStatus").inner_text()
+            page.locator("#dataset").select_option("Hayes-Roth")
+            assert page.locator("#architectureRows tr").count()==5
+            assert not errors, errors
+            print("CLASSICAL_FEDERATED_42SEED_VERSION_PP_STABILITY=PASS",flush=True)
+
             # Independent evidence drilldown: complete matrix with real selectors.
             page.goto(report+"evidence/",wait_until="domcontentloaded")
             page.wait_for_function("document.getElementById('validState').textContent.includes('PASS')",timeout=30000)
