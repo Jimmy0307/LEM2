@@ -13,6 +13,9 @@ on:
       - docs/research/teacher_dashboard/site.css
       - docs/research/teacher_dashboard/conflict/**
       - docs/research/teacher_dashboard/versions/**
+      - docs/research/teacher_dashboard/public_data/**
+      - docs/research/public_datasets/**
+      - docs/research/teacher_dashboard/data/PUBLIC_COMMERCE_TECH_PILOT_*
       - docs/research/teacher_dashboard/methods/**
       - docs/research/teacher_dashboard/evidence/**
       - docs/research/teacher_dashboard/ranking/**
