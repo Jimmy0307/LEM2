@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="20 個新公開 UCI 資料集的 Classical/Federated LEM2 分類研究，涵蓋訓練與測試 Coverage、純類別／連續／混合、來源大樣本、Train-only 90% 純度補充規則。">
+<title>20 個公開資料集 × LEM2 Coverage Stress Test｜教授報告</title><link rel="stylesheet" href="../site.css"><style>
+.hero20{background:linear-gradient(125deg,#103047,#23676b);color:#fff;padding:38px max(18px,calc((100vw - 1160px)/2))}
+.hero20 h1{font-size:clamp(28px,4.3vw,44px);line-height:1.22;margin:12px 0}.hero20 p{max-width:960px;color:#e1f0f1}
+.grid20{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.grid20>div{border:1px solid #d8e5e8;background:#f9fcfd;padding:16px;border-radius:12px}.grid20 strong{font-size:24px;display:block;color:#175e64}.grid20 small{color:#5b7380}
+.choices{display:grid;grid-template-columns:repeat(3,minmax(150px,1fr));gap:12px;margin:12px 0}.choices label{display:flex;flex-direction:column;gap:5px}
+.small{font-size:12px;color:#5b7180}.stamp{display:inline-block;background:#dfedea;border-radius:6px;color:#1b625a;padding:2px 8px;font-size:12px;font-weight:800}
+.stamp.warn{color:#835720;background:#f8ecd8}.table-scroll{overflow:auto;max-height:620px}.table-scroll table{font-variant-numeric:tabular-nums}.table-scroll thead{position:sticky;top:0;z-index:2;background:#e8f1f3}
+.delta{font-weight:750}.metricformula{font-family:ui-monospace,Consolas,monospace;font-size:13px;background:#f1f6f7;padding:10px;border-radius:8px;overflow:auto;white-space:nowrap}
+@media(max-width:790px){.hero20{padding:27px 18px}.grid20,.choices{grid-template-columns:1fr}}
+</style></head>
+<body><div class="site-top"><a class="brand" href="../">LEM2 Research · 教授報告</a>
+<nav><a href="../">研究首頁</a><a href="../coverage/">Train／Test Coverage</a><a href="../public_data/">電商／設備</a><a class="active" href="./" aria-current="page">20 公開資料集</a><a href="../versions/">42 Seeds 原基線</a><a href="../evidence/">原始矩陣</a></nav></div>
+<header class="hero20"><div class="eyebrow">NEW PUBLIC BENCHMARK EXPANSION · REPRODUCIBLE FEASIBILITY</div>
+<h1>20 個不同特性的公開資料集<br>能找到 LEM2 Coverage 的適用邊界嗎？</h1>
+<p>全新 20 個 UCI 開放資料集，涵蓋連續型、離散型、混合型、極低樣本、多分類、類別不平衡與原始大資料來源。用相同訓練／測試切分對照原始 Classical LEM2 與<strong>訓練資料產生的補充規則</strong>，追蹤 Coverage 是否真的改善、Accuracy 是否付出代價。</p>
+<p><strong>方法邊界：</strong>這是 Seed 42 的外部資料可行性掃描（最多六特徵、來源大資料先固定分層抽樣），不是 20 個完整規模的 42-Seed 驗證，也不等於 VC-DomLEM 或 MLEM2 原典重現。</p>
+</header>
+<main class="wrap">
+<section class="panel" id="overview"><span class="section-tag">01 · ACQUISITION &amp; SOURCE INTEGRITY</span><h2>公開資料、可重現抽樣與有效實驗數</h2>
+<p id="status" role="status" aria-live="polite">正在檢查來源、模型結果與實驗 manifest；未發布的資料不顯示虛構數值。</p>
+<div class="grid20" id="stats"><div><small>規劃來源數</small><strong>20</strong><small>與原三資料集及既有九份外部資料不重複</small></div><div><small>驗證成功資料集</small><strong id="passed">—</strong><small id="failNote">失敗會明確保留</small></div><div><small>分析配置</small><strong id="rows">—</strong><small>原始 NONE＋六策略，以及獨立補充規則</small></div></div>
+<p><a href="../data/PUBLIC20_MANIFEST.json">來源、授權及失敗稽核 Manifest</a> · <a href="../../public_datasets_20/">下載實驗用公開資料子集</a> · <a href="../data/PUBLIC20_BASE_RESULTS.csv">逐配置原始結果 CSV</a> · <a href="../data/PUBLIC20_SUPPLEMENT_RESULTS.csv">補充規則 A/B 配置 CSV</a></p>
+</section>
+<section class="panel" id="sources"><span class="section-tag">02 · TWENTY DIFFERENT DOMAINS</span><h2>20 份新資料集的來源與差異化特性</h2>
+<p>原始量體與「本輪實際用於學習的量體」分開列示。大資料的樣本化目的是避免 exact reduct 組合搜尋造成不可控制的運算成本，這不是全量效能測試。</p>
+<div class="choices"><label>資料型態<select id="type"><option value="ALL">全部型態</option><option value="ALL_CONTINUOUS">連續型</option><option value="ALL_CATEGORICAL">離散型</option><option value="EXPLICIT_MIXED">混合型</option></select></label>
+<label>研究領域<select id="domain"><option value="ALL">全部研究領域</option></select></label>
+<label>資料可用性<select id="availability"><option value="ALL">全部</option><option value="PASS_ONE_SEED">成功</option><option value="FAILED_NOT_IMPUTED">失敗／待重跑</option></select></label></div>
+<div class="table-scroll"><table><thead><tr><th>公開資料集</th><th>主要特性</th><th>資料型態</th><th>原始筆數</th><th>實際筆數</th><th>特徵數</th><th>類別數</th><th>實驗狀態</th></tr></thead><tbody id="sourcesRows"><tr><td colspan="8">等待實驗來源完整性檢查</td></tr></tbody></table></div>
+</section>
+<section class="panel" id="results"><span class="section-tag">03 · TRAINING COVERAGE VS UNSEEN TEST</span><h2>Training Coverage 能否提高？提高後 Test 與 Accuracy 會如何變化？</h2>
+<p>固定 Train-only 補充規則：放寬一個 IF 條件、規則在訓練集上的純度至少 90%、至少五個支持物件。補充後「覆蓋率」與原始 LEM2 規則覆蓋率不同，且可能引入新衝突。Baseline 再使用 Global Strength 預測，介入只針對原本無規則匹配的物件。</p>
+<div class="choices"><label>研究配置<select id="architecture"><option value="ALL">集中式＋Federated C3</option><option value="0">集中式</option><option value="3">Federated C3</option></select></label><label>改善幅度排序<select id="order"><option value="test_coverage_gain_pp">Test Coverage 增幅</option><option value="train_coverage_gain_pp">Train Coverage 增幅</option><option value="balanced_accuracy_gain_pp">Balanced Accuracy 增幅</option><option value="accuracy_gain_pp">Overall Accuracy 增幅</option></select></label><label>限定資料<select id="dataset"><option value="ALL">全部 20 資料集</option></select></label></div>
+<div class="table-scroll"><table><thead><tr><th>資料集</th><th>配置</th><th>Train 原始</th><th>Train 補充後</th><th>Train Δ pp</th><th>Test 原始</th><th>Test 補充後</th><th>Test Δ pp</th><th>Accuracy Δ pp</th><th>BA Δ pp</th></tr></thead><tbody id="metricRows"><tr><td colspan="10">尚未發布實驗結果</td></tr></tbody></table></div>
+<p class="small">每列僅 Seed 42，不能作統計顯著性推論；若只增加命中、未增加正確率，可能原先 fallback 就已答對。若 Accuracy 變差，就不能只稱為改善。所有負向或無效結果照實呈現。</p>
+</section>
+<section class="panel" id="methods"><span class="section-tag">04 · LITERATURE AND HYPOTHESIS MATRIX</span><h2>哪些有文獻基礎？哪些是我們自己設計的實驗？</h2>
+<div class="table-wrap"><table><thead><tr><th>研究方向</th><th>文獻對應</th><th>本批執行狀態</th><th>必要防護條件</th></tr></thead><tbody>
+<tr><td>MLEM2 補充規則</td><td><a href="https://doi.org/10.20965/jaciii.2015.p0747">Inuiguchi 與 Washimi（2015）</a>：處理無完整匹配的測試物件</td><td>已執行原創簡化一條件放寬對照，<strong>非原典重現</strong></td><td>Train-only 支持數與純度，另看 Test Accuracy</td></tr>
+<tr><td>循序覆蓋與規則修剪</td><td><a href="https://doi.org/10.1016/B978-1-55860-377-6.50023-2">Cohen（1995），RIPPER</a></td><td>有研究設計；尚未在同一 20 資料集完成正式公平對照</td><td>避免用每筆訓練物件直接記憶規則，應用內層驗證控制規則量</td></tr>
+<tr><td>可變一致性循序規則</td><td><a href="https://doi.org/10.1016/j.ins.2010.10.030">VC-DomLEM（2011）</a></td><td>尚未實作，本批仍是 Classical reduct + LEM2</td><td>嚴格區分 ordinal 與 nominal，重新固定一致性定義</td></tr>
+<tr><td>風險－覆蓋率</td><td><a href="https://jmlr.org/papers/v11/el-yaniv10a.html">El-Yaniv 與 Wiener（2010）</a></td><td>已定義 Guardrail，但本批未實作正式 Abstain</td><td>No Match 不是實際 Rejection；需同時追蹤錯誤風險</td></tr>
+</tbody></table></div>
+<p>下一階段若要認定方法有效，需加入每資料集的 42 Seeds、類別／Client 不平衡、內層驗證調參、風險－覆蓋率曲線及組合規則搜尋成本；原始大資料需另做「真實全量運算」實驗，不得把抽樣測試說成全量擴展性驗證。</p></section>
+</main><footer class="footer">LEM2 × Federated · <a href="../">教授報告總覽</a> · <a href="../coverage/">42 Seeds Coverage 基線</a> · <a href="../public_data/">電商與工業先導</a></footer>
+<script>
+(()=>{"use strict";
+const $=id=>document.getElementById(id);
+let catalog=[],results=[];
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const percent=x=>Number.isFinite(Number(x))?Number(x).toFixed(2)+"%":"—";
+const delta=x=>Number.isFinite(Number(x))?(Number(x)>=0?"+":"")+Number(x).toFixed(2):"—";
+const nameMode={ALL_CATEGORICAL:"離散／類別",ALL_CONTINUOUS:"連續數值",EXPLICIT_MIXED:"混合型"};
+function parseCSV(raw){const lines=raw.trim().split(/\r?\n/);const cols=lines[0].split(",");return lines.slice(1).map(line=>{const parts=line.split(",");return Object.fromEntries(cols.map((k,i)=>[k,parts[i]??""]))});}
+function renderSources(){
+ const type=$("type").value,domain=$("domain").value,avail=$("availability").value;
+ const list=catalog.filter(x=>(type==="ALL"||x.feature_mode===type)&&(domain==="ALL"||x.domain===domain)&&(avail==="ALL"||x.status===avail));
+ $("sourcesRows").innerHTML=list.map(x=>{
+    const cc=x.observed_classes?Object.keys(x.observed_classes).length:"—";
+    const state=x.status==="PASS_ONE_SEED"?"已實測 1 Seed":"未通過核驗";
+    return "<tr><td><a href='"+esc(x.original_source)+"' target='_blank' rel='noopener'>"+esc(x.name)+"</a></td><td>"+esc(x.trait)+"</td><td>"+nameMode[x.feature_mode]+"</td><td>"+Number(x.source_rows??0).toLocaleString()+"</td><td>"+(x.used_rows??"—")+"</td><td>"+(x.used_feature_count??"—")+"</td><td>"+cc+"</td><td>"+state+"</td></tr>";
+ }).join("")||'<tr><td colspan="8">目前條件沒有已發布資料</td></tr>';
+}
+function renderResults(){
+ const client=$("architecture").value,ds=$("dataset").value,metric=$("order").value;
+ const filtered=results.filter(x=>(client==="ALL"||x.client_count===client)&&(ds==="ALL"||x.dataset===ds));
+ filtered.sort((a,b)=>Number(b[metric])-Number(a[metric]));
+ $("metricRows").innerHTML=filtered.map(x=>"<tr><td>"+esc(x.dataset)+"</td><td>"+(Number(x.client_count)===0?"Centralized":"Fed C"+x.client_count)+"</td><td>"+percent(x.baseline_train_coverage_pct)+"</td><td>"+percent(x.augmented_train_coverage_pct)+"</td><td class='delta'>"+delta(x.train_coverage_gain_pp)+"</td><td>"+percent(x.baseline_test_coverage_pct)+"</td><td>"+percent(x.augmented_test_coverage_pct)+"</td><td class='delta'>"+delta(x.test_coverage_gain_pp)+"</td><td class='delta'>"+delta(x.accuracy_gain_pp)+"</td><td class='delta'>"+delta(x.balanced_accuracy_gain_pp)+"</td></tr>").join("")||'<tr><td colspan="10">目前條件沒有可驗證的補充規則結果</td></tr>';
+}
+for(const id of ["type","domain","availability"])$(id).addEventListener("change",renderSources);
+for(const id of ["architecture","dataset","order"])$(id).addEventListener("change",renderResults);
+Promise.all([fetch("../data/PUBLIC20_MANIFEST.json",{cache:"no-store"}),fetch("../data/PUBLIC20_SUPPLEMENT_RESULTS.csv",{cache:"no-store"})]).then(async ([a,b])=>{
+ if(!a.ok||!b.ok)throw Error("20 個資料集的結果尚未全部發布");
+ const j=await a.json();if(j.n_registered!==20||!Array.isArray(j.datasets))throw Error("清單或型態驗證失敗");
+ catalog=j.datasets;results=parseCSV(await b.text());
+ $("status").textContent="資料稽核："+j.status+"；20 個新來源中 "+j.passed_count+" 個已完成、"+j.failed_count+" 個仍需修復。所有有效數字為 Seed 42，可追溯回 UCI 與原始規則實驗。";
+ $("passed").textContent=j.passed_count+"/20";
+ $("rows").textContent=(14*j.passed_count).toLocaleString()+"＋"+(2*j.passed_count).toLocaleString();
+ $("failNote").textContent=j.failed_count?"尚有 "+j.failed_count+" 個失敗來源，未填零":"20/20 來源驗證通過";
+ const domains=[...new Set(catalog.map(x=>x.domain))].sort();domains.forEach(n=>{$("domain").appendChild(new Option(n,n))});
+ catalog.filter(x=>x.status==="PASS_ONE_SEED").forEach(x=>$("dataset").appendChild(new Option(x.name,x.key)));
+ renderSources();renderResults();
+}).catch(e=>{$("status").textContent="尚不能將未發布的結果當作完成："+e.message;});
+})();
+</script>
+</body></html>
