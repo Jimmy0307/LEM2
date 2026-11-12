@@ -36,6 +36,9 @@ def load():
     b["regime"]="STRATIFIED_IID"
     b["alpha"]=np.nan
     b["conflict_rate_pct"]=100*b["conflict_case_count"]/b["evaluation_rows"]
+    b["test_coverage_pct"]=100*b["covered_count"]/b["evaluation_rows"]
+    b["candidate_coverage_pct"]=100*b["true_in_candidate_count"]/b["evaluation_rows"]
+    check((b.no_match_count+b.covered_count).eq(b.evaluation_rows).all(),"IID covered+no-match must equal test")
     check(np.allclose(b.conflict_rate_pct/100,b.conflict_case_rate,rtol=0,atol=1e-10),"Baseline count/rate mismatch")
     n=pd.read_csv(NONIID)
     check(len(n)==7056,"Non-IID 42-seed evidence must have 7056 rows (fully complete)")
@@ -48,6 +51,9 @@ def load():
     n["regime"]="DIRICHLET_NON_IID"
     n["alpha"]=n["dirichlet_alpha"]
     n["conflict_rate_pct"]=100*n["conflict_case_count"]/n["evaluation_rows"]
+    n["test_coverage_pct"]=100*n["covered_count"]/n["evaluation_rows"]
+    n["candidate_coverage_pct"]=100*n["true_in_candidate_count"]/n["evaluation_rows"]
+    check((n.no_match_count+n.covered_count).eq(n.evaluation_rows).all(),"non-IID covered+no-match must equal test")
     check(np.allclose(n.conflict_rate_pct/100,n.conflict_case_rate,rtol=0,atol=1e-10),"Non-IID count/rate mismatch")
     return b,n
 
@@ -57,11 +63,19 @@ def grouped(df, by, name):
     t=(df.groupby(by,dropna=False,sort=True).agg(
        configuration_count=("conflict_case_count","size"),
        conflict_cases=("conflict_case_count","sum"),
+       covered_cases=("covered_count","sum"),
+       no_match_cases=("no_match_count","sum"),
+       candidate_hit_cases=("true_in_candidate_count","sum"),
        evaluation_cases=("evaluation_rows","sum"),
+       mean_test_coverage_pct=("test_coverage_pct","mean"),
+       mean_candidate_coverage_pct=("candidate_coverage_pct","mean"),
        mean_conflict_rate_pct=("conflict_rate_pct","mean"),
        sd_conflict_rate_pp=("conflict_rate_pct",lambda s:float(s.std(ddof=1)) if len(s)>1 else float("nan"))
      ).reset_index())
     t["pooled_conflict_rate_pct"]=100*t["conflict_cases"]/t["evaluation_cases"]
+    t["pooled_test_coverage_pct"]=100*t["covered_cases"]/t["evaluation_cases"]
+    t["pooled_candidate_coverage_pct"]=100*t["candidate_hit_cases"]/t["evaluation_cases"]
+    check((t.covered_cases+t.no_match_cases).eq(t.evaluation_cases).all(),"grouped test coverage sum")
     t["source_method"]="CLASSICAL_POSITIVE_REGION_REDUCT_LEM2"
     return t
 
@@ -113,10 +127,20 @@ def main():
            "nonIID_conflict_cases":merged.conflict_case_count_nonIID,
            "nonIID_evaluation_cases":merged.evaluation_rows_nonIID,
            "nonIID_conflict_rate_pct":merged.conflict_rate_pct_nonIID,
+           "nonIID_covered_count":merged.covered_count_nonIID,
+           "nonIID_candidate_hit_count":merged.true_in_candidate_count_nonIID,
+           "nonIID_test_coverage_pct":merged.test_coverage_pct_nonIID,
+           "nonIID_candidate_coverage_pct":merged.candidate_coverage_pct_nonIID,
            "IID_conflict_cases":merged.conflict_case_count_IID,
            "IID_evaluation_cases":merged.evaluation_rows_IID,
            "IID_conflict_rate_pct":merged.conflict_rate_pct_IID,
+           "IID_covered_count":merged.covered_count_IID,
+           "IID_candidate_hit_count":merged.true_in_candidate_count_IID,
+           "IID_test_coverage_pct":merged.test_coverage_pct_IID,
+           "IID_candidate_coverage_pct":merged.candidate_coverage_pct_IID,
            "paired_difference_pp":merged.conflict_rate_pct_nonIID-merged.conflict_rate_pct_IID,
+           "paired_coverage_difference_pp":merged.test_coverage_pct_nonIID-merged.test_coverage_pct_IID,
+           "paired_candidate_coverage_difference_pp":merged.candidate_coverage_pct_nonIID-merged.candidate_coverage_pct_IID,
            "source_method":"CLASSICAL_POSITIVE_REGION_REDUCT_LEM2"
         })
         write("PAIRED_IID_VS_NONIID_"+label,raw,"Exact same seed/dataset/C paired percent-point contrast; alpha="+str(alpha),rows)
@@ -129,6 +153,8 @@ def main():
       "raw_iid_rule_sets":int(len(b)),"raw_noniid_rule_sets":int(len(n)),
       "random_seeds":list(range(1,43)),"unit":"percent (0-100); paired delta is pp",
       "metric":"100 * pre-resolution conflict_case_count / evaluation_rows",
+      "additional_metrics":{"Test Data Coverage (%)":"100 * covered_count / evaluation_rows",
+                            "Candidate Coverage (%)":"100 * true_in_candidate_count / evaluation_rows"},
       "policy_independent":True,
       "note":"19 requested Conflict Rate Percentage analytical views; explicit table index, NOT 19 independent datasets or 19 classification algorithms",
       "tables":rows
@@ -136,7 +162,9 @@ def main():
     (OUT/"manifest.json").write_text(json.dumps(catalog,ensure_ascii=False,indent=2),encoding="utf-8")
     md=["# 19 張 Conflict Rate (%) 正式資料表","",
         "方法：Classical Rough Set 正域約簡 + LEM2；聯邦式為本地歸納後合併。",
-        "只讀取 NONE 結構診斷；不把六策略重複計算成六份 Conflict。"
+        "只讀取 NONE 結構診斷；不把六策略重複計算成六份 Conflict。",
+        "另新增：Test Data Coverage (%) = 有任一規則命中數 / Test 筆數；",
+        "Candidate Coverage (%) = 真實標籤落入候選集合數 / Test 筆數。",
         "Conflict Rate (%) = 衝突物件數 / 全部評估物件數 × 100；pp = 兩個百分率直接相減。"
         "跨 Seed 的 Mean 與 pooled ratio 可能不同；每表同時保留分母與兩種均值。","",
         "| # | CSV | 列數 | 內容 |","|---:|---|---:|---|"]
