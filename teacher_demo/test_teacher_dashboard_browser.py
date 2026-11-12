@@ -132,6 +132,24 @@ def main():
             print("K4_FALLBACK_PILOT_EVIDENCE_GATE=PASS",flush=True)
             print("TRAIN_TEST_COVERAGE_REJECTION_TEACHER_PAGE=PASS",flush=True)
 
+            # Public CC-BY ecommerce & industrial datasets: real 4-seed evidence only.
+            page.goto(report,wait_until="domcontentloaded")
+            assert page.locator('a[href="./public_data/"]').count() >= 1
+            page.goto(report+"public_data/",wait_until="domcontentloaded")
+            page.wait_for_function("document.querySelector('#status').textContent.includes('PASS')",timeout=30000)
+            assert page.locator("#results tr").count()==30
+            assert "CC BY 4.0" in page.locator("#source").inner_text()
+            page.locator("#dataset").select_option("ai4i_maintenance")
+            page.locator("#clients").select_option("5")
+            assert page.locator("#results tr").count()==6
+            assert "100.00%" in page.locator("#results").inner_text()
+            page.locator("#objective").select_option("mean_minority_recall")
+            assert "FIRST_MATCH" in page.locator("#results tr").first.inner_text()
+            page.locator("#dataset").select_option("online_shoppers")
+            assert page.locator("#results tr").count()==6
+            assert not errors, errors
+            print("PUBLIC_UCI_COMMERCE_TECH_AUDITED_BROWSER_PASS",flush=True)
+
             # Independent evidence drilldown: complete matrix with real selectors.
             page.goto(report+"evidence/",wait_until="domcontentloaded")
             page.wait_for_function("document.getElementById('validState').textContent.includes('PASS')",timeout=30000)
