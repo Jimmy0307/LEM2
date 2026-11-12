@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>公開電商 × 技術設備｜Classical / Federated LEM2 實測</title><link rel="stylesheet" href="../site.css">
+<meta name="description" content="兩份公開 CC BY 4.0 UCI 資料，固定抽樣、80/20 未見資料、Classical/Federated LEM2 四 Seeds 六策略研究；實測 Conflict、Test/Train Coverage、少數類別召回。">
+<style>
+.edge-hero{background:linear-gradient(125deg,#123249,#1f7771);color:white;padding:34px max(18px,calc((100vw - 1150px)/2))}
+.edge-hero h1{font-size:clamp(26px,4vw,42px);line-height:1.25}.edge-hero p{color:#dceceb;max-width:950px}
+.source-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.source-tile{border:1px solid #d8e5e8;border-radius:12px;background:#fafdfd;padding:16px}
+.source-tile h3{margin-top:0}.source-tile p{font-size:14px}
+.select-row{display:grid;grid-template-columns:repeat(3,minmax(140px,1fr));gap:13px;margin:14px 0}
+.select-row label{display:flex;flex-direction:column;gap:5px;font-size:13px}
+.data-table td:not(:first-child){font-variant-numeric:tabular-nums}
+.note{font-size:13px;color:#627686}.source-tag{font-weight:800;color:#125e54;background:#e3f1ed;display:inline-block;padding:3px 10px;border-radius:6px;font-size:12px}
+@media(max-width:780px){.source-grid,.select-row{grid-template-columns:1fr}.edge-hero{padding:24px 18px}}
+</style></head><body>
+<div class="site-top"><a class="brand" href="../">LEM2 Research · 教授報告</a><nav aria-label="教授報告"><a href="../">研究首頁</a><a href="../versions/">42 Seeds</a><a href="../coverage/">Coverage</a><a class="active" href="./" aria-current="page">公開電商／技術資料</a><a href="../evidence/">原始基線</a></nav></div>
+<header class="edge-hero"><div class="eyebrow">PUBLIC DATA · EXTERNAL DOMAIN EXPERIMENT</div>
+<h1>公開電商與技術設備資料<br>能否挑戰現有六種決策策略？</h1>
+<p>兩個真實來源均為 UCI 公開 CC BY 4.0；這是一個<strong>獨立的四 Seed 探索實驗</strong>，使用 Classical 正域約簡＋LEM2 的集中式與聯邦式 C2–C5，六種策略共用每組的固定規則。不要與原本三組 UCI 的 42-Seed 主矩陣合併當作同一組統計。</p>
+</header><main class="wrap">
+<section class="panel" id="source"><span class="section-tag">01 · SOURCE AND LICENSE</span><h2>資料來源與任務差異</h2>
+<div class="source-grid">
+<div class="source-tile"><span class="source-tag">電商真實交易工作階段</span><h3>Online Shoppers 購買意圖</h3>
+<p>原始 12,330 筆、18 欄原始特徵，是否購買為目標；正類 1,908（15.47%）。研究先使用固定分層樣本 <strong>1,600 筆、6 個預先指定特徵</strong>。排除 PageValues，避免交易結果衍生特徵干擾解讀。</p>
+<p><a href="https://archive.ics.uci.edu/dataset/468/online+shoppers+purchasing+intention+dataset">UCI ID 468 · DOI 10.24432/C5F88Q</a> · <a href="../../public_datasets/online_shoppers_public_stratified_subset.csv">實驗用公開樣本 CSV</a></p>
+</div>
+<div class="source-tile"><span class="source-tag">工業設備合成情境</span><h3>AI4I 設備故障預測</h3>
+<p>原始 10,000 筆，故障正類極少（約 3.4%）。研究先使用固定分層樣本 <strong>2,400 筆、6 個預先指定特徵</strong>；排除識別碼及所有直接代表故障原因的答案欄。此資料由作者合成，不能當成真實生產現場績效。</p>
+<p><a href="https://archive.ics.uci.edu/dataset/601/ai4i">UCI ID 601 · DOI 10.24432/C5HS5C</a> · <a href="../../public_datasets/ai4i_maintenance_public_stratified_subset.csv">實驗用公開樣本 CSV</a></p>
+</div></div>
+<p class="note"><a href="https://creativecommons.org/licenses/by/4.0/">兩者授權：CC BY 4.0</a>。網站只保存有來源標示的固定分層研究子集；完整原資料請從 UCI 取得。抽樣與特徵限制會影響外部效度。</p></section>
+<section class="panel" id="experiment"><span class="section-tag">02 · REAL EXPERIMENT, NO SYNTHETIC RESULTS</span><h2>六種策略：Test Coverage、Conflict、Accuracy 與少數類別召回</h2>
+<p id="status" class="note" role="status" aria-live="polite">正在讀取可追溯實驗結果；在證據檔發布前不顯示估算數值。</p>
+<div class="select-row">
+<label>公開資料集<select id="dataset"><option value="online_shoppers">Online Shoppers · 電商</option><option value="ai4i_maintenance">AI4I · 設備故障</option></select></label>
+<label>評估優先指標<select id="objective"><option value="mean_balanced_accuracy">Balanced Accuracy</option><option value="mean_minority_recall">少數類別召回率</option><option value="mean_accuracy">Overall Accuracy</option><option value="mean_covered_only_accuracy">Covered-only Accuracy</option><option value="mean_conflict_resolution_accuracy">Conflict-only Accuracy</option></select></label>
+<label>Client 數<select id="clients"><option value="ALL">全部配置</option><option value="0">Centralized</option><option value="2">Federated C2</option><option value="3">Federated C3</option><option value="4">Federated C4</option><option value="5">Federated C5</option></select></label></div>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>架構</th><th>策略</th><th>Seeds</th><th>Test Coverage</th><th>Conflict</th><th>Accuracy</th><th>Balanced Acc.</th><th>少數類別 Recall</th><th>Train→Test Gap</th></tr></thead><tbody id="results"><tr><td colspan="9">等待 GitHub Actions 確認完整真實實驗</td></tr></tbody></table></div>
+<p class="note"><strong>風險提醒：</strong>設備故障資料的 Accuracy 容易被占絕大多數的「正常」主導，因此不能用 Accuracy 單獨選策略。優先閱讀少數類別 Recall、Balanced Accuracy、Conflict 與 True Candidate Coverage。</p>
+<p><a href="../data/PUBLIC_COMMERCE_TECH_PILOT_POLICY_SUMMARY.csv">完整策略彙整 CSV</a> · <a href="../data/PUBLIC_COMMERCE_TECH_PILOT_RESULTS.csv">逐 Seed 結果 CSV</a> · <a href="../data/PUBLIC_COMMERCE_TECH_PILOT_PROFILES.csv">來源／特徵／SHA 證據</a> · <a href="../data/PUBLIC_COMMERCE_TECH_PILOT_MANIFEST.json">執行完整性 Manifest</a></p></section>
+<section class="panel" id="question"><span class="section-tag">03 · HYPOTHESES TO TEST, NOT ESTABLISHED FACTS</span><h2>研究要驗證的不只是「哪個方法最好」</h2>
+<div class="table-wrap"><table><thead><tr><th>資料特性</th><th>研究問題</th><th>關鍵觀測值</th></tr></thead><tbody>
+<tr><td>電商工作階段、類別不平衡</td><td>重複瀏覽條件是否讓相似規則聚集、對購買預測產生誤判？</td><td>Test Coverage、正類召回、重複支持、六種投票勝次</td></tr>
+<tr><td>設備故障極低比例</td><td>Global Strength 是否有助保留少數類別，或因 Client 分割與衝突惡化？</td><td>少數故障 Recall、Balanced Accuracy、Conflict Rate</td></tr>
+<tr><td>多 Client 規則合併</td><td>是否提升命中率，同時增加跨決策候選衝突？</td><td>Train/Test Coverage Gap、Conflict、Correct Candidate Rate</td></tr>
+<tr><td>四種 Seeds</td><td>單次切分結論是否穩定？</td><td>Seed 1、7、21、42 分布與跨 Seed 標準差</td></tr>
+</tbody></table></div>
+<p class="note">若探索性結果有價值，再固定資料處理契約提升到 42 Seeds，加入 non-IID 分割與校準式拒絕機制；目前不宣稱四 Seeds 可做普遍適用性推論。</p></section></main>
+<footer class="footer"><a href="../">教授報告首頁</a> · <a href="../coverage/">Test Coverage 基線</a> · <a href="../../public_datasets/README.md">公共資料來源說明</a></footer>
+<script>
+(()=>{"use strict";
+const $=id=>document.getElementById(id);
+let data=null;
+const fmt=x=>{const n=Number(x);return x===undefined||x===null||x===""||!Number.isFinite(n)?"—":(n*100).toFixed(2)+"%";}
+const ppt=x=>{const n=Number(x);return x===undefined||x===null||x===""||!Number.isFinite(n)?"—":(n>=0?"+":"")+n.toFixed(2)+" pp";}
+function parseCSV(raw){const lines=raw.trim().split(/\r?\n/);const cols=lines[0].split(",");return lines.slice(1).map(line=>{const values=line.split(",");return Object.fromEntries(cols.map((c,i)=>[c,values[i]??""]))});}
+function render(){
+ if(!data)return;
+ const dataset=$("dataset").value,criterion=$("objective").value,clients=$("clients").value;
+ const a=data.filter(x=>x.ext_dataset_key===dataset&&(clients==="ALL"||String(x.client_count)===clients));
+ a.sort((u,v)=>(Number(v[criterion])||0)-(Number(u[criterion])||0));
+ $("results").innerHTML=a.map(x=>"<tr><td>"+(Number(x.client_count)===0?"Centralized":"Fed C"+x.client_count)+"</td><td>"+x.selection_policy+"</td><td>"+x.seeds+"</td><td>"+fmt(x.mean_coverage)+"</td><td>"+fmt(x.mean_conflict_case_rate)+"</td><td>"+fmt(x.mean_accuracy)+"</td><td>"+fmt(x.mean_balanced_accuracy)+"</td><td>"+fmt(x.mean_minority_recall)+"</td><td>"+ppt(x.mean_test_minus_train_coverage_pp)+"</td></tr>").join("");
+}
+for(const id of ["dataset","objective","clients"])$(id).addEventListener("change",render);
+Promise.all([
+ fetch("../data/PUBLIC_COMMERCE_TECH_PILOT_MANIFEST.json",{cache:"no-store"}),
+ fetch("../data/PUBLIC_COMMERCE_TECH_PILOT_POLICY_SUMMARY.csv",{cache:"no-store"})
+]).then(async ([r,s])=>{if(!r.ok||!s.ok)throw Error("尚未發布完整驗證檔");
+ const m=await r.json();if(m.status!=="EXPLORATORY_4_SEEDS_COMPLETED"||m.evaluated_configurations!==280)throw Error("完整性狀態未通過");
+ data=parseCSV(await s.text());if(data.length!==60)throw Error("六策略 × 五配置 × 兩來源總數不符");
+ $("status").textContent="PASS：兩份 CC BY 4.0 公開資料、4 Seeds × 五配置 × 7 模式＝280 列已完整核對。數據來自真正的 LEM2 執行，而非模擬預測。";render();
+}).catch(e=>{$("status").textContent="尚無可確認的完整公開資料實測結果："+e.message;});
+})();
+</script></body></html>
