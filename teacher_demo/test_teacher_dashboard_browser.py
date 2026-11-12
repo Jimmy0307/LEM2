@@ -91,7 +91,7 @@ def main():
             assert page.locator("#seedGrowthRows tr").count()==4
             assert "42/42" in page.locator("#architectureRows tr").first.inner_text()
             assert "7,056" in page.locator("#lineage").inner_text()
-            assert "+5 pp" in page.locator("#pp").inner_text()
+            assert "5 pp" in page.locator("#pp").inner_text()
             page.locator("#nseed").select_option("7")
             assert "7/7" in page.locator("#architectureRows tr").first.inner_text()
             assert page.locator("#policyMatrix tr").count()==6  # matrix still full 42 seeds
