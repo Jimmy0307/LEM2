@@ -12,6 +12,7 @@ on:
       - docs/research/teacher_dashboard/index.html
       - docs/research/teacher_dashboard/site.css
       - docs/research/teacher_dashboard/conflict/**
+      - docs/research/teacher_dashboard/versions/**
       - docs/research/teacher_dashboard/methods/**
       - docs/research/teacher_dashboard/evidence/**
       - docs/research/teacher_dashboard/ranking/**
