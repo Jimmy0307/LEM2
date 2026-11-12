@@ -1,0 +1,64 @@
+name: LEM2 Conflict Rate Percentage - 19 Verified Tables
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - teacher_demo/build_conflict_19_tables.py
+      - .github/workflows/conflict-19-tables.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build-19:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas numpy
+      - name: Build 19 independent analytical views of canonical conflict observations
+        run: python -m teacher_demo.build_conflict_19_tables
+      - name: Verify 19 exports, denominators, source and manifest contract
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd
+          import json
+          root=Path("docs/research/teacher_dashboard/conflict_19")
+          man=json.loads((root/"manifest.json").read_text())
+          assert len(man["tables"])==19
+          assert man["raw_iid_rule_sets"]==1260
+          assert man["raw_noniid_rule_sets"]==1008
+          assert len(list(root.glob("*.csv")))==19
+          for t in man["tables"]:
+              p=root/t["file"];assert p.is_file()
+              df=pd.read_csv(p)
+              assert len(df)==t["rows"] and len(df)>0
+              if "mean_conflict_rate_pct" in df:
+                  assert df["mean_conflict_rate_pct"].between(0,100).all()
+                  assert df["pooled_conflict_rate_pct"].between(0,100).all()
+                  assert (df["conflict_cases"]<=df["evaluation_cases"]).all()
+              else:
+                  assert df["IID_conflict_rate_pct"].between(0,100).all()
+                  assert df["nonIID_conflict_rate_pct"].between(0,100).all()
+          print("CONFLICT_19_TABLE_EXPORT_VERDICT=PASS",flush=True)
+          PY
+      - name: Publish versioned tables and manifest
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/research/teacher_dashboard/conflict_19/
+          if ! git diff --cached --quiet; then
+            git commit -m "research: publish 19 conflict-rate percent tables [skip ci]"
+            git fetch origin "${GITHUB_REF_NAME}"
+            git rebase FETCH_HEAD
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: classical-conflict-19-tables
+          path: docs/research/teacher_dashboard/conflict_19/
+          retention-days: 90
+          if-no-files-found: error
