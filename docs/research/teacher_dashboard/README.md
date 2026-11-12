@@ -1,3 +1,15 @@
+## 2026-11-12｜新增 20 個公開資料領域：Classical／Federated LEM2 訓練覆蓋率壓力測試
+
+- 研究頁：[20 份不同特性 UCI 資料集與 Train-only Supplement 測試](./public20/)；來源註冊檔 `teacher_demo/public_20_registry.py`，獨立於原三份基線和之前 9 份外部資料（七份壓力資料與兩份商業／工業）。
+- 20 個 UCI 來源：Bank Marketing（222）、Adult Income（2）、Mushroom（73）、Phishing Websites（327）、Spambase（94）、Banknote（267）、Dry Bean（602）、Rice（545）、Letter Recognition（59）、Iris（53）、Wine（109）、Wisconsin Diagnostic（17）、MAGIC Gamma（159）、HTRU2（372）、EEG Eye State（264）、German Credit（144）、Sonar（151）、Haberman（43）、Covertype（31）、Electrical Grid Stability（471）。
+- 第一輪 Seed 42 的固定來源／最多六特徵、C0 與 C3、NONE＋六策略，保留 Train/Test exact coverage、Conflict、候選覆蓋率與 Accuracy/BA；外加 **Train-only purity≥90%、support≥5、最多 80 條的作者定義簡化補充規則**，比較 Train/Test Coverage、Accuracy、Balanced Accuracy、被救回數量。此法非原典 MLEM2 補充規則。
+- 導入來源完整性：原曾嘗試 UCI Occupancy（357），由官方 Python 介面取得目標欄全缺；UCI Sensorless Drive（325）官方 Python 介面拒絕匯入。保留失敗稽核，改以 EEG（264）及 Electrical Grid（471）維持 20 個真正可評估的來源。
+- 最完整來源追溯：`docs/research/teacher_dashboard/data/PUBLIC20_MANIFEST.json`；可重現執行：`.github/workflows/public-20-uci-coverage-benchmark.yml` 及 `public20-finalize-reuse-artifacts.yml`。
+- 重要限制：原始 Covertype 581,012 與 Adult 48,842 等較大來源確有下載與固定抽樣；模型只以固定子集訓練，不是原始全量基準。此第一輪只有 **1 Seed**，不能推論普遍適用性或統計顯著性。下一步對最有價值的模型失敗類型再完成完整 42 Seeds、更多 Feature budget、non-IID 與時間／群組外部分割。
+- 研究文獻：Inuiguchi & Washimi（2015）https://doi.org/10.20965/jaciii.2015.p0747、Cohen（1995）https://doi.org/10.1016/B978-1-55860-377-6.50023-2、VC-DomLEM（2011）https://doi.org/10.1016/j.ins.2010.10.030、El-Yaniv & Wiener（2010）https://jmlr.org/papers/v11/el-yaniv10a.html。
+
+---
+
 ## 2026-11-12｜公開電商／設備故障資料獨立四 Seed 實驗
 
 - 實驗設計及網站：[公開電商與技術設備研究](./public_data/)；新增 UCI Online Shoppers（ID 468, DOI 10.24432/C5F88Q）與 AI4I Predictive Maintenance（ID 601, DOI 10.24432/C5HS5C），皆為 CC BY 4.0 公開資料。AI4I 為合成工業觀測，必須明確註明。
