@@ -1,0 +1,76 @@
+name: LEM2 Classical Extreme UCI Dataset Pilot
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - .github/workflows/extreme-uci-pilot.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  external-seed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      max-parallel: 7
+      matrix:
+        dataset: [tictactoe, cmc, glass, nursery, wisconsin_original, voting_records, zoo]
+        seed: [1, 42]
+        scenario: [BASE, TRAIN_LABEL_FLIP20]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Python scientific and UCI source libraries
+        run: python -m pip install -r requirements-dev.txt ucimlrepo
+      - name: Execute genuine exact-reduct Classical LEM2 under held-out test
+        run: |
+          python -m teacher_demo.extreme_dataset_runner \
+            --dataset ${{ matrix.dataset }} \
+            --seed ${{ matrix.seed }} \
+            --scenario ${{ matrix.scenario }} \
+            --output outputs/extreme_stress
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: extreme-${{ matrix.dataset }}-${{ matrix.seed }}-${{ matrix.scenario }}
+          path: outputs/extreme_stress/*
+          retention-days: 90
+          if-no-files-found: error
+  aggregate:
+    if: ${{ always() }}
+    needs: external-seed
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas numpy
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: extreme-*
+          path: external_stress_artifacts
+          merge-multiple: true
+      - name: Build honest exploratory evidence (partial run is clearly marked)
+        run: python -m teacher_demo.summarize_extreme_pilot
+      - name: Publish external pilot evidence separately from frozen 8820 matrix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/research/teacher_dashboard/data/EXTREME_UCI_PILOT_*
+          if ! git diff --cached --quiet; then
+            git commit -m "research: publish externally sourced extreme UCI pilot evidence [skip ci]"
+            git fetch origin "${GITHUB_REF_NAME}"
+            git rebase FETCH_HEAD
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: external-uci-extreme-pilot-audit
+          path: docs/research/teacher_dashboard/data/EXTREME_UCI_PILOT_*
+          retention-days: 90
+          if-no-files-found: error
