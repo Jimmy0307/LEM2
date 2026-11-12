@@ -103,6 +103,7 @@ def main():
             print("CLASSICAL_FEDERATED_42SEED_VERSION_PP_STABILITY=PASS",flush=True)
 
             # Train/Test coverage teaching page: distinguish exact matching from rejection.
+            page.goto(report,wait_until="domcontentloaded")
             assert page.locator('a[href="./coverage/"]').count() >= 1
             page.goto(report+"coverage/",wait_until="domcontentloaded")
             assert "Test Data Coverage 如何提高" in page.locator("h1").inner_text()
