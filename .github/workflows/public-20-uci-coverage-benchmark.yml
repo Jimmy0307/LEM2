@@ -15,7 +15,7 @@ jobs:
       fail-fast: false
       max-parallel: 6
       matrix:
-        dataset: [bank_marketing, adult_income, mushroom, phishing, spambase, banknote, dry_bean, rice, letter, iris, wine, breast_diagnostic, magic_gamma, htru2, occupancy, german_credit, sonar, haberman, covertype, sensorless_drive]
+        dataset: [bank_marketing, adult_income, mushroom, phishing, spambase, banknote, dry_bean, rice, letter, iris, wine, breast_diagnostic, magic_gamma, htru2, eeg_eye_state, german_credit, sonar, haberman, covertype, grid_stability]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
