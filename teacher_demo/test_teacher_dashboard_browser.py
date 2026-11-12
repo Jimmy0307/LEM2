@@ -102,6 +102,21 @@ def main():
             assert not errors, errors
             print("CLASSICAL_FEDERATED_42SEED_VERSION_PP_STABILITY=PASS",flush=True)
 
+            # Train/Test coverage teaching page: distinguish exact matching from rejection.
+            assert page.locator('a[href="./coverage/"]').count() >= 1
+            page.goto(report+"coverage/",wait_until="domcontentloaded")
+            assert "Test Data Coverage 如何提高" in page.locator("h1").inner_text()
+            assert page.locator("#definition .cover-grid > div").count()==3
+            assert "99.87%" in page.locator("#baseline").inner_text()
+            assert "68.67%" in page.locator("#baseline").inner_text()
+            assert page.locator('a[href="../data/POLICY_COMPARISON_19_HEADERS_42SEEDS.csv"]').count()==1
+            page.wait_for_function(
+                "document.querySelector('#trainTestStatus').textContent.indexOf('讀取同規則')===-1",timeout=30000
+            )
+            assert "0%" not in page.locator("#trainTestStatus").inner_text() or "630" in page.locator("#trainTestStatus").inner_text()
+            assert not errors, errors
+            print("TRAIN_TEST_COVERAGE_REJECTION_TEACHER_PAGE=PASS",flush=True)
+
             # Independent evidence drilldown: complete matrix with real selectors.
             page.goto(report+"evidence/",wait_until="domcontentloaded")
             page.wait_for_function("document.getElementById('validState').textContent.includes('PASS')",timeout=30000)
