@@ -80,7 +80,7 @@ def compute(bundle,seed,system,client_count,cfg):
       "test_candidate_coverage_pct":100*test_candidate.mean(),
       "test_no_match_count":int((~test_has).sum()),
       "test_no_match_pct":100*(~test_has).mean(),
-      "test_conflict_pct":100*float(original["conflict_case_rate"]),
+      "test_conflict_pct":100*np.mean(np.asarray(a.pre_resolution_conflict_flags,dtype=bool)),
       "baseline_accuracy_pct":100*(old==truth).mean(),
       "baseline_fallback_correct_count":int(((~test_has)&(old==truth)).sum()),
       "baseline_fallback_accuracy_pct":100*((old[~test_has]==truth[~test_has]).mean()) if (~test_has).any() else np.nan
