@@ -1,0 +1,112 @@
+name: LEM2 20 New Public UCI Datasets - Train Coverage Stress Pilot
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - .github/workflows/public-20-uci-coverage-benchmark.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  each-public-dataset:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        dataset: [bank_marketing, adult_income, mushroom, phishing, spambase, banknote, dry_bean, rice, letter, iris, wine, breast_diagnostic, magic_gamma, htru2, occupancy, german_credit, sonar, haberman, covertype, sensorless_drive]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Requirements and public UCI source reader
+        run: python -m pip install -r requirements-dev.txt ucimlrepo
+      - name: Run exact-reduct LEM2 and train-only supplementary rules
+        run: |
+          python - <<'PY'
+          import json,traceback
+          from pathlib import Path
+          from teacher_demo.public_20_runner import run
+          dataset="${{ matrix.dataset }}"
+          out=Path("outputs/public20")
+          out.mkdir(parents=True,exist_ok=True)
+          try:
+              run(dataset,out)
+          except BaseException as e:
+              (out/f"PUBLIC20_ERROR_{dataset}.json").write_text(
+                  json.dumps({"dataset_key":dataset,"error":type(e).__name__+": "+str(e),
+                              "traceback":traceback.format_exc(limit=12),
+                              "status":"FAILED_NOT_IMPUTED"},indent=2),
+                  encoding="utf-8")
+              print("PUBLIC20_DATASET_FAILED_RECORDED",dataset,str(e),flush=True)
+          PY
+      - name: Upload source provenance, actual dataset subset and validated results OR error
+        uses: actions/upload-artifact@v4
+        with:
+          name: public20-${{ matrix.dataset }}
+          path: outputs/public20/*
+          if-no-files-found: error
+          retention-days: 90
+  aggregate:
+    needs: each-public-dataset
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Dependencies for result integrity checks
+        run: python -m pip install pandas numpy
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: public20-*
+          path: public_20_incoming
+          merge-multiple: true
+      - name: Audit all 20 unique sources and publish no-imputation evidence
+        run: python -m teacher_demo.summarize_public_20
+      - name: Validate registry cardinality and published test coverage metrics
+        run: |
+          python - <<'PY'
+          import pandas as pd,json
+          from pathlib import Path
+          root=Path('docs/research/teacher_dashboard/data')
+          j=json.loads((root/'PUBLIC20_MANIFEST.json').read_text(encoding='utf-8'))
+          assert j['n_registered']==20
+          assert len(j['datasets'])==20
+          assert j['passed_count']+j['failed_count']==20
+          if j['passed_count']:
+              df=pd.read_csv(root/'PUBLIC20_BASE_RESULTS.csv')
+              sup=pd.read_csv(root/'PUBLIC20_SUPPLEMENT_RESULTS.csv')
+              assert len(df)==14*j['passed_count']
+              assert len(sup)==2*j['passed_count']
+              assert df.seed.eq(42).all()
+              assert sup.train_coverage_gain_pp.ge(-1e-9).all()
+              assert sup.test_coverage_gain_pp.ge(-1e-9).all()
+              assert sup.augmented_train_coverage_pct.le(100+1e-9).all()
+              assert sup.augmented_test_coverage_pct.le(100+1e-9).all()
+              assert df.coverage.between(0,1).all()
+              assert df.conflict_case_rate.between(0,1).all()
+              print('PUBLIC20_AUDIT_VERDICT',j['status'],j['passed_count'],j['failed_count'])
+          PY
+      - name: Commit sourced 20 datasets and reproducible metrics to research branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/research/public_datasets_20/ docs/research/teacher_dashboard/data/PUBLIC20_*
+          if ! git diff --cached --quiet; then
+            git commit -m "research: publish sourced 20-dataset Classical LEM2 Train Coverage pilot [skip ci]"
+            git fetch origin "${GITHUB_REF_NAME}"
+            git rebase FETCH_HEAD
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: public-20-datasets-coverage-evidence-and-profiles
+          path: |
+            docs/research/teacher_dashboard/data/PUBLIC20_*
+            docs/research/public_datasets_20/
+          retention-days: 90
+          if-no-files-found: error
