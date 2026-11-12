@@ -1,0 +1,93 @@
+name: LEM2 Public E-Commerce and Industrial UCI LEM2 Pilot
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - .github/workflows/public-commerce-tech-uci.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  public-seed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        dataset: [online_shoppers, ai4i_maintenance]
+        seed: [1, 7, 21, 42]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pinned research requirements and UCI public source client
+        run: python -m pip install -r requirements-dev.txt ucimlrepo
+      - name: Fetch CC-BY dataset and run six LEM2 policies on genuine holdout
+        run: |
+          python -m teacher_demo.extreme_dataset_runner \
+            --dataset ${{ matrix.dataset }} \
+            --seed ${{ matrix.seed }} \
+            --scenario BASE \
+            --output outputs/public_commerce_tech
+      - uses: actions/upload-artifact@v4
+        with:
+          name: commerce-tech-${{ matrix.dataset }}-${{ matrix.seed }}
+          path: outputs/public_commerce_tech/*
+          retention-days: 90
+          if-no-files-found: error
+  audit-publish:
+    needs: public-seed
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas numpy
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: commerce-tech-*
+          path: public_commerce_tech_incoming
+          merge-multiple: true
+      - name: Full integrity gate - eight genuine UCI runs, no missing comparisons
+        run: python -m teacher_demo.summarize_public_commerce_tech
+      - name: Validate external public dataset attribution and rare-class diagnostics
+        run: |
+          python - <<'PY'
+          import pandas as pd,json
+          from pathlib import Path
+          root=Path("docs/research/teacher_dashboard/data")
+          m=json.loads((root/"PUBLIC_COMMERCE_TECH_PILOT_MANIFEST.json").read_text())
+          result=pd.read_csv(root/"PUBLIC_COMMERCE_TECH_PILOT_RESULTS.csv")
+          assert m["status"]=="EXPLORATORY_4_SEEDS_COMPLETED"
+          assert len(result)==280
+          assert set(result.ext_dataset_key)=={"online_shoppers","ai4i_maintenance"}
+          assert result.groupby(["ext_dataset_key","seed"]).size().eq(35).all()
+          assert result.groupby(["ext_dataset_key","seed","client_count"]).size().eq(7).all()
+          assert (result[result.selection_policy!="NONE"].minority_test_count>0).all()
+          for d in ["online_shoppers","ai4i_maintenance"]:
+            assert Path("docs/research/public_datasets/"+d+"_public_stratified_subset.csv").is_file()
+          print("CC_BY_4SEED_PUBLIC_COMMERCE_TECH_GATE_PASS")
+          PY
+      - name: Publish prepared UCI subset and independently audited experiment results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/research/public_datasets/ docs/research/teacher_dashboard/data/PUBLIC_COMMERCE_TECH_PILOT_*
+          if ! git diff --cached --quiet; then
+            git commit -m "research: publish real public e-commerce & AI4I pilot and CC BY provenance [skip ci]"
+            git fetch origin "${GITHUB_REF_NAME}"
+            git rebase FETCH_HEAD
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: public-commerce-tech-audited-results
+          path: |
+            docs/research/public_datasets/
+            docs/research/teacher_dashboard/data/PUBLIC_COMMERCE_TECH_PILOT_*
+          retention-days: 90
+          if-no-files-found: error
