@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Classical/Federated LEM2 42 seeds: Train/Test coverage, No Match, true-candidate coverage, risk–coverage and evidence-backed rule extension approaches.">
+<title>Train/Test Coverage 與降低 No Match｜教授研究報告</title>
+<link rel="stylesheet" href="../site.css">
+<style>
+.cov-hero{background:linear-gradient(110deg,#103248,#216b6f);color:white;padding:35px max(18px,calc((100vw - 1150px)/2))}.cov-hero h1{font-size:clamp(27px,4vw,42px);line-height:1.2;margin:10px 0}.cov-hero p{max-width:920px;color:#deebed}.cov-hero a{color:#d7f8f3}.cover-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.cover-grid>div{border:1px solid #d7e3e7;border-radius:12px;padding:15px;background:#f8fcfd}.cover-grid strong{font-size:23px;color:#155870;display:block}.cover-grid p{font-size:13px;margin:5px 0}.score-compare td:not(:first-child){font-variant-numeric:tabular-nums}.metric-note{font-size:13px;color:#667581}.mono{font-family:ui-monospace,Consolas,monospace;background:#f0f5f6;padding:12px;border-radius:8px;overflow:auto;white-space:normal}.decision{border-left:3px solid #257779;padding:12px 14px;background:#eef7f5}.sources a{margin:0 10px 9px 0;display:inline-block}.status{padding:10px 12px;border-radius:8px;background:#f4f8f9;color:#264f5b}.tag{font-weight:bold;text-transform:uppercase;letter-spacing:.04em;font-size:11px;color:#31717c}svg.trace{width:100%;height:auto;max-height:260px;border:1px solid #dae5e9;border-radius:10px}
+@media(max-width:800px){.cover-grid{grid-template-columns:1fr}.cov-hero{padding:26px 18px}}
+</style></head><body>
+<div class="site-top"><a class="brand" href="../">LEM2 Research · 教授報告</a><nav><a href="../">研究總覽</a><a href="../conflict/">Conflict／平票</a><a href="../versions/">42 Seeds／版本</a><a class="active" href="./" aria-current="page">Train／Test Coverage</a><a href="../evidence/">8,820 筆證據</a><a href="../methods/">公式</a></nav></div>
+<header class="cov-hero"><div class="eyebrow">RESEARCH EXTENSION · COVERAGE GENERALIZATION</div>
+<h1>Test Data Coverage 如何提高？<br>降低 No Match，不等於無條件提高準確率</h1>
+<p>本頁把規則命中、正確候選、選擇性拒判和分類正確率拆成獨立問題。所有已發布的正式數字標為 <strong>Classical reduct + LEM2，42 Seeds，80/20 Holdout</strong>；新方法的改善幅度未經實測前不作宣稱。</p>
+<p><a href="#definition">指標分母</a> · <a href="#baseline">42-Seed 實測</a> · <a href="#traintest">Train/Test 比較</a> · <a href="#literature">已有文獻</a> · <a href="#experiment">下一輪 A/B 設計</a></p>
+</header>
+<main class="wrap">
+<section class="panel" id="definition"><span class="section-tag">01 · THREE DIFFERENT COVERAGE DEFINITIONS</span>
+<h2>先把規則覆蓋與拒判嚴格分開</h2>
+<div class="cover-grid">
+<div><span class="tag">Exact Rule Coverage</span><strong>#至少一條 IF 命中 / N</strong><p>我們目前的 Coverage。無命中規則即 No Match；無論最後 fallback 是否答對，仍算沒有規則覆蓋。</p></div>
+<div><span class="tag">True Candidate Coverage</span><strong>#真實類別在候選 / N</strong><p>需要測試標籤才能離線計算，不能在未知標籤的線上推論拿來選擇策略。它衡量是否有機會從規則中選對。</p></div>
+<div><span class="tag">Selective Acceptance Coverage</span><strong>#系統接受自動分類 / N</strong><p>只有引入明確 reject／abstain 門檻後才有這個指標。目前的 No Match 預設多數類別，並非正式拒判。</p></div>
+</div>
+<div class="mono">C_train = |{x ∈ Train : M_R(x) ≠ ∅}| / N_train<br>
+C_test = |{x ∈ Test : M_R(x) ≠ ∅}| / N_test<br>
+Gap(pp) = 100 × (C_test − C_train)<br>
+NoMatch_test = 1 − C_test<br>
+Selective Risk = #接受後答錯 / #被接受；Acceptance = #接受 / N</div>
+<p class="metric-note">在同一 Seed、資料集、Client 數下，必須以 Train 建立前處理／Reduct／Rules，再以<strong>完全相同的規則集合</strong>評估 Train 與未見 Test；不能用 Full Data 回代的 Coverage 直接減掉 Holdout Coverage，因為規則和訓練樣本不同。</p>
+</section>
+<section class="panel" id="baseline"><span class="section-tag">02 · VERIFIED 42-SEED HOLDOUT RESULTS</span>
+<h2>Client 愈多，Test Coverage 可能升高，但衝突也可能一起升高</h2>
+<p>以下固定三個 UCI 資料集等權平均、Classical 正域約簡＋LEM2、42 Seeds、分層式 80/20 Holdout。Accuracy 使用 <strong>Global Strength</strong>；Coverage 與 Conflict 是共用 Rule Set 的診斷，與六策略如何選 Winner 無關。</p>
+<div class="table-wrap"><table class="score-compare"><thead><tr><th>架構</th><th>Test Coverage</th><th>No Match</th><th>Conflict Rate</th><th>GS Accuracy</th></tr></thead><tbody>
+<tr><td>Centralized</td><td>83.26%</td><td>16.74%</td><td>10.57%</td><td>81.11%</td></tr>
+<tr><td>Federated C2</td><td>94.87%</td><td>5.13%</td><td>27.75%</td><td>82.00%</td></tr>
+<tr><td>Federated C3</td><td>98.78%</td><td>1.22%</td><td>46.07%</td><td>82.32%</td></tr>
+<tr><td>Federated C4</td><td>99.69%</td><td>0.31%</td><td>59.72%</td><td>80.64%</td></tr>
+<tr><td>Federated C5</td><td>99.87%</td><td>0.13%</td><td>68.67%</td><td>78.81%</td></tr>
+</tbody></table></div>
+<div class="decision"><strong>這是已經觀察到的核心權衡：</strong>C3→C5 的 Test Coverage 繼續升高，No Match 更少；但 GS Accuracy 反而下降。多命中不等於更好分類，高衝突時還必須看候選正確性與 Winner 選擇。</div>
+<p class="metric-note">上述百分比為 42 Seeds、三資料集等權平均，並非把 42 Seeds 當 42 個獨立外部資料集。</p>
+</section>
+<section class="panel" id="traintest"><span class="section-tag">03 · TRAIN VS TEST · SAME FROZEN RULES</span>
+<h2>Train/Test Coverage 落差：由可核對重跑結果更新</h2>
+<div id="trainTestStatus" class="status" role="status" aria-live="polite">讀取同規則集合 Train/Test 42-Seed 重跑驗證狀態…</div>
+<div class="table-wrap"><table><thead><tr><th>資料集</th><th>架構</th><th>Seeds</th><th>Train Coverage</th><th>Test Coverage</th><th>Test − Train</th><th>Test No Match</th></tr></thead><tbody id="trainTestRows"><tr><td colspan="7">尚未取得驗證完成的同規則集合成對結果；不使用 Full Data 回代冒充 Train Coverage。</td></tr></tbody></table></div>
+<p class="metric-note">完成後從 <code>TRAIN_TEST_COVERAGE_SUMMARY.json</code> 讀取；每 Seed 的 Test Coverage 必須與凍結 8,820 主矩陣逐列比對一致，Train 不得使用 Test 資料重新擬合。</p>
+</section>
+<section class="panel" id="failure"><span class="section-tag">04 · ERROR SOURCE BEFORE CHANGING RULES</span>
+<h2>真正需要把 No Match 拆成幾種原因</h2>
+<div class="table-wrap"><table><thead><tr><th>來源</th><th>診斷</th><th>對應措施</th><th>預期風險</th></tr></thead><tbody>
+<tr><td>未見過的特徵組合</td><td>Test 條件組合在 Train 不存在，且沒有符合規則</td><td>訓練集內的補充規則、部分匹配、較粗粒度規則</td><td>可能增加錯誤候選與衝突</td></tr>
+<tr><td>Train 已覆蓋不足</td><td>Train Coverage 也低，特別是某一類別</td><td>檢查確定規則／下近似、約簡、規則誘導與類別一致性</td><td>過度寬鬆可能犧牲規則純度</td></tr>
+<tr><td>不同 Client 規則差異</td><td>Federated 與 Centralized 的規則集合／Reduct 差異</td><td>比較 union、去重、子集支持與 non-IID 程度</td><td>更多規則可能擴大 Conflict</td></tr>
+<tr><td>沒有規則命中但 fallback 仍答對</td><td>No Match + 多數類別成功，卻不是 Rule Coverage</td><td>保留明確預設分類的來源與成功率</td><td>不能把這筆計入規則命中率</td></tr>
+</tbody></table></div>
+</section>
+<section class="panel" id="literature"><span class="section-tag">05 · VERIFIED PRIOR RESEARCH</span>
+<h2>已有人研究 Train/Test 覆蓋落差、補充規則與拒判權衡</h2>
+<ol>
+<li><strong>Inuiguchi &amp; Washimi（2015）</strong>，<em>Improving Rough Set Rule-Based Classification by Supplementary Rules</em>：針對新物件沒有任何規則完全命中，使用補充規則改善；最值得先做同方法比較。<a href="https://doi.org/10.20965/jaciii.2015.p0747">正式論文</a></li>
+<li><strong>Discretisation of conditions in decision rules induced for continuous data（2020）</strong>：實測指出部分離散化與最小覆蓋方案的測試集規則覆蓋甚至可能接近零，並分析規則歸納與離散化方式的效應。<a href="https://doi.org/10.1371/journal.pone.0231788">PLOS ONE</a></li>
+<li><strong>Błaszczyński 等（2011）</strong>，<em>Sequential covering rule induction algorithm for variable consistency rough set approaches</em>：VC-DomLEM 使用放寬一致性門檻的近似，允許更廣的規則覆蓋範圍，但不保證未見資料的準確率會提升。<a href="https://www.sciencedirect.com/science/article/pii/S0020025510005359">期刊摘要</a></li>
+<li><strong>El-Yaniv &amp; Wiener（2010）</strong>，<em>On the Foundations of Noise-Free Selective Classification</em>：區分接受率與在被接受子集的錯誤風險，為拒判率控制提供風險－覆蓋權衡框架。<a href="https://jmlr.org/papers/v11/el-yaniv10a.html">JMLR</a></li>
+</ol>
+<p class="metric-note">VC-DRSA 更適用於屬性有明確偏好方向、決策有序的資料。若為 Car Evaluation 這類混合語意，必須先驗證方向、單調限制與有序類別，不能直接把 Classical LEM2 的結果改名 VC-DRSA。若「K4」是文獻中的特定演算法或參數，目前仍需準確來源確認；不要把它和四個 Client 的 C4 混稱。</p>
+</section>
+<section class="panel" id="experiment"><span class="section-tag">06 · RESEARCH HYPOTHESES & GATES</span>
+<h2>接下來要如何真正提高 Test Coverage，而不是只調高分數？</h2>
+<div class="table-wrap"><table><thead><tr><th>候選方案</th><th>改動範圍</th><th>可證偽假設</th><th>必要品質門檻</th></tr></thead><tbody>
+<tr><td>A0 原始完全匹配</td><td>Classical LEM2 不變</td><td>固定 42 Seeds 的 Test Coverage 與 Conflict 作基線</td><td>與原 8,820 逐筆或逐配置一致</td></tr>
+<tr><td>A1 No Match 才用部分匹配</td><td>推論後處理，不重訓規則</td><td>可增加「取得規則答案」的比例</td><td>報告新增答對率；不能冒稱原始 Exact Coverage 已增加</td></tr>
+<tr><td>A2 Train-only 補充規則</td><td>額外規則生成並保存來源</td><td>部分舊規則沒覆蓋的物件可被更一般規則涵蓋</td><td>Rule Count、Conflict、BA、No Match、Train/Test Gap 一起比較</td></tr>
+<tr><td>A3 訓練資料內調整一致性／粒度</td><td>VC-IRSA、VPRS 或經驗證的約簡敏感性實驗</td><td>減少確定規則太窄造成的缺口</td><td>禁止使用 Test 調參；按類別比較正確候選與錯誤率</td></tr>
+<tr><td>A4 加入明確 Reject／Abstain</td><td>獨立選擇性預測門檻</td><td>可在指定錯誤上限下決定接受率，而非盲目降低拒判</td><td>輸出 Risk–Coverage 曲線，門檻在 Train-validation 選定</td></tr>
+</tbody></table></div>
+<p class="decision"><strong>研究順序：</strong>先跑同規則 Train/Test Coverage → 把 No Match 分成新組合與舊組合 → 對相同 Seed 的 No Match 子集評估 A1／A2 → 再考慮 A3 VC-DRSA。把改善率寫成「新增接受的物件數與其正確率」，才有辦法判斷有沒有實際價值。</p>
+<p class="metric-note">補充規則必須由 Train（含內部 validation）建立，Test 僅使用凍結模型評估；所有變更另建版本，不覆寫 Classical 8,820 基線。</p>
+</section>
+<section class="panel" id="outputs"><span class="section-tag">07 · DATA & CORRECTED 19-COLUMN PRESENTATION</span>
+<h2>19 個表頭與各資料集勝出次數</h2>
+<p>先前的 <code>conflict_19/</code> 是 19 張分析表的舊理解；現在的正式比較格式為<strong>一張 19 欄的總表</strong>，第 19 欄是 <code>conflict_rate_pct</code>，另有依資料集、Seed 與相同規則配置比較六策略的勝出次數。多個策略平手時同時記錄共同勝出與分攤次數，不把平手當成多個獨立勝利。</p>
+<div class="sources">
+<a href="../data/POLICY_COMPARISON_19_HEADERS_42SEEDS.csv">19 欄完整比較 CSV</a>
+<a href="../data/POLICY_WINS_BY_DATASET.csv">各資料集六策略勝出統計 CSV</a>
+<a href="../data/POLICY_19_HEADERS_MANIFEST.json">19 欄定義與證據契約</a>
+<a href="../data/TEST_COVERAGE_42SEED_SUMMARY.csv">已有 Test Coverage 評估</a>
+<a href="../data/TRAIN_TEST_COVERAGE_42SEEDS.csv">Train/Test Coverage 重跑逐 Seed 數據</a>
+</div>
+<p>這些資料均標註基於 Classical reduct + LEM2；Federated 表示分 Client 產生規則再合併，並非 DRSA。資料仍以 GitHub 分支內容及 Actions 驗證紀錄為準。</p>
+</section>
+</main><footer class="footer">LEM2 × Federated · <a href="../">返回教授報告首頁</a> · <a href="../versions/">42 Seeds 版本</a> · <a href="../conflict/">Conflict 與平票</a></footer>
+<script>
+(async function(){
+ const status=document.getElementById("trainTestStatus"),body=document.getElementById("trainTestRows");
+ try{
+  const res=await fetch("../data/TRAIN_TEST_COVERAGE_SUMMARY.json",{cache:"no-store"});
+  if(res.status===404){status.textContent="獨立 Train/Test Coverage 成對實驗尚未成功發布；目前只能引用已驗證的 Test Coverage。";return;}
+  if(!res.ok)throw Error("HTTP "+res.status);
+  const j=await res.json();
+  if(j.method!=="CLASSICAL_POSITIVE_REGION_REDUCT_LEM2"||j.configurations!==630||j.seeds!==42||
+     !j.test_coverage_verified_against_canonical||!Array.isArray(j.groups)||j.groups.length!==15)throw Error("42-Seed 證據契約未通過");
+  const pct=v=>Number(v).toFixed(2)+"%";
+  const pp=v=>(v>=0?"+":"")+Number(v).toFixed(2)+" pp";
+  body.innerHTML=j.groups.map(x=>"<tr><td>"+x.dataset+"</td><td>"+
+    (x.client_count===0?"Centralized":"Fed C"+x.client_count)+"</td><td>"+x.seeds+
+    "</td><td>"+pct(x.train_coverage_pct)+"</td><td>"+pct(x.test_coverage_pct)+
+    "</td><td>"+pp(x.coverage_gap_pp)+"</td><td>"+pct(x.test_no_match_pct)+"</td></tr>").join("");
+  status.textContent="PASS：42 Seeds × 3 資料集 × 5 配置＝630 組同規則 Train/Test 比較；Test Coverage 全部與凍結基線一致。";
+ }catch(e){status.textContent="Train/Test 數據尚未通過讀取與驗證："+e.message;}
+})();
+</script></body></html>
