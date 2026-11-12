@@ -1,0 +1,36 @@
+{
+  "contract": "19 HEADERS in ONE table, not 19 separate tables",
+  "columns": [
+    "dataset",
+    "seed",
+    "distribution",
+    "dirichlet_alpha",
+    "split_mode",
+    "system",
+    "client_count",
+    "selection_policy",
+    "train_rows",
+    "test_rows",
+    "rule_count",
+    "train_rule_coverage_pct",
+    "test_rule_coverage_pct",
+    "test_minus_train_coverage_pp",
+    "test_candidate_coverage_pct",
+    "test_conflict_rate_pct",
+    "test_conflict_only_accuracy_pct",
+    "test_overall_accuracy_pct",
+    "test_covered_only_accuracy_pct"
+  ],
+  "column_count": 19,
+  "configurations": 9828,
+  "method": "Classical positive-region reduct + LEM2; IID 42, non-IID 42",
+  "train_coverage_evidence": "UNAVAILABLE from frozen holdout result; intentionally null",
+  "covered_accuracy_evidence": "IID row-level verified; non-IID unavailable, null",
+  "win_count": "Within same dataset, seed, distribution, alpha, client count, across six policies. Ties tracked separately and split fractional credit. No extra data sets claimed.",
+  "outputs": [
+    "COVERAGE_19_COLUMNS_42SEEDS.csv",
+    "POLICY_WIN_EVENTS_BY_DATASET.csv",
+    "POLICY_WIN_COUNTS_BY_DATASET.csv",
+    "POLICY_WIN_COUNTS_SUMMARY.csv"
+  ]
+}
