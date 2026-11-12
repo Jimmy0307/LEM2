@@ -1,0 +1,71 @@
+name: LEM2 Public 20 - Finalize Already Executed Sources and Repair Manifest
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - .github/workflows/public20-finalize-reuse-artifacts.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  audited-finalize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas numpy
+      - name: Reuse 20 original real UCI model runs (never regenerate fake observations)
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 43227301200
+          pattern: public20-*
+          path: public_20_incoming
+          merge-multiple: true
+      - name: Validate each source and multiclass stratified Train/Test split
+        run: python -m teacher_demo.summarize_public_20
+      - name: Fail closed unless all 20 real source experiments passed
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import pandas as pd
+          p=Path("docs/research/teacher_dashboard/data")
+          j=json.loads((p/"PUBLIC20_MANIFEST.json").read_text(encoding="utf-8"))
+          assert j["status"]=="ALL_20_ONE_SEED_PASS",j["failed"]
+          assert j["passed_count"]==20 and j["failed_count"]==0
+          assert len(set(j["passed_keys"]))==20
+          assert pd.read_csv(p/"PUBLIC20_BASE_RESULTS.csv").shape[0]==280
+          assert pd.read_csv(p/"PUBLIC20_SUPPLEMENT_RESULTS.csv").shape[0]==40
+          assert pd.read_csv(p/"PUBLIC20_POLICY_SUMMARY.csv").shape[0]==240
+          assert len(list(Path("docs/research/public_datasets_20").glob("*_prepared.csv")))==20
+          print("PUBLIC20_ALL_SOURCED_20_AND_280_40_EVIDENCE_PASS",flush=True)
+          PY
+      - name: Publish evidence atomically on the latest research branch head
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Fetch before commit; move index/HEAD to newest origin while leaving
+          # our checked/validated generated worktree files as-is. Stage ONLY
+          # the audited evidence directories. This avoids add/add rebase
+          # conflicts with earlier partial-result runs.
+          git fetch origin "${GITHUB_REF_NAME}"
+          git reset --mixed FETCH_HEAD
+          git add docs/research/public_datasets_20/ docs/research/teacher_dashboard/data/PUBLIC20_*
+          if ! git diff --cached --quiet; then
+            git commit -m "research: finalize verified 20 public-source coverage experiments [skip ci]"
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: public20-final-reviewed-evidence
+          path: |
+            docs/research/public_datasets_20/
+            docs/research/teacher_dashboard/data/PUBLIC20_*
+          retention-days: 90
+          if-no-files-found: error
