@@ -6,11 +6,11 @@
 <link rel="stylesheet" href="./site.css"><link rel="stylesheet" href="./report-v2.css">
 </head><body>
 <div class="site-top"><a class="brand" href="./">LEM2 Research · 互動研究報告</a>
-<nav><a class="active" href="./">主流程／報告</a><a href="./conflict/">Conflict／平票</a><a href="./ranking/">哪個配置最好？</a><a href="./evidence/">8,820 筆證據</a><a href="./methods/">公式與定義</a><a href="./figures/">原始九圖</a><a href="./lab/">CSV 實跑</a><a href="https://github.com/Jimmy0307/LEM2/tree/research/report-ready-dashboard-20261109/docs/research/teacher_dashboard" target="_blank" rel="noopener">GitHub</a></nav></div>
+<nav><a class="active" href="./">主流程／報告</a><a href="./conflict/">Conflict／平票</a><a href="./versions/">42 Seeds／版本對照</a><a href="./ranking/">哪個配置最好？</a><a href="./evidence/">8,820 筆證據</a><a href="./methods/">公式與定義</a><a href="./figures/">原始九圖</a><a href="./lab/">CSV 實跑</a><a href="https://github.com/Jimmy0307/LEM2/tree/research/report-ready-dashboard-20261109/docs/research/teacher_dashboard" target="_blank" rel="noopener">GitHub</a></nav></div>
 <header class="hero hero-v2"><div class="eyebrow">GUIDED RESEARCH REPORT · VERSION 2</div>
 <h1>一張流程圖，講清楚規則怎麼來、<br>Conflict 怎麼發生、最後怎麼選答案</h1>
 <p>首頁就是研究流程。按任一節點，右側會同步展開<strong>這一步的輸入、數學定義、實際使用的變因、結果數值與程式證據</strong>；改變 Seed／資料集／切分／學習架構，所有實驗區塊同時更新。</p>
-<div class="hero-actions"><a class="primary" href="#pipeline">開始點選流程</a><a href="./conflict/">沒有 Conflict／平票怎麼選？</a><a href="#trace">42 Seeds 即時追蹤</a><a href="#definitions">指標精確定義</a><a href="#conclusions">最後總結</a></div>
+<div class="hero-actions"><a class="primary" href="#pipeline">開始點選流程</a><a href="./conflict/">沒有 Conflict／平票怎麼選？</a><a href="./versions/">Classical vs Federated：42 Seeds</a><a href="#trace">42 Seeds 即時追蹤</a><a href="#definitions">指標精確定義</a><a href="#conclusions">最後總結</a></div>
 <div class="callout" style="margin:16px 0;background:#ecf8f3;color:#194b55;border-left:4px solid #19877b"><b>報告建議：</b>先到 <a href="./ranking/" style="font-weight:700">最佳條件比較</a> 選 Accuracy、BA 或 Macro-F1，即可看到哪一組學習配置最好、第二名差多少、跨 42 Seeds 的波動，並檢查 Hayes-Roth 的官方測試限制。</div><div class="hero-subline"><span id="dataState" aria-live="polite">正在核對 GitHub 正式實驗數據…</span><span>研究基線：3 資料集 × 42 Seeds × 2 切分 × 5 學習配置 × 7 模式</span></div>
 </header>
 <main class="wrap v2-main">
@@ -27,6 +27,7 @@
 </section>
 <section class="panel process-panel" id="pipeline" aria-labelledby="pipelineTitle">
 <div class="section-heading"><div><span class="section-tag">01 · RESEARCH FLOW · CLICK TO EXPLORE</span><h2 id="pipelineTitle">完整研究流程總圖｜每一個方塊都可以點</h2></div><div class="chip">有選取狀態 · 全站連動</div></div>
+<p><strong>方法標籤（本版全部實測）：Classical Rough Set Reduct + LEM2。</strong>集中式及 Federated C2–C5 都完成 42 Seeds；Non-IID、DRSA、LERS 不能冒稱使用同一套已完成的 42-Seed 證據。<a href="./versions/">比較版本與 Seed 多寡、pp 定義 →</a></p>
 <p class="muted">核心關係：<strong>LEM2 先產生 Rule Set</strong>；Centralized 與 Federated 是兩種規則生成架構；<strong>Matching／NONE／六分類策略</strong>都在規則產生之後。灰色虛線表示分析分支，不表示新的模型訓練。</p>
 <div class="flow-layout"><div class="flow-map" role="group" aria-label="互動式 LEM2 實驗流程圖">
 <div class="flow-common"><button class="flow-node" data-stage="data" type="button"><small>01 · INPUT</small><strong>Decision Table</strong><span>物件、條件屬性、決策欄</span></button><div class="flow-arrow">↓</div>
@@ -43,7 +44,7 @@
 <div class="flow-bottom-nav"><button type="button" id="flowPrev">← 上一階段</button><span id="flowPosition">請點選流程節點</span><button type="button" id="flowNext">下一階段 →</button><button type="button" id="flowAll">展開所有階段說明</button></div>
 <div id="allStages" hidden></div>
 </section>
-<section class="panel" id="trace"><div class="section-heading"><div><span class="section-tag">02 · REAL-TIME SEED INSPECTOR</span><h2>42 Seeds 完整追蹤｜每個格子直接顯示實測值</h2></div><span id="traceProof" class="chip">正在核對 42 × 210 列</span></div>
+<section class="panel" id="trace"><div class="callout"><b>42 Seeds 方法來源：</b>這 42 次全部是 <strong>Classical reduct + LEM2</strong>。Federated C2–C5 也都已經跑滿 42 次；每 Seed 的六策略共享相同配置下的規則集合。<a href="./versions/">查看版本／Seed 1、7、21、42 與 pp 解釋 →</a></div><div class="section-heading"><div><span class="section-tag">02 · REAL-TIME SEED INSPECTOR</span><h2>42 Seeds 完整追蹤｜每個格子直接顯示實測值</h2></div><span id="traceProof" class="chip">正在核對 42 × 210 列</span></div>
 <p>點選 Seed 1～42：<strong>數值、流程節點、策略比較、下方結論全部同時更新</strong>。選「42 Seeds 平均」可返回整體研究。因 Seed 不是時間序列，這裡用散點分布而不把它解讀成時間趨勢。</p>
 <div class="trace-top"><div><label>Seed 追蹤指標（每格顯示該值）<select id="traceMetric"><option value="conflict_case_rate">Conflict：命中跨決策候選率</option><option value="coverage">Coverage：至少一條規則命中</option><option value="true_in_candidate_rate">True-in-Candidate：正解有被提出</option><option value="accuracy">Accuracy：全部答對率</option><option value="balanced_accuracy">Balanced Accuracy：各類 Recall 等權</option><option value="macro_f1">Macro-F1：各類 F1 等權</option><option value="rule_count">Rule Count：規則數</option></select></label></div><div class="trace-context" id="traceMetricMeaning"> </div></div>
 <div id="seedGridLive" class="seed-numeric-grid" role="group" aria-label="42 個 Seed 的逐次實測數值"></div>
