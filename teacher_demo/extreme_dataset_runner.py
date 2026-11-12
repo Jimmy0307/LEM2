@@ -44,6 +44,12 @@ REGISTRY={
    "doi":"10.24432/C5HS5C","license":"CC BY 4.0","data_kind":"PUBLIC_SYNTHETIC_INDUSTRIAL",
    "feature_note":"Only 6 legitimate predictors; device identifiers and all TWF/HDF/PWF/OSF/RNF failure diagnosis targets excluded"}
 }
+# Independent registry: twenty NEW publicly sourced datasets; keep historical
+# pilot's original seven and two previous business/industrial datasets separate.
+from teacher_demo.public_20_registry import REGISTRY as NEW_PUBLIC_20
+if set(NEW_PUBLIC_20)&set(REGISTRY):raise ValueError("new dataset collides with existing pilot")
+REGISTRY.update(NEW_PUBLIC_20)
+
 SCENARIOS=("BASE","TRAIN_LABEL_FLIP20")
 MODE="HOLDOUT_80_20"
 # Exact reduct combinatorial search: cap features to 10 for safe reproducibility.
@@ -81,6 +87,8 @@ def read_external(name):
     # is an ENGINEERING FEASIBILITY SUBSET, not the full original feature space.
     X=X[chosen].copy()
     y=Y.iloc[:,0].astype("string").fillna("__MISSING_TARGET__")
+    if cfg.get("label_transform")=="adult_income_strip_period":
+        y=y.str.strip().str.removesuffix(".")
     if (y=="__MISSING_TARGET__").any():raise ValueError("Target missing")
     if cfg["feature_mode"]=="EXPLICIT_MIXED":
         cont=list(cfg["continuous_columns"])
@@ -134,7 +142,11 @@ def read_external(name):
       "min_class_count":int(frame["class"].value_counts().min()),
       "source_missing_token":"__MISSING_FEATURE__",
       "feature_mode":cfg["feature_mode"],"fixed_sampling_seed":20261112,
-      "doi":cfg.get("doi"),"license":cfg.get("license"),"data_kind":cfg.get("data_kind"),
+      "doi":cfg.get("doi"),"license":cfg.get("license") or cfg.get("source_license_claim"),
+      "data_kind":cfg.get("data_kind"),"research_trait":cfg.get("research_trait"),
+      "domain":cfg.get("domain"),"source_license_claim":cfg.get("source_license_claim"),
+      "source_feature_contract":cfg.get("fixed_feature_contract"),
+      "label_transform":cfg.get("label_transform"),
       "feature_selection_note":cfg.get("feature_note"),
       "excluded_target_columns":[x for x in ["twf","hdf","pwf","osf","rnf"] if x in [clean_column_name(c) for c in dataset.data.targets.columns]]
     }
