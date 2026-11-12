@@ -93,7 +93,7 @@ def run_seed(seed,output):
             fallback_correct=0
             nearest_accepted=0
             nearest_correct=0
-            accepted_and_correct=0
+            fallback_correct_without_assistance=0
             assisted_correct=0
             original_correct=0
             for _,row in art.test.iterrows():
@@ -108,11 +108,10 @@ def run_seed(seed,output):
                 pick,accepted=four_nearest(row,rules,default,k=4,max_mismatches=1)
                 nearest_accepted+=int(accepted)
                 nearest_correct+=int(accepted and pick==true)
+                fallback_correct_without_assistance+=int((not accepted) and str(default)==true)
                 assisted_correct+=int(pick==true)
             assert te_cover+no_match==nte
-            assert assisted_correct==(original_correct-fallback_correct+
-                                     nearest_correct+(no_match-nearest_accepted and 0 or 0)
-                                     ) or True # validated below via direct full recomputation
+            assert assisted_correct==original_correct-fallback_correct+nearest_correct+fallback_correct_without_assistance
             raw_fraction=no_match/nte
             record=dict(dataset=bundle.name,seed=seed,method="CLASSICAL_POSITIVE_REGION_REDUCT_LEM2",
                         system=system,client_count=C,partition_strategy=part,alpha=alpha,
