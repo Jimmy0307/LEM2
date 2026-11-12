@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Classical／Federated 42 Seeds｜版本對照與 pp 定義</title>
+<meta name="description" content="教授報告用：Classical reduct + LEM2 的 Centralized/Federated 42 Seeds 實測比較；其他路線證據完整度；Seed 數量與 percentage point 定義。">
+<link rel="stylesheet" href="../site.css"><style>
+.split-hero{background:linear-gradient(125deg,#112e41,#216b6c);color:white;padding:32px max(20px,calc((100vw - 1220px)/2))}.split-hero h1{font-size:clamp(26px,4vw,42px);line-height:1.24;margin:9px 0}.split-hero p{color:#d8e9e9;max-width:880px}
+.scope-badge{display:inline-block;border-radius:6px;background:#ddeeea;color:#125953;padding:3px 9px;font-weight:800;font-size:12px}.scope-badge.warn{background:#fff0d8;color:#8f5c26}.scope-badge.mute{background:#eceff3;color:#5c6a78}
+.filterbar{display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));gap:12px;margin:16px 0}
+.filterbar label{min-width:0}.n{font-variant-numeric:tabular-nums}.lead{font-size:16px}.tiny{font-size:12px;color:#667b87}.unitcard{border:1px solid #d8e5e7;background:#f7fafb;padding:16px;border-radius:10px}
+.summary-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.summary-cards .kpi{min-width:0}.summary-cards strong{font-size:24px;display:block}
+.compare-table td:first-child{font-weight:750}.compare-table th,.compare-table td{white-space:nowrap}
+.seed-bar{display:flex;height:19px;background:#e4edef;overflow:hidden;border-radius:5px}.seed-bar span{height:100%;display:block;background:#187f77}
+.status-table td{min-width:100px}.source-list a{display:inline-block;margin:3px 10px 3px 0}.footnote{color:#597281;font-size:13px}
+@media(max-width:850px){.filterbar{grid-template-columns:repeat(2,minmax(0,1fr))}.summary-cards{grid-template-columns:1fr}.split-hero{padding:28px 18px}}
+</style></head>
+<body>
+<div class="site-top"><a class="brand" href="../">LEM2 Research · 教授報告</a><nav aria-label="教授報告導覽"><a href="../">研究總覽</a><a href="../conflict/">Conflict／平票</a><a class="active" href="./" aria-current="page">42 Seeds／版本對照</a><a href="../ranking/">最佳配置</a><a href="../evidence/">完整數據</a><a href="../methods/">公式</a></nav></div>
+<header class="split-hero">
+<div class="eyebrow">RESEARCH LINEAGE · VERIFIED EXPERIMENTS</div>
+<h1>42 Seeds 跑的是哪一條方法？<br>Centralized 與 Federated 都有跑嗎？</h1>
+<p><strong>本頁所有互動主矩陣數值都屬於 Classical Rough Set Reduct + LEM2。</strong>Federated 表示各 Client 以 Classical reduct + LEM2 分別學規則，再做規則合併；並非 DRSA、LERS 原典或不同的 Reduct 演算法。</p>
+<p><a style="color:#e2fff6" href="#compare">42-Seed 比較</a> · <a style="color:#e2fff6" href="#coverage">其他版本證據清點</a> · <a style="color:#e2fff6" href="#seed-count">Seed 數量差異</a> · <a style="color:#e2fff6" href="#pp">pp 定義</a></p>
+</header>
+<main class="wrap">
+<section class="panel" id="lineage">
+<span class="section-tag">01 · METHOD FAMILY · EXPERIMENT SCOPE</span><h2>先標示方法血統，不混用模型名稱</h2>
+<div class="two">
+<div class="card"><span class="scope-badge">CLASSICAL · 42/42 SEEDS PASS</span><h3>Classical－集中式</h3><p>Train → 全域 Classical reduct → LEM2 → 一份規則集合 → 六選擇策略。C = 0。</p></div>
+<div class="card"><span class="scope-badge">CLASSICAL · 42/42 SEEDS PASS</span><h3>Classical－聯邦式</h3><p>Train → C2/C3/C4/C5 Client 分割 → 每個 Client 的 Classical reduct + LEM2 → Rule Union／去重 → 六選擇策略。</p></div></div>
+<p><strong>一個 Seed：</strong>3 資料集 × 2 切分（Full Data／Holdout）× 5 配置（Centralized、Fed C2～C5）× 7 模式（NONE＋六策略）= <strong>210 列</strong>。42 Seeds 共 8,820 列，其中 Centralized 1,764 列、Federated 7,056 列。所有主矩陣的 Federated 分割為分層式，non-IID 為另一研究線。</p>
+<p class="tiny">42 Seeds 為同三個資料集的反覆洗牌與分配，不是 42 個獨立的資料集；Full Data 為回代測試，不能當未見資料的泛化證據。</p>
+</section>
+<section class="panel" id="compare">
+<span class="section-tag">02 · VERIFIED 42-SEED PAIRED COMPARISON</span><h2>同一個 Seed，比較 Classical 集中式與聯邦式</h2>
+<p>只讀取凍結的 8,820 筆資料。變更方法只改 Winner，變更 Client 數則會重新產生不同 Rule Set。此處只使用 <strong>80/20 未見資料</strong>比較分類績效，不混入 Full Data 回代。</p>
+<div class="filterbar">
+<label>資料集<select id="dataset"><option value="ALL">三資料集等權</option><option>Balance Scale</option><option>Car Evaluation</option><option>Hayes-Roth</option></select></label>
+<label>比較策略<select id="policy"><option value="GLOBAL_STRENGTH">Global Strength</option><option value="STANDARD_VOTING">Standard Voting</option><option value="POPULATION_GLOBAL">Population Global</option><option value="POPULATION_STANDARD">Population Standard</option><option value="FIRST_MATCH">First Match</option><option value="SIMPLE_VOTING">Simple Voting</option></select></label>
+<label>觀測指標<select id="metric"><option value="accuracy">Overall Accuracy</option><option value="balanced_accuracy">Balanced Accuracy</option><option value="macro_f1">Macro-F1</option><option value="conflict_resolution_accuracy">Conflict-only Accuracy</option><option value="coverage">Coverage</option><option value="conflict_case_rate">Conflict Rate</option></select></label>
+<label>Seed 前綴數<select id="nseed"><option value="42">42 Seeds</option><option value="21">前 21 Seeds</option><option value="7">前 7 Seeds</option><option value="1">Seed 1</option></select></label>
+</div>
+<p id="dataStatus" class="tiny" role="status" aria-live="polite">正在核對 42 Seeds 凍結基線…</p>
+<div class="summary-cards" id="summaryCards"></div>
+<div class="table-wrap"><table class="compare-table"><thead><tr><th>規則來源</th><th>配置</th><th>有效 Seeds</th><th>平均值</th><th>Seed 標準差</th><th>相對集中式差異</th><th>與 C2 差異</th></tr></thead><tbody id="architectureRows"></tbody></table></div>
+<p class="footnote">差異單位為 pp（百分點）；同一 Seed 下先計算配置差，再取 Seed 平均；三資料集同時顯示時，每個 Seed 先對三資料集等權平均。標準差是重複切分的描述性波動，不是跨資料集外部有效性證明。</p>
+<h3>六策略 × 五種配置：固定 42 Seeds 的完整交叉比較</h3>
+<div class="table-wrap"><table class="compare-table"><thead><tr><th>策略</th><th>Classical Centralized</th><th>Classical Fed C2</th><th>Classical Fed C3</th><th>Classical Fed C4</th><th>Classical Fed C5</th></tr></thead><tbody id="policyMatrix"></tbody></table></div>
+<p class="tiny">本表永遠固定使用完整 42 Seeds，不受上方前綴數切換影響。六策略在同一組「資料集 × Seed × Client 數」下使用同一規則集合，因此 Coverage 與 Conflict 在策略之間相同。</p>
+</section>
+<section class="panel" id="seed-count">
+<span class="section-tag">03 · SEED 1 VS 7 VS 21 VS 42</span><h2>Seed 數量越多，究竟帶來什麼差別？</h2>
+<p>Seed 是<strong>隨機數產生器的初始化設定</strong>，用來控制每次 Train/Test 及聯邦式 Client 的分配。不是「規則編號」，也不是訓練回合（epoch）。</p>
+<div class="filterbar" style="grid-template-columns:repeat(2,minmax(160px,1fr))">
+<label>觀察架構<select id="seedArchitecture"><option value="5">Classical Federated C5</option><option value="3">Classical Federated C3</option><option value="2">Classical Federated C2</option><option value="0">Classical Centralized</option><option value="4">Classical Federated C4</option></select></label>
+<label>Seed 資料集與觀測策略<span id="seedContext" class="unitcard" style="font-weight:500">沿用上方選取的資料集、策略與指標</span></label>
+</div>
+<div class="table-wrap"><table><thead><tr><th>重複次數 S</th><th>實際平均</th><th>描述性 SD</th><th>相較完整 42 Seeds 均值</th><th>意義</th></tr></thead><tbody id="seedGrowthRows"></tbody></table></div>
+<div class="callout"><strong>統計解讀：</strong>多個 Seeds 可以看見同一批資料在不同切分下的結果波動，避免單次切分碰巧偏高或偏低。但 42 Seeds 並不會自動讓模型更準，也不等於 42 個新的獨立資料集。完整重複實驗應同時回報均值、標準差、逐資料集結果與相同 Seed 的配對差異。</div>
+</section>
+<section class="panel" id="pp">
+<span class="section-tag">04 · UNIT GLOSSARY</span><h2>pp 是什麼？為何不能直接寫成 %？</h2>
+<div class="two">
+<div class="unitcard"><h3>pp = percentage points（百分點）</h3><p>比較兩個「以百分比表示的比例」時，直接相減：</p><div class="formula">Δ(pp) = (B − A) × 100</div><p>例如從 70% → 75%：<strong>增加 5 pp</strong>。</p></div>
+<div class="unitcard"><h3>% = relative percent change（相對百分比變化）</h3><p>將改變量除以原本的比例：</p><div class="formula">Δ(%) = (B − A) / A × 100%</div><p>70% → 75%：<strong>相對提升 7.14%</strong>，不是 5%。</p></div>
+</div>
+<p>所以報告中的「GS − STD 的 Balanced Accuracy +5.16 pp」表示類別平衡正確率的<strong>絕對差距為 5.16 個百分點</strong>，不能寫成「相對提升 5.16%」。</p>
+<div class="callout warn">若 A = 0，百分比相對變化無法照通常方式定義；pp 差值仍可正常計算。正負 pp 表示方向，不單憑差值大小推論統計顯著性。</div>
+</section>
+<section class="panel" id="coverage">
+<span class="section-tag">05 · EVIDENCE STATUS BY RESEARCH LINE</span><h2>其他版本的 42 Seeds：已完成的比較與尚缺的實驗</h2>
+<div class="table-wrap"><table class="status-table"><thead><tr><th>研究線／版本</th><th>已完成 Seeds</th><th>能否當作 42-Seed 正式比較？</th><th>備註</th></tr></thead><tbody>
+<tr><td><strong>Classical Reduct + LEM2，Centralized</strong></td><td>42/42</td><td><span class="scope-badge">可，主基線</span></td><td>同一 42-Seed 矩陣；完整結果在上方</td></tr>
+<tr><td><strong>Classical Reduct + LEM2，Fed C2–C5（IID 分層）</strong></td><td>42/42</td><td><span class="scope-badge">可，主基線</span></td><td>每種 Client 數都是獨立規則集合；同配置的六種策略共享規則</td></tr>
+<tr><td>Classical－Hayes-Roth 外部／特徵不重複切分</td><td>42/42（特定協定）</td><td><span class="scope-badge warn">獨立協定</span></td><td>不同測試母體，不與三資料集主矩陣混合加總</td></tr>
+<tr><td>Classical Fed－non-IID Dirichlet α = 0.5／0.1</td><td>2/42（Seed 1、42）</td><td><span class="scope-badge warn">先導，非 42</span></td><td>獨立執行結果；不能說已有完整 42 Seeds</td></tr>
+<tr><td>Client 順序排列／First Match 敏感性</td><td>2/42（Seed 1、42）</td><td><span class="scope-badge warn">先導，非 42</span></td><td>每個已測 Seed 完整枚舉對應 C! 順序；不是另一種 reduct</td></tr>
+<tr><td>Classical Reduct 關閉（消融）</td><td>未確認 42-Seed 基準</td><td><span class="scope-badge mute">缺同口徑實測</span></td><td>主矩陣固定 reduct.enabled = true；不可冒充消融對照</td></tr>
+<tr><td>DRSA reduct／Dominance 規則線</td><td>0/42（本主矩陣）</td><td><span class="scope-badge mute">未建立可比對實驗</span></td><td>須先固定優勢準則、近似、約簡與相容規則管線</td></tr>
+<tr><td>原典 LERS 分類器</td><td>0/42（本主矩陣）</td><td><span class="scope-badge mute">未建立可比對實驗</span></td><td>不能把目前 STANDARD_VOTING 當成完整 LERS 原典實作</td></tr>
+</tbody></table></div>
+<p>完整的「版本對照」除了 Seed 一致，還必須匹配資料集、測試切分、前處理、目標標籤與評估口徑；否則 42 Seeds 的數量相同仍不構成公平 A/B 比較。缺值標記為「未實測／不可比較」，絕不補 0。</p>
+</section>
+<section class="panel" id="sources"><span class="section-tag">06 · LINEAGE & REPRODUCIBILITY</span><h2>原始結果與程式證據</h2>
+<div class="source-list"><a href="https://github.com/Jimmy0307/LEM2/blob/research/report-ready-dashboard-20261109/docs/research/seed_sweep_1_42/FACTOR_DEFINITIONS.md">實驗變因定義</a><a href="../evidence/">8,820 筆逐列結果</a><a href="https://github.com/Jimmy0307/LEM2/blob/research/report-ready-dashboard-20261109/teacher_demo/seed_sweep_runner.py">42 Seeds 執行程式</a><a href="https://github.com/Jimmy0307/LEM2/blob/research/report-ready-dashboard-20261109/docs/research/noniid_pilot/README.md">non-IID 先導資料狀態</a><a href="../VALIDATION_20261111.md">Hayes-Roth 評估協定</a></div>
+<p class="tiny">數據載入來源：<code>docs/research/teacher_dashboard/data/baseline_8820.json</code>，由主矩陣 CSV 重建並驗證每 Seed 210 列。網頁不包含新實驗或自動補值；版本狀態以目前報告分支可核對的檔案為準。</p>
+</section>
+</main><footer class="footer">LEM2 · <a href="../">研究總報告</a> · <a href="../conflict/">Conflict 決策</a> · <a href="../evidence/">資料源</a></footer>
+<script>
+(()=>{"use strict";
+const $=id=>document.getElementById(id);
+const policies=["FIRST_MATCH","SIMPLE_VOTING","STANDARD_VOTING","GLOBAL_STRENGTH","POPULATION_STANDARD","POPULATION_GLOBAL"];
+const policyLabel={FIRST_MATCH:"First Match",SIMPLE_VOTING:"Simple",STANDARD_VOTING:"Standard",GLOBAL_STRENGTH:"Global Strength",POPULATION_STANDARD:"Population Standard",POPULATION_GLOBAL:"Population Global"};
+const dataSets=["Balance Scale","Car Evaluation","Hayes-Roth"];
+const structurals=new Set(["coverage","conflict_case_rate"]);
+const scopes=[{id:0,name:"Centralized"},{id:2,name:"Fed C2"},{id:3,name:"Fed C3"},{id:4,name:"Fed C4"},{id:5,name:"Fed C5"}];
+let index=new Map();let loaded=false;
+const key=(ds,s,scope,policy)=>[ds,s,scope===0?"CENTRALIZED":"FEDERATED",scope,policy].join("|");
+const isNum=n=>n!==null&&n!==undefined&&Number.isFinite(Number(n));
+const pct=n=>n==null||!Number.isFinite(n)?"—":(n*100).toFixed(2)+"%";
+const pp=n=>n==null||!Number.isFinite(n)?"—":(n>=0?"+":"")+(n*100).toFixed(2)+" pp";
+const avg=a=>{const v=a.filter(x=>x!==null&&Number.isFinite(x));return v.length?v.reduce((x,y)=>x+y,0)/v.length:null};
+const sd=a=>{const v=a.filter(x=>x!==null&&Number.isFinite(x));if(v.length<2)return null;const m=avg(v);return Math.sqrt(v.reduce((t,x)=>t+(x-m)**2,0)/(v.length-1))};
+function sel(){return {ds:$("dataset").value,policy:$("policy").value,metric:$("metric").value,n:Number($("nseed").value),scope:Number($("seedArchitecture").value)};}
+function seedMetric(ds,s,scope,policy,metric){
+ const p=structurals.has(metric)?"NONE":policy,sets=ds==="ALL"?dataSets:[ds];
+ const vals=sets.map(d=>{const r=index.get(key(d,s,scope,p));const v=r?.[metric];return isNum(v)?Number(v):null;});
+ return vals.every(v=>v!==null)?avg(vals):null;
+}
+function perSeed(c,scope,policy,metric,n=42){return Array.from({length:n},(_,i)=>seedMetric(c.ds,i+1,scope,policy,metric));}
+function paired(c,scope,ref,metric,n){return Array.from({length:n},(_,i)=>{const a=seedMetric(c.ds,i+1,scope,c.policy,metric),b=seedMetric(c.ds,i+1,ref,c.policy,metric);return a===null||b===null?null:a-b;});}
+function render(){
+ if(!loaded)return;const c=sel();$("seedContext").textContent=(c.ds==="ALL"?"三資料集等權":c.ds)+"／"+policyLabel[c.policy]+"／"+c.metric;
+ let dat=[];for(const s of scopes){
+  const x=perSeed(c,s.id,c.policy,c.metric,c.n),valid=x.filter(v=>v!==null),m=avg(valid),sigma=sd(valid),delta=avg(paired(c,s.id,0,c.metric,c.n)),c2=avg(paired(c,s.id,2,c.metric,c.n));
+  dat.push({s,x,n:valid.length,m,sigma,delta,c2});
+ }
+ $("architectureRows").innerHTML=dat.map(o=>"<tr><td>"+(o.s.id===0?"Classical 集中式":"Classical 聯邦式")+"</td><td>"+o.s.name+"</td><td class='n'>"+o.n+"/"+c.n+"</td><td class='n'>"+pct(o.m)+"</td><td class='n'>"+pct(o.sigma)+"</td><td class='n'>"+pp(o.delta)+"</td><td class='n'>"+pp(o.c2)+"</td></tr>").join("");
+ const c3=dat.find(x=>x.s.id===3),c5=dat.find(x=>x.s.id===5),cen=dat[0];
+ $("summaryCards").innerHTML=[["Classical Centralized",pct(cen.m),"固定 "+c.n+" Seeds"],["Classical Federated C3",pct(c3.m),"對集中式 "+pp(c3.delta)],["Classical Federated C5",pct(c5.m),"對集中式 "+pp(c5.delta)]].map(([a,b,d])=>"<div class='kpi'><small>"+a+"</small><strong>"+b+"</strong><span>"+d+"</span></div>").join("");
+ $("policyMatrix").innerHTML=policies.map(p=>"<tr><td>"+policyLabel[p]+"</td>"+scopes.map(s=>"<td class='n'>"+pct(avg(perSeed(c,s.id,p,c.metric,42)))+"</td>").join("")+"</tr>").join("");
+ const chosen=perSeed(c,c.scope,c.policy,c.metric,42),full=avg(chosen),choices=[1,7,21,42],notes={1:"單次切分；無法估計波動",7:"初步觀察不同切分的變化",21:"較多切分；檢查均值是否穩定",42:"本研究正式基線"};
+ $("seedGrowthRows").innerHTML=choices.map(n=>{const v=chosen.slice(0,n),m=avg(v),sigma=sd(v);return "<tr><td>"+n+"</td><td class='n'>"+pct(m)+"</td><td class='n'>"+pct(sigma)+"</td><td class='n'>"+pp(m===null||full===null?null:m-full)+"</td><td>"+notes[n]+"</td></tr>";}).join("");
+ $("dataStatus").textContent="PASS：42 Seeds × 210 列＝8,820 列。方法＝Classical reduct + LEM2；目前畫面＝"+(c.ds==="ALL"?"三資料集等權":c.ds)+"／"+c.n+" Seeds。";
+}
+async function init(){
+ try{
+  const response=await fetch("../data/baseline_8820.json",{cache:"no-cache"});
+  if(!response.ok)throw Error("HTTP "+response.status);
+  const j=await response.json();if(j.validated_rows!==8820||j.validated_seeds!==42||!Array.isArray(j.columns)||!Array.isArray(j.rows)||j.rows.length!==8820)throw Error("主基線未通過完整性驗證");
+  const seeds=new Map(),keys=new Set(),none=new Map();
+  for(const raw of j.rows){
+    const o=Object.fromEntries(j.columns.map((p,i)=>[p,raw[i]]));
+    const id=key(o.dataset,Number(o.seed),Number(o.client_count),o.selection_policy)+"|"+o.split_mode;
+    if(keys.has(id))throw Error("重複配置 "+id);
+    keys.add(id);if(o.split_mode==="HOLDOUT_80_20")index.set(key(o.dataset,Number(o.seed),Number(o.client_count),o.selection_policy),o);
+    const s=Number(o.seed);seeds.set(s,(seeds.get(s)||0)+1);
+    if(o.selection_policy==="NONE")none.set(s,(none.get(s)||0)+1);
+  }
+  for(let s=1;s<=42;s++)if(seeds.get(s)!==210||none.get(s)!==30)throw Error("Seed "+s+" 缺漏配置");
+  loaded=true;for(const x of ["dataset","policy","metric","nseed","seedArchitecture"])$(x).addEventListener("change",render);render();
+ }catch(e){$("dataStatus").textContent="驗證失敗："+e.message;$("dataStatus").style.color="#b3514a";}
+}
+init();
+})();
+</script>
+</body></html>
