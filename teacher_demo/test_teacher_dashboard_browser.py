@@ -150,6 +150,30 @@ def main():
             assert not errors, errors
             print("PUBLIC_UCI_COMMERCE_TECH_AUDITED_BROWSER_PASS",flush=True)
 
+            # Twenty NEW public-source domains: source-count and train-only
+            # supplementary A/B must match the published 20/20 manifest.
+            page.goto(report+"public20/",wait_until="domcontentloaded")
+            page.wait_for_function(
+                "document.querySelector('#status').textContent.includes('20 個已完成')",
+                timeout=35000
+            )
+            assert page.locator("#passed").inner_text()=="20/20"
+            assert page.locator("#sourcesRows tr").count()==20
+            assert page.locator("#metricRows tr").count()==40
+            assert "280" in page.locator("#rows").inner_text()
+            assert "40" in page.locator("#rows").inner_text()
+            assert "HTRU2" in page.locator("#sourcesRows").inner_text()
+            assert "581,012" in page.locator("#sourcesRows").inner_text()
+            page.locator("#type").select_option("EXPLICIT_MIXED")
+            assert 0<page.locator("#sourcesRows tr").count()<20
+            page.locator("#architecture").select_option("0")
+            assert page.locator("#metricRows tr").count()==20
+            page.locator("#dataset").select_option("htru2")
+            assert page.locator("#metricRows tr").count()==1
+            assert "100.00%" in page.locator("#metricRows").inner_text()
+            assert not errors, errors
+            print("PUBLIC20_SOURCE_AUDIT_TRAIN_TEST_COVERAGE_BROWSER_PASS",flush=True)
+
             # Independent evidence drilldown: complete matrix with real selectors.
             page.goto(report+"evidence/",wait_until="domcontentloaded")
             page.wait_for_function("document.getElementById('validState').textContent.includes('PASS')",timeout=30000)
