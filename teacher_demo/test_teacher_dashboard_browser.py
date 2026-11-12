@@ -116,6 +116,13 @@ def main():
             )
             assert "0%" not in page.locator("#trainTestStatus").inner_text() or "630" in page.locator("#trainTestStatus").inner_text()
             assert not errors, errors
+            page.wait_for_function(
+                "document.querySelector('#k4AuditStatus').textContent.includes('4 Seeds')", timeout=30000
+            )
+            assert page.locator("#k4Rows tr").count()==21
+            assert "K=4" in page.locator("#k4pilot").inner_text()
+            assert "準確率" in page.locator("#k4pilot").inner_text()
+            print("K4_FALLBACK_PILOT_EVIDENCE_GATE=PASS",flush=True)
             print("TRAIN_TEST_COVERAGE_REJECTION_TEACHER_PAGE=PASS",flush=True)
 
             # Independent evidence drilldown: complete matrix with real selectors.
