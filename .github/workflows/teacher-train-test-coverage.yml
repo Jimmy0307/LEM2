@@ -1,0 +1,172 @@
+name: LEM2 Train-vs-Test Rule Coverage 42 Seeds
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - teacher_demo/train_test_coverage_audit.py
+      - teacher_demo/test_train_test_coverage_audit.py
+      - .github/workflows/teacher-train-test-coverage.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Coverage contract unit cases
+        run: python -m teacher_demo.test_train_test_coverage_audit
+      - name: Seed 42 replay against frozen 8820
+        run: python -m teacher_demo.train_test_coverage_audit --seed 42 --output outputs/coverage_smoke
+      - name: Smoke checks
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          p='outputs/coverage_smoke/COVERAGE_PAIRS_seed42.csv'
+          df=pd.read_csv(p)
+          assert len(df)==15 and df.validation.eq('MATCHES_CANONICAL_NONE').all()
+          assert df.train_coverage.between(0,1).all()
+          assert df.test_coverage.between(0,1).all()
+          print("TRAIN_TEST_COVERAGE_SEED42_PASS",flush=True)
+          PY
+  by-seed:
+    needs: smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        seed: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m teacher_demo.train_test_coverage_audit --seed ${{ matrix.seed }} --output outputs/coverage
+      - uses: actions/upload-artifact@v4
+        with:
+          name: train-test-coverage-seed-${{ matrix.seed }}
+          path: outputs/coverage/*.csv
+          retention-days: 90
+          if-no-files-found: error
+  aggregate:
+    needs: by-seed
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas numpy
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: train-test-coverage-seed-*
+          path: downloaded
+          merge-multiple: true
+      - name: Reconcile all 630 structural configurations and class evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import numpy as np
+          import pandas as pd
+          root=Path('downloaded')
+          a=sorted(root.glob('COVERAGE_PAIRS_seed*.csv'))
+          b=sorted(root.glob('COVERAGE_BY_CLASS_seed*.csv'))
+          assert len(a)==len(b)==42,(len(a),len(b))
+          df=pd.concat([pd.read_csv(x) for x in a],ignore_index=True)
+          cls=pd.concat([pd.read_csv(x) for x in b],ignore_index=True)
+          keys=['dataset','seed','split_mode','system','client_count']
+          assert len(df)==630 and not df.duplicated(keys).any()
+          assert set(df.seed)==set(range(1,43))
+          assert df.groupby('seed').size().eq(15).all()
+          assert df.validation.eq('MATCHES_CANONICAL_NONE').all()
+          assert df[['train_coverage','test_coverage','train_true_candidate_rate',
+                     'test_true_candidate_rate','train_conflict_rate','test_conflict_rate']
+                    ].apply(lambda s:s.between(0,1)).all().all()
+          canon=pd.read_csv('docs/research/seed_sweep_1_42/tables/SEED_SWEEP_8820.csv')
+          canon=canon[(canon.split_mode=='HOLDOUT_80_20')&(canon.selection_policy=='NONE')]
+          check=df.merge(canon[keys+['coverage','covered_count','evaluation_rows',
+                                  'conflict_case_rate','true_in_candidate_rate']],
+                        on=keys,how='outer',indicator=True,validate='one_to_one')
+          assert len(check)==630 and check._merge.eq('both').all()
+          assert np.allclose(check.test_coverage,check.coverage,atol=1e-10,rtol=1e-10)
+          assert np.array_equal(check.test_covered_count,check.covered_count)
+          assert np.array_equal(check.test_rows,check.evaluation_rows)
+          assert np.allclose(check.test_conflict_rate,check.conflict_case_rate,atol=1e-10)
+          assert np.allclose(check.test_true_candidate_rate,check.true_in_candidate_rate,atol=1e-10)
+          assert not cls.duplicated(keys+['target_class']).any()
+          aggregated=cls.groupby(keys,as_index=False).agg(
+                train_rows_sum=('train_rows','sum'),
+                test_rows_sum=('test_rows','sum'),
+                train_covered_sum=('train_covered_count','sum'),
+                test_covered_sum=('test_covered_count','sum'))
+          cc=aggregated.merge(df,on=keys,validate='one_to_one')
+          for x,y in [('train_rows_sum','train_rows'),('test_rows_sum','test_rows'),
+                      ('train_covered_sum','train_covered_count'),
+                      ('test_covered_sum','test_covered_count')]:
+              assert np.array_equal(cc[x],cc[y]),(x,y)
+          out=Path('docs/research/teacher_dashboard/data')
+          out.mkdir(parents=True,exist_ok=True)
+          df.sort_values(keys).to_csv(out/'TRAIN_TEST_COVERAGE_42SEEDS.csv',index=False)
+          cls.sort_values(keys+['target_class']).to_csv(out/'TRAIN_TEST_COVERAGE_BY_CLASS_42SEEDS.csv',index=False)
+          groups=[]
+          for (ds,system,c),g in df.groupby(['dataset','system','client_count']):
+              groups.append({
+                'dataset':ds,'system':system,'client_count':int(c),'seeds':int(g.seed.nunique()),
+                'train_coverage_pct':float(g.train_coverage.mean()*100),
+                'test_coverage_pct':float(g.test_coverage.mean()*100),
+                'coverage_gap_pp':float(g.coverage_gap_pp.mean()),
+                'coverage_gap_sd_pp':float(g.coverage_gap_pp.std(ddof=1)),
+                'test_no_match_pct':float((1-g.test_coverage).mean()*100),
+                'train_true_candidate_pct':float(g.train_true_candidate_rate.mean()*100),
+                'test_true_candidate_pct':float(g.test_true_candidate_rate.mean()*100),
+                'test_unseen_signature_pct':float(g.test_unseen_signature_rate.mean()*100),
+                'test_conflict_pct':float(g.test_conflict_rate.mean()*100),
+              })
+          manifest={
+            'method':'CLASSICAL_POSITIVE_REGION_REDUCT_LEM2',
+            'test_mode':'HOLDOUT_80_20',
+            'train_fitted_preprocessor_and_rules':True,
+            'unseen_test_never_fitted':True,
+            'canonical_frozen_8820_unchanged':True,
+            'configurations':630,'seeds':42,'datasets':3,'architectures':5,
+            'class_rows':len(cls),
+            'test_coverage_verified_against_canonical':True,
+            'mean_of_seed_rates_not_pooled_micro':True,
+            'definitions':{
+             'coverage':'fraction of objects matching >=1 IF antecedent',
+             'coverage_gap_pp':'100*(test_coverage-train_coverage)',
+             'unmatched':'zero matching rule antecedents; default prediction is NOT formal abstention',
+             'true_candidate':'true label among candidate consequences',
+             'unseen_signature':'preprocessed condition tuple absent from train features'},
+            'groups':groups}
+          (out/'TRAIN_TEST_COVERAGE_SUMMARY.json').write_text(
+               json.dumps(manifest,ensure_ascii=False,indent=2,allow_nan=False),encoding='utf-8')
+          print('COVERAGE_42_SEED_RECONCILIATION_PASS',len(df),len(cls),len(groups),flush=True)
+          PY
+      - name: Publish independent derived results
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/research/teacher_dashboard/data/TRAIN_TEST_COVERAGE_*
+          if ! git diff --cached --quiet; then
+            git commit -m 'research: publish 42-seed train/test coverage evidence [skip ci]'
+            git fetch origin "${GITHUB_REF_NAME}"
+            git rebase FETCH_HEAD
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: classical-42-seed-train-test-coverage
+          path: docs/research/teacher_dashboard/data/TRAIN_TEST_COVERAGE_*
+          retention-days: 90
+          if-no-files-found: error
