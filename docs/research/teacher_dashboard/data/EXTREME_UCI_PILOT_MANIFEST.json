@@ -1,0 +1,50 @@
+{
+  "status": "EXPLORATORY_2_SEED_PILOT",
+  "expected_jobs": 28,
+  "completed_jobs": 28,
+  "missing_jobs": [],
+  "rows": 980,
+  "n_datasets": 7,
+  "seeds": [
+    1,
+    42
+  ],
+  "scenarios": [
+    "BASE",
+    "TRAIN_LABEL_FLIP20"
+  ],
+  "dataset_seeds": {
+    "tictactoe": [
+      1,
+      42
+    ],
+    "cmc": [
+      1,
+      42
+    ],
+    "glass": [
+      1,
+      42
+    ],
+    "nursery": [
+      1,
+      42
+    ],
+    "wisconsin_original": [
+      1,
+      42
+    ],
+    "voting_records": [
+      1,
+      42
+    ],
+    "zoo": [
+      1,
+      42
+    ]
+  },
+  "method": "Classical positive-region reduct + LEM2, exact minimum cardinality",
+  "disclaimer": "Pilot is 2-seed only. Not 42-seed, not external clinical validity, and not combined with frozen 8820 baseline.",
+  "source": "UCI ML Repository via ucimlrepo. See EXTREME_UCI_PILOT_PROFILES.csv for URL, hashes, original and used columns.",
+  "metrics": "NoMatch, Conflict, Candidate availability computed independently on same test. Six policies share same rule set."
+}
