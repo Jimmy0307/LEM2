@@ -190,6 +190,16 @@ def run(dataset,seed,scenario,output):
         }
         base={**_base_row(bundle=bundle,split_mode=MODE,system=system,
                   client_count=clients,artifact=art),**pre}
+        if dataset in {"online_shoppers","ai4i_maintenance"}:
+            # Compare exact same HOLDOUT-fitted rules on train vs unseen test.
+            train_matches=sum(bool(matching_rules(row,rules)) for _,row in art.train.iterrows())
+            base["train_rule_coverage_pct"]=100*train_matches/len(art.train)
+            base["test_rule_coverage_pct"]=100*float(base["coverage"])
+            base["test_minus_train_coverage_pp"]=base["test_rule_coverage_pct"]-base["train_rule_coverage_pct"]
+            base["train_no_match_count"]=len(art.train)-train_matches
+            base["target_minority"]=str(bundle.frame["class"].value_counts().idxmin())
+            base["source_license"]=meta["license"]
+            base["source_doi"]=meta["doi"]
         row_data=[_none_row(base)]
         policy_outputs={}
         for policy in POLICIES:
@@ -201,10 +211,12 @@ def run(dataset,seed,scenario,output):
         # True class is in candidate, and conflict exists: only this subset
         # can actually be fixed by changing the resolution policy alone.
         cs=[]
+        covered_flags=[]
         for pos,(_,v) in enumerate(art.test.iterrows()):
             matched=matching_rules(v,rules)
             cand={str(r.decision) for r in matched}
             cs.append((len(cand)>1,str(v[art.target]) in cand))
+            covered_flags.append(bool(matched))
         possible=sum(c and good for c,good in cs)
         impossible=sum(c and not good for c,good in cs)
         for row in row_data:
@@ -216,7 +228,18 @@ def run(dataset,seed,scenario,output):
         for row in row_data[1:]:
             preds=np.asarray(policy_outputs[row["selection_policy"]]["predictions"]).astype(str)
             truth=art.test[art.target].astype(str).to_numpy()
+            match_flags=np.asarray(covered_flags,dtype=bool)
             good_flags=np.asarray([a and b for a,b in cs],dtype=bool)
+            if dataset in {"online_shoppers","ai4i_maintenance"}:
+                minority=base["target_minority"]
+                rare=(truth==minority)
+                row["minority_test_count"]=int(rare.sum())
+                row["minority_recall"]=float((preds[rare]==minority).mean()) if rare.any() else np.nan
+                row["minority_predicted_count"]=int((preds==minority).sum())
+                row["minority_precision"]=float(((preds==minority)&rare).sum()/(preds==minority).sum()) if (preds==minority).any() else np.nan
+                row["covered_only_accuracy"]=float((preds[match_flags]==truth[match_flags]).mean()) if match_flags.any() else np.nan
+                row["fallback_correct_count"]=int((preds[~match_flags]==truth[~match_flags]).sum())
+                row["fallback_accuracy"]=float((preds[~match_flags]==truth[~match_flags]).mean()) if (~match_flags).any() else np.nan
             row["correct_in_resolvable_conflict"]=int((preds[good_flags]==truth[good_flags]).sum())
             row["accuracy_in_resolvable_conflict"]=(
                 float((preds[good_flags]==truth[good_flags]).mean()) if good_flags.any() else np.nan
