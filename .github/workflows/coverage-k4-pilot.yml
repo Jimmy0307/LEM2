@@ -1,0 +1,122 @@
+name: LEM2 Strict Rule Coverage vs K4 Assisted Fallback Pilot
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - .github/workflows/coverage-k4-pilot.yml
+      - teacher_demo/train_vs_test_coverage_k4.py
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  four-paired-seeds:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        seed: [1, 7, 21, 42]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Classical LEM2 SAME rules measured on Train and held-out Test, K4 fallback only NoMatch
+        run: python -m teacher_demo.train_vs_test_coverage_k4 --seed ${{ matrix.seed }} --output outputs/coverage_k4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage-k4-seed-${{ matrix.seed }}
+          path: outputs/coverage_k4/*.csv
+          retention-days: 90
+          if-no-files-found: error
+  aggregate:
+    needs: four-paired-seeds
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas numpy
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: coverage-k4-seed-*
+          path: downloaded
+          merge-multiple: true
+      - name: Validate coverage and observed fallback outcome
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import numpy as np
+          import pandas as pd
+          d=Path("downloaded")
+          files=sorted(d.glob("TRAIN_TEST_K4_seed*.csv"))
+          assert len(files)==4,(len(files),files)
+          m=pd.concat([pd.read_csv(p) for p in files],ignore_index=True)
+          assert len(m)==84 and set(m.seed)=={1,7,21,42}
+          keys=["dataset","seed","client_count","partition_strategy","alpha"]
+          assert not m.duplicated(keys).any()
+          assert m.groupby("seed").size().eq(21).all()
+          assert m.actual_current_reject_rate_pct.eq(0).all()
+          assert (m.assisted_by_k4_count<=m.no_match_count).all()
+          assert m.assisted_test_coverage_pct.ge(m.test_strict_coverage_pct-1e-8).all()
+          assert np.allclose(m.train_test_gap_pp,
+                             m.train_strict_coverage_pct-m.test_strict_coverage_pct,atol=1e-7)
+          assert m.baseline_first_match_accuracy_pct.between(0,100).all()
+          assert m.k4_assisted_first_match_accuracy_pct.between(0,100).all()
+          out=Path("docs/research/teacher_dashboard/data")
+          out.mkdir(parents=True,exist_ok=True)
+          m.to_csv(out/"COVERAGE_K4_4SEED_PILOT.csv",index=False,float_format="%.8f")
+          groupcols=["dataset","client_count","partition_strategy","alpha"]
+          v=m.groupby(groupcols,dropna=False).agg(seeds=("seed","nunique"),
+              train_coverage_pct=("train_strict_coverage_pct","mean"),
+              test_coverage_pct=("test_strict_coverage_pct","mean"),
+              assisted_test_coverage_pct=("assisted_test_coverage_pct","mean"),
+              strict_nomatch_pct=("no_match_rate_pct","mean"),
+              baseline_accuracy_pct=("baseline_first_match_accuracy_pct","mean"),
+              assisted_accuracy_pct=("k4_assisted_first_match_accuracy_pct","mean"),
+              delta_accuracy_pp=("k4_delta_accuracy_pp","mean"),
+              test_candidate_coverage_pct=("test_candidate_coverage_pct","mean"),
+              conflict_rate_pct=("test_conflict_rate_pct","mean")).reset_index()
+          assert v.seeds.eq(4).all()
+          v.to_csv(out/"COVERAGE_K4_4SEED_SUMMARY.csv",index=False,float_format="%.8f")
+          manifest={
+             "status":"EXPLORATORY_4_SEED","number_of_seeds":4,
+             "seeds":[1,7,21,42],"total_configurations":84,
+             "method":"Classical positive-region reduct + LEM2; second-layer K=4 partial matching",
+             "denominator":"Test strict coverage = >=1 exact matched rule divided by all held-out Test cases",
+             "K4_notice":"K=4 is an author-defined top-four partially matched rules fallback with <=1 mismatching antecedent, NOT a verified literature K4 algorithm.",
+             "abstention_notice":"Current system predicts train-majority on unmatched cases and has no formal reject policy. The pilot evaluates operational acceptance if no-match were rejected, rather than an existing reject_rate.",
+             "leakage":"No test labels used to fit model, rules, or K4 ranking. Ground truth used only in outcome evaluation.",
+             "no_equivalence":"Assisted coverage is NOT strict rule coverage. Do not compare them as same metric.",
+             "data_source":"Original pinned UCI 12/19/44; not newly acquired external datasets.",
+             "source_files":[p.name for p in files]
+          }
+          (out/"COVERAGE_K4_PILOT_MANIFEST.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding="utf-8")
+          print("COVERAGE_K4_PILOT_PASS",len(m),len(v))
+          PY
+      - name: Publish audited pilot separately
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/research/teacher_dashboard/data/COVERAGE_K4_*
+          if ! git diff --cached --quiet; then
+            git commit -m 'research: publish train/test vs K4 assisted coverage pilot [skip ci]'
+            for n in 1 2 3 4 5; do
+              git fetch origin "${GITHUB_REF_NAME}"
+              git rebase FETCH_HEAD
+              if git push origin HEAD:"${GITHUB_REF_NAME}"; then exit 0; fi
+              sleep 2
+            done
+            exit 1
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage-k4-4seed-pilot-audit
+          path: docs/research/teacher_dashboard/data/COVERAGE_K4_*
+          retention-days: 90
+          if-no-files-found: error
