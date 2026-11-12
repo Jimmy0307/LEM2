@@ -30,7 +30,19 @@ REGISTRY={
  "nursery":{"id":76,"name":"Nursery capped at 1800","cap_rows":1800,"max_features":8,"feature_mode":"ALL_CATEGORICAL","url":"https://archive.ics.uci.edu/dataset/76/nursery"},
  "wisconsin_original":{"id":15,"name":"Wisconsin Breast Cancer Original","cap_rows":None,"max_features":9,"feature_mode":"ALL_CATEGORICAL","url":"https://archive.ics.uci.edu/dataset/15/breast+cancer+wisconsin+original"},
  "voting_records":{"id":105,"name":"Congressional Voting first 10 of 16 features","cap_rows":None,"max_features":10,"feature_mode":"ALL_CATEGORICAL","url":"https://archive.ics.uci.edu/dataset/105/congressional+voting+records"},
- "zoo":{"id":111,"name":"Zoo first 10 of 16 features","cap_rows":None,"max_features":10,"feature_mode":"ALL_CATEGORICAL","url":"https://archive.ics.uci.edu/dataset/111/zoo"}
+ "zoo":{"id":111,"name":"Zoo first 10 of 16 features","cap_rows":None,"max_features":10,"feature_mode":"ALL_CATEGORICAL","url":"https://archive.ics.uci.edu/dataset/111/zoo"},
+ "online_shoppers":{"id":468,"name":"Online Shoppers Conversion (stratified public subset 1600)","cap_rows":1600,"max_features":6,"feature_mode":"EXPLICIT_MIXED","target_column":"revenue",
+   "feature_columns":["productrelated","productrelated_duration","bouncerates","exitrates","visitortype","weekend"],
+   "continuous_columns":["productrelated","productrelated_duration","bouncerates","exitrates"],
+   "url":"https://archive.ics.uci.edu/dataset/468/online+shoppers+purchasing+intention+dataset",
+   "doi":"10.24432/C5F88Q","license":"CC BY 4.0","data_kind":"PUBLIC_SESSION_OBSERVATIONS",
+   "feature_note":"Predeclared 6 of 17 original predictors; PageValues excluded to avoid transaction-derived proxy"},
+ "ai4i_maintenance":{"id":601,"name":"AI4I Synthetic Predictive Maintenance (stratified public subset 2400)","cap_rows":2400,"max_features":6,"feature_mode":"EXPLICIT_MIXED","target_column":"machine_failure",
+   "feature_columns":["type","air_temperature","process_temperature","rotational_speed","torque","tool_wear"],
+   "continuous_columns":["air_temperature","process_temperature","rotational_speed","torque","tool_wear"],
+   "url":"https://archive.ics.uci.edu/dataset/601/ai4i",
+   "doi":"10.24432/C5HS5C","license":"CC BY 4.0","data_kind":"PUBLIC_SYNTHETIC_INDUSTRIAL",
+   "feature_note":"Only 6 legitimate predictors; device identifiers and all TWF/HDF/PWF/OSF/RNF failure diagnosis targets excluded"}
 }
 SCENARIOS=("BASE","TRAIN_LABEL_FLIP20")
 MODE="HOLDOUT_80_20"
@@ -49,18 +61,31 @@ def read_external(name):
     X=dataset.data.features.copy().reset_index(drop=True)
     Y=dataset.data.targets.copy().reset_index(drop=True)
     if isinstance(Y,pd.Series):Y=Y.to_frame("class")
-    if Y.shape[1]!=1:raise ValueError(f"{name}: expected one target, found {Y.shape[1]}")
+    Y.columns=[clean_column_name(x) for x in Y.columns]
+    wanted=cfg.get("target_column")
+    if wanted is not None:
+        if wanted not in Y.columns:
+            raise ValueError(f"{name}: required target {wanted!r} absent from {Y.columns.tolist()}")
+        Y=Y[[wanted]]
+    elif Y.shape[1]!=1:
+        raise ValueError(f"{name}: expected one target, found {Y.shape[1]}")
     X.columns=[clean_column_name(x) for x in X.columns]
     if len(set(X.columns))!=len(X.columns):raise ValueError("Column collision after normalization")
     raw_feature_count=len(X.columns)
-    chosen=list(X.columns[:cfg["max_features"]])
-    if not chosen:raise ValueError("No features")
+    chosen=list(cfg["feature_columns"]) if cfg.get("feature_columns") else list(X.columns[:cfg["max_features"]])
+    missing=set(chosen)-set(X.columns)
+    if missing:raise ValueError(f"{name}: missing explicitly selected features {sorted(missing)}")
+    if not chosen or len(chosen)>MAX_EXACT_REDUCT_FEATURES:raise ValueError("Invalid exact-reduct feature count")
+    if wanted is not None and wanted in chosen:raise ValueError("Target leakage: target selected as feature")
     # For high-dimensional datasets, a documented prespecified prefix feature set
     # is an ENGINEERING FEASIBILITY SUBSET, not the full original feature space.
     X=X[chosen].copy()
     y=Y.iloc[:,0].astype("string").fillna("__MISSING_TARGET__")
     if (y=="__MISSING_TARGET__").any():raise ValueError("Target missing")
-    if cfg["feature_mode"]=="CMC_MIXED":
+    if cfg["feature_mode"]=="EXPLICIT_MIXED":
+        cont=list(cfg["continuous_columns"])
+        if not set(cont).issubset(set(chosen)):raise ValueError("Continuous columns outside selected features")
+    elif cfg["feature_mode"]=="CMC_MIXED":
         cont=[f for f in chosen if f in ("wife_age","num_children")]
     elif cfg["feature_mode"]=="ALL_CONTINUOUS":
         cont=chosen[:]
@@ -108,7 +133,10 @@ def read_external(name):
       "sha256_prepared_csv":sha,"class_counts":frame["class"].value_counts().sort_index().to_dict(),
       "min_class_count":int(frame["class"].value_counts().min()),
       "source_missing_token":"__MISSING_FEATURE__",
-      "feature_mode":cfg["feature_mode"],"fixed_sampling_seed":20261112
+      "feature_mode":cfg["feature_mode"],"fixed_sampling_seed":20261112,
+      "doi":cfg.get("doi"),"license":cfg.get("license"),"data_kind":cfg.get("data_kind"),
+      "feature_selection_note":cfg.get("feature_note"),
+      "excluded_target_columns":[x for x in ["twf","hdf","pwf","osf","rnf"] if x in [clean_column_name(c) for c in dataset.data.targets.columns]]
     }
     return bundle,status
 
@@ -197,6 +225,10 @@ def run(dataset,seed,scenario,output):
         print("STRESS_CONFIG_PASS",dataset,scenario,seed,system,clients,len(rules),flush=True)
     if len(rows)!=5*7:raise AssertionError("Expected 35 outcomes")
     path=Path(output);path.mkdir(parents=True,exist_ok=True)
+    if dataset in {"online_shoppers","ai4i_maintenance"}:
+        # A prepared public subset for peer review. No IDs or answer-derived features.
+        # Same sample across seeds; the SHA is checked across all experiment jobs.
+        bundle.frame.to_csv(path/f"PUBLIC_DATASET_{dataset}.csv",index=False)
     pd.DataFrame(rows).to_csv(path/f"STRESS_{dataset}_{scenario}_seed{seed:02d}.csv",index=False)
     meta.update({"seed":seed,"scenario":scenario,"train_rows":len(raw_train),
                  "test_rows":len(raw_test),"noise_flips_train":nflip,
