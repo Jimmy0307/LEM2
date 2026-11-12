@@ -1,3 +1,17 @@
+## 2026-11-12｜Train/Test Coverage 與 No Match 救回：真正可核對的實驗與研究發現
+
+- **[教授報告：Test Coverage／Reject／Train-Test Gap](./coverage/)**：顯示同規則的訓練／測試覆蓋率、缺口、正解候選、Conflict 與降低 No Match 的 A/B 方法。
+- 已完成 **42 Seeds × 3 UCI datasets × 5 Classical architectures = 630** 個配對配置；`TRAIN_TEST_COVERAGE_SUMMARY.json`／逐 Seed／逐類別 CSV 都以 `NONE` 凍結 Holdout 基準逐配置核對，Test 不參與規則或離散化擬合。
+- **集中式 Train → Test Coverage**：Balance Scale 100.00 → 74.57%（−25.43 pp）；Car Evaluation 100.00 → 93.71%（−6.29 pp）；Hayes-Roth 79.47 → 81.50%（+2.03 pp）。因此不能用 Full Data 的回代 Coverage 直接代替 Train 使用相同 Holdout 規則的 Coverage。
+- **僅兩 Seeds 的 Train-only 補充規則先導**：使用固定 90% Train purity、至少 5 筆支持及「刪一個 IF 前件」；只對原本 No Match 測試物件介入。Balance Scale Centralized（Seeds 1、42）Coverage 73.02%→85.71%，Accuracy 71.43%→74.60%，救回 32 筆中 25 筆正確（舊 fallback 答對 17 筆）。此法是作者自己的簡化 A/B，不是完整重現 MLEM2 原論文。
+- **K=4 partial-match 先導為另一不同方法**：自訂最多四條、允許最多一個前件不同（Seed 1、7、21、42），不是已驗證的文獻「K4」。它雖把 assisted acceptance 推至 100%，但 Balance Scale Centralized Accuracy 72.02%→64.88%（**−7.14 pp**），Car Evaluation Centralized 88.73%→94.08%（**+5.35 pp**）。不能將 assisted coverage 當原始 exact-rule coverage，亦不能宣稱「更少拒判必然更準」。
+- **現有模型沒有正式 reject/abstain**：No Match 仍以 Train majority 產生分類，不能把 No Match 比例直接稱為「已發生拒判率」。應獨立規劃 selective acceptance/rejection 與已接受子集風險。
+- **已修正 19 的欄位含義**：正式 `POLICY_COMPARISON_19_HEADERS_42SEEDS.csv` 是**一張 19 表頭的比較表**，第 19 欄 `conflict_rate_pct`；各資料集六策略勝出次數見 `POLICY_WINS_BY_DATASET.csv`（同分分攤）。先前 `conflict_19/` 只是 19 個分析視角，保留作底層 evidence，不再以此當正式報告格式。
+- **文獻來源**：Inuiguchi & Washimi（2015）DOI 10.20965/jaciii.2015.p0747；PLOS ONE 離散化／測試覆蓋（2020）DOI 10.1371/journal.pone.0231788；Sequential covering VC-DomLEM（2011）ScienceDirect PII S0020025510005359；El-Yaniv & Wiener（2010）JMLR 11:1605–1641。
+- **下一個有效的科研門檻**：以完整 42 Seeds 驗證補充規則救回的正確率、macro BA、True-in-Candidate、Conflict、Test Coverage 及錯誤風險；至少加入多個有不同資料結構的外部資料集；門檻只能以 Train 內層 validation 選擇，不准 Test 調參。
+
+---
+
 ## 2026-11-12｜Train vs Test Coverage／K=4 部分匹配／降低 No Match 實測
 
 **驗證現況：** Classical LEM2 分層 IID 42 Seeds 的同規則 Train/Test 配對審核已通過（630 配置、3 資料集 × 5 架構 × 42 Seeds）；K=4（專案自定義，不是已確認的文獻 K4）4 Seeds 先導完整 84 配置已通過；兩者都保留原始 8,820 主矩陣。
