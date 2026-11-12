@@ -129,6 +129,7 @@ def run(dataset,output):
               "new",len(supplement),round(new_test["augmented_coverage"],4),flush=True)
     if len(raw_metrics)!=14 or len(supp_metrics)!=2:raise AssertionError("14 baseline + 2 augment")
     dest=Path(output);dest.mkdir(parents=True,exist_ok=True)
+    bundle.frame.to_csv(dest/f"PUBLIC20_DATA_{dataset}.csv",index=False)
     pd.DataFrame(raw_metrics).to_csv(dest/f"PUBLIC20_BASE_{dataset}.csv",index=False)
     pd.DataFrame(supp_metrics).to_csv(dest/f"PUBLIC20_SUPPLEMENT_{dataset}.csv",index=False)
     profile.update({"seed":SEED,"experiment_family":"PUBLIC_20_EXTERNAL",
