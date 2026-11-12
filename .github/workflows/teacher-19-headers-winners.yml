@@ -1,0 +1,69 @@
+name: LEM2 19-Column Conflict Rate and Per-Dataset Policy Winners
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - teacher_demo/build_19_column_policy_winners.py
+      - .github/workflows/teacher-19-headers-winners.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Generate one 19-header comparison table and dataset wins
+        run: python -m teacher_demo.build_19_column_policy_winners
+      - name: Check export and winner ties
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          import numpy as np
+          import pandas as pd
+          p=Path("docs/research/teacher_dashboard/data")
+          m=json.loads((p/"POLICY_19_HEADERS_MANIFEST.json").read_text())
+          df=pd.read_csv(p/"POLICY_COMPARISON_19_HEADERS_42SEEDS.csv")
+          assert m["format"]=="ONE_TABLE_19_HEADERS_PLUS_DATASET_WINS"
+          assert len(m["headers"])==len(df.columns)==19
+          assert df.columns[-1]=="conflict_rate_pct"
+          assert len(df)==15876
+          assert df.conflict_rate_pct.between(0,100).all()
+          assert np.allclose(df.coverage_pct+df.no_match_pct,100)
+          summary=pd.read_csv(p/"POLICY_WINS_BY_DATASET.csv")
+          assert set(summary.dataset)=={"Balance Scale","Car Evaluation","Hayes-Roth"}
+          assert summary.fractional_win_share_pct.between(0,100).all()
+          assert not summary.duplicated(["dataset","regime","dirichlet_alpha","metric","winning_policy"]).any()
+          for key,g in summary.groupby(["dataset","regime","dirichlet_alpha","metric"],dropna=False):
+              assert np.isclose(g.fractional_win_share_pct.sum(),100,atol=1e-7),(key,len(g))
+          assert m["winners_rows"]>0
+          print("19_HEADER_POLICY_WINS_SOURCE_VERDICT=PASS",len(summary))
+          PY
+      - name: Commit audited presentation data
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/research/teacher_dashboard/data/POLICY_*_42SEEDS.csv
+          git add docs/research/teacher_dashboard/data/POLICY_WINS_BY_DATASET.csv docs/research/teacher_dashboard/data/POLICY_WINNERS_PER_CONFIGURATION.csv docs/research/teacher_dashboard/data/POLICY_19_HEADERS_MANIFEST.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'research: publish 19-column conflict comparison and dataset wins [skip ci]'
+            git fetch origin "${GITHUB_REF_NAME}"
+            git rebase FETCH_HEAD
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: classical-policy-19-column-winners
+          path: |
+            docs/research/teacher_dashboard/data/POLICY_COMPARISON_19_HEADERS_42SEEDS.csv
+            docs/research/teacher_dashboard/data/POLICY_WINS_BY_DATASET.csv
+            docs/research/teacher_dashboard/data/POLICY_WINNERS_PER_CONFIGURATION.csv
+            docs/research/teacher_dashboard/data/POLICY_19_HEADERS_MANIFEST.json
+          if-no-files-found: error
+          retention-days: 90
