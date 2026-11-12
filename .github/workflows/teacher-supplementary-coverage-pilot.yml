@@ -1,0 +1,125 @@
+name: LEM2 Train-only Supplementary Rule Coverage Pilot
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - teacher_demo/supplementary_rule_coverage_pilot.py
+      - .github/workflows/teacher-supplementary-coverage-pilot.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        seed: [1, 42]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Fixed train-only supplementation at min purity 100% and 90%
+        run: python -m teacher_demo.supplementary_rule_coverage_pilot --seed ${{ matrix.seed }} --output outputs/supp_pilot
+      - uses: actions/upload-artifact@v4
+        with:
+          name: supplementary-pilot-seed-${{ matrix.seed }}
+          path: outputs/supp_pilot/*.csv
+          retention-days: 90
+          if-no-files-found: error
+  aggregate:
+    needs: seed
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas numpy
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: supplementary-pilot-seed-*
+          path: result
+          merge-multiple: true
+      - name: Evidence contract and baseline reconciliation
+        run: |
+          python - <<'PY'
+          import json
+          import numpy as np
+          import pandas as pd
+          from pathlib import Path
+          p=Path('result')
+          files=sorted(p.glob('SUPPLEMENTARY_RESULTS_seed*.csv'))
+          assert len(files)==2
+          df=pd.concat([pd.read_csv(x) for x in files],ignore_index=True)
+          assert len(df)==24
+          assert set(df.seed)=={1,42}
+          assert set(df.min_purity)=={.9,1.}
+          assert set(df.client_count)=={0,3}
+          assert df.dataset.nunique()==3
+          assert (df.augmented_covered>=df.original_exact_covered).all()
+          assert (df.augmented_covered<=df.test_rows).all()
+          assert np.allclose(df.augmented_coverage-df.original_exact_coverage,
+                             df.added_coverage_pp/100,atol=1e-10)
+          assert (df.original_no_match_count == df.test_rows-df.original_exact_covered).all()
+          assert (df.remaining_unmatched_count==df.test_rows-df.augmented_covered).all()
+          canon=pd.read_csv('docs/research/seed_sweep_1_42/tables/SEED_SWEEP_8820.csv')
+          canon=canon[(canon.split_mode=='HOLDOUT_80_20')&(canon.selection_policy=='GLOBAL_STRENGTH')]
+          keys=['dataset','seed','system','client_count']
+          merged=df.merge(canon[keys+['coverage','accuracy','balanced_accuracy','macro_f1']],
+                          on=keys,validate='many_to_one')
+          assert len(merged)==24
+          for left,right in [('original_exact_coverage','coverage'),('baseline_accuracy','accuracy'),
+                             ('baseline_balanced_accuracy','balanced_accuracy'),
+                             ('baseline_macro_f1','macro_f1')]:
+              assert np.allclose(merged[left],merged[right],atol=1e-10,rtol=1e-10),(left,right)
+          target=Path('docs/research/teacher_dashboard/data')
+          target.mkdir(parents=True,exist_ok=True)
+          df.sort_values(['dataset','seed','system','client_count','min_purity']
+                        ).to_csv(target/'SUPPLEMENTARY_TRAIN_ONLY_2SEED_PILOT.csv',index=False)
+          groups=[]
+          for (ds,sys,c,pur),v in df.groupby(['dataset','system','client_count','min_purity']):
+              groups.append(dict(dataset=ds,system=sys,client_count=int(c),purity=float(pur),
+                seeds=int(v.seed.nunique()),
+                baseline_coverage_pct=float(v.original_exact_coverage.mean()*100),
+                augmented_coverage_pct=float(v.augmented_coverage.mean()*100),
+                added_coverage_pp=float(v.added_coverage_pp.mean()),
+                original_accuracy_pct=float(v.baseline_accuracy.mean()*100),
+                augmented_accuracy_pct=float(v.new_accuracy.mean()*100),
+                accuracy_gain_pp=float(v.accuracy_gain_pp.mean()),
+                rescued_count=int(v.rescued_count.sum()),
+                rescued_correct=int(v.rescued_correct.sum()),
+                rescued_fallback_correct=int(v.rescued_original_fallback_correct.sum()),
+                supplemental_rules_mean=float(v.supplemental_rules.mean())))
+          manifest={
+            'method':'Classical LEM2; train-only one-antecedent-drop supplement pilot',
+            'literature_implementation':False,
+            'seeds':[1,42],'datasets':3,'architectures':['CENTRALIZED','FEDERATED_C3'],
+            'purity_levels':[.9,1.0],'config_rows':len(df),
+            'canonical_reconciliation_pass':True,
+            'readme':'A1 exploratory heuristic; NOT Washimi-Inuiguchi published MLEM2 implementation; 2 seeds insufficient for confirmatory conclusions; no test leakage or tuning.',
+            'groups':groups}
+          (target/'SUPPLEMENTARY_TRAIN_ONLY_2SEED_PILOT.json').write_text(
+            json.dumps(manifest,ensure_ascii=False,indent=2),encoding='utf-8')
+          print("SUPPLEMENTARY_2SEED_PILOT_EVIDENCE_PASS",len(df),len(groups),flush=True)
+          PY
+      - name: Commit versioned pilot data
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/research/teacher_dashboard/data/SUPPLEMENTARY_TRAIN_ONLY_2SEED_PILOT.*
+          if ! git diff --cached --quiet; then
+            git commit -m 'research: publish independent 2-seed train-only supplementary-rule pilot [skip ci]'
+            git fetch origin "${GITHUB_REF_NAME}"
+            git rebase FETCH_HEAD
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: supplementary-pilot-combined
+          path: docs/research/teacher_dashboard/data/SUPPLEMENTARY_TRAIN_ONLY_2SEED_PILOT.*
+          if-no-files-found: error
