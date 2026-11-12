@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="教授報告：從 LEM2 規則匹配、無規則命中、無衝突、多決策衝突，到六策略、平票規則與評估分母的完整解釋。">
+<title>Conflict 怎麼處理？｜LEM2 教授報告</title>
+<link rel="stylesheet" href="../site.css">
+<style>
+:root{--blue:#2c6074;--warm:#b78040}body{background:#f3f7fa}.explain{max-width:1140px;margin:auto;padding:26px 18px 60px}
+.hero-mini{background:linear-gradient(125deg,#102b41,#245969);padding:34px max(18px,calc((100vw - 1140px)/2));color:#fff}
+.hero-mini h1{font-size:clamp(27px,4vw,44px);margin:6px 0 12px;line-height:1.25}
+.hero-mini p{max-width:880px;color:#d6e7eb;line-height:1.8}
+.hero-mini a{color:#dafaf1}.steps3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0}
+.route{border:1px solid #d5e4e8;border-radius:12px;background:#fafdfd;padding:15px;min-width:0}
+.route .mark{display:inline-block;border-radius:7px;background:#e4f1f3;padding:2px 9px;font-size:12px;font-weight:800}
+.route h3{margin:9px 0 6px}.route p{margin-bottom:6px}
+.mathline{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:#edf3f6;border-radius:8px;padding:10px;overflow-x:auto;white-space:nowrap;font-size:13px}
+.demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.demo{background:#f8fbfc;border:1px solid #dae7ea;border-radius:12px;padding:15px}
+.controls{display:grid;grid-template-columns:repeat(4,minmax(100px,1fr));gap:11px}.controls label{min-width:0}
+.resbox{background:#e7f5f2;border:1px solid #c2e1dc;border-radius:10px;padding:14px 16px;min-height:85px;margin-top:12px}
+.resbox strong{font-size:21px;color:#145a58}.tag{font-size:12px;font-weight:800;letter-spacing:.04em;color:#357183}
+.bar{display:flex;height:23px;overflow:hidden;border-radius:6px;background:#e0e8ec;margin:14px 0 9px}
+.bar span{display:block;height:100%}.bar .a{background:#819cae}.bar .b{background:#4d958d}.bar .c{background:#cf9254}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.stats>div{border:1px solid #dae5e9;background:white;padding:12px;border-radius:10px}
+.stats small{display:block;color:#5b7280}.stats strong{font-size:22px;color:#11586b}
+.formula-block{border:1px solid #d5e3e7;background:#f7fbfc;padding:13px;border-radius:10px;overflow-wrap:anywhere}
+.note{font-size:13px;color:#587180}
+@media(max-width:820px){.steps3,.demo-grid{grid-template-columns:1fr}.controls{grid-template-columns:repeat(2,minmax(0,1fr))}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-mini{padding:26px 18px}}
+</style>
+</head>
+<body>
+<div class="site-top">
+<a class="brand" href="../">LEM2 Research · 教授報告</a>
+<nav aria-label="研究報告導覽"><a href="../">主流程／報告</a><a class="active" aria-current="page" href="./">Conflict 與平票</a><a href="../ranking/">最佳配置</a><a href="../evidence/">8,820 筆證據</a><a href="../methods/">公式與定義</a><a href="../lab/">CSV 實跑</a></nav>
+</div>
+<header class="hero-mini">
+<div class="eyebrow">PROFESSOR REPORT · PREDICTION &amp; METRIC CONTRACT</div>
+<h1>沒有 Conflict 時怎麼選？<br>有 Conflict 或平票又怎麼選？</h1>
+<p>一句話：<strong>六種方法是最後的分類選擇策略，不是產生或消除 Conflict 的方法。</strong>所有測試資料都會得到最終分類；只有多種候選決策時，六種方法才可能對同一筆資料產生不同答案。本頁解釋實際程式的規則，不把示意算例冒充真實實驗。</p>
+<p><a href="#flow">三種狀態</a> · <a href="#tie">平票互動實例</a> · <a href="#metrics">指標與分母</a> · <a href="#sources">程式證據</a></p>
+</header>
+<main class="explain">
+<section class="panel" id="flow">
+<span class="section-tag">01 · MATCH BEFORE RESOLUTION</span><h2>先取得所有命中規則，再判斷是否有多種候選決策</h2>
+<p>對每筆測試資料 x，先從<strong>固定的一份規則集合</strong>取出所有符合條件的規則 M(x)，再取其提出的不同決策集合 Cand(x)。</p>
+<div class="mathline">M(x) = {r ∈ R : r 的全部前件成立}；Cand(x) = {decision(r) : r ∈ M(x)}；Conflict(x) ⇔ |Cand(x)| &gt; 1</div>
+<div class="steps3">
+<article class="route"><span class="mark">A · NO MATCH</span><h3>命中規則數 = 0</h3><p>沒有候選類別，六種分類策略都使用訓練資料的<strong>多數類別作預設答案</strong>（fallback）。可能碰巧答對，不能一律記為錯誤。</p></article>
+<article class="route"><span class="mark">B · MATCHED, NO CONFLICT</span><h3>候選決策數 = 1</h3><p>即使命中 5 條規則，只要全都提出 Good，唯一候選仍是 Good；六策略產生相同決策。注意：<strong>命中規則條數 ≠ 候選決策種類數</strong>。</p></article>
+<article class="route"><span class="mark">C · CONFLICT</span><h3>候選決策數 ≥ 2</h3><p>至少兩個不同決策同時被命中規則提出。六策略在<strong>相同規則集合</strong>上各自選出一個答案；原本的衝突仍保留在診斷紀錄。</p></article>
+</div>
+<div class="callout"><strong>重要的程式細節：</strong>First Match 本身找到第一條匹配規則就返回，所以其回傳的匹配清單只有一條；但研究的 <strong>Conflict 指標</strong>由事前針對全部規則的獨立匹配診斷取得，不能拿 First Match 的回傳清單判定沒有衝突。</div>
+</section>
+<section class="panel" id="policies">
+<span class="section-tag">02 · SIX POLICIES</span><h2>六種方法究竟在改什麼？</h2>
+<div class="table-wrap"><table><thead><tr><th>方法</th><th>決策方式</th><th>無衝突時</th><th>平票處理</th></tr></thead><tbody>
+<tr><td>FIRST_MATCH</td><td>依規則列表順序選第一條命中規則</td><td>唯一候選類別</td><td>不計票；改變規則順序可能改變結果</td></tr>
+<tr><td>SIMPLE_VOTING</td><td>每條命中規則給其決策一票</td><td>唯一候選類別</td><td>共用最高分平票規則</td></tr>
+<tr><td>STANDARD_VOTING</td><td>加總匹配規則的權重</td><td>唯一候選類別</td><td>共用最高分平票規則</td></tr>
+<tr><td>GLOBAL_STRENGTH</td><td>U<sub>d</sub> / N<sub>d</sub></td><td>唯一候選類別</td><td>共用最高分平票規則</td></tr>
+<tr><td>POPULATION_STANDARD</td><td>U<sub>d</sub>：不重複的支持物件數</td><td>唯一候選類別</td><td>共用最高分平票規則</td></tr>
+<tr><td>POPULATION_GLOBAL</td><td>U<sub>d</sub><sup>2</sup> / (N<sub>d</sub> T<sub>d</sub>)</td><td>唯一候選類別</td><td>共用最高分平票規則</td></tr>
+</tbody></table></div>
+<p class="note">U<sub>d</sub>：支持 d 的不重複訓練物件；T<sub>d</sub>：各規則正確支持物件數累加（可能重複）；N<sub>d</sub>：訓練集中類別 d 的物件數。STANDARD 的權重不可一律視為 T<sub>d</sub>：集中式使用前件命中訓練物件數，聯邦式目前使用各 Client 的決策一致支持量。</p>
+<p><strong>NONE 不是第七種分類法：</strong>它只保留候選集合、Coverage、Conflict 等診斷，不產生 Winner，因此 Accuracy、Balanced Accuracy、Macro-F1 未定義。</p>
+</section>
+<section class="panel" id="tie">
+<span class="section-tag">03 · TIE BREAKING · INTERACTIVE EXAMPLE</span><h2>五種計分策略若最高分平票，實際如何決勝？</h2>
+<p>程式先以 <code>np.isclose(score, max_score)</code> 收集最高分或數值近似最高分的候選類別。若訓練集多數類別就在平票集合內，選它；否則依<strong>字串字典序</strong>選最前面的類別。</p>
+<div class="demo-grid">
+<div class="demo">
+<h3>修改示意投票分數</h3>
+<div class="controls">
+<label>Good 分數<input id="scoreGood" type="number" value="10" min="0" step="any"></label>
+<label>Bad 分數<input id="scoreBad" type="number" value="10" min="0" step="any"></label>
+<label>Medium 分數<input id="scoreMedium" type="number" value="2" min="0" step="any"></label>
+<label>訓練集多數類別<select id="majority"><option value="Good">Good</option><option value="Bad">Bad</option><option value="Medium">Medium</option></select></label>
+</div>
+<div class="resbox" role="status" aria-live="polite" id="tieResult">結果載入中…</div>
+<p class="note">這是示意分數的決勝演算，不是在重新訓練 LEM2，也不是已完成的 8,820 筆實驗數據。</p>
+</div>
+<div class="demo">
+<h3>程式的優先順序</h3>
+<ol>
+<li>有且只有一個最高分候選：直接選它。</li>
+<li>最高分或近似最高分平票：如果 default_class（訓練集多數類別）在其中，選 default_class。</li>
+<li>如果 default_class 不在平票集合，按類別名稱的字串排序選第一個。</li>
+</ol>
+<div class="callout warn"><strong>研究邊界：</strong>這是程式定義的決勝規則，不是 LEM2 的數學定理；當 default_class 本身因訓練集類別數相同而沒有唯一多數類別時，其選取由上游的多數類別函式決定，並非這一層另外做了統計最佳化。</div>
+</div>
+</div>
+<p class="note">First Match 沒有「分數平票」概念；沒有命中規則時，兩者都直接採用預設類別。浮點近似判斷與 NumPy 的 <code>isclose</code> 預設參數對齊（rtol = 1e−5、atol = 1e−8）。</p>
+</section>
+<section class="panel" id="metrics">
+<span class="section-tag">04 · WHO IS IN THE DENOMINATOR?</span><h2>我們的 Accuracy 不是只計算 Conflict：三類資料都包含在內</h2>
+<div class="formula-block">
+<div><strong>N = N<sub>0</sub> + N<sub>1</sub> + N<sub>c</sub></strong>：N<sub>0</sub> 無命中；N<sub>1</sub> 有命中但唯一候選；N<sub>c</sub> 有兩種以上候選。</div>
+<div><strong>Overall Accuracy = (K<sub>0</sub> + K<sub>1</sub> + K<sub>c</sub>) / N</strong>：所有測試物件都納入；K 是各組正確預測數。</div>
+<div><strong>Conflict-only Accuracy = K<sub>c</sub> / N<sub>c</sub></strong>：只看衝突子集；如果 N<sub>c</sub> = 0，指標未定義，而不是 0%。</div>
+<div><strong>Coverage = (N<sub>1</sub> + N<sub>c</sub>) / N</strong>；<strong>Conflict Rate = N<sub>c</sub> / N</strong>。</div>
+</div>
+<h3>100 筆測試物件：可調整的純教學示例</h3>
+<p>下面的 N 固定是 10／70／20；你可以改變各組答對數，直接看到整體準確率與 Conflict-only 準確率為什麼不同。</p>
+<div class="bar" aria-label="示例 100 筆：No Match 10 筆、單一候選 70 筆、Conflict 20 筆"><span class="a" style="width:10%" title="No Match 10"></span><span class="b" style="width:70%" title="No Conflict 70"></span><span class="c" style="width:20%" title="Conflict 20"></span></div>
+<div class="controls" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+<label>No Match（10 筆）答對數<input type="number" id="correct0" min="0" max="10" step="1" value="7"></label>
+<label>單一候選（70 筆）答對數<input type="number" id="correct1" min="0" max="70" step="1" value="63"></label>
+<label>Conflict（20 筆）答對數<input type="number" id="correctC" min="0" max="20" step="1" value="12"></label>
+</div>
+<div class="stats" style="margin:16px 0" aria-live="polite">
+<div><small>Overall Accuracy</small><strong id="accOverall">82%</strong></div>
+<div><small>Conflict-only Accuracy</small><strong id="accConflict">60%</strong></div>
+<div><small>Coverage</small><strong>90%</strong></div>
+<div><small>Conflict Rate</small><strong>20%</strong></div>
+</div>
+<p id="metricNote" class="note"></p>
+<div class="callout"><strong>最重要的實驗解讀：</strong>固定同一組規則時，六種策略的 No Match 與單一候選預測相同，因此策略間的 Overall Accuracy 差異來自 Conflict 子集；但不同資料切分、不同 Client 數會改變規則與三個子集大小，不能把不同架構的準確率差異全歸因於平票或 Conflict 策略。</div>
+</section>
+<section class="panel" id="errors">
+<span class="section-tag">05 · EXPLAIN ERRORS WITHOUT CONFUSING THEM</span><h2>有 Conflict 不一定錯；沒有 Conflict 也不保證正確</h2>
+<div class="table-wrap"><table><thead><tr><th>評估階段</th><th>判斷方式</th><th>六策略可否從候選中修正？</th></tr></thead><tbody>
+<tr><td>No Match</td><td>匹配規則為空；退回 default_class，可能答對或答錯</td><td>不能；要改善規則覆蓋或改變 fallback 機制</td></tr>
+<tr><td>True Not in Candidate</td><td>有命中規則，但真實標籤不在候選類別集合</td><td>不能；正解根本不在可選集合內</td></tr>
+<tr><td>Wrong Ranking</td><td>正確標籤在候選內，最後卻選到其他類別</td><td>可以針對選擇機制改善，尤其是 Conflict 子集</td></tr>
+<tr><td>Correct</td><td>最後選到真實標籤</td><td>不代表無衝突；需要再看是否為候選選擇成功</td></tr>
+</tbody></table></div>
+<p><strong>評估限制：</strong>42 Seeds 的彙整表可比較總體準確率、Coverage、Conflict Rate 和 Conflict 子集績效，但不能僅憑 Overall Accuracy 反推每一筆資料的 Winner、No Match fallback 是否答對、或 Wrong Ranking 數量；後者必須使用逐筆追溯紀錄。</p>
+</section>
+<section class="panel" id="sources">
+<span class="section-tag">06 · REPRODUCIBILITY</span><h2>對應程式、原始結果與教授報告</h2>
+<ul>
+<li><a href="https://github.com/Jimmy0307/LEM2/blob/research/report-ready-dashboard-20261109/roughset/evaluation.py">evaluation.py</a>：<code>predict_with_policy()</code>、<code>_resolve_vote()</code>，以及六種選擇策略、預設值和平票邏輯。</li>
+<li><a href="https://github.com/Jimmy0307/LEM2/blob/research/report-ready-dashboard-20261109/roughset/pipeline.py">pipeline.py</a>：對 Conflict 子集先建立旗標，再計算 <code>conflict_resolution_accuracy</code> 等指標。</li>
+<li><a href="../evidence/">8,820 筆研究證據頁</a>：所有指標取自正式 42 Seeds 資料，與本頁示意算例分開。</li>
+<li><a href="../methods/">公式與定義頁</a>：六方法與不同訓練架構的權重口徑說明。</li>
+</ul>
+<div class="callout"><strong>對老師的重點句：</strong>「我們六種方法不是六個不同的 LEM2 訓練器，而是在相同規則集合上比較最終選擇；整體評估計算全部測試物件，另外獨立報告 Conflict 子集表現。無規則命中使用預設類別；有唯一候選時六種策略通常一致；發生多候選衝突才進入策略比較的核心情境，計分平票時依預設類別及字串排序決勝。」</div>
+</section>
+</main>
+<footer class="footer">LEM2 × Federated · <a href="../">返回教授研究報告</a> · <a href="../evidence/">實驗數據</a> · <a href="../methods/">公式</a></footer>
+<script>
+(function(){
+"use strict";
+const $=id=>document.getElementById(id);
+function close(a,b){return Math.abs(a-b)<=1e-8+1e-5*Math.abs(b);}
+function updateTie(){
+  const names=["Good","Bad","Medium"],values=names.map(n=>Number($("score"+n).value));
+  const node=$("tieResult");
+  if(values.some(v=>!Number.isFinite(v)||v<0)||["Good","Bad","Medium"].some(n=>$("score"+n).value.trim()==="")){node.textContent="請輸入有效的非負分數。";return;}
+  const top=Math.max(...values),tied=names.filter((n,i)=>close(values[i],top));
+  const d=$("majority").value;
+  const winner=tied.includes(d)?d:tied.slice().sort()[0];
+  const reason=tied.length===1?"只有一個最高分候選":tied.includes(d)?"平票集合含訓練集多數類別，優先選它":"平票集合不含訓練集多數類別，依字串排序選第一名";
+  node.innerHTML="<span class='tag'>計分策略的最終決策</span><div><strong>"+winner+"</strong></div><div>最高分候選："+tied.join("、")+"；"+reason+"。</div>";
+}
+["scoreGood","scoreBad","scoreMedium"].forEach(id=>$(id).addEventListener("input",updateTie));
+$("majority").addEventListener("change",updateTie);updateTie();
+function updateMetrics(){
+ const inp=[["correct0",10],["correct1",70],["correctC",20]];
+ const nums=inp.map(([id,max])=>Number($(id).value));
+ if(nums.some((n,i)=>!Number.isInteger(n)||n<0||n>inp[i][1])){
+ $("accOverall").textContent="—";$("accConflict").textContent="—";$("metricNote").textContent="答對數須為各組筆數範圍內的整數。";return;
+ }
+ const total=nums.reduce((a,b)=>a+b,0);
+ $("accOverall").textContent=total+"%";
+ $("accConflict").textContent=(nums[2]*5).toFixed(0)+"%";
+ $("metricNote").textContent="計算："+nums.join(" + ")+" = "+total+" 筆正確；Overall = "+total+"/100；Conflict-only = "+nums[2]+"/20。這些是示意值，不是實測結果。";
+}
+["correct0","correct1","correctC"].forEach(id=>$(id).addEventListener("input",updateMetrics));updateMetrics();
+})();
+</script>
+</body></html>
