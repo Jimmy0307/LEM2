@@ -51,6 +51,10 @@
   ],
   "unit": "percent (0-100); paired delta is pp",
   "metric": "100 * pre-resolution conflict_case_count / evaluation_rows",
+  "additional_metrics": {
+    "Test Data Coverage (%)": "100 * covered_count / evaluation_rows",
+    "Candidate Coverage (%)": "100 * true_in_candidate_count / evaluation_rows"
+  },
   "policy_independent": true,
   "note": "19 requested Conflict Rate Percentage analytical views; explicit table index, NOT 19 independent datasets or 19 classification algorithms",
   "tables": [

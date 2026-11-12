@@ -1,7 +1,10 @@
 # 19 張 Conflict Rate (%) 正式資料表
 
 方法：Classical Rough Set 正域約簡 + LEM2；聯邦式為本地歸納後合併。
-只讀取 NONE 結構診斷；不把六策略重複計算成六份 Conflict。Conflict Rate (%) = 衝突物件數 / 全部評估物件數 × 100；pp = 兩個百分率直接相減。跨 Seed 的 Mean 與 pooled ratio 可能不同；每表同時保留分母與兩種均值。
+只讀取 NONE 結構診斷；不把六策略重複計算成六份 Conflict。
+另新增：Test Data Coverage (%) = 有任一規則命中數 / Test 筆數；
+Candidate Coverage (%) = 真實標籤落入候選集合數 / Test 筆數。
+Conflict Rate (%) = 衝突物件數 / 全部評估物件數 × 100；pp = 兩個百分率直接相減。跨 Seed 的 Mean 與 pooled ratio 可能不同；每表同時保留分母與兩種均值。
 
 | # | CSV | 列數 | 內容 |
 |---:|---|---:|---|
