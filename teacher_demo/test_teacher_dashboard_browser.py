@@ -122,6 +122,13 @@ def main():
             assert page.locator("#k4Rows tr").count()==21
             assert "K=4" in page.locator("#k4pilot").inner_text()
             assert "Accuracy" in page.locator("#k4pilot").inner_text()
+            page.wait_for_function("document.querySelector('#supplementaryStatus').textContent.includes('PASS')",timeout=30000)
+            assert page.locator("#supplementaryResults tr").count()==6
+            assert "12.70" in page.locator("#supplementaryResults").inner_text()
+            page.wait_for_function("document.querySelector('#datasetWinStatus').textContent.includes('PASS')",timeout=30000)
+            assert page.locator("#datasetWinRows tr").count()==9
+            assert "210" in page.locator("#datasetWinStatus").inner_text()
+            print("TRAIN_ONLY_SUPPLEMENTARY_AND_DATASET_WINS=PASS",flush=True)
             print("K4_FALLBACK_PILOT_EVIDENCE_GATE=PASS",flush=True)
             print("TRAIN_TEST_COVERAGE_REJECTION_TEACHER_PAGE=PASS",flush=True)
 
