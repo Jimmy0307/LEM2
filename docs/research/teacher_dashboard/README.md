@@ -1,3 +1,13 @@
+## 2026-11-12｜新增獨立 42-Seed non-IID 延伸執行流程（與 Classical IID 主基線隔離）
+
+- **已建立且已啟動** [non-IID 42-Seed GitHub Actions](https://github.com/Jimmy0307/LEM2/actions/workflows/noniid-42-extension.yml)：以 Seed 1–42、三資料集、Federated C2～C5、Dirichlet alpha 0.5/0.1、HOLDOUT_80_20、NONE＋六策略執行，預期最多 7,056 列有效模型結果。
+- **研究定位**：此擴充仍是 Classical reduct + LEM2，只變更 Client 資料分配為 non-IID；不等於 DRSA、LERS 或原本的分層 IID 8,820 列。
+- **結果可用性**：工作流程在 42 個 Seed 都執行完成、完成配對驗證並成功發布 `data/NONIID_42_SUMMARY.json` 之前，網站僅能顯示原有 Seed 1、42 的先導狀態，不得宣稱延伸研究的 42-Seed 數值已完成。
+- **完整性檢查**：每個有效非 IID 配置必須能對應同 Seed、同 Dataset、同 Client、同 Policy 的 IID 結果；無效 Client partition 記錄於獨立 ERROR CSV，不填 0。比較時先固定資料集、再計算相同 Seed 的配對差距。
+- **發布資料**：完成後分支將包含 `NONIID_42_RESULTS.csv`、`NONIID_42_ERRORS.csv`、`NONIID_42_PAIRED_IID.csv` 與 `NONIID_42_SUMMARY.json`。網站只有讀到符合契約的 JSON，才會解除「僅先導」標示。
+
+---
+
 ## 2026-11-12｜Classical／Federated 42-Seed 對照與統計單位
 
 - 新增 [42 Seeds／版本與 pp 解釋](./versions/)：自凍結 8,820 主矩陣讀取、驗證每 Seed 210 列，展示 Classical 集中式與聯邦式 C2–C5、六策略的 42-Seed 實測比較，以及前 1／7／21／42 Seeds 的均值與 SD。
