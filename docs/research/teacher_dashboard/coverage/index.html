@@ -86,7 +86,15 @@ Selective Risk = #接受後答錯 / #被接受；Acceptance = #接受 / N</div>
 <div class="decision"><strong>成功標準不是只追求覆蓋率增加：</strong>額外能回答的 No Match 物件必須計算其正確率；如果放寬匹配使錯誤率升高，不能直接稱為分類改善。原模型本來就會以訓練集多數類別回退，並沒有實際的 Reject，因此這組是「若拒絕所有嚴格 No Match」的操作性覆蓋試驗。</div>
 <p><a href="https://github.com/Jimmy0307/LEM2/actions/workflows/coverage-k4-pilot.yml">K4 試驗來源與執行紀錄</a> · <a href="../data/COVERAGE_K4_4SEED_SUMMARY.csv">4-Seed 摘要 CSV（通過後可用）</a></p>
 </section>
-<section class="panel" id="outputs"><span class="section-tag">07 · DATA & CORRECTED 19-COLUMN PRESENTATION</span>
+<section class="panel" id="pilot"><span class="section-tag">07 · PRE-REGISTERED FEASIBILITY PILOT · 2 SEEDS ONLY</span>
+<h2>Train-only 補充規則：已執行，不拿兩次 Seed 冒充顯著性</h2>
+<p>固定 Seed 1、42，僅測集中式／聯邦 C3，使用 Train-only 支持數≥5、放寬一個前件、純度門檻 90% 與 100%。<strong>補充規則只在原本沒有任何規則命中時啟用</strong>，所以原本的完全匹配規則與六種原分類策略不變。</p>
+<div class="table-wrap"><table><thead><tr><th>資料集</th><th>架構</th><th>門檻</th><th>基準覆蓋</th><th>補充後覆蓋</th><th>新增 pp</th><th>原始 Accuracy</th><th>補充後 Accuracy</th><th>救回／答對物件</th></tr></thead>
+<tbody id="supplementaryResults"><tr><td colspan="9">讀取已核對的 Train-only 補充規則先導數據…</td></tr></tbody></table></div>
+<p id="supplementaryStatus" class="metric-note" role="status" aria-live="polite">實測是否已通過來源核對，依結果檔 manifest 決定。</p>
+<p class="metric-note"><strong>重要限制：</strong>這是我們自行設計的簡化一前件放寬法，並非 Inuiguchi &amp; Washimi 原論文演算法的完全重現。此處報告的是 <strong>augmented coverage</strong>（包含補充規則），不能改寫舊版原始 exact-rule coverage；仍須擴大至 42 Seeds、多數據集與風險－覆蓋評估。</p>
+</section>
+<section class="panel" id="outputs"><span class="section-tag">08 · DATA & CORRECTED 19-COLUMN PRESENTATION</span>
 <h2>19 個表頭與各資料集勝出次數</h2>
 <p>先前的 <code>conflict_19/</code> 是 19 張分析表的舊理解；現在的正式比較格式為<strong>一張 19 欄的總表</strong>，第 19 欄是 <code>conflict_rate_pct</code>，另有依資料集、Seed 與相同規則配置比較六策略的勝出次數。多個策略平手時同時記錄共同勝出與分攤次數，不把平手當成多個獨立勝利。</p>
 <div class="sources">
@@ -97,6 +105,10 @@ Selective Risk = #接受後答錯 / #被接受；Acceptance = #接受 / N</div>
 <a href="../data/TRAIN_TEST_COVERAGE_42SEEDS.csv">Train/Test Coverage 重跑逐 Seed 數據</a>
 </div>
 <p>這些資料均標註基於 Classical reduct + LEM2；Federated 表示分 Client 產生規則再合併，並非 DRSA。資料仍以 GitHub 分支內容及 Actions 驗證紀錄為準。</p>
+<h3>各資料集六策略勝出次數（42 Seeds，IID，Balanced Accuracy）</h3>
+<p>每組相同資料集 × Seed × 架構的六個策略中，得分最高算一組勝利；若平手則依得分持平的策略分攤 1 次勝利。統計涵蓋 42 Seeds × 五種架構＝每資料集 210 次公平配對機會。</p>
+<div class="table-wrap"><table><thead><tr><th>資料集</th><th>策略</th><th>共同／單獨贏的配置數</th><th>分攤勝出次數</th><th>勝出比重</th></tr></thead><tbody id="datasetWinRows"><tr><td colspan="5">讀取已核對的策略勝出次數…</td></tr></tbody></table></div>
+<p id="datasetWinStatus" class="metric-note" role="status" aria-live="polite">勝出次數僅比較相同規則集合的決策選擇，不代表跨資料集統計顯著性。</p>
 </section>
 </main><footer class="footer">LEM2 × Federated · <a href="../">返回教授報告首頁</a> · <a href="../versions/">42 Seeds 版本</a> · <a href="../conflict/">Conflict 與平票</a></footer>
 <script>
@@ -135,5 +147,52 @@ try{
  target.innerHTML=items.map(x=>"<tr><td>"+x.dataset+"</td><td>"+(Number(x.client_count)===0?"Centralized":"Fed C"+x.client_count)+"</td><td>"+x.partition_strategy+(x.alpha?" α="+x.alpha:"")+"</td><td>"+pct(x.test_coverage_pct)+"</td><td>"+pct(x.assisted_test_coverage_pct)+"</td><td>"+pct(x.baseline_accuracy_pct)+"</td><td>"+pct(x.assisted_accuracy_pct)+"</td><td>"+pp(x.delta_accuracy_pp)+"</td></tr>").join("");
  status.textContent="已發布 4 Seeds（1、7、21、42）的原始對照，非完整 42-Seed 結論；K=4 可回答率不是原生嚴格規則覆蓋率。";
 }catch(e){status.textContent="尚無有效 K4 先導結果："+e.message;}
+})();
+</script>
+<script>
+(async function(){
+ const out=document.getElementById("supplementaryResults");
+ const state=document.getElementById("supplementaryStatus");
+ try{
+  const r=await fetch("../data/SUPPLEMENTARY_TRAIN_ONLY_2SEED_PILOT.json",{cache:"no-store"});
+  if(!r.ok)throw Error("尚未發布經核對的實驗數據");
+  const j=await r.json();
+  if(!j.canonical_reconciliation_pass||j.config_rows!==24||!Array.isArray(j.groups)||j.groups.length!==12)
+    throw Error("先導數據契約不完整");
+  const n=v=>Number(v).toFixed(2)+"%";
+  out.innerHTML=j.groups.filter(x=>Math.abs(x.purity-.9)<1e-10).map(x=>
+   "<tr><td>"+x.dataset+"</td><td>"+(x.client_count===0?"Centralized":"Fed C"+x.client_count)+"</td><td>90%</td>"+
+   "<td>"+n(x.baseline_coverage_pct)+"</td><td>"+n(x.augmented_coverage_pct)+"</td>"+
+   "<td>"+(x.added_coverage_pp>=0?"+":"")+Number(x.added_coverage_pp).toFixed(2)+" pp</td>"+
+   "<td>"+n(x.original_accuracy_pct)+"</td><td>"+n(x.augmented_accuracy_pct)+"</td>"+
+   "<td>"+x.rescued_count+"／"+x.rescued_correct+"</td></tr>").join("");
+  state.textContent="來源核對 PASS：2 Seeds × 3 datasets × 2 architectures × 2 thresholds＝24 組；此為探索性 POC。";
+ }catch(e){out.innerHTML="<tr><td colspan='9'>尚未取得已驗證先導結果</td></tr>";state.textContent=e.message;}
+})();
+(async function(){
+ const out=document.getElementById("datasetWinRows"),status=document.getElementById("datasetWinStatus");
+ try{
+  const r=await fetch("../data/POLICY_WINS_BY_DATASET.csv",{cache:"no-store"});
+  if(!r.ok)throw Error("勝出次數尚未發布");
+  const text=await r.text();
+  const [head,...items]=text.trim().split(/\r?\n/);
+  const cols=head.split(",");
+  if(cols.indexOf("fractional_win_share_pct")===-1)throw Error("資料欄位缺漏");
+  const rows=items.map(s=>Object.fromEntries(s.split(",").map((x,i)=>[cols[i],x])))
+                  .filter(x=>x.regime==="STRATIFIED_IID"&&x.metric==="balanced_accuracy_pct");
+  if(!rows.length)throw Error("尚無 42-Seed IID 勝出比較");
+  const names=["Balance Scale","Car Evaluation","Hayes-Roth"];
+  const render=[];
+  for(const name of names){
+    const a=rows.filter(x=>x.dataset===name).sort((a,b)=>
+        Number(b.fractional_wins)-Number(a.fractional_wins)).slice(0,3);
+    if(a.length!==3||a.some(x=>Number(x.opportunities)!==210))throw Error("每資料集配對機會數不是 210");
+    for(const x of a)render.push("<tr><td>"+x.dataset+"</td><td>"+x.winning_policy+
+       "</td><td>"+x.winning_configuration_count+"</td><td>"+Number(x.fractional_wins).toFixed(2)+
+       "</td><td>"+Number(x.fractional_win_share_pct).toFixed(2)+"%</td></tr>");
+  }
+  out.innerHTML=render.join("");
+  status.textContent="PASS：按三資料集分開呈現前 3 名，每資料集 210 組相同 Seed／規則架構的公平策略比較；同分分攤勝利。";
+ }catch(e){out.innerHTML="<tr><td colspan='5'>未能核對勝出次數</td></tr>";status.textContent=e.message;}
 })();
 </script></body></html>
