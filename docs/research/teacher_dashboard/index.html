@@ -6,11 +6,11 @@
 <link rel="stylesheet" href="./site.css"><link rel="stylesheet" href="./report-v2.css">
 </head><body>
 <div class="site-top"><a class="brand" href="./">LEM2 Research · 互動研究報告</a>
-<nav><a class="active" href="./">主流程／報告</a><a href="./ranking/">哪個配置最好？</a><a href="./evidence/">8,820 筆證據</a><a href="./methods/">公式與定義</a><a href="./figures/">原始九圖</a><a href="./lab/">CSV 實跑</a><a href="https://github.com/Jimmy0307/LEM2/tree/research/report-ready-dashboard-20261109/docs/research/teacher_dashboard" target="_blank" rel="noopener">GitHub</a></nav></div>
+<nav><a class="active" href="./">主流程／報告</a><a href="./conflict/">Conflict／平票</a><a href="./ranking/">哪個配置最好？</a><a href="./evidence/">8,820 筆證據</a><a href="./methods/">公式與定義</a><a href="./figures/">原始九圖</a><a href="./lab/">CSV 實跑</a><a href="https://github.com/Jimmy0307/LEM2/tree/research/report-ready-dashboard-20261109/docs/research/teacher_dashboard" target="_blank" rel="noopener">GitHub</a></nav></div>
 <header class="hero hero-v2"><div class="eyebrow">GUIDED RESEARCH REPORT · VERSION 2</div>
 <h1>一張流程圖，講清楚規則怎麼來、<br>Conflict 怎麼發生、最後怎麼選答案</h1>
 <p>首頁就是研究流程。按任一節點，右側會同步展開<strong>這一步的輸入、數學定義、實際使用的變因、結果數值與程式證據</strong>；改變 Seed／資料集／切分／學習架構，所有實驗區塊同時更新。</p>
-<div class="hero-actions"><a class="primary" href="#pipeline">開始點選流程</a><a href="#trace">42 Seeds 即時追蹤</a><a href="#definitions">指標精確定義</a><a href="#conclusions">最後總結</a></div>
+<div class="hero-actions"><a class="primary" href="#pipeline">開始點選流程</a><a href="./conflict/">沒有 Conflict／平票怎麼選？</a><a href="#trace">42 Seeds 即時追蹤</a><a href="#definitions">指標精確定義</a><a href="#conclusions">最後總結</a></div>
 <div class="callout" style="margin:16px 0;background:#ecf8f3;color:#194b55;border-left:4px solid #19877b"><b>報告建議：</b>先到 <a href="./ranking/" style="font-weight:700">最佳條件比較</a> 選 Accuracy、BA 或 Macro-F1，即可看到哪一組學習配置最好、第二名差多少、跨 42 Seeds 的波動，並檢查 Hayes-Roth 的官方測試限制。</div><div class="hero-subline"><span id="dataState" aria-live="polite">正在核對 GitHub 正式實驗數據…</span><span>研究基線：3 資料集 × 42 Seeds × 2 切分 × 5 學習配置 × 7 模式</span></div>
 </header>
 <main class="wrap v2-main">
@@ -61,12 +61,26 @@
 <div class="table-wrap"><table><thead><tr><th>決策方法</th><th>Accuracy</th><th>Balanced Accuracy</th><th>Macro-F1</th><th>同一組規則？</th><th>什麼時候適用</th></tr></thead><tbody id="policyCompareRows"></tbody></table></div>
 <div class="two"><div class="card"><h3>該怎麼讀「學習架構」？</h3><p>本研究的比較單位是 <strong>Centralized</strong> 和 <strong>Federated C2～C5</strong>，代表規則在哪裡學、由多少個 Client 提供 Local Rules。不是網路拓樸圖的節點連線結構。</p></div><div class="card"><h3>該怎麼讀「曲線指標」？</h3><p>指的是 Y 軸觀測變數（Coverage、Conflict、Rule Count 或預測績效），不是要比較「曲線」本身。Seed 1～42 是重複抽樣標籤，<strong>不能解讀為隨時間增加或改良</strong>。</p></div></div>
 </section>
+<section class="panel" id="prediction-contract" aria-labelledby="prediction-contract-title">
+<span class="section-tag">04 · PREDICTION CONTRACT · IMPORTANT FOR THE PROFESSOR</span>
+<h2 id="prediction-contract-title">六策略不是只計算 Conflict：所有測試物件都會分類，衝突另行診斷</h2>
+<p>正式報告的 <strong>Overall Accuracy／Balanced Accuracy／Macro-F1</strong> 以整個測試集為評估對象；另有獨立的 <strong>Conflict-only Accuracy</strong>，只看事前判定為多候選決策的物件。兩種分母不能互換。</p>
+<div class="three">
+<div class="card"><h3>A｜No Match</h3><p>沒有任何規則匹配，六策略均回退到<strong>訓練資料的多數類別</strong>（default_class）。這種 fallback 可能答對。</p></div>
+<div class="card"><h3>B｜No Conflict</h3><p>有規則匹配，但全部命中規則只提出同一個候選決策；六策略輸出該唯一類別，即使命中不只一條規則。</p></div>
+<div class="card"><h3>C｜Conflict</h3><p>有至少兩個不同候選決策。六策略在同一 Rule Set 上產生 Winner；<strong>First Match 看順序，其餘五種計分</strong>。</p></div>
+</div>
+<div class="callout"><strong>平票時如何選？</strong>五種計分方法以 <code>np.isclose</code> 判斷最高分候選；若訓練集多數類別也在平票集合就選它，否則按類別名稱的字串排序選第一個。First Match 不計票；Conflict 指標則是在策略選擇之前獨立計算。</div>
+<p><strong>分母：</strong>若 N<sub>0</sub> 為 No Match、N<sub>1</sub> 為匹配但單一候選、N<sub>c</sub> 為 Conflict，則 N = N<sub>0</sub> + N<sub>1</sub> + N<sub>c</sub>；<strong>Overall Accuracy = (K<sub>0</sub>+K<sub>1</sub>+K<sub>c</sub>)/N</strong>，<strong>Conflict-only Accuracy = K<sub>c</sub>/N<sub>c</sub></strong>（若 N<sub>c</sub>=0 則未定義）。</p>
+<p><a href="./conflict/" style="font-weight:800">開啟獨立教學頁：三種情況、六策略、可互動平票例子與 100 筆指標分解 →</a></p>
+</section>
 <section class="panel" id="definitions"><span class="section-tag">04 · FORMAL METRIC DICTIONARY</span><h2>每個指標：先講分子分母，再說研究用途與誤讀風險</h2><p>以下定義按「純規則結構 → 候選集合 → 最終預測」順序排列；點選任一項可展開精確定義、例子和它能解決哪一類研究問題。</p>
 <div id="metricDictionary"></div>
 <div class="callout warn"><b>一項重要更正：</b>現有程式的 STANDARD 權重 <strong>W<sub>d</sub></strong> 統計「符合前件的訓練物件」；Population 的支持度 <strong>T<sub>d</sub>、U<sub>d</sub></strong> 則要求「前件成立且決策類別一致」。有不一致資料時 W<sub>d</sub> 不必等於 T<sub>d</sub>。因此不能直接宣稱 PS 是對程式 STANDARD 權重逐項去重。</div>
 </section>
 <section class="panel" id="conflict"><span class="section-tag">05 · CONFLICT DECISION PLAYBOOK</span><h2>Conflict 不是直接「消掉」｜先判斷問題在哪個階段</h2><div class="callout">當新物件 x 進來，先取得命中規則 M(x) 和候選類別 C(x)。<strong>有多個候選只代表有決策歧義，不代表已經預測錯。</strong>必須按下方順序判斷，才能對症改動規則學習或 Winner 計分。</div>
 <div class="triage" id="triageFlow"></div>
+<div class="callout"><strong>補充：Conflict 不等於全部測試物件。</strong>無規則命中使用多數類別；有規則命中但只有一種候選時，六策略同樣輸出唯一決策。平票時五種計分策略共用相同決勝規則。<a href="./conflict/">查看完整分流、平票與評估分母說明 →</a></div>
 <h3>從目前的實驗總表，能不能直接知道每種錯誤有多少？</h3><p id="errorLimitText" class="muted">正式 8,820 列包含覆蓋率、正確候選率、衝突率與策略績效，但<strong>沒有每筆的完整 Winner／Matched Rule 證據</strong>。這裡能精確分解候選階段的互斥比例；「正確候選卻選錯」的筆數必須查逐筆 trace，不能用 1 − Accuracy 直接冒充。</p>
 <div class="hero-actions"><a class="primary" href="./lab/">用 CSV 看單筆 Rule / Candidate / Winner</a><a href="https://github.com/Jimmy0307/LEM2/tree/research/teacher-evidence-42-20261109" target="_blank" rel="noopener">GitHub 逐筆研究證據</a></div>
 </section>
