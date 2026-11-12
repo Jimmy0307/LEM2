@@ -1,3 +1,19 @@
+## 2026-11-12｜教授報告：Conflict、無衝突、No Match 與平票決勝說明
+
+新增 [Conflict 決策與指標教學頁](./conflict/)；報告首頁也提供導覽入口及精簡的三狀態流程。
+
+- **No Match**：無命中規則；六策略均使用訓練資料多數類別預設預測。
+- **Matched without Conflict**：命中規則只提出單一候選類別；六策略均輸出該類別。
+- **Conflict**：不同決策候選同時出現；六策略在同一固定規則集合上選 Winner。Conflict 診斷獨立於策略、發生在策略計分之前。FIRST_MATCH 只回傳首條匹配規則，不代表原規則集合沒有 Conflict。
+- **Tie-breaking**：FIRST_MATCH 不使用計分；其餘五種計分策略共用 roughset/evaluation.py::_resolve_vote()，先以 np.isclose 判定最高分候選；訓練集多數類別若在同分集合內優先勝出，否則字串排序取第一。
+- **評估分母**：Overall Accuracy、Balanced Accuracy、Macro-F1 包含整個測試集；Conflict-only accuracy 只用獨立標記的衝突子集。N_conflict=0 時後者未定義（NaN），不可填 0。
+- **教學互動**：可修改類別分數與多數類別觀察平票決勝；100 筆示意資料可調各群組正確數以理解 Overall 與 Conflict-only 差異；非正式實測資料。
+- 不修改模型程式、既有實驗數字、凍結基線或資料切分，僅新增研究展示與解釋。
+
+**驗證來源：** roughset/evaluation.py::predict_with_policy、_resolve_vote；roughset/pipeline.py::_evaluate_system（事前 Conflict 旗標與 conflict_resolution_accuracy）。
+
+---
+
 ## 2026-11-11｜教授報告 V2：以可點選全流程為主視覺
 
 本次修復六個報告問題：
