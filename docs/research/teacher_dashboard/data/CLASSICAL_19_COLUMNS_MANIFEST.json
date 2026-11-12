@@ -1,0 +1,44 @@
+{
+  "status": "VERIFIED",
+  "rows": 9828,
+  "columns": [
+    "dataset",
+    "seed",
+    "distribution",
+    "dirichlet_alpha",
+    "split_mode",
+    "system",
+    "client_count",
+    "selection_policy",
+    "train_rows",
+    "test_rows",
+    "rule_count",
+    "no_match_count",
+    "covered_count",
+    "test_coverage_pct",
+    "true_in_candidate_count",
+    "candidate_coverage_pct",
+    "accuracy_pct",
+    "balanced_accuracy_pct",
+    "conflict_rate_pct"
+  ],
+  "column_count": 19,
+  "seed_range": "1..42",
+  "datasets": [
+    "Balance Scale",
+    "Car Evaluation",
+    "Hayes-Roth"
+  ],
+  "scope": "All predictive Classical LEM2 HOLDOUT_80_20 configs: IID Central+Fed, non-IID Fed alpha 0.1/0.5",
+  "method": "Classical positive-region reduct + LEM2 (not DRSA/LERS)",
+  "winner_definition": "Per dataset, seed, regime, alpha and client_count; best of six decision policies using exact same rule set",
+  "tie_handling": "Each tied top policy receives win=1 AND fractional credit 1/n_tied; report solo wins separately",
+  "accuracy_ranking": "Accuracy, Balanced Accuracy, Macro-F1 and conflict-only accuracy are separate rankings",
+  "independence_warning": "A seed is repeated partitioning of the same source dataset, not a new independent dataset",
+  "no_match_note": "Fallback prediction exists; NoMatch rate is not the actual rejection/abstention rate.",
+  "files": {
+    "19col": "CLASSICAL_19_COLUMNS_42SEEDS.csv",
+    "wins_by_topology": "SIX_POLICY_WIN_COUNTS_BY_DATASET.csv",
+    "wins_by_dataset": "SIX_POLICY_WIN_COUNTS_AGGREGATED.csv"
+  }
+}
