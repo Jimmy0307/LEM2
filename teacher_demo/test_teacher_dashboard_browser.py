@@ -60,6 +60,29 @@ def main():
             print("REPORT_SEED27_LIVE_NUMBERS_PIPELINE_CHARTS=PASS",flush=True)
             print("REPORT_HOME_42SEEDS_NARRATIVE_CHARTS=PASS",flush=True)
 
+            # Conflict semantics are independently explained and demonstrable.
+            assert page.locator('a[href="./conflict/"]').count() >= 1
+            page.goto(report+"conflict/",wait_until="domcontentloaded")
+            assert "沒有 Conflict 時怎麼選" in page.locator("h1").inner_text()
+            assert page.locator(".route").count() == 3
+            assert "訓練資料的多數類別" in page.locator("#flow").inner_text()
+            assert "Good" in page.locator("#tieResult").inner_text()
+            page.locator("#majority").select_option("Medium")
+            assert "Bad" in page.locator("#tieResult strong").inner_text()
+            page.locator("#scoreBad").fill("12")
+            assert "Bad" in page.locator("#tieResult strong").inner_text()
+            assert "82%" in page.locator("#accOverall").inner_text()
+            assert "60%" in page.locator("#accConflict").inner_text()
+            page.locator("#correctC").fill("18")
+            assert "88%" in page.locator("#accOverall").inner_text()
+            assert "90%" in page.locator("#accConflict").inner_text()
+            page.locator("#correctC").fill("21")
+            assert "—" in page.locator("#accOverall").inner_text()
+            page.locator("#correctC").fill("12")
+            assert "82%" in page.locator("#accOverall").inner_text()
+            assert not errors, errors
+            print("CONFLICT_NO_MATCH_NON_CONFLICT_TIE_METRICS=PASS",flush=True)
+
             # Independent evidence drilldown: complete matrix with real selectors.
             page.goto(report+"evidence/",wait_until="domcontentloaded")
             page.wait_for_function("document.getElementById('validState').textContent.includes('PASS')",timeout=30000)
