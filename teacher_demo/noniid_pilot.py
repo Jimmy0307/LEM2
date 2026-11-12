@@ -1,4 +1,7 @@
-"""Small, separately labeled non-IID Dirichlet pilot; NOT part of canonical 8,820 rows."""
+"""Independent non-IID Dirichlet seed runner; NOT part of canonical 8,820 rows.
+
+Pilot workflow keeps seeds 1/42; an independent 42-seed workflow may use 1..42.
+"""
 import argparse,json
 from copy import deepcopy
 from pathlib import Path
@@ -13,7 +16,7 @@ def main():
  ap.add_argument("--seed",required=True,type=int)
  ap.add_argument("--output",default="outputs/noniid_pilot")
  args=ap.parse_args()
- assert args.seed in (1,42)
+ assert 1 <= args.seed <= 42, 'seed must be between 1 and 42'
  cfg=json.loads(Path("config.json").read_text(encoding="utf-8-sig"))
  cfg["evaluation"]["seed"]=args.seed
  cfg["evaluation"]["mode"]="HOLDOUT_80_20"
