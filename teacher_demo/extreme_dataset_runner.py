@@ -82,7 +82,7 @@ def read_external(name):
         share=counts/counts.sum()*cap
         desired=np.floor(share).astype(int)
         desired=desired.clip(lower=2)
-        for idx in np.argsort(-(share-desired)).index:
+        for idx in (share-desired).sort_values(ascending=False).index:
             if desired.sum()>=cap:break
             desired.loc[idx]+=1
         while desired.sum()>cap:
