@@ -73,12 +73,16 @@
 <tr><td><strong>Classical Reduct + LEM2，Centralized</strong></td><td>42/42</td><td><span class="scope-badge">可，主基線</span></td><td>同一 42-Seed 矩陣；完整結果在上方</td></tr>
 <tr><td><strong>Classical Reduct + LEM2，Fed C2–C5（IID 分層）</strong></td><td>42/42</td><td><span class="scope-badge">可，主基線</span></td><td>每種 Client 數都是獨立規則集合；同配置的六種策略共享規則</td></tr>
 <tr><td>Classical－Hayes-Roth 外部／特徵不重複切分</td><td>42/42（特定協定）</td><td><span class="scope-badge warn">獨立協定</span></td><td>不同測試母體，不與三資料集主矩陣混合加總</td></tr>
-<tr><td>Classical Fed－non-IID Dirichlet α = 0.5／0.1</td><td>2/42（Seed 1、42）</td><td><span class="scope-badge warn">先導，非 42</span></td><td>獨立執行結果；不能說已有完整 42 Seeds</td></tr>
+<tr><td>Classical Fed－non-IID Dirichlet α = 0.5／0.1</td><td id="nonIIDCount">2/42（Seed 1、42）</td><td><span id="nonIIDBadge" class="scope-badge warn">先導，非 42</span></td><td id="nonIIDDescription">獨立執行結果；不能說已有完整 42 Seeds</td></tr>
 <tr><td>Client 順序排列／First Match 敏感性</td><td>2/42（Seed 1、42）</td><td><span class="scope-badge warn">先導，非 42</span></td><td>每個已測 Seed 完整枚舉對應 C! 順序；不是另一種 reduct</td></tr>
 <tr><td>Classical Reduct 關閉（消融）</td><td>未確認 42-Seed 基準</td><td><span class="scope-badge mute">缺同口徑實測</span></td><td>主矩陣固定 reduct.enabled = true；不可冒充消融對照</td></tr>
 <tr><td>DRSA reduct／Dominance 規則線</td><td>0/42（本主矩陣）</td><td><span class="scope-badge mute">未建立可比對實驗</span></td><td>須先固定優勢準則、近似、約簡與相容規則管線</td></tr>
 <tr><td>原典 LERS 分類器</td><td>0/42（本主矩陣）</td><td><span class="scope-badge mute">未建立可比對實驗</span></td><td>不能把目前 STANDARD_VOTING 當成完整 LERS 原典實作</td></tr>
 </tbody></table></div>
+<h3>non-IID 42-Seed 擴充比較（獨立結果，不會修改 Classical 基線）</h3>
+<p id="nonIIDLoadStatus" class="tiny" role="status" aria-live="polite">目前報告分支已確認的 non-IID 只有 Seed 1、42。完整 42-Seed 延伸實驗另行驗證；當獨立結果檔經稽核發布後，以下才會顯示數值。</p>
+<div class="table-wrap"><table><thead><tr><th>α</th><th>聯邦配置</th><th>有效 Seeds</th><th>IID 指標</th><th>non-IID 指標</th><th>配對差異（pp）</th></tr></thead><tbody id="nonIIDCompareRows"><tr><td colspan="6">尚無完整 42-Seed 的驗證結果，不以 2 Seeds 外推。</td></tr></tbody></table></div>
+<p class="tiny">此表在有資料時，使用三資料集等權均值及上方選定的六種策略、指標。只有當每個資料集都具有 42 個配對 Seeds，才標記「42/42」；無效分割需列出缺漏，不以 0 補值。</p>
 <p>完整的「版本對照」除了 Seed 一致，還必須匹配資料集、測試切分、前處理、目標標籤與評估口徑；否則 42 Seeds 的數量相同仍不構成公平 A/B 比較。缺值標記為「未實測／不可比較」，絕不補 0。</p>
 </section>
 <section class="panel" id="sources"><span class="section-tag">06 · LINEAGE & REPRODUCIBILITY</span><h2>原始結果與程式證據</h2>
@@ -93,6 +97,30 @@ const policies=["FIRST_MATCH","SIMPLE_VOTING","STANDARD_VOTING","GLOBAL_STRENGTH
 const policyLabel={FIRST_MATCH:"First Match",SIMPLE_VOTING:"Simple",STANDARD_VOTING:"Standard",GLOBAL_STRENGTH:"Global Strength",POPULATION_STANDARD:"Population Standard",POPULATION_GLOBAL:"Population Global"};
 const dataSets=["Balance Scale","Car Evaluation","Hayes-Roth"];
 const structurals=new Set(["coverage","conflict_case_rate"]);
+async function updateNonIID(){
+ const label=$("nonIIDLoadStatus");if(!label)return;
+ try {
+  const response=await fetch("../data/NONIID_42_SUMMARY.json",{cache:"no-cache"});
+  if(!response.ok){if(response.status===404){label.textContent="尚未發布已核驗的 non-IID 42-Seed 結果：目前仍以 Seed 1、42 的先導實驗為準。";return;}throw Error("HTTP "+response.status);}
+  const j=await response.json();
+  if(j.method!=="Classical positive-region reduct + LEM2 / Federated"||j.expected_rows!==7056||!Array.isArray(j.comparisons))throw Error("版本或完整性資料不符");
+  const ok=Boolean(j.fully_complete);
+  $("nonIIDCount").textContent=ok?"42/42（完整）":"最多 42；"+j.invalid_configurations+" 組無效配置";
+  $("nonIIDBadge").textContent=ok?"獨立 42 Seeds PASS":"獨立擴充尚有缺漏";
+  $("nonIIDBadge").className="scope-badge"+(ok?"":" warn");
+  $("nonIIDDescription").textContent=ok?"已完成獨立配對比較，不與 8,820 筆主矩陣混寫":"保留無效分割與有效 Seed 數，不宣稱完整 42 Seeds";
+  label.textContent="來源＝NONIID_42_SUMMARY.json｜正式聯邦式 IID 仍取自凍結主矩陣｜valid="+j.valid_rows+"／"+j.expected_rows+"｜invalid="+j.invalid_configurations+"｜全數通過="+ok;
+  const c=sel(),records=j.comparisons.filter(x=>x.selection_policy===c.policy&&x.dirichlet_alpha!==null).sort((a,b)=>a.dirichlet_alpha-b.dirichlet_alpha||a.client_count-b.client_count);
+  const result=records.map(v=>{
+    const metric=c.metric;
+    const total=Object.values(v.seeds_by_dataset||{});
+    const n=Math.min(...total.map(Number));
+    const valid=Boolean(v.full_42_pair);
+    return "<tr><td>"+v.dirichlet_alpha+"</td><td>Fed C"+v.client_count+"</td><td>"+(valid?"42/42":(Number.isFinite(n)?n+"/42":"未定義"))+"</td><td>"+pct(v[metric+"_iid"])+"</td><td>"+pct(v[metric+"_noniid"])+"</td><td>"+pp(v["delta_"+metric])+"</td></tr>";
+  });
+  $("nonIIDCompareRows").innerHTML=result.join("")||'<tr><td colspan="6">目前選取條件沒有可用的獨立實驗。</td></tr>';
+ }catch(e){label.textContent="non-IID 擴充資料未通過顯示驗證："+e.message;}
+}
 const scopes=[{id:0,name:"Centralized"},{id:2,name:"Fed C2"},{id:3,name:"Fed C3"},{id:4,name:"Fed C4"},{id:5,name:"Fed C5"}];
 let index=new Map();let loaded=false;
 const key=(ds,s,scope,policy)=>[ds,s,scope===0?"CENTRALIZED":"FEDERATED",scope,policy].join("|");
@@ -138,7 +166,7 @@ async function init(){
     if(o.selection_policy==="NONE")none.set(s,(none.get(s)||0)+1);
   }
   for(let s=1;s<=42;s++)if(seeds.get(s)!==210||none.get(s)!==30)throw Error("Seed "+s+" 缺漏配置");
-  loaded=true;for(const x of ["dataset","policy","metric","nseed","seedArchitecture"])$(x).addEventListener("change",render);render();
+  loaded=true;for(const x of ["dataset","policy","metric","nseed","seedArchitecture"])$(x).addEventListener("change",()=>{render();if(["policy","metric"].includes(x))updateNonIID();});render();updateNonIID();
  }catch(e){$("dataStatus").textContent="驗證失敗："+e.message;$("dataStatus").style.color="#b3514a";}
 }
 init();
