@@ -156,7 +156,7 @@ def run():
     assert_eq(len(non),6048,"non-IID holdout policy results")
     allhold=pd.concat([hold,non],ignore_index=True)
     summary=make_summary(allhold)
-    assert summary.groupby(["regime","dataset","client_count","selection_policy"],dropna=False).size().eq(1).all()
+    assert summary.groupby(["regime","alpha","dataset","client_count","selection_policy"],dropna=False).size().eq(1).all()
     assert summary.seeds.eq(42).all()
     DEST.mkdir(parents=True,exist_ok=True)
     iid.to_csv(DEST/"TEST_COVERAGE_IID_42SEEDS.csv",index=False,float_format="%.10f")
