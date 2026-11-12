@@ -1,3 +1,13 @@
+## 2026-11-12｜公開電商／設備故障資料獨立四 Seed 實驗
+
+- 實驗設計及網站：[公開電商與技術設備研究](./public_data/)；新增 UCI Online Shoppers（ID 468, DOI 10.24432/C5F88Q）與 AI4I Predictive Maintenance（ID 601, DOI 10.24432/C5HS5C），皆為 CC BY 4.0 公開資料。AI4I 為合成工業觀測，必須明確註明。
+- 固定來源、特徵及抽樣：前者原始 12,330 筆，抽 1,600 筆／6 特徵；後者原始 10,000 筆，抽 2,400 筆／6 特徵。排除電商 PageValues、工業識別欄及故障結果相關欄，以免帶入答案。正式 README 與實驗使用的公開子集在 `docs/research/public_datasets/`（完成核驗後發布）。
+- 實際 LEM2 管線：80/20 Holdout，Seeds 1、7、21、42，Centralized / Federated C2–C5，NONE＋六策略，預期 8 個 jobs × 35＝280 結果。額外保存正類 Recall、Train／Test Exact Coverage 差距、No Match fallback accuracy、候選覆蓋及 Conflict。
+- GitHub Actions：[公共資料四 Seeds 執行流程](https://github.com/Jimmy0307/LEM2/actions/workflows/public-commerce-tech-uci.yml)。**先導實驗需通過資料雜湊、版本、分母及 8/8 job 完整驗證才能將網頁狀態提升為 PASS**；這不是原主矩陣 42 Seeds，也不能當成新資料的 42-Seed 結論。
+- 研究問題：是否不同的資料生成機制（電商購物行為 vs 少數故障）會導致不同的六策略勝者；不能只看 Accuracy，需比較 BA、少數類別 Recall、Conflict 與 Candidate Coverage。
+
+---
+
 ## 2026-11-12｜Train/Test Coverage 與 No Match 救回：真正可核對的實驗與研究發現
 
 - **[教授報告：Test Coverage／Reject／Train-Test Gap](./coverage/)**：顯示同規則的訓練／測試覆蓋率、缺口、正解候選、Conflict 與降低 No Match 的 A/B 方法。
