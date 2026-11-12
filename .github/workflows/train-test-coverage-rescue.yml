@@ -1,0 +1,107 @@
+name: LEM2 Train Test Coverage Gap and Safe Partial Match Pilot
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths: [teacher_demo/train_test_coverage_rescue.py, .github/workflows/train-test-coverage-rescue.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        seed: [1, 7, 42]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Measure actual rule-set training/testing coverage and partial-match rescue
+        run: python -m teacher_demo.train_test_coverage_rescue --seed ${{ matrix.seed }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage-rescue-seed-${{ matrix.seed }}
+          path: outputs/coverage_rescue/*.csv
+          if-no-files-found: error
+  aggregate:
+    needs: seed
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas numpy
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: coverage-rescue-seed-*
+          path: downloaded
+          merge-multiple: true
+      - name: Check all 3 seeds, report risk and coverage separately
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd
+          import json
+          inp=Path("downloaded")
+          fs=sorted(inp.glob("COVERAGE_RESCUE_seed*.csv"))
+          es=sorted(inp.glob("COVERAGE_RESCUE_ERRORS_seed*.csv"))
+          assert len(fs)==len(es)==3,(len(fs),len(es))
+          rows=pd.concat([pd.read_csv(f) for f in fs],ignore_index=True)
+          errors=pd.concat([pd.read_csv(f) for f in es],ignore_index=True)
+          assert len(rows)+2*len(errors)==54
+          assert set(rows.seed)|set(errors.seed)=={1,7,42}
+          assert rows.match_threshold.isin([.5,.75]).all()
+          assert rows.coverage_gain_pp.ge(-1e-8).all()
+          assert rows.after_coverage_pct.ge(rows.test_rule_coverage_pct-1e-8).all()
+          assert (rows.after_coverage_pct<=100).all()
+          assert (rows.newly_accepted_count<=rows.test_no_match_count).all()
+          out=Path("docs/research/teacher_dashboard/coverage_research")
+          out.mkdir(parents=True,exist_ok=True)
+          rows.to_csv(out/"TRAIN_TEST_COVERAGE_RESCUE_3SEEDS_PILOT.csv",index=False)
+          errors.to_csv(out/"TRAIN_TEST_COVERAGE_RESCUE_ERRORS.csv",index=False)
+          summary=rows.groupby(["dataset","system","client_count","match_threshold"],dropna=False).agg(
+             seeds=("seed","nunique"),train_coverage_pct=("train_rule_coverage_pct","mean"),
+             test_coverage_pct=("test_rule_coverage_pct","mean"),
+             generalization_gap_pp=("test_minus_train_coverage_pp","mean"),
+             after_coverage_pct=("after_coverage_pct","mean"),
+             coverage_gain_pp=("coverage_gain_pp","mean"),
+             test_no_match_pct=("test_no_match_pct","mean"),
+             remaining_reject_pct=("remaining_reject_pct","mean"),
+             accuracy_delta_pp=("accuracy_delta_pp","mean"),
+             newly_accepted_accuracy_pct=("newly_accepted_accuracy_pct","mean")).reset_index()
+          summary.to_csv(out/"TRAIN_TEST_COVERAGE_RESCUE_PILOT_SUMMARY.csv",index=False)
+          (out/"TRAIN_TEST_COVERAGE_RESCUE_MANIFEST.json").write_text(json.dumps({
+             "method":"Classical reduct + LEM2",
+             "status":"EXPLORATORY_3_SEEDS_NOT_42",
+             "seeds":[1,7,42],
+             "source":"pinned existing three datasets, 80/20, clean test",
+             "train_coverage":"Train matched by same fixed trained rules, not Full Data resubstitution",
+             "new_method":"Partial-match proposal only on true no-match cases, predeclared thresholds 0.50 and 0.75; not verified original MLEM2 supplementary algorithm",
+             "leakage":"No test labels used to fit model or choose threshold; report both accuracy and effective coverage",
+             "rows":len(rows),"invalid_configs":len(errors)
+          },indent=2),encoding="utf-8")
+          print("TRAIN_TEST_COVERAGE_RESCUE_3SEED_VERDICT=PASS",len(rows),len(errors))
+          PY
+      - name: Publish separate pilot, not frozen 8820 baseline
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/research/teacher_dashboard/coverage_research/TRAIN_TEST_COVERAGE_RESCUE_*
+          if ! git diff --cached --quiet; then
+            git commit -m "research: publish audited train-test coverage gap rescue pilot [skip ci]"
+            git fetch origin "${GITHUB_REF_NAME}"
+            git rebase FETCH_HEAD
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage-rescue-pilot-3-seeds
+          path: docs/research/teacher_dashboard/coverage_research/TRAIN_TEST_COVERAGE_RESCUE_*
+          if-no-files-found: error
