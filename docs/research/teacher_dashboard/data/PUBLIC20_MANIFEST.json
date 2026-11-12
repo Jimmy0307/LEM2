@@ -1,8 +1,8 @@
 {
-  "status": "PARTIAL_FEASIBILITY_SOME_FAILED",
+  "status": "ALL_20_ONE_SEED_PASS",
   "n_registered": 20,
-  "passed_count": 17,
-  "failed_count": 3,
+  "passed_count": 20,
+  "failed_count": 0,
   "passed_keys": [
     "adult_income",
     "bank_marketing",
@@ -10,10 +10,13 @@
     "breast_diagnostic",
     "covertype",
     "dry_bean",
+    "eeg_eye_state",
     "german_credit",
+    "grid_stability",
     "haberman",
     "htru2",
     "iris",
+    "letter",
     "magic_gamma",
     "mushroom",
     "phishing",
@@ -22,25 +25,7 @@
     "spambase",
     "wine"
   ],
-  "failed": {
-    "letter": {
-      "dataset_key": "letter",
-      "error": "AssertionError: Holdout denominator mismatch",
-      "stage": "AGGREGATION_VALIDATION"
-    },
-    "occupancy": {
-      "dataset_key": "occupancy",
-      "error": "ValueError: Target missing",
-      "traceback": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\n  File \"/home/runner/work/LEM2/LEM2/teacher_demo/public_20_runner.py\", line 37, in run\n    bundle,profile=read_external(dataset)\n                   ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/LEM2/LEM2/teacher_demo/extreme_dataset_runner.py\", line 92, in read_external\n    if (y==\"__MISSING_TARGET__\").any():raise ValueError(\"Target missing\")\n                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: Target missing\n",
-      "status": "FAILED_NOT_IMPUTED"
-    },
-    "sensorless_drive": {
-      "dataset_key": "sensorless_drive",
-      "error": "DatasetNotFoundError: \"Dataset for Sensorless Drive Diagnosis\" dataset (id=325) exists in the repository, but is not available for import. Please select a dataset from this list: https://archive.ics.uci.edu/datasets?skip=0&take=10&sort=desc&orderBy=NumHits&search=&Python=true",
-      "traceback": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\n  File \"/home/runner/work/LEM2/LEM2/teacher_demo/public_20_runner.py\", line 37, in run\n    bundle,profile=read_external(dataset)\n                   ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/LEM2/LEM2/teacher_demo/extreme_dataset_runner.py\", line 66, in read_external\n    dataset=fetch_ucirepo(id=cfg[\"id\"])\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/ucimlrepo/fetch.py\", line 91, in fetch_ucirepo\n    raise DatasetNotFoundError('\"{}\" dataset (id={}) exists in the repository, but is not available for import. Please select a dataset from this list: https://archive.ics.uci.edu/datasets?skip=0&take=10&sort=desc&orderBy=NumHits&search=&Python=true'.format(name, id))\nucimlrepo.fetch.DatasetNotFoundError: \"Dataset for Sensorless Drive Diagnosis\" dataset (id=325) exists in the repository, but is not available for import. Please select a dataset from this list: https://archive.ics.uci.edu/datasets?skip=0&take=10&sort=desc&orderBy=NumHits&search=&Python=true\n",
-      "status": "FAILED_NOT_IMPUTED"
-    }
-  },
+  "failed": {},
   "seed": [
     42
   ],
@@ -56,7 +41,7 @@
     "STANDARD_VOTING"
   ],
   "results_per_dataset": 14,
-  "original_20_raw_results": 238,
+  "original_20_raw_results": 280,
   "supplement_conditions": {
     "method": "simplified one antecedent drop from first 240 rules",
     "train_purity": 0.9,
@@ -250,6 +235,31 @@
       "published_file_sha256": "773b98433fc43157054d321006ac9df99f05f32f78bb2256dac4e10074140a02"
     },
     {
+      "key": "eeg_eye_state",
+      "uci_id": 264,
+      "name": "EEG Eye State",
+      "domain": "sensor / IoT",
+      "feature_mode": "ALL_CONTINUOUS",
+      "trait": "time-ordered EEG signal, binary eye state and sensor shift risk",
+      "original_source": "https://archive.ics.uci.edu/dataset/264",
+      "source_license_claim": "CC BY 4.0",
+      "planned_sample_cap": 1800,
+      "feature_contract": "first 6 in UCI source feature order",
+      "expected_classes": "2",
+      "notes": "EEG records are time-ordered; this feasibility split is randomized, NOT a chronological generalization test. Replaces failed UCI 357 target import.",
+      "status": "PASS_ONE_SEED",
+      "source_rows": 14980,
+      "used_rows": 1800,
+      "used_feature_count": 6,
+      "observed_classes": {
+        "0": 992,
+        "1": 808
+      },
+      "prepared_sha256": "3c3968f6f42b28ed00237c1fe2d4bf88ed6438da384d081a1ab7b9972caf4aa2",
+      "published_file": "docs/research/public_datasets_20/eeg_eye_state_prepared.csv",
+      "published_file_sha256": "c553e80c8b27a2d1180982609fc011c9c01e1207ec65c5f01f1dc69e2ea58f84"
+    },
+    {
       "key": "german_credit",
       "uci_id": 144,
       "name": "Statlog German Credit",
@@ -280,6 +290,38 @@
       "prepared_sha256": "9ed2dccff4ad5ace0610ccc151b8dc577cc8afd510665dc3e7ed7892e4f06430",
       "published_file": "docs/research/public_datasets_20/german_credit_prepared.csv",
       "published_file_sha256": "9ed2dccff4ad5ace0610ccc151b8dc577cc8afd510665dc3e7ed7892e4f06430"
+    },
+    {
+      "key": "grid_stability",
+      "uci_id": 471,
+      "name": "Electrical Grid Stability Simulated Data",
+      "domain": "electrical power system",
+      "feature_mode": "EXPLICIT_MIXED",
+      "trait": "simulated power-grid stability, multiple UCI target fields; continuous",
+      "original_source": "https://archive.ics.uci.edu/dataset/471",
+      "source_license_claim": "CC BY 4.0",
+      "planned_sample_cap": 1800,
+      "feature_contract": [
+        "tau1",
+        "tau2",
+        "tau3",
+        "tau4",
+        "p2",
+        "p3"
+      ],
+      "expected_classes": "2",
+      "notes": "Predict only categorical stabf from six input predictors. Exclude continuous target stab and derived p1; simulation, not actual utility grid. Replaces unavailable UCI 325 Python import.",
+      "status": "PASS_ONE_SEED",
+      "source_rows": 10000,
+      "used_rows": 1800,
+      "used_feature_count": 6,
+      "observed_classes": {
+        "stable": 652,
+        "unstable": 1148
+      },
+      "prepared_sha256": "dda821ba6cff9039dd3a6302b600fdd2935d89784c917e35f5ae77cefe3ae941",
+      "published_file": "docs/research/public_datasets_20/grid_stability_prepared.csv",
+      "published_file_sha256": "effb034d923882f06a2800fa13edf19eb9b631973357c8994bae27591ff90c12"
     },
     {
       "key": "haberman",
@@ -366,16 +408,45 @@
       "trait": "26 classes; integer-valued features treated as categories",
       "original_source": "https://archive.ics.uci.edu/dataset/59",
       "source_license_claim": "CC BY 4.0",
-      "planned_sample_cap": 1600,
+      "planned_sample_cap": 900,
       "feature_contract": "first 6 in UCI source feature order",
       "expected_classes": "26",
       "notes": "Original integer features 0..15 interpreted as discrete for this stress condition.",
-      "status": "FAILED_NOT_IMPUTED",
-      "error": {
-        "dataset_key": "letter",
-        "error": "AssertionError: Holdout denominator mismatch",
-        "stage": "AGGREGATION_VALIDATION"
-      }
+      "status": "PASS_ONE_SEED",
+      "source_rows": 20000,
+      "used_rows": 900,
+      "used_feature_count": 6,
+      "observed_classes": {
+        "A": 36,
+        "B": 34,
+        "C": 33,
+        "D": 36,
+        "E": 35,
+        "F": 35,
+        "G": 35,
+        "H": 33,
+        "I": 34,
+        "J": 34,
+        "K": 33,
+        "L": 34,
+        "M": 36,
+        "N": 35,
+        "O": 34,
+        "P": 36,
+        "Q": 35,
+        "R": 34,
+        "S": 34,
+        "T": 36,
+        "U": 37,
+        "V": 34,
+        "W": 34,
+        "X": 35,
+        "Y": 35,
+        "Z": 33
+      },
+      "prepared_sha256": "eb26ce42a37f0eae16d9be426b3663421a51ec42f79af1efbaedff7b85856348",
+      "published_file": "docs/research/public_datasets_20/letter_prepared.csv",
+      "published_file_sha256": "eb26ce42a37f0eae16d9be426b3663421a51ec42f79af1efbaedff7b85856348"
     },
     {
       "key": "magic_gamma",
@@ -428,33 +499,6 @@
       "published_file_sha256": "f79077e58ac74714ebc800e98c9284d81205a8587608d55a31d217db4057731a"
     },
     {
-      "key": "occupancy",
-      "uci_id": 357,
-      "name": "Occupancy Detection",
-      "domain": "sensor / IoT",
-      "feature_mode": "EXPLICIT_MIXED",
-      "trait": "time-ordered sensor signal, observational shift risk",
-      "original_source": "https://archive.ics.uci.edu/dataset/357",
-      "source_license_claim": "CC BY 4.0",
-      "planned_sample_cap": 1800,
-      "feature_contract": [
-        "temperature",
-        "humidity",
-        "light",
-        "co2",
-        "humidityratio"
-      ],
-      "expected_classes": "unknown",
-      "notes": "Timestamp deliberately excluded. Random holdout only for initial feasibility; later use chronological split.",
-      "status": "FAILED_NOT_IMPUTED",
-      "error": {
-        "dataset_key": "occupancy",
-        "error": "ValueError: Target missing",
-        "traceback": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\n  File \"/home/runner/work/LEM2/LEM2/teacher_demo/public_20_runner.py\", line 37, in run\n    bundle,profile=read_external(dataset)\n                   ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/LEM2/LEM2/teacher_demo/extreme_dataset_runner.py\", line 92, in read_external\n    if (y==\"__MISSING_TARGET__\").any():raise ValueError(\"Target missing\")\n                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: Target missing\n",
-        "status": "FAILED_NOT_IMPUTED"
-      }
-    },
-    {
       "key": "phishing",
       "uci_id": 327,
       "name": "Phishing Websites",
@@ -503,27 +547,6 @@
       "prepared_sha256": "ae6a01f09198d7e524eb9b457d88ee88b297b09432905b1c0d39e1baeb003e07",
       "published_file": "docs/research/public_datasets_20/rice_prepared.csv",
       "published_file_sha256": "b5aaa8672ce39c9730b5a5429bc9071b8fd0939343f95c3c319a1434c8b4caa6"
-    },
-    {
-      "key": "sensorless_drive",
-      "uci_id": 325,
-      "name": "Sensorless Drive Diagnosis",
-      "domain": "industrial motor",
-      "feature_mode": "ALL_CONTINUOUS",
-      "trait": "large 58509 original, eleven machine states, continuous signal features",
-      "original_source": "https://archive.ics.uci.edu/dataset/325",
-      "source_license_claim": "CC BY 4.0",
-      "planned_sample_cap": 1800,
-      "feature_contract": "first 6 in UCI source feature order",
-      "expected_classes": "11",
-      "notes": "Avoid claiming performance on full 58509 row dataset; all models use 1800 subset.",
-      "status": "FAILED_NOT_IMPUTED",
-      "error": {
-        "dataset_key": "sensorless_drive",
-        "error": "DatasetNotFoundError: \"Dataset for Sensorless Drive Diagnosis\" dataset (id=325) exists in the repository, but is not available for import. Please select a dataset from this list: https://archive.ics.uci.edu/datasets?skip=0&take=10&sort=desc&orderBy=NumHits&search=&Python=true",
-        "traceback": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\n  File \"/home/runner/work/LEM2/LEM2/teacher_demo/public_20_runner.py\", line 37, in run\n    bundle,profile=read_external(dataset)\n                   ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/LEM2/LEM2/teacher_demo/extreme_dataset_runner.py\", line 66, in read_external\n    dataset=fetch_ucirepo(id=cfg[\"id\"])\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/ucimlrepo/fetch.py\", line 91, in fetch_ucirepo\n    raise DatasetNotFoundError('\"{}\" dataset (id={}) exists in the repository, but is not available for import. Please select a dataset from this list: https://archive.ics.uci.edu/datasets?skip=0&take=10&sort=desc&orderBy=NumHits&search=&Python=true'.format(name, id))\nucimlrepo.fetch.DatasetNotFoundError: \"Dataset for Sensorless Drive Diagnosis\" dataset (id=325) exists in the repository, but is not available for import. Please select a dataset from this list: https://archive.ics.uci.edu/datasets?skip=0&take=10&sort=desc&orderBy=NumHits&search=&Python=true\n",
-        "status": "FAILED_NOT_IMPUTED"
-      }
     },
     {
       "key": "sonar",
