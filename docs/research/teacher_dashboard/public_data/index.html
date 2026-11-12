@@ -22,7 +22,7 @@
 <section class="panel" id="source"><span class="section-tag">01 · SOURCE AND LICENSE</span><h2>資料來源與任務差異</h2>
 <div class="source-grid">
 <div class="source-tile"><span class="source-tag">電商真實交易工作階段</span><h3>Online Shoppers 購買意圖</h3>
-<p>原始 12,330 筆、18 欄原始特徵，是否購買為目標；正類 1,908（15.47%）。研究先使用固定分層樣本 <strong>1,600 筆、6 個預先指定特徵</strong>。排除 PageValues，避免交易結果衍生特徵干擾解讀。</p>
+<p>原始 12,330 筆、17 個預測特徵（另有 Revenue 目標欄），是否購買為目標；正類 1,908（15.47%）。研究先使用固定分層樣本 <strong>1,600 筆、6 個預先指定特徵</strong>。排除 PageValues，避免交易結果衍生特徵干擾解讀。</p>
 <p><a href="https://archive.ics.uci.edu/dataset/468/online+shoppers+purchasing+intention+dataset">UCI ID 468 · DOI 10.24432/C5F88Q</a> · <a href="../../public_datasets/online_shoppers_public_stratified_subset.csv">實驗用公開樣本 CSV</a></p>
 </div>
 <div class="source-tile"><span class="source-tag">工業設備合成情境</span><h3>AI4I 設備故障預測</h3>
@@ -31,6 +31,7 @@
 </div></div>
 <p class="note"><a href="https://creativecommons.org/licenses/by/4.0/">兩者授權：CC BY 4.0</a>。網站只保存有來源標示的固定分層研究子集；完整原資料請從 UCI 取得。抽樣與特徵限制會影響外部效度。</p></section>
 <section class="panel" id="experiment"><span class="section-tag">02 · REAL EXPERIMENT, NO SYNTHETIC RESULTS</span><h2>六種策略：Test Coverage、Conflict、Accuracy 與少數類別召回</h2>
+<p><strong>四 Seed 初步發現：</strong>電商 Centralized 只有 4.53% Test 規則覆蓋，購買召回 1.00%；AI4I Fed C5 規則覆蓋雖達 100%，Global Strength 的故障召回仍為 0.00%。兩個領域問題完全不同。<a href="./FINDINGS.md">完整數字與研究解釋</a></p>
 <p id="status" class="note" role="status" aria-live="polite">正在讀取可追溯實驗結果；在證據檔發布前不顯示估算數值。</p>
 <div class="select-row">
 <label>公開資料集<select id="dataset"><option value="online_shoppers">Online Shoppers · 電商</option><option value="ai4i_maintenance">AI4I · 設備故障</option></select></label>
