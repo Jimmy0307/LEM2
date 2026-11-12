@@ -1,0 +1,40 @@
+{
+  "format": "ONE_TABLE_19_HEADERS_PLUS_DATASET_WINS",
+  "metric_unit": "percent 0..100; percent-point differences are signed pp",
+  "method": "Classical positive-region reduct + LEM2",
+  "canonical_rows": 8820,
+  "noniid_rows": 7056,
+  "total_rows": 15876,
+  "nineteenth_header": "conflict_rate_pct",
+  "headers": [
+    "dataset",
+    "regime",
+    "dirichlet_alpha",
+    "seed",
+    "split_mode",
+    "system",
+    "client_count",
+    "selection_policy",
+    "train_rows",
+    "test_rows",
+    "rule_count",
+    "accuracy_pct",
+    "balanced_accuracy_pct",
+    "macro_f1_pct",
+    "coverage_pct",
+    "no_match_pct",
+    "true_candidate_pct",
+    "conflict_resolution_accuracy_pct",
+    "conflict_rate_pct"
+  ],
+  "winning_metric_scope": "HOLDOUT_80_20 within same dataset, seed, regime, client count, split and exact same rules",
+  "wins_counting": "co-wins count each tied policy; fractional wins split 1/N between exact/close ties; avoid pretending 2 equal policies are independent wins",
+  "winners_rows": 9717,
+  "summary_rows": 216,
+  "note": "19 analytical CSV views in conflict_19 are archived separately and are NOT the requested 19 headers.",
+  "data_files": [
+    "POLICY_COMPARISON_19_HEADERS_42SEEDS.csv",
+    "POLICY_WINS_BY_DATASET.csv",
+    "POLICY_WINNERS_PER_CONFIGURATION.csv"
+  ]
+}
