@@ -1,0 +1,63 @@
+{
+  "status": "EXPLORATORY_4_SEEDS_COMPLETED",
+  "method": "Classical positive-region reduct + LEM2 (same training pipeline as baseline)",
+  "source": "UCI ML Repository public CC BY 4.0 datasets 468 and 601",
+  "seeds": [
+    1,
+    7,
+    21,
+    42
+  ],
+  "scenarios": [
+    "BASE"
+  ],
+  "dataset_count": 2,
+  "original_datasets": {
+    "online_shoppers": {
+      "uci_id": 468,
+      "cap": 1600,
+      "doi": "10.24432/C5F88Q",
+      "title": "Online Shoppers Purchasing Intention Dataset",
+      "url": "https://archive.ics.uci.edu/dataset/468/online+shoppers+purchasing+intention+dataset",
+      "original": "12330 e-commerce sessions; real anonymized behavioral data",
+      "limitation": "Only prespecified six predictors; PageValues excluded as possible transaction outcome proxy; 1600 fixed stratified sampled sessions."
+    },
+    "ai4i_maintenance": {
+      "uci_id": 601,
+      "cap": 2400,
+      "doi": "10.24432/C5HS5C",
+      "title": "AI4I 2020 Predictive Maintenance Dataset",
+      "url": "https://archive.ics.uci.edu/dataset/601/ai4i",
+      "original": "10000 synthetic industrial equipment observations (NOT real factory incidents)",
+      "limitation": "Only 6 legitimate features; removed device identifiers and all 5 specific failure-target columns. Stratified random 80/20 may overestimate temporally deployed performance."
+    }
+  },
+  "evaluated_configurations": 280,
+  "rule_systems": 40,
+  "prediction_rows": 240,
+  "two_sources": [
+    "online_shoppers",
+    "ai4i_maintenance"
+  ],
+  "prepared_subsets": {
+    "online_shoppers": {
+      "rows": 1600,
+      "prepared_sha256": "ee45a9d480b0d196232f7dd9b333e33c830bdf58ebb0f2ec55ad548880b9d715",
+      "file": "docs/research/public_datasets/online_shoppers_public_stratified_subset.csv"
+    },
+    "ai4i_maintenance": {
+      "rows": 2400,
+      "prepared_sha256": "1d778e33ad41b186d39cf8f29db77ba9d3034f0791c5d330aedfd8450605fceb",
+      "file": "docs/research/public_datasets/ai4i_maintenance_public_stratified_subset.csv"
+    }
+  },
+  "warnings": [
+    "Four seeds, NOT 42; cannot establish robust cross-dataset superiority",
+    "Public dataset is CAPPED and uses SIX prespecified features; not full source-data performance",
+    "AI4I machine failures are synthetic, not observed industry incidents",
+    "Data are stratified into train/test; external deployment can have temporal or distribution shift",
+    "No Match means majority-class fallback under baseline, not actual abstention",
+    "Class imbalance: report minority recall and Balanced Accuracy, not accuracy alone",
+    "All training preprocessing/reduct/rules done on training-only, test held out"
+  ]
+}
