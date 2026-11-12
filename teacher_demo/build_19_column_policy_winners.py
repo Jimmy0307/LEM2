@@ -112,9 +112,10 @@ def winners(table):
         win_score_mean_pct=("winning_score_pct","mean"),
         split_ties=("co_winners",lambda x:int((x>1).sum())),
     ).reset_index().sort_values(by,na_position="first")
-    tot=detail.groupby(["dataset","regime","dirichlet_alpha","metric"],dropna=False
-             ).apply(lambda g:g.groupby(KEYS,dropna=False).ngroups,include_groups=False
-             ).rename("opportunities").reset_index()
+    # Unique experiment group/metric, not number of tied winner records.
+    tot=(detail.drop_duplicates(KEYS+["metric"])
+         .groupby(["dataset","regime","dirichlet_alpha","metric"],dropna=False)
+         .size().rename("opportunities").reset_index())
     summary=summary.merge(tot,on=["dataset","regime","dirichlet_alpha","metric"],
                           how="left",validate="many_to_one")
     summary["fractional_win_share_pct"]=100*summary.fractional_wins/summary.opportunities
