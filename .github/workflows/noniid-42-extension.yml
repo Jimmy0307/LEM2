@@ -1,0 +1,160 @@
+name: LEM2 Classical Federated Non-IID 42-Seed Extension
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - .github/workflows/noniid-42-extension.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  by-seed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        seed: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Genuine Classical-LEM2 non-IID 80/20 models at selected Seed
+        run: python -m teacher_demo.noniid_pilot --seed ${{ matrix.seed }} --output outputs/noniid_42
+      - name: Per-seed manifest and completeness check
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd
+          seed = ${{ matrix.seed }}
+          root = Path('outputs/noniid_42')
+          result = pd.read_csv(root / f'NONIID_RESULTS_seed{seed:02}.csv')
+          errors = pd.read_csv(root / f'NONIID_ERRORS_seed{seed:02}.csv')
+          assert len(result) + 7*len(errors) == 3*4*2*7, (seed, len(result), len(errors))
+          if len(result):
+              assert set(result.seed) == {seed}
+              assert set(result.split_mode) == {'HOLDOUT_80_20'}
+              assert set(result.system) == {'FEDERATED'}
+              assert set(result.partition_strategy) == {'DIRICHLET_LABEL_SKEW'}
+              assert set(result.dirichlet_alpha) == {0.1,0.5} or set(result.dirichlet_alpha).issubset({0.1,0.5})
+              key=['dataset','seed','client_count','dirichlet_alpha','selection_policy']
+              assert not result.duplicated(key).any()
+          print('NONIID_SEED_CONTRACT_PASS',seed,len(result),len(errors),flush=True)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: classical-noniid-seed-${{ matrix.seed }}
+          path: outputs/noniid_42/*.csv
+          retention-days: 90
+          if-no-files-found: error
+  aggregate:
+    needs: by-seed
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: classical-noniid-seed-*
+          path: evidence/noniid_42
+          merge-multiple: true
+      - name: Pair non-IID against same-seed IID baseline and publish evidence
+        run: |
+          python - <<'PY'
+          import json
+          import numpy as np
+          import pandas as pd
+          from pathlib import Path
+          incoming=Path('evidence/noniid_42')
+          result_files=sorted(incoming.glob('NONIID_RESULTS_seed*.csv'))
+          error_files=sorted(incoming.glob('NONIID_ERRORS_seed*.csv'))
+          assert len(result_files)==len(error_files)==42,(len(result_files),len(error_files))
+          rows=pd.concat([pd.read_csv(p) for p in result_files],ignore_index=True)
+          errors=pd.concat([pd.read_csv(p) for p in error_files],ignore_index=True)
+          assert set(rows.seed)|set(errors.seed)==set(range(1,43)), 'Seeds 1..42 must be represented'
+          assert len(rows)+7*len(errors)==42*3*4*2*7,(len(rows),len(errors))
+          keys=['seed','dataset','client_count','dirichlet_alpha','selection_policy']
+          assert not rows.duplicated(keys).any(), 'Duplicate non-IID experiment'
+          assert set(rows.split_mode)=={'HOLDOUT_80_20'}
+          assert set(rows.system)=={'FEDERATED'}
+          assert set(rows.partition_strategy)=={'DIRICHLET_LABEL_SKEW'}
+          canon=pd.read_csv('docs/research/seed_sweep_1_42/tables/SEED_SWEEP_8820.csv')
+          iid=canon[(canon.split_mode=='HOLDOUT_80_20')&(canon.system=='FEDERATED')]
+          join=['seed','dataset','client_count','selection_policy']
+          assert not iid.duplicated(join).any()
+          metrics=['accuracy','balanced_accuracy','macro_f1','coverage','conflict_case_rate','true_in_candidate_rate']
+          paired=rows.merge(iid[join+metrics],on=join,how='left',validate='many_to_one',suffixes=('_noniid','_iid'),indicator=True)
+          assert set(paired._merge)=={'both'}, 'Every non-IID valid model must match one IID baseline'
+          paired=paired.drop(columns=['_merge'])
+          for name in metrics:
+              paired['delta_'+name]=paired[name+'_noniid']-paired[name+'_iid']
+          out=Path('docs/research/teacher_dashboard/data')
+          out.mkdir(parents=True,exist_ok=True)
+          rows.to_csv(out/'NONIID_42_RESULTS.csv',index=False)
+          errors.to_csv(out/'NONIID_42_ERRORS.csv',index=False)
+          paired.to_csv(out/'NONIID_42_PAIRED_IID.csv',index=False)
+          # Each record uses the same seed, dataset, split, client count and policy.
+          by_group=[]
+          for (alpha,c,policy),table in paired.groupby(['dirichlet_alpha','client_count','selection_policy'],dropna=False):
+              all_datasets=table.dataset.unique().tolist()
+              count_by_dataset=table.groupby('dataset').seed.nunique().to_dict()
+              complete=len(all_datasets)==3 and all(count_by_dataset.get(ds,0)==42 for ds in ['Balance Scale','Car Evaluation','Hayes-Roth'])
+              obj=dict(dirichlet_alpha=float(alpha),client_count=int(c),selection_policy=policy,full_42_pair=bool(complete),seeds_by_dataset=count_by_dataset)
+              for metric in metrics:
+                  # Mean per dataset across seeds, then equal mean across datasets.
+                  groups=table.groupby('dataset')[[metric+'_noniid',metric+'_iid','delta_'+metric]].mean()
+                  obj[metric+'_noniid']=float(groups[metric+'_noniid'].mean()) if groups[metric+'_noniid'].notna().any() else None
+                  obj[metric+'_iid']=float(groups[metric+'_iid'].mean()) if groups[metric+'_iid'].notna().any() else None
+                  obj['delta_'+metric]=float(groups['delta_'+metric].mean()) if groups['delta_'+metric].notna().any() else None
+              by_group.append(obj)
+          summary={
+            'method':'Classical positive-region reduct + LEM2 / Federated',
+            'split_mode':'HOLDOUT_80_20',
+            'source':'NONIID_42_RESULTS.csv; IID ref SEED_SWEEP_8820.csv',
+            'seed_range':'1..42',
+            'expected_rows':42*3*4*2*7,
+            'valid_rows':int(len(rows)),
+            'invalid_configurations':int(len(errors)),
+            'fully_complete':bool(len(rows)==42*3*4*2*7 and len(errors)==0 and len(by_group)==2*4*7 and all(x['full_42_pair'] for x in by_group)),
+            'comparisons':by_group,
+            'warning':'Independent non-IID extension. Not part of frozen 8820 Classical STRATIFIED baseline. Group means are conditional on successful partitions; examine missing seeds.',
+          }
+          (out/'NONIID_42_SUMMARY.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2,allow_nan=False),encoding='utf-8')
+          readme=Path('docs/research/noniid_42/README.md')
+          readme.parent.mkdir(parents=True,exist_ok=True)
+          readme.write_text(
+            '# Classical Federated non-IID: independent 42-Seed extension\\n\\n'
+            'Same pinned 3 datasets and HOLDOUT_80_20; per-seed paired IID comparison; Dirichlet alpha 0.1/0.5; C2-C5.\\n'
+            f"Expected 7,056 rows; valid {len(rows)} rows; invalid configurations {len(errors)}.\\n"
+            f"42-seed complete = {summary['fully_complete']}. No invalid run is imputed zero.\\n"
+            'The frozen original 8,820 rows are unchanged. See teacher_dashboard/data/NONIID_42_* files.\\n',
+            encoding='utf-8')
+          print('NONIID_42_EVIDENCE_PUBLISHED',len(rows),len(errors),summary['fully_complete'],flush=True)
+          PY
+      - name: Commit independent versioned evidence
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/research/teacher_dashboard/data/NONIID_42_* docs/research/noniid_42/README.md
+          if ! git diff --cached --quiet; then
+            git commit -m 'research: add independently gated 42-seed non-IID Classical evidence [skip ci]'
+            git fetch origin "${GITHUB_REF_NAME}"
+            git rebase FETCH_HEAD
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: classical-noniid-42-combined
+          path: |
+            docs/research/teacher_dashboard/data/NONIID_42_*
+            docs/research/noniid_42/README.md
+          retention-days: 90
+          if-no-files-found: error
