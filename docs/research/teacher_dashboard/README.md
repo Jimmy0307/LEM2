@@ -1,3 +1,21 @@
+## 2026-11-12｜Train vs Test Coverage／K=4 部分匹配／降低 No Match 實測
+
+**驗證現況：** Classical LEM2 分層 IID 42 Seeds 的同規則 Train/Test 配對審核已通過（630 配置、3 資料集 × 5 架構 × 42 Seeds）；K=4（專案自定義，不是已確認的文獻 K4）4 Seeds 先導完整 84 配置已通過；兩者都保留原始 8,820 主矩陣。
+
+- 研究頁：[Test Coverage vs Train Coverage](./coverage/)；GitHub 稽核：[Train/Test 42-Seed workflow](https://github.com/Jimmy0307/LEM2/actions/workflows/teacher-train-test-coverage.yml) 與 [K4 pilot workflow](https://github.com/Jimmy0307/LEM2/actions/workflows/coverage-k4-pilot.yml)。
+- **Test Rule Coverage**＝有至少一條嚴格匹配規則的 Test 筆數／全部 Test；**Train Rule Coverage** 同理，但分母為 Train，採同一份 Train-fitted Reduct／規則。
+- **No Match**＝嚴格規則未命中。既有系統會輸出 Train 多數類別而不是「拒判」，所以正式原模型沒有顯式 Reject Rate；不可把 No Match 當已實現的拒判機制。
+- **Candidate Coverage**＝真實類別出現在命中規則提出的候選中的 Test 比例。**Covered-only Accuracy**＝已命中規則的 Test 中最終答對比例。Test Coverage 不能代替後兩者。
+- **Train/Test 42 Seeds**（分層 IID，Classical）：Balance Centralized Train 100.00%、Test 74.57%；Car Centralized Train 100.00%、Test 93.71%；Hayes Centralized Train 79.47%、Test 81.50%。Test 與 Train 的差異只能在同規則／相同 Seed 配對後解讀。
+- **K4 四個 Seeds**（1、7、21、42，Centralized，First Match）：Balance Test Coverage 75.40%→Assisted Acceptance 100.00%，Accuracy 72.02%→64.88%（−7.14 pp）；Car Coverage 92.70%→Assisted 100.00%，Accuracy 88.73%→94.08%（+5.35 pp）；Hayes Coverage 85.58%→Assisted 100.00%，Accuracy 75.00%→74.04%（−0.96 pp）。**Assisted Acceptance 不等於原始嚴格規則 Coverage 提升**，也沒有理由保證 Accuracy 上升。
+- **K4 方法的定義與限制**：只有嚴格 No Match 時啟動；最多容許一個規則前件不符合，取距離最近四條條件規則加權選類別；無補充候選則回退 Train 多數類別。這是研究線 A1 的先導，不應直接稱為 RSES 或正式文獻既有的「K4」方法；未經 Train-only 校準，不能作最終方法優越結論。
+- **19 欄表格已更正**：主檔 [POLICY_COMPARISON_19_HEADERS_42SEEDS.csv](data/POLICY_COMPARISON_19_HEADERS_42SEEDS.csv) 是「18 個欄位＋第 19 欄 conflict_rate_pct」；[POLICY_WINS_BY_DATASET.csv](data/POLICY_WINS_BY_DATASET.csv) 列各資料集六策略勝出次數及平票分攤。先前的 conflict_19/ 是 19 個分析視角，不是使用者原來的 19 欄需求，保留為歷史稽核而非主表。
+- **跨資料集擴充**：新增 7 個 UCI 來源、2 Seeds × 基線／Train-only 20% 標籤雜訊（28 個任務、980 列），檔案為 data/EXTREME_UCI_PILOT_*；屬於獨立探索，尚不能與三資料集 42 Seeds 直接合併做統計推論。
+- **接下來要測試的介入**：A0 exact rule matching；A1 部分匹配（K1／K4／K8），僅在 No Match 時使用；A2 Train-only 補充規則；A3 可變一致性或粒度；A4 正式 selective reject／risk–coverage curve。所有參數必須在 Train 的內部分割選定，Test 僅做最後評估；比較 NoMatch、Candidate Coverage、Conflict、BA、Accuracy、各類別失誤率與新增回答的正確率，不能只優化可回答比例。
+- **相關經核對文獻**：Inuiguchi & Washimi 2015（https://doi.org/10.20965/jaciii.2015.p0747）、Stańczyk et al. 2020（https://doi.org/10.1371/journal.pone.0231788）、El-Yaniv & Wiener 2010（https://jmlr.org/papers/v11/el-yaniv10a.html）、VC-DomLEM（https://doi.org/10.1016/j.ins.2010.10.030）；文獻中的各種 Coverage 分母不可直接視為同一指標。
+
+---
+
 ## 2026-11-12｜新增獨立 42-Seed non-IID 延伸執行流程（與 Classical IID 主基線隔離）
 
 - **已建立且已啟動** [non-IID 42-Seed GitHub Actions](https://github.com/Jimmy0307/LEM2/actions/workflows/noniid-42-extension.yml)：以 Seed 1–42、三資料集、Federated C2～C5、Dirichlet alpha 0.5/0.1、HOLDOUT_80_20、NONE＋六策略執行，預期最多 7,056 列有效模型結果。
