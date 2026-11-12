@@ -78,6 +78,14 @@ Selective Risk = #接受後答錯 / #被接受；Acceptance = #接受 / N</div>
 <p class="decision"><strong>研究順序：</strong>先跑同規則 Train/Test Coverage → 把 No Match 分成新組合與舊組合 → 對相同 Seed 的 No Match 子集評估 A1／A2 → 再考慮 A3 VC-DRSA。把改善率寫成「新增接受的物件數與其正確率」，才有辦法判斷有沒有實際價值。</p>
 <p class="metric-note">補充規則必須由 Train（含內部 validation）建立，Test 僅使用凍結模型評估；所有變更另建版本，不覆寫 Classical 8,820 基線。</p>
 </section>
+<section class="panel" id="k4pilot"><span class="section-tag">07 · AUTHOR-DEFINED K=4 PARTIAL MATCH PILOT</span>
+<h2>嚴格 Test Coverage 與「第二層補充規則」覆蓋率要分開算</h2>
+<p>目前另外執行一組 <strong>K=4、最多容許一個前件不符</strong>的部分匹配先導實驗，只在原本 No Match 時介入。這裡的 K=4 是本專案自訂的最近四條規則參數，<strong>未確認與你提到的文獻 K4 相同</strong>。它不修改 Classical LEM2 原始規則與凍結的 8,820 結果。</p>
+<div id="k4AuditStatus" class="status" role="status" aria-live="polite">K=4 輔助覆蓋率與正確率的 4-Seed 先導結果尚未驗證。</div>
+<div class="table-wrap"><table><thead><tr><th>資料集</th><th>Client</th><th>資料切分</th><th>嚴格 Test Coverage</th><th>K=4 輔助可回答比例</th><th>原始 Accuracy</th><th>輔助 Accuracy</th><th>變化 pp</th></tr></thead><tbody id="k4Rows"><tr><td colspan="8">請以實驗發布後的證據為準。</td></tr></tbody></table></div>
+<div class="decision"><strong>成功標準不是只追求覆蓋率增加：</strong>額外能回答的 No Match 物件必須計算其正確率；如果放寬匹配使錯誤率升高，不能直接稱為分類改善。原模型本來就會以訓練集多數類別回退，並沒有實際的 Reject，因此這組是「若拒絕所有嚴格 No Match」的操作性覆蓋試驗。</div>
+<p><a href="https://github.com/Jimmy0307/LEM2/actions/workflows/coverage-k4-pilot.yml">K4 試驗來源與執行紀錄</a> · <a href="../data/COVERAGE_K4_4SEED_SUMMARY.csv">4-Seed 摘要 CSV（通過後可用）</a></p>
+</section>
 <section class="panel" id="outputs"><span class="section-tag">07 · DATA & CORRECTED 19-COLUMN PRESENTATION</span>
 <h2>19 個表頭與各資料集勝出次數</h2>
 <p>先前的 <code>conflict_19/</code> 是 19 張分析表的舊理解；現在的正式比較格式為<strong>一張 19 欄的總表</strong>，第 19 欄是 <code>conflict_rate_pct</code>，另有依資料集、Seed 與相同規則配置比較六策略的勝出次數。多個策略平手時同時記錄共同勝出與分攤次數，不把平手當成多個獨立勝利。</p>
@@ -109,5 +117,23 @@ Selective Risk = #接受後答錯 / #被接受；Acceptance = #接受 / N</div>
     "</td><td>"+pp(x.coverage_gap_pp)+"</td><td>"+pct(x.test_no_match_pct)+"</td></tr>").join("");
   status.textContent="PASS：42 Seeds × 3 資料集 × 5 配置＝630 組同規則 Train/Test 比較；Test Coverage 全部與凍結基線一致。";
  }catch(e){status.textContent="Train/Test 數據尚未通過讀取與驗證："+e.message;}
+})();
+</script>
+<script>
+(async function(){
+const status=document.getElementById("k4AuditStatus"),target=document.getElementById("k4Rows");
+try{
+ const res=await fetch("../data/COVERAGE_K4_PILOT_MANIFEST.json",{cache:"no-store"});
+ if(res.status===404){status.textContent="K=4 先導仍在執行／驗證中；沒有已確認的覆蓋率改善數字。";return;}
+ if(!res.ok)throw Error("HTTP "+res.status);
+ const manifest=await res.json();
+ if(manifest.status!=="EXPLORATORY_4_SEED"||manifest.total_configurations!==84)throw Error("先導資料未通過 84 配置核對");
+ const csv=await fetch("../data/COVERAGE_K4_4SEED_SUMMARY.csv",{cache:"no-store"});if(!csv.ok)throw Error("CSV "+csv.status);
+ const lines=(await csv.text()).trim().split(/\r?\n/),cols=lines.shift().split(",");
+ const items=lines.map(line=>Object.fromEntries(line.split(",").map((x,i)=>[cols[i],x])));
+ const pp=v=>(Number(v)>=0?"+":"")+Number(v).toFixed(2)+" pp",pct=v=>Number(v).toFixed(2)+"%";
+ target.innerHTML=items.map(x=>"<tr><td>"+x.dataset+"</td><td>"+(Number(x.client_count)===0?"Centralized":"Fed C"+x.client_count)+"</td><td>"+x.partition_strategy+(x.alpha?" α="+x.alpha:"")+"</td><td>"+pct(x.test_coverage_pct)+"</td><td>"+pct(x.assisted_test_coverage_pct)+"</td><td>"+pct(x.baseline_accuracy_pct)+"</td><td>"+pct(x.assisted_accuracy_pct)+"</td><td>"+pp(x.delta_accuracy_pp)+"</td></tr>").join("");
+ status.textContent="已發布 4 Seeds（1、7、21、42）的原始對照，非完整 42-Seed 結論；K=4 可回答率不是原生嚴格規則覆蓋率。";
+}catch(e){status.textContent="尚無有效 K4 先導結果："+e.message;}
 })();
 </script></body></html>
