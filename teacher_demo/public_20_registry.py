@@ -57,9 +57,8 @@ REGISTRY={
   notes="Public historical diagnostic research only, not clinical deployment."),
  "magic_gamma":spec(159,"MAGIC Gamma Telescope",1800,6,"ALL_CONTINUOUS","physics","large continuous detection; binary signal-vs-background",classes="2"),
  "htru2":spec(372,"HTRU2",1800,6,"ALL_CONTINUOUS","astronomy","rare positive pulsar (~9%); continuous",classes="2"),
- "occupancy":spec(357,"Occupancy Detection",1800,5,"EXPLICIT_MIXED","sensor / IoT","time-ordered sensor signal, observational shift risk",
-  ["temperature","humidity","light","co2","humidityratio"],["temperature","humidity","light","co2","humidityratio"],"occupancy",
-  notes="Timestamp deliberately excluded. Random holdout only for initial feasibility; later use chronological split."),
+ "eeg_eye_state":spec(264,"EEG Eye State",1800,6,"ALL_CONTINUOUS","sensor / IoT","time-ordered EEG signal, binary eye state and sensor shift risk",
+  classes="2",notes="EEG records are time-ordered; this feasibility split is randomized, NOT a chronological generalization test. Replaces failed UCI 357 target import."),
  "german_credit":spec(144,"Statlog German Credit",None,6,"EXPLICIT_MIXED","credit risk","mixed nominal and integer; asymmetric cost of misclassification",
   ["attribute1","attribute2","attribute3","attribute4","attribute5","attribute6"],["attribute2","attribute5"],
   notes="Historical credit discrimination risks; do not use to decide real loans."),
@@ -68,7 +67,8 @@ REGISTRY={
   notes="Historical medical dataset, research only."),
  "covertype":spec(31,"Covertype",1800,6,"ALL_CONTINUOUS","geospatial","very large original 581012 rows, seven classes, numeric+binary original",classes="7",
   notes="Full 581012 rows are acquired for deterministic fixed subset; actual model fit only 1800 rows."),
- "sensorless_drive":spec(325,"Sensorless Drive Diagnosis",1800,6,"ALL_CONTINUOUS","industrial motor","large 58509 original, eleven machine states, continuous signal features",classes="11",
-  notes="Avoid claiming performance on full 58509 row dataset; all models use 1800 subset.")
+ "grid_stability":spec(471,"Electrical Grid Stability Simulated Data",1800,6,"EXPLICIT_MIXED","electrical power system","simulated power-grid stability, multiple UCI target fields; continuous",
+  ["tau1","tau2","tau3","tau4","p2","p3"],["tau1","tau2","tau3","tau4","p2","p3"],"stabf",
+  classes="2",notes="Predict only categorical stabf from six input predictors. Exclude continuous target stab and derived p1; simulation, not actual utility grid. Replaces unavailable UCI 325 Python import.")
 }
 if len(REGISTRY)!=20 or len({v["id"] for v in REGISTRY.values()})!=20:raise RuntimeError("Must contain exactly 20 unique new UCI dataset IDs")
