@@ -1,3 +1,13 @@
+## 2026-11-12｜Classical／Federated 42-Seed 對照與統計單位
+
+- 新增 [42 Seeds／版本與 pp 解釋](./versions/)：自凍結 8,820 主矩陣讀取、驗證每 Seed 210 列，展示 Classical 集中式與聯邦式 C2–C5、六策略的 42-Seed 實測比較，以及前 1／7／21／42 Seeds 的均值與 SD。
+- **方法標籤**：正式 42 Seeds 全部屬於 Classical positive-region reduct + LEM2（不是 DRSA reduct 或文獻原典 LERS）。
+- **證據邊界**：non-IID Dirichlet 先導僅有 Seed 1 與 Seed 42；Client-order 先導亦為 Seed 1、42；Hayes 另有 42-Seed 特定協定；DRSA/LERS 無等價 42 Seed 主矩陣。
+- **pp = 百分點**；70% → 75% 是 +5 pp，相對變化約 +7.14%。表中差距取固定 Seed 的配對平均，不能將 42 次切分當 42 個外部獨立資料集。
+- 主矩陣的分層 IID 42 Seeds 已完成；任何 non-IID 或其他 reduct 實驗均須保存個別 evidence manifest，不能冒充舊的 8,820 列。
+
+---
+
 ## 2026-11-12｜教授報告：Conflict、無衝突、No Match 與平票決勝說明
 
 新增 [Conflict 決策與指標教學頁](./conflict/)；報告首頁也提供導覽入口及精簡的三狀態流程。
@@ -55,6 +65,7 @@ Git branch 管理整份網站的版本。不同功能用同一分支內的子目
 | 根 /LEM2/ | docs/index.html | 直接導向研究報告 |
 | / | teacher_dashboard/index.html | **正式研究報告**：研究問題、流程、42 Seeds、六策略、Conflict、研究限制 |
 | /evidence/ | evidence/index.html | **8,820 列完整實測資料**：依 Seed／資料集／拓樸／Client／策略篩選、成對 A/B 比較、下載 CSV |
+| /versions/ | versions/index.html | **Classical／Federated 42-Seed 實測比較**、其他版本證據完整度、Seed 數量與 pp 定義 |
 | /methods/ | methods/index.html | **數學與方法**：Rough Set、Reduct、LEM2、T/U/N/P、指標定義及研究變因 |
 | /figures/ | figures/index.html | **前一輪九張原始 SVG**：從 GitHub 原圖檔讀取，與新版 42 Seeds 重算圖分開 |
 | /lab/ | lab/index.html | **原始 Python CSV 試算**：分割、Local Rule Union、六策略、逐筆 Conflict 與 Winner |
