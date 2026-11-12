@@ -14,6 +14,9 @@ on:
       - docs/research/teacher_dashboard/conflict/**
       - docs/research/teacher_dashboard/versions/**
       - docs/research/teacher_dashboard/public_data/**
+      - docs/research/teacher_dashboard/public20/**
+      - docs/research/public_datasets_20/**
+      - docs/research/teacher_dashboard/data/PUBLIC20_*
       - docs/research/public_datasets/**
       - docs/research/teacher_dashboard/data/PUBLIC_COMMERCE_TECH_PILOT_*
       - docs/research/teacher_dashboard/methods/**
