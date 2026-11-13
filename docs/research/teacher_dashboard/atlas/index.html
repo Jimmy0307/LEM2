@@ -42,12 +42,12 @@ table{font-variant-numeric:tabular-nums}
 </div>
 <h3>欄位資料型態、基數與分布</h3><div class="scrolling"><table><thead><tr><th>特徵</th><th>研究指定型態</th><th>唯一值</th><th>缺值</th><th>中位數</th><th>p10–p90</th><th>前三常見值</th></tr></thead><tbody id="columnRows"></tbody></table></div>
 </section>
-<section class="panel"><span class="section-tag">03 · 20 PAIRED RULE SYSTEMS</span><h2>20 個資料集：Coverage 增加，Conflict 成本增加多少？</h2>
-<p>每一點是一份資料集相同 Seed 42 下的 C0 與 C3 配對比較。橫軸為 Coverage 差（pp），縱軸為 Conflict Rate 差（pp）。<b>不是單條規則的因果效應</b>，因為兩個架構各自歸納不同的規則集合。</p>
+<section class="panel"><span class="section-tag">03 · 32 PAIRED RULE SYSTEMS</span><h2>32 個資料集：Coverage 增加，Conflict 成本增加多少？</h2>
+<p>每個點是一個資料集在 Seed 42 下的 C0 與 Federated C3 配對。可切換先前20組、新增12組或一起查看全部32組；兩組使用的來源與特徵選擇不同，不能因此宣稱資料型態造成特定差異。<b>此對照不是單條規則的因果效應。</b></p><div class="choices"><label>配對來源<select id="pairFamily"><option value="ALL32">全部 32 份公開來源</option><option value="ORIGINAL_PUBLIC20">原先 20 份</option><option value="ADDITIONAL_PUBLIC12">新增 12 份</option></select></label></div>
 <svg id="scatter" viewBox="0 0 900 490" role="img" aria-label="20 個資料集的 Coverage 與 Conflict 增幅散佈圖"></svg>
 <p id="clicked" class="small" role="status">點選散佈點即可查看來源指標。</p>
 <div class="scrolling"><table><thead><tr><th>資料</th><th>原始→模型 row</th><th>C3 Coverage</th><th>C3 Conflict</th><th>C3 正確候選</th><th>Δ Coverage</th><th>Δ Conflict</th><th>Δ 無衝突覆蓋</th></tr></thead><tbody id="pairRows"></tbody></table></div>
-<p><a href="../conflict_atlas/PUBLIC20_COVERAGE_CONFLICT_PAIRS.csv">下載 20 配對原始數據</a> · <a href="../conflict_atlas/DATASET_ROW_COUNTS_AND_TYPES.csv">下載所有 row 與資料型態</a> · <a href="../conflict_atlas/DATASET_CLASS_COUNTS.csv">各類別完整分布</a> · <a href="../conflict_atlas/DATASET_COLUMN_TYPES_AND_STATS.csv">逐欄位數值與基數</a></p></section>
+<p><a href="../conflict_atlas/PUBLIC32_COVERAGE_CONFLICT_PAIRS.csv">32 來源全部配對結果</a> · <a href="../conflict_atlas/PUBLIC20_COVERAGE_CONFLICT_PAIRS.csv">原先20份</a> · <a href="../conflict_atlas/PUBLIC_NEXT12_COVERAGE_CONFLICT_PAIRS.csv">新增12份</a> · <a href="../conflict_atlas/DATASET_ROW_COUNTS_AND_TYPES.csv">下載所有 row 與資料型態</a> · <a href="../conflict_atlas/DATASET_CLASS_COUNTS.csv">各類別完整分布</a> · <a href="../conflict_atlas/DATASET_COLUMN_TYPES_AND_STATS.csv">逐欄位數值與基數</a></p></section>
 <section class="panel"><span class="section-tag">04 · THREE EXPLAINABLE RESEARCH TRACKS</span><h2>三條機制研究不是只看聚合百分比</h2>
 <div class="flex2"><div>
 <h3>A｜Letter：正確候選缺失</h3>
@@ -94,15 +94,15 @@ function showDetail(){
 function drawScatter(){
  const root=$("scatter"),svgns="http://www.w3.org/2000/svg",rect=(tag,attrs,text)=>{const el=document.createElementNS(svgns,tag);for(const [k,v] of Object.entries(attrs))el.setAttribute(k,String(v));if(text!=null)el.textContent=text;root.appendChild(el);return el;};
  root.replaceChildren();
- const left=65,right=865,top=35,bottom=425,px=x=>left+Math.max(0,Math.min(55,x))/55*(right-left),py=y=>bottom-Math.max(0,Math.min(65,y))/65*(bottom-top);
- for(let x=0;x<=50;x+=10){rect("line",{x1:px(x),y1:top,x2:px(x),y2:bottom,stroke:"#e6eaea"});rect("text",{x:px(x),y:bottom+22,"text-anchor":"middle"},x+"");}
+ const left=65,right=865,top=35,bottom=425,px=x=>left+Math.max(0,Math.min(65,x))/65*(right-left),py=y=>bottom-Math.max(0,Math.min(65,y))/65*(bottom-top);
+ for(let x=0;x<=60;x+=10){rect("line",{x1:px(x),y1:top,x2:px(x),y2:bottom,stroke:"#e6eaea"});rect("text",{x:px(x),y:bottom+22,"text-anchor":"middle"},x+"");}
  for(let y=0;y<=60;y+=10){rect("line",{x1:left,y1:py(y),x2:right,y2:py(y),stroke:"#e6eaea"});rect("text",{x:left-9,y:py(y)+4,"text-anchor":"end"},y+"");}
  rect("line",{x1:left,y1:bottom,x2:right,y2:bottom,stroke:"#617780","stroke-width":1.4});
  rect("line",{x1:left,y1:top,x2:left,y2:bottom,stroke:"#617780","stroke-width":1.4});
  rect("text",{x:465,y:475,"text-anchor":"middle"},"Coverage 增幅（pp）");
  rect("text",{x:17,y:245,transform:"rotate(-90 17 245)","text-anchor":"middle"},"Conflict Rate 增幅（pp）");
- rect("line",{x1:px(0),y1:py(0),x2:px(55),y2:py(55),stroke:"#cf866f","stroke-dasharray":"7,6","stroke-width":"1.6"});
- for(const r of a.pairs){
+ rect("line",{x1:px(0),y1:py(0),x2:px(65),y2:py(65),stroke:"#cf866f","stroke-dasharray":"7,6","stroke-width":"1.6"});
+ for(const r of filteredPairs()){
     const x=r.delta_coverage_pp,y=r.delta_conflict_pp;
     const dot=rect("circle",{cx:px(x),cy:py(y),r:6,fill:y>x?"#b9614d":"#328579",stroke:"#fff","stroke-width":1});
     dot.appendChild(document.createElementNS(svgns,"title")).textContent=r.dataset_key+"\nΔ Coverage "+num(x)+" pp\nΔ Conflict "+num(y)+" pp";
@@ -113,18 +113,20 @@ function drawScatter(){
  }
 }
 function drawPairs(){
- const r=[...a.pairs].sort((x,y)=>x.delta_unambiguous_pp-y.delta_unambiguous_pp);
+ const r=[...filteredPairs()].sort((x,y)=>x.delta_unambiguous_pp-y.delta_unambiguous_pp);
  $("pairRows").innerHTML=r.map(x=>"<tr><td>"+esc(x.dataset_key)+"</td><td>"+Number(x.source_rows).toLocaleString()+" → "+Number(x.prepared_rows).toLocaleString()+"</td><td>"+pct(x.fed_c3_coverage_pct)+"</td><td>"+pct(x.fed_c3_conflict_pct)+"</td><td>"+pct(x.fed_c3_candidate_pct)+"</td><td>"+num(x.delta_coverage_pp)+"</td><td>"+num(x.delta_conflict_pp)+"</td><td class='"+(x.delta_unambiguous_pp<0?"risk":"good")+"'>"+(x.delta_unambiguous_pp>=0?"+":"")+num(x.delta_unambiguous_pp)+"</td></tr>").join("");
 }
+const filteredPairs=()=>$("pairFamily").value==="ALL32"?a.all_pairs:a.all_pairs.filter(x=>x.experiment_family===$("pairFamily").value);
+$("pairFamily").addEventListener("change",()=>{if(a){drawScatter();drawPairs()}});
 for(const k of ["featureType","family","order"])$(k).addEventListener("change",()=>{if(a)drawInventory()});
 $("detailSource").addEventListener("change",showDetail);
 fetch("../conflict_atlas/ATLAS_DATA.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw Error("未發布 atlas 資料");return r.json()}).then(j=>{
- if(j.schema!=="PUBLIC20_ATLAS_V1"||j.pairs.length!==20)throw Error("缺少完整 20 對規則系統");
+ if(j.schema!=="PUBLIC20_ATLAS_V1"||j.pairs.length!==20||j.additional_pairs.length!==12||j.all_pairs.length!==32)throw Error("缺少完整 32 對規則系統");
  a=j;$("status").textContent="來源已核對：原 20 筆 Seed 42 機制比較；加上先前兩份資料輪廓，不把它們混算。";
  $("m_sources").textContent=j.profiles.length;
  $("m_columns").textContent=j.column_details.length;
  $("m_classes").textContent=j.class_counts.length;
- $("m_pairs").textContent=j.pairs.length;
+ $("m_pairs").textContent=j.all_pairs.length;
  j.profiles.forEach(x=>$("detailSource").appendChild(new Option(x.dataset_key,x.dataset_key)));
  drawInventory();showDetail();drawScatter();drawPairs();
 }).catch(e=>{$("status").textContent="目前無法核實完整資料："+e.message});
