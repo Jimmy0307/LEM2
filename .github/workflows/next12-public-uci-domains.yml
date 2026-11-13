@@ -1,0 +1,99 @@
+name: LEM2 12 More Public UCI Domains - Audited Classical/Federated Studies
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - .github/workflows/next12-public-uci-domains.yml
+  workflow_dispatch:
+permissions: { contents: write }
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        dataset: [ionosphere, yeast_localization, image_segmentation, vehicle_silhouettes, wheat_seeds, raisin_grains, wine_quality_ordinal_to_binary, qsar_biodegradation, vertebral_column, student_dropout, blood_donation, fertility]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: python -m pip install -r requirements-dev.txt ucimlrepo
+      - name: Acquire authentic public source, compute two LEM2 architectures and train-only supplements
+        run: |
+          python - <<'PY'
+          import json,traceback
+          from pathlib import Path
+          from teacher_demo.public_next12_runner import run
+          name="${{ matrix.dataset }}"
+          output=Path("outputs/next12")
+          output.mkdir(parents=True,exist_ok=True)
+          try:
+              run(name,output)
+          except Exception as exc:
+              (output/f"NEXT12_ERROR_{name}.json").write_text(
+                  json.dumps({"dataset_key":name,"status":"FAILED_NOT_IMPUTED",
+                              "error":type(exc).__name__+": "+str(exc),
+                              "traceback":traceback.format_exc(limit=10)},
+                              ensure_ascii=False,indent=2),encoding="utf-8")
+              print("NEXT12_FAILURE_RECORDED",name,str(exc),flush=True)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: next12-${{ matrix.dataset }}
+          path: outputs/next12/*
+          retention-days: 90
+          if-no-files-found: error
+  aggregate:
+    needs: source
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: python -m pip install pandas numpy
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: next12-*
+          path: next12_incoming
+          merge-multiple: true
+      - name: Reconcile all registered sources and publish outcome without imputing failures
+        run: python -m teacher_demo.summarize_public_next12
+      - name: Independently validate status and outcome row counts
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,pandas as pd
+          m=json.loads(Path("docs/research/teacher_dashboard/data/PUBLIC_NEXT12_MANIFEST.json").read_text())
+          assert m["registered"]==12
+          assert m["passed_count"]+m["failed_count"]==12
+          assert len(m["datasets"])==12
+          assert m["base_rows"]==14*m["passed_count"]
+          assert m["supplement_rows"]==2*m["passed_count"]
+          if m["passed_count"]:
+              assert len(pd.read_csv("docs/research/teacher_dashboard/data/PUBLIC_NEXT12_BASE_RESULTS.csv"))==14*m["passed_count"]
+              assert len(pd.read_csv("docs/research/teacher_dashboard/data/PUBLIC_NEXT12_SUPPLEMENT_RESULTS.csv"))==2*m["passed_count"]
+          print("NEXT12_SOURCE_AUDIT_VERDICT",m["status"],m["passed_count"],m["failed_count"],flush=True)
+          PY
+      - name: Publish verified 12-source outcomes atomically without overwriting prior studies
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "${GITHUB_REF_NAME}"
+          git reset --mixed FETCH_HEAD
+          git add docs/research/public_datasets_next12/ docs/research/teacher_dashboard/data/PUBLIC_NEXT12_* docs/research/teacher_dashboard/next12/README.md
+          if ! git diff --cached --quiet; then
+            git commit -m "research: publish real additional 12 UCI sources and failure-aware model outcomes [skip ci]"
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: additional-12-uci-classical-lem2-data
+          path: |
+            docs/research/public_datasets_next12/
+            docs/research/teacher_dashboard/data/PUBLIC_NEXT12_*
+            docs/research/teacher_dashboard/next12/README.md
+          retention-days: 90
+          if-no-files-found: error
