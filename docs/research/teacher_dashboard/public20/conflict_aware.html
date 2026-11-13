@@ -1,0 +1,105 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Conflict-Aware 補充規則實驗｜20 個公開資料集</title>
+<link rel="stylesheet" href="../site.css"><style>
+.hero{background:linear-gradient(125deg,#142f45,#245c6d);color:#fff;padding:32px max(18px,calc((100vw - 1190px)/2))}
+.hero h1{font-size:clamp(26px,4vw,42px);line-height:1.24;margin:10px 0}.hero p{max-width:1000px;color:#e3f1f6}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.kpis>div{border:1px solid #d7e2e8;padding:16px;border-radius:11px;background:#f9fcfd}
+.kpis strong{font-size:24px;display:block;margin-top:3px;color:#175971}
+.kpis small{color:#536b78}
+.control{display:flex;gap:12px;flex-wrap:wrap}.control label{display:flex;flex-direction:column;flex:1;min-width:170px;gap:5px}
+.table-viewport{overflow:auto;max-height:670px}.table-viewport thead{position:sticky;top:0;background:#eaf2f3;z-index:2}
+table td,table th{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}table td:first-child,table th:first-child{text-align:left}
+.good{color:#147151;font-weight:700}.bad{color:#b14b43;font-weight:700}.muted{color:#6b8090;font-size:13px}
+.warning{background:#fdf5e5;border-left:4px solid #ca9742;padding:14px;margin:14px 0}
+@media(max-width:800px){.hero{padding:27px 18px}.kpis{grid-template-columns:1fr 1fr}}
+</style></head>
+<body>
+<div class="site-top"><a class="brand" href="../">LEM2 Research · 教授報告</a><nav>
+<a href="../">首頁</a><a href="./">20 個公開資料集</a><a class="active" href="./conflict_aware.html" aria-current="page">Conflict-Aware Gate</a><a href="../coverage/">Coverage 基線</a>
+</nav></div>
+<header class="hero"><div class="eyebrow">NESTED VALIDATION · THREE ARM STUDY</div>
+<h1>提高 Coverage 後的 Conflict<br>能不能事前控制？</h1>
+<p>同一資料集、同一套 Classical 正域約簡＋LEM2 規則、同一 Train／Validation／Test 切分，比較：<b>原始規則</b>、<b>直接加入全部合格補充規則</b>、<b>經驗證集衝突與分類風險守門後接受的補充規則</b>。</p>
+<p>只有內部驗證集可以決定接受哪些規則；最終 Test 只負責檢驗。這是原創簡化原型，不是 VC-DomLEM 或 MLEM2 原典的重現，也不宣稱控制住驗證集風險就能保證 Test 的風險。</p></header>
+<main class="wrap">
+<section class="panel"><span class="section-tag">01 · EVIDENCE STATUS</span><h2>實測狀態與主要觀測</h2>
+<p id="status" role="status" aria-live="polite">正在載入已驗證資料。若 20 份實驗未完成，暫不顯示數值。</p>
+<div class="kpis">
+<div><small>已驗證資料集</small><strong id="datasetCount">—</strong><small>每資料集 2 架構、3 版本</small></div>
+<div><small>直接補充：平均 Test Coverage 增幅</small><strong id="allCov">—</strong><small>百分點 pp</small></div>
+<div><small>衝突守門：平均 Test Coverage 增幅</small><strong id="gateCov">—</strong><small>百分點 pp</small></div>
+<div><small>衝突守門比直接補充的 Conflict 減幅</small><strong id="confSaved">—</strong><small>實測 Test 百分點 pp，可能為零</small></div></div>
+<p><a href="../data/CONFLICT_AWARE_20_MANIFEST.json">稽核 Manifest</a> · <a href="../data/CONFLICT_AWARE_20_RESULTS.csv">120 列原始比較</a> · <a href="../data/CONFLICT_AWARE_20_PAIRED.csv">40 組配對比較</a> · <a href="../data/CONFLICT_AWARE_20_GATE_EVENTS.csv">每條規則被接受／拒絕的完整紀錄</a></p>
+</section>
+<section class="panel"><span class="section-tag">02 · EXPERIMENT DESIGN</span><h2>真實的三層資料隔離</h2>
+<div class="table-wrap"><table><thead><tr><th>資料比例</th><th>允許執行</th><th>不允許執行</th></tr></thead><tbody>
+<tr><td><b>64% 開發集</b></td><td>離散化、約簡、LEM2、候選補充規則與支持／純度估計</td><td>使用測試資料確認規則品質</td></tr>
+<tr><td><b>16% 驗證集</b></td><td>選擇是否接受新規則，監測 Coverage、Conflict、Accuracy、Balanced Accuracy</td><td>重新訓練原始規則、套入最終 Test 標籤</td></tr>
+<tr><td><b>20% 最終測試集</b></td><td>只在規則選定後進行一次結果評估</td><td>依 Test 指標反向調整規則或超參數</td></tr>
+</tbody></table></div>
+<p>預先固定的守門條件：新增規則必須提高驗證集 Coverage；相對基線 Accuracy 最多下降 1 pp、Balanced Accuracy 最多下降 2 pp；新增 Active Conflict 不得超過 <code>max(2 pp, 0.35 × Coverage 增幅)</code>，再檢查加權目標是否增加。</p>
+<div class="warning"><strong>重要定義：</strong>原始規則對已命中物件保持優先；補充規則只在原始 No Match 時啟動。Active Conflict 是實際啟動的決策層衝突；Shadow Conflict 則模擬不分層、將原規則與補充規則直接合併時的潛在衝突。兩者不能混算。</div>
+</section>
+<section class="panel"><span class="section-tag">03 · RESULTS BY DATASET</span><h2>20 個不同資料集的配對效應</h2>
+<p>表格採相同 Seed 42 的原始基線；三版本訓練資料相同，但相較先前 20 資料集先導的 80% 訓練方式，這輪只用 64% 擬合原始 LEM2，因此不能將兩輪的數字直接相減。</p>
+<div class="control"><label>架構<select id="system"><option value="ALL">集中式＋Fed C3</option><option value="0">集中式</option><option value="3">Federated C3</option></select></label>
+<label>排序方式<select id="sort"><option value="conflictReduction">衝突守門節省最多</option><option value="gatedCoverageGain">守門後 Coverage 增幅</option><option value="gatedAccuracyGain">守門後 Accuracy 增幅</option><option value="gatedBAgain">守門後 Balanced Accuracy 增幅</option></select></label>
+<label>資料集<select id="ds"><option value="ALL">全部</option></select></label></div>
+<div class="table-viewport"><table><thead><tr>
+<th>資料集／架構</th><th>原始 Coverage</th><th>全部補充 Coverage</th><th>守門 Coverage</th>
+<th>原始 Conflict</th><th>全部補充 Conflict</th><th>守門 Conflict</th>
+<th>全部補充 Accuracy Δ</th><th>守門 Accuracy Δ</th>
+<th>全部補充 BA Δ</th><th>守門 BA Δ</th><th>守門規則數</th>
+</tr></thead><tbody id="resultRows"><tr><td colspan="12">等待真實實驗證據</td></tr></tbody></table></div>
+<p class="muted">顯示 Test 的百分比／百分點；BA = Balanced Accuracy。規則過濾可減少衝突，也可能犧牲 Coverage。Test 結果未被用作守門選擇。</p>
+</section>
+<section class="panel"><span class="section-tag">04 · RESEARCH INTERPRETATION</span><h2>怎樣才算成功，而不是只是挑掉規則？</h2>
+<p>如果守門後 Conflict 下降，但 Coverage 和正確候選覆蓋一起大幅下降，就不能認定方法成功。同樣地，如果新增 Coverage 都是預測回原本多數類別，Accuracy 不變，也需要追蹤其真正的資訊價值。</p>
+<div class="table-wrap"><table><thead><tr><th>判斷問題</th><th>指標</th><th>研究用途</th></tr></thead><tbody>
+<tr><td>規則真的救回新資料？</td><td>Test Coverage、No Match、Correct Candidate Coverage</td><td>辨識有效新增覆蓋，而非規則數膨脹</td></tr>
+<tr><td>是否轉移成新的衝突？</td><td>Active Conflict、Shadow Conflict</td><td>辨識補充層衝突與無條件合併的風險</td></tr>
+<tr><td>分類是否改善？</td><td>Accuracy、Balanced Accuracy、Macro-F1</td><td>避免高 Coverage、低辨識率</td></tr>
+<tr><td>是否可泛化？</td><td>不同 Seeds、類別分布、資料領域與 Client</td><td>本輪只有 Seed 42；結果是探索性而非普遍規則</td></tr>
+</tbody></table></div>
+<p>後續只有在多 Seed、正式多資料集配對比較成立後，才能考慮提出「Conflict-Aware Coverage Expansion」為獨立演算法貢獻。目前屬工程性研究原型。</p>
+</section>
+</main>
+<footer class="footer"><a href="./">20 份資料集總覽</a> · <a href="../">教授報告首頁</a></footer>
+<script>
+(()=>{"use strict";
+const $=id=>document.getElementById(id);
+let rows=[];
+const toNum=v=>v===""||v===null||v===undefined?NaN:Number(v);
+const fmt=(v,unit="%")=>Number.isFinite(toNum(v))?toNum(v).toFixed(2)+unit:"—";
+const delta=v=>Number.isFinite(toNum(v))?(Number(v)>=0?"+":"")+Number(v).toFixed(2)+" pp":"—";
+const esc=t=>String(t??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function parseCSV(str){const ls=str.trim().split(/\r?\n/);const h=ls.shift().split(",");return ls.map(s=>{const c=s.split(",");return Object.fromEntries(h.map((k,i)=>[k,c[i]??""]))});}
+function summary(){const groups=new Map();for(const r of rows){const k=r.dataset+"|"+r.client_count; if(!groups.has(k))groups.set(k,{});groups.get(k)[r.variant]=r;}return [...groups].map(([key,m])=>({dataset:m.BASE_LEM2.dataset,client_count:m.BASE_LEM2.client_count,b:m.BASE_LEM2,a:m.ALL_TRAIN_SUPPLEMENTS,g:m.VALIDATION_GATED_CONFLICT_AWARE,
+conflictReduction:toNum(m.ALL_TRAIN_SUPPLEMENTS.active_conflict_pct)-toNum(m.VALIDATION_GATED_CONFLICT_AWARE.active_conflict_pct),
+gatedCoverageGain:toNum(m.VALIDATION_GATED_CONFLICT_AWARE.coverage_gain_pp),
+gatedAccuracyGain:toNum(m.VALIDATION_GATED_CONFLICT_AWARE.accuracy_delta_pp),
+gatedBAgain:toNum(m.VALIDATION_GATED_CONFLICT_AWARE.balanced_accuracy_delta_pp)}));}
+function render(){
+ const groups=summary(),client=$("system").value,ds=$("ds").value,sort=$("sort").value;
+ const filtered=groups.filter(r=>(client==="ALL"||r.client_count===client)&&(ds==="ALL"||r.dataset===ds));
+ filtered.sort((a,b)=>b[sort]-a[sort]);
+ $("resultRows").innerHTML=filtered.map(r=>"<tr><td>"+esc(r.dataset)+" / "+(r.client_count==="0"?"Centralized":"Fed C3")+"</td><td>"+fmt(r.b.coverage_pct)+"</td><td>"+fmt(r.a.coverage_pct)+"</td><td>"+fmt(r.g.coverage_pct)+"</td><td>"+fmt(r.b.active_conflict_pct)+"</td><td>"+fmt(r.a.active_conflict_pct)+"</td><td>"+fmt(r.g.active_conflict_pct)+"</td><td>"+delta(r.a.accuracy_delta_pp)+"</td><td>"+delta(r.g.accuracy_delta_pp)+"</td><td>"+delta(r.a.balanced_accuracy_delta_pp)+"</td><td>"+delta(r.g.balanced_accuracy_delta_pp)+"</td><td>"+r.g.selected_supplement_rule_count+"</td></tr>").join("")||'<tr><td colspan="12">沒有有效的實測資料</td></tr>';
+}
+for(const k of ["system","ds","sort"])$(k).addEventListener("change",render);
+Promise.all([fetch("../data/CONFLICT_AWARE_20_MANIFEST.json",{cache:"no-store"}),fetch("../data/CONFLICT_AWARE_20_RESULTS.csv",{cache:"no-store"})]).then(async ([a,b])=>{
+ if(!a.ok||!b.ok)throw Error("尚未有 20 份完整驗證資料");
+ const j=await a.json();if(j.status!=="ALL_20_EXPERIMENTS_VALIDATED"||j.comparison_rows!==120)throw Error("完整性驗證未通過");
+ rows=parseCSV(await b.text());if(rows.length!==120)throw Error("不符合 20×2×3 資料契約");
+ const g=summary();if(g.length!==40)throw Error("沒有完整 40 組配對");
+ const avg=f=>g.reduce((x,r)=>x+Number(f(r)),0)/g.length;
+ $("datasetCount").textContent="20/20";
+ $("allCov").textContent="+"+avg(r=>r.a.coverage_gain_pp).toFixed(2)+" pp";
+ $("gateCov").textContent="+"+avg(r=>r.g.coverage_gain_pp).toFixed(2)+" pp";
+ $("confSaved").textContent=avg(r=>r.conflictReduction).toFixed(2)+" pp";
+ $("status").textContent="已完成 20 個公開資料、40 組規則系統與 120 行三版本配對測試；每筆都有 64/16/20 切分與規則門檻紀錄，僅 Seed 42。";
+ [...new Set(rows.map(x=>x.dataset))].sort().forEach(d=>$("ds").add(new Option(d,d)));
+ render();
+}).catch(e=>{$("status").textContent="結果尚未驗證或尚未發布："+e.message;});
+})();
+</script></body></html>
