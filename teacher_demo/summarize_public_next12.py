@@ -19,8 +19,9 @@ REPORT=Path("docs/research/teacher_dashboard/next12")
 POLICIES={"FIRST_MATCH","SIMPLE_VOTING","STANDARD_VOTING","GLOBAL_STRENGTH","POPULATION_STANDARD","POPULATION_GLOBAL"}
 
 def validate(key):
-    for s in ("PROFILE","BASE","SUPPLEMENT","DATA"):
-        assert (INPUT/f"NEXT12_{s}_{key}."+("json" if s=="PROFILE" else "csv")).is_file(),(key,s)
+    for suffix in ("PROFILE","BASE","SUPPLEMENT","DATA"):
+        ext="json" if suffix=="PROFILE" else "csv"
+        assert (INPUT/f"NEXT12_{suffix}_{key}.{ext}").is_file(),(key,suffix)
     prof=json.loads((INPUT/f"NEXT12_PROFILE_{key}.json").read_text())
     assert prof["dataset_key"]==key and int(prof["uci_id"])==REGISTRY[key]["id"]
     assert prof["source_url"]==REGISTRY[key]["url"]
