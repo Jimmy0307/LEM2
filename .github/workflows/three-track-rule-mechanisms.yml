@@ -1,0 +1,78 @@
+name: LEM2 3 Rule-Mechanism Tracks - Letter, Wine/Grid, Haberman/Banknote/Rice
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - .github/workflows/three-track-rule-mechanisms.yml
+  workflow_dispatch:
+permissions: { contents: write }
+jobs:
+  one-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        dataset: [letter, wine, grid_stability, haberman, banknote, rice]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Reconstruct frozen Classical LEM2 with exact prepared CSV; audit on Train and Test
+        run: python -m teacher_demo.conflict_three_tracks --dataset ${{ matrix.dataset }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rule-mechanism-${{ matrix.dataset }}
+          path: outputs/three_tracks/*
+          retention-days: 90
+          if-no-files-found: error
+  consolidate:
+    needs: one-source
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: python -m pip install pandas numpy
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: rule-mechanism-*
+          path: three_tracks_incoming
+          merge-multiple: true
+      - name: Audit all three mechanisms and freeze evidence tables
+        run: python -m teacher_demo.summarize_conflict_three_tracks
+      - name: Require six datasets and all independent subreports
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import pandas as pd
+          root=Path('docs/research/teacher_dashboard/three_tracks')
+          m=json.loads((root/'MANIFEST.json').read_text())
+          assert m['status']=='SIX_REAL_DATASET_RULE_LEVEL_TRACKS_PASS'
+          assert m['dataset_count']==6 and set(m['seed'])=={42}
+          assert len(m['output_row_counts'])==6
+          assert len(pd.read_csv(root/'TRACK_B_WINE_GRID_PRUNING.csv'))==4
+          assert len(pd.read_csv(root/'TRACK_C_SAFE_SUPPLEMENT_SUMMARY.csv'))==6
+          assert len(pd.read_csv(root/'TRACK_A_LETTER_PER_CLASS.csv'))==52
+          print('ALL_THREE_RULE_LEVEL_STUDIES_PASS')
+          PY
+      - name: Publish three reproducible studies without overwriting the original baseline
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "${GITHUB_REF_NAME}"
+          git reset --mixed FETCH_HEAD
+          git add docs/research/teacher_dashboard/three_tracks/
+          if ! git diff --cached --quiet; then
+            git commit -m "research: publish three A/B/C real rule-level mechanism studies [skip ci]"
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lem2-three-rule-mechanism-research
+          path: docs/research/teacher_dashboard/three_tracks/
+          if-no-files-found: error
