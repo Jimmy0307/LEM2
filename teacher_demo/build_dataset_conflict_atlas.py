@@ -198,6 +198,18 @@ def run():
     aggregate(p,["feature_mode"]).to_csv(OUTPUT/"PUBLIC20_BY_FEATURE_TYPE.csv",index=False)
     aggregate(p,["class_count"]).to_csv(OUTPUT/"PUBLIC20_BY_CLASS_COUNT.csv",index=False)
     p.sort_values("delta_unambiguous_pp").to_csv(OUTPUT/"PUBLIC20_CONFLICT_TRADEOFF_RANKED.csv",index=False)
+    # One provenance-grounded static visualization payload; JSON preserves
+    # categorical labels and quote/comma-containing feature value summaries.
+    payload={
+        "schema":"PUBLIC20_ATLAS_V1",
+        "profiles":json.loads(pd.DataFrame(profiles).to_json(orient="records",force_ascii=False)),
+        "class_counts":json.loads(pd.DataFrame(labels).to_json(orient="records",force_ascii=False)),
+        "column_details":json.loads(pd.DataFrame(columns).to_json(orient="records",force_ascii=False)),
+        "pairs":json.loads(p.to_json(orient="records",force_ascii=False)),
+        "evidence":"Seed 42 only, 20 C0/C3 pairs; 2 prior UCI domain sample profiles",
+    }
+    (OUTPUT/"ATLAS_DATA.json").write_text(json.dumps(payload,ensure_ascii=False,allow_nan=False),
+                                           encoding="utf-8")
     # Expose all rule-system row and class denominators to support audit.
     desc={
       "status":"SOURCE_AUDITED_20_EXPERIMENTS","scope":"Seed42 C0/C3; unchanged frozen LEM2 rules; 20 datasets, 2 architectures",
