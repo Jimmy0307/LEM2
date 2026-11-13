@@ -193,6 +193,50 @@ def main():
             assert not errors, errors
             print("CONFLICT_AWARE_20_NESTED_VAL_THREE_ARM_BROWSER_PASS",flush=True)
 
+            # New total = 20 previous + 12 added public + two older commerce /
+            # industrial domains. Only original 20 have C0 vs C3 pair evidence.
+            page.goto(report,wait_until="domcontentloaded")
+            assert page.locator('a[href="./atlas/"]').count()>=1
+            page.goto(report+"atlas/",wait_until="domcontentloaded")
+            page.wait_for_function(
+                "document.querySelector('#status').textContent.includes('來源已核對')",
+                timeout=35000
+            )
+            assert page.locator("#m_sources").inner_text()=="34"
+            assert page.locator("#m_columns").inner_text()=="195"
+            assert page.locator("#m_classes").inner_text()=="121"
+            assert page.locator("#m_pairs").inner_text()=="20"
+            assert page.locator("#inventoryRows tr").count()==34
+            assert page.locator("#pairRows tr").count()==20
+            assert page.locator("#scatter circle").count()==20
+            page.wait_for_function(
+                "document.querySelector('#extensionState').textContent.includes('PASS_ALL_12_SOURCES')",
+                timeout=20000
+            )
+            assert page.locator("#extensionRows tr").count()==12
+            page.locator("#family").select_option("ADDITIONAL_PUBLIC12")
+            assert page.locator("#inventoryRows tr").count()==12
+            page.locator("#detailSource").select_option("letter")
+            assert page.locator("#classRows tr").count()==26
+            assert page.locator("#columnRows tr").count()==6
+            page.locator("#detailSource").select_option("student_dropout")
+            assert page.locator("#classRows tr").count()==3
+            assert not errors, errors
+            print("ATLAS_34_SOURCE_ROW_COLUMN_CLASS_AND_20_CONFLICT_PAIRS_BROWSER_PASS",flush=True)
+
+            # Three actually computed, independent A/B/C rule mechanism tracks.
+            page.goto(report+"three_tracks/",wait_until="domcontentloaded")
+            page.wait_for_function(
+                "document.querySelector('#state').textContent.includes('PASS')",
+                timeout=25000
+            )
+            assert page.locator("#count").inner_text()=="6"
+            assert page.locator("#classes").inner_text()=="52"
+            assert page.locator("#rules").inner_text()=="1137"
+            assert "Grid C3" in page.locator("main").inner_text()
+            assert not errors, errors
+            print("THREE_RULE_MECHANISM_STUDIES_BROWSER_PASS",flush=True)
+
             # Independent evidence drilldown: complete matrix with real selectors.
             page.goto(report+"evidence/",wait_until="domcontentloaded")
             page.wait_for_function("document.getElementById('validState').textContent.includes('PASS')",timeout=30000)
