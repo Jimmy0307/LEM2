@@ -148,6 +148,63 @@ def structural_pairs():
     ensure(len(pair)==20,"Expected exactly 20 pairs")
     return pair
 
+def additional_paired_twelve():
+    source=DATA/"PUBLIC_NEXT12_BASE_RESULTS.csv"
+    man=json.loads((DATA/"PUBLIC_NEXT12_MANIFEST.json").read_text(encoding="utf-8"))
+    ensure(man["status"]=="PASS_ALL_12_SOURCES" and man["passed_count"]==12,"12-source evidence incomplete")
+    raw=pd.read_csv(source)
+    ensure(len(raw)==168,"Expected 12*2*(NONE+6) measured configurations")
+    n=raw[raw.selection_policy.eq("NONE")]
+    ensure(len(n)==24 and set(n.seed)=={42},"12-source structural coverage missing")
+    result=[]
+    for m in man["datasets"]:
+        key=m["key"]
+        pair=n[n.public_dataset_key.eq(key)]
+        ensure(len(pair)==2 and set(pair.client_count)=={0,3},"12-source C0/C3 incomplete "+key)
+        c=pair.loc[pair.client_count.eq(0)].iloc[0]
+        f=pair.loc[pair.client_count.eq(3)].iloc[0]
+        ensure(int(c.evaluation_rows)==int(f.evaluation_rows),"12-source split mismatch "+key)
+        for z in (c,f):
+            ensure(int(z.covered_count)+int(z.no_match_count)==int(z.evaluation_rows),"Invalid coverage count")
+            ensure(0<=z.conflict_case_count<=z.covered_count,"Invalid conflict count")
+            ensure(0<=z.true_in_candidate_count<=z.covered_count,"Invalid candidate count")
+        def met(row):
+            den=int(row.evaluation_rows)
+            covered=int(row.covered_count)
+            conflict=int(row.conflict_case_count)
+            candidate=int(row.true_in_candidate_count)
+            return {"coverage":100*covered/den,"conflict":100*conflict/den,
+                    "candidate":100*candidate/den,
+                    "unambiguous":100*(covered-conflict)/den,
+                    "conflict_cond_covered":100*conflict/covered if covered else np.nan,
+                    "candidate_cond_covered":100*candidate/covered if covered else np.nan}
+        ca,fe=met(c),met(f)
+        r={"dataset_key":key,"uci_id":int(m["uci_id"]),
+           "source_rows":int(m["original_rows"]),"prepared_rows":int(m["prepared_rows"]),
+           "feature_count":int(m["prepared_features"]),
+           "class_count":len(m["class_distribution"]),
+           "feature_mode":REGISTRY12[key]["feature_mode"],
+           "minority_share_pct":100*min(m["class_distribution"].values())/int(m["prepared_rows"]),
+           "domain":REGISTRY12[key]["domain"],"seed":42,"test_rows":int(c.evaluation_rows),
+           "central_rule_count":int(c.rule_count),"federated_c3_rule_count":int(f.rule_count),
+           "delta_rules":int(f.rule_count)-int(c.rule_count)}
+        for k in ca:
+            r["central_"+k+"_pct"]=ca[k]
+            r["fed_c3_"+k+"_pct"]=fe[k]
+            r["delta_"+k+"_pp"]=fe[k]-ca[k]
+        ensure(np.isclose(r["delta_unambiguous_pp"],
+            r["delta_coverage_pp"]-r["delta_conflict_pp"]),"Non-conflict conservation error")
+        r["conflict_cost_per_coverage_gain"]=(r["delta_conflict_pp"]/r["delta_coverage_pp"]
+                                           if r["delta_coverage_pp"]>0 else np.nan)
+        r["dominant_tradeoff"]=(
+           "CONFLICT_COST_EXCEEDS_COVERAGE_GAIN" if r["delta_unambiguous_pp"]< -1e-9 else
+           "NO_CHANGE" if np.isclose(r["delta_unambiguous_pp"],0) else "NONCONFLICT_COVERAGE_GAIN")
+        result.append(r)
+    out=pd.DataFrame(result)
+    ensure(len(out)==12 and out.dataset_key.nunique()==12,"Missing 12 pair rows")
+    return out
+
+
 def aggregate(df,group_cols):
     agg=[]
     for key,d in df.groupby(group_cols,dropna=False):
@@ -219,6 +276,17 @@ def run():
     aggregate(p,["feature_mode"]).to_csv(OUTPUT/"PUBLIC20_BY_FEATURE_TYPE.csv",index=False)
     aggregate(p,["class_count"]).to_csv(OUTPUT/"PUBLIC20_BY_CLASS_COUNT.csv",index=False)
     p.sort_values("delta_unambiguous_pp").to_csv(OUTPUT/"PUBLIC20_CONFLICT_TRADEOFF_RANKED.csv",index=False)
+    newer=additional_paired_twelve()
+    newer.to_csv(OUTPUT/"PUBLIC_NEXT12_COVERAGE_CONFLICT_PAIRS.csv",index=False,float_format="%.10f")
+    full32=pd.concat([p.assign(experiment_family="ORIGINAL_PUBLIC20"),
+                      newer.assign(experiment_family="ADDITIONAL_PUBLIC12")],
+                     ignore_index=True,sort=False)
+    ensure(len(full32)==32 and full32.dataset_key.nunique()==32,"32 unique public paired domains")
+    full32.to_csv(OUTPUT/"PUBLIC32_COVERAGE_CONFLICT_PAIRS.csv",index=False,float_format="%.10f")
+    aggregate(full32,["feature_mode"]).to_csv(OUTPUT/"PUBLIC32_BY_FEATURE_TYPE.csv",index=False)
+    # Show the two families separately before any combined descriptive mean:
+    # same seed number/protocol, but distinct capped feature contracts.
+    aggregate(full32,["experiment_family"]).to_csv(OUTPUT/"PUBLIC32_BY_EXPERIMENT_FAMILY.csv",index=False)
     # One provenance-grounded static visualization payload; JSON preserves
     # categorical labels and quote/comma-containing feature value summaries.
     payload={
@@ -227,6 +295,8 @@ def run():
         "class_counts":json.loads(pd.DataFrame(labels).to_json(orient="records",force_ascii=False)),
         "column_details":json.loads(pd.DataFrame(columns).to_json(orient="records",force_ascii=False)),
         "pairs":json.loads(p.to_json(orient="records",force_ascii=False)),
+        "additional_pairs":json.loads(newer.to_json(orient="records",force_ascii=False)),
+        "all_pairs":json.loads(full32.to_json(orient="records",force_ascii=False)),
         "evidence":"Seed 42 only, 20 C0/C3 pairs; 2 prior UCI domain sample profiles",
     }
     (OUTPUT/"ATLAS_DATA.json").write_text(json.dumps(payload,ensure_ascii=False,allow_nan=False),
@@ -236,7 +306,8 @@ def run():
       "status":"SOURCE_AUDITED_20_EXPERIMENTS","scope":"Seed42 C0/C3; unchanged frozen LEM2 rules; 20 datasets, 2 architectures",
       "profiles":len(profiles),"profile_columns":len(columns),"class_rows":len(labels),
       "families":{"NEW_PUBLIC20":20,"PREVIOUS_COMMERCE_TECH_4SEEDS":2,"ADDITIONAL_PUBLIC12":12},
-      "matched_pairs":len(p),"source_evidence":["PUBLIC20_BASE_RESULTS.csv","PUBLIC20_MANIFEST.json",
+      "matched_pairs":len(p),"additional_matched_pairs":len(newer),
+      "combined_matched_pairs":len(full32),"source_evidence":["PUBLIC20_BASE_RESULTS.csv","PUBLIC20_MANIFEST.json",
                      "public_datasets_20/*_prepared.csv"],
       "improvement_counts":{
         "coverage_gain":int((p.delta_coverage_pp>1e-9).sum()),
@@ -270,6 +341,10 @@ def run():
       "- [每個決策類別的 rows 與比例](DATASET_CLASS_COUNTS.csv)",
       "- [每個因子的欄位型態、缺值、基數、分位數](DATASET_COLUMN_TYPES_AND_STATS.csv)",
       "- [20 配對 Coverage×Conflict 全量資訊](PUBLIC20_COVERAGE_CONFLICT_PAIRS.csv)",
+      "- [額外 12 配對 Coverage×Conflict 完整對照](PUBLIC_NEXT12_COVERAGE_CONFLICT_PAIRS.csv)",
+      "- [共 32 份不同公開資料集配對總矩陣](PUBLIC32_COVERAGE_CONFLICT_PAIRS.csv)",
+      "- [32 來源的資料型態比較](PUBLIC32_BY_FEATURE_TYPE.csv)",
+      "- [來源批次間的可比範圍](PUBLIC32_BY_EXPERIMENT_FAMILY.csv)",
       "- [依特徵型態分組](PUBLIC20_BY_FEATURE_TYPE.csv)",
       "- [依類別數分組](PUBLIC20_BY_CLASS_COUNT.csv)",
       "- [以無衝突覆蓋變化排序](PUBLIC20_CONFLICT_TRADEOFF_RANKED.csv)",
