@@ -52,13 +52,26 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git fetch origin "${GITHUB_REF_NAME}"
-          git reset --mixed FETCH_HEAD
-          git add docs/research/teacher_dashboard/conflict_atlas/
-          if ! git diff --cached --quiet; then
-            git commit -m "research: publish source-verified 20-dataset row type and conflict atlas [skip ci]"
-            git push origin HEAD:"${GITHUB_REF_NAME}"
-          fi
+          # Concurrent GitHub Pages and research jobs may change the same
+          # branch after fetch. Retry fast-forward only, never force-push.
+          for attempt in 1 2 3 4 5; do
+            git fetch origin "${GITHUB_REF_NAME}"
+            git reset --mixed FETCH_HEAD
+            git add docs/research/teacher_dashboard/conflict_atlas/
+            if git diff --cached --quiet; then
+              echo "ATLAS_ALREADY_PUBLISHED"
+              break
+            fi
+            git commit -m "research: publish source-verified 34-dataset row/column atlas [skip ci]"
+            if git push origin HEAD:"${GITHUB_REF_NAME}"; then
+              echo "ATLAS_PUBLISHED_FAST_FORWARD_PASS"
+              break
+            fi
+            if [ "$attempt" -eq 5 ]; then
+              echo "FAILED_TO_PUSH_CONCURRENT_BRANCH" >&2
+              exit 1
+            fi
+          done
       - uses: actions/upload-artifact@v4
         with:
           name: lem2-public20-conflict-atlas
