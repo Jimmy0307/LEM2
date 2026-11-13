@@ -1,0 +1,99 @@
+name: LEM2 Conflict-Aware Supplement Pilot - 20 Public Domains
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - .github/workflows/conflict-aware-20-pilot.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Gate safety, shadow vs active conflicts and no test leakage unit tests
+        run: python -m pytest -q teacher_demo/test_conflict_aware_coverage.py
+  public-dataset:
+    needs: unit-tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        dataset: [adult_income, bank_marketing, banknote, breast_diagnostic, covertype, dry_bean, eeg_eye_state, german_credit, grid_stability, haberman, htru2, iris, letter, magic_gamma, mushroom, phishing, rice, sonar, spambase, wine]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Compare baseline, all train supplements, and conflict-aware gated supplements
+        run: |
+          python -m teacher_demo.conflict_aware_coverage_pilot \
+            --dataset ${{ matrix.dataset }} \
+            --output outputs/conflict_aware
+      - uses: actions/upload-artifact@v4
+        with:
+          name: conflict-aware-${{ matrix.dataset }}
+          path: outputs/conflict_aware/CONFLICT_AWARE_*
+          if-no-files-found: error
+          retention-days: 90
+  aggregate:
+    needs: public-dataset
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas numpy
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: conflict-aware-*
+          path: incoming_conflict_aware
+          merge-multiple: true
+      - name: Check 20 sources, 40 architectures, nested split, and complete paired methods
+        run: python -m teacher_demo.summarize_conflict_aware_20
+      - name: Verify completeness and evidence receipts
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd,json
+          r=Path("docs/research/teacher_dashboard/data")
+          j=json.loads((r/"CONFLICT_AWARE_20_MANIFEST.json").read_text())
+          a=pd.read_csv(r/"CONFLICT_AWARE_20_RESULTS.csv")
+          b=pd.read_csv(r/"CONFLICT_AWARE_20_PAIRED.csv")
+          g=pd.read_csv(r/"CONFLICT_AWARE_20_GATE_EVENTS.csv")
+          assert j["status"]=="ALL_20_EXPERIMENTS_VALIDATED"
+          assert len(a)==120 and len(b)==40
+          assert a.dataset.nunique()==20 and a.variant.nunique()==3
+          assert len(g)==j["candidate_gate_events"]
+          assert (a.coverage_pct>=0).all() and (a.coverage_pct<=100).all()
+          assert a.groupby(["dataset","system","client_count"]).size().eq(3).all()
+          print("CONFLICT_AWARE_20_120_OUTCOMES_QA_PASS",flush=True)
+          PY
+      - name: Publish source-backed results on current research head
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "${GITHUB_REF_NAME}"
+          git reset --mixed FETCH_HEAD
+          git add docs/research/teacher_dashboard/data/CONFLICT_AWARE_20_*
+          if ! git diff --cached --quiet; then
+            git commit -m "research: publish tested conflict-aware gate vs unconditional supplement evidence [skip ci]"
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: conflict-aware-20-final-audit
+          path: docs/research/teacher_dashboard/data/CONFLICT_AWARE_20_*
+          if-no-files-found: error
+          retention-days: 90
