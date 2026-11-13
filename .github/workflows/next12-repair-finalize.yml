@@ -1,0 +1,119 @@
+name: LEM2 Next 12 - Repair 3 Public Sources and Reuse 9 Executed Results
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - .github/workflows/next12-repair-finalize.yml
+  workflow_dispatch:
+permissions: { contents: write, actions: read }
+jobs:
+  repaired-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        dataset: [heart_disease, student_performance, vehicle_silhouettes]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: python -m pip install -r requirements-dev.txt ucimlrepo
+      - name: Re-acquire corrected source/target/missingness protocol
+        run: |
+          python - <<'PY'
+          import json,traceback
+          from pathlib import Path
+          from teacher_demo.public_next12_runner import run
+          key="${{ matrix.dataset }}"
+          out=Path("outputs/next12");out.mkdir(parents=True,exist_ok=True)
+          try:run(key,out)
+          except Exception as e:
+              (out/f"NEXT12_ERROR_{key}.json").write_text(
+                 json.dumps({"dataset_key":key,"error":type(e).__name__+": "+str(e),
+                             "traceback":traceback.format_exc(limit=10)},indent=2),
+                 encoding="utf-8")
+              print("REPAIR_FAILED_NO_IMPUTATION",key,e,flush=True)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: next12-repair-${{ matrix.dataset }}
+          path: outputs/next12/*
+          if-no-files-found: error
+  validated-aggregate:
+    needs: repaired-source
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: python -m pip install pandas numpy
+      - name: Reuse original twelve job artifacts from 43474057235 (without refitting old successful models)
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 43474057235
+          pattern: next12-*
+          path: next12_incoming
+          merge-multiple: true
+      - name: Download three repair jobs
+        uses: actions/download-artifact@v4
+        with:
+          pattern: next12-repair-*
+          path: next12_repaired
+          merge-multiple: true
+      - name: Replace only three source artifacts with explicitly corrected contracts
+        run: |
+          python - <<'PY'
+          import shutil
+          from pathlib import Path
+          dst=Path("next12_incoming")
+          src=Path("next12_repaired")
+          for key in ["heart_disease","student_performance","vehicle_silhouettes"]:
+              for old in dst.glob(f"NEXT12_*_{key}.*"):
+                  old.unlink()
+              files=list(src.glob(f"NEXT12_*_{key}.*"))
+              if not files:
+                  raise AssertionError("Missing source repair evidence for "+key)
+              for f in files:
+                  shutil.copy2(f,dst/f.name)
+              print("SOURCE_REPAIRED_OR_FAILURE_PRESERVED",key,len(files))
+          PY
+      - name: Validate all twelve external UCI sources and fail closed if not complete
+        run: |
+          python -m teacher_demo.summarize_public_next12
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import pandas as pd
+          root=Path("docs/research/teacher_dashboard/data")
+          m=json.loads((root/"PUBLIC_NEXT12_MANIFEST.json").read_text())
+          assert m["status"]=="PASS_ALL_12_SOURCES",(m["failed"],m["passed_count"])
+          assert m["passed_count"]==12 and m["failed_count"]==0
+          assert len(pd.read_csv(root/"PUBLIC_NEXT12_BASE_RESULTS.csv"))==168
+          assert len(pd.read_csv(root/"PUBLIC_NEXT12_SUPPLEMENT_RESULTS.csv"))==24
+          assert len(list(Path("docs/research/public_datasets_next12").glob("*_prepared.csv")))==12
+          print("ALL_EXTRA_12_SOURCED_AUDITED_168_BASE_24_SUPP_PASS")
+          PY
+      - name: Atomic publication on latest research branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "${GITHUB_REF_NAME}"
+          git reset --mixed FETCH_HEAD
+          git add docs/research/public_datasets_next12/ docs/research/teacher_dashboard/data/PUBLIC_NEXT12_* docs/research/teacher_dashboard/next12/README.md
+          if ! git diff --cached --quiet; then
+             git commit -m "research: finalize 12 additional public UCI studies with repaired sources [skip ci]"
+             git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: next12-final-real-source-repair
+          path: |
+            docs/research/public_datasets_next12/
+            docs/research/teacher_dashboard/data/PUBLIC_NEXT12_*
+            docs/research/teacher_dashboard/next12/README.md
+          if-no-files-found: error
