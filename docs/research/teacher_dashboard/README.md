@@ -1,3 +1,14 @@
+## 2026-11-14｜34 份公開資料逐 row／column + 32 組 Coverage × Conflict 配對與三條規則機制
+
+- [可互動的資料型態／類別與 Coverage × Conflict 散佈圖](./atlas/)：**34 個公開子集**（原先20、新增12、前期電商／工業2）；已驗證 **195 個實驗特徵欄位紀錄、121 筆類別分布紀錄**。逐資料集保留 UCI 來源、匯入筆數、實際經抽樣／缺值處理後筆數、欄位資料型態、唯一值、缺失值、三個最常見值、數值 p10/p50/p90、重複完整列和 prepared CSV SHA。原始全部特徵數若先前未保存，維持空值而不是臆造。
+- [32 組完整 C0/C3 配對](./conflict_atlas/PUBLIC32_COVERAGE_CONFLICT_PAIRS.csv) 與 [來源細節](./conflict_atlas/README.md) 均是 Seed42 固定協定；原先20單獨留在 `PUBLIC20_COVERAGE_CONFLICT_PAIRS.csv`，新增12單獨留在 `PUBLIC_NEXT12_COVERAGE_CONFLICT_PAIRS.csv`，不混成原本三資料集 42 Seeds 基線。
+- 32資料集等權探索性平均：**Δ Test Coverage +21.43 pp、Δ Conflict Rate +11.93 pp、Δ (Coverage−Conflict) +9.51 pp；6/32 的無衝突覆蓋反而下降**。此為兩個獨立學習架構的差異，不是「單條規則造成衝突」的因果證明。
+- [三條真實規則層級研究](./three_tracks/)：Track A 使用 Letter 的 26 類 × 兩架構（52列）、逐 Test 物件（364列）、逐條規則（1137列）鑑別正確候選是否缺失；Track B 在 Wine/Grid 以 Train-only 剪枝，比較正解候選與 Conflict 下降的代價（Wine C3 Accuracy +2.78pp，Grid C3 −1.94pp）；Track C 以 Haberman/Banknote/Rice 對照 38 條邊際候選規則，測 Coverage／Conflict／Candidate／Accuracy。六份來源驗證通過，僅 Seed42，未完成巢狀調參。
+- [額外12份 UCI 來源](./next12/README.md) 和 [Manifest](./data/PUBLIC_NEXT12_MANIFEST.json) 已全部完成、**12／12 成功、零個未補值來源**；168列基線＋24列Train-only補充規則，公開子集在 `docs/research/public_datasets_next12/`，可獨立下載。Ionosphere、Yeast、Image Segmentation、Vehicle Silhouettes、Heart Disease、Raisin、Wine Quality、Student Performance、Vertebral Column、Student Dropout、Blood Donation、Fertility。因原 Seeds 236／QSAR 254 的官方 Python 匯入無法使用，使用有公開目標標籤的替代來源；車輛輪廓資料還明確記錄 846 匯入→845 完整列，Wine Quality 與 Student Performance 都有**預先指定的二元目標衍生規則**。
+- 嚴格學術邊界：新32來源只有1個Seed 42／最多6個特徵的可行性掃描；原來源 rows 不等於完整原始 feature space／全量訓練。繼續推進時必須使用多 Seeds、內層 Train/Validation、來源完整列的訓練規模階梯及未見 Test 分布偏移來確認穩定性。
+
+---
+
 ## 2026-11-14｜Conflict-Aware 補充規則：三版本研究原型與負面結果
 
 - [互動頁面](./public20/conflict_aware.html) · [研究報告](./public20/CONFLICT_AWARE_FINDINGS.md) · [完整性 Manifest](./data/CONFLICT_AWARE_20_MANIFEST.json)。20 個公開來源 ×（集中式、Fed C3）× 3 個版本，**120 列結果、423 筆逐規則驗證事件**。
