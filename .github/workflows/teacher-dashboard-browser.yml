@@ -15,6 +15,12 @@ on:
       - docs/research/teacher_dashboard/versions/**
       - docs/research/teacher_dashboard/public_data/**
       - docs/research/teacher_dashboard/public20/**
+      - docs/research/teacher_dashboard/atlas/**
+      - docs/research/teacher_dashboard/three_tracks/**
+      - docs/research/teacher_dashboard/next12/**
+      - docs/research/teacher_dashboard/conflict_atlas/**
+      - docs/research/public_datasets_next12/**
+      - docs/research/teacher_dashboard/data/PUBLIC_NEXT12_*
       - docs/research/public_datasets_20/**
       - docs/research/teacher_dashboard/data/PUBLIC20_*
       - docs/research/public_datasets/**
