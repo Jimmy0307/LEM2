@@ -26,6 +26,8 @@ DATA=ROOT/"teacher_dashboard/data"
 OUTPUT=ROOT/"teacher_dashboard/conflict_atlas"
 INPUT20=ROOT/"public_datasets_20"
 INPUT2=ROOT/"public_datasets"
+INPUT12=ROOT/"public_datasets_next12"
+from teacher_demo.public_next12_registry import REGISTRY as REGISTRY12
 COLS=["dataset_key","family","source_url","source_rows","prepared_rows","source_features",
       "used_features","class_count","minority_class_rows","minority_class_rate_pct",
       "feature_mode","duplicates_full_rows","missing_cells_in_prepared","prepared_file_sha256"]
@@ -186,8 +188,27 @@ def run():
                                 12330 if key=="online_shoppers" else 10000,
                                 17 if key=="online_shoppers" else 6,path)
             profiles.append(x);labels.extend(y);columns.extend(z)
+    # Additional twelve are independent one-seed source experiments. Profiles
+    # can be combined, but do NOT aggregate their policy outcomes with the
+    # original twenty as if all were 42-seed model evidence.
+    extra_manifest=DATA/"PUBLIC_NEXT12_MANIFEST.json"
+    if extra_manifest.is_file():
+        additional=json.loads(extra_manifest.read_text(encoding="utf-8"))
+        if additional.get("status")!="PASS_ALL_12_SOURCES" or additional.get("passed_count")!=12:
+            raise AssertionError("Cannot silently mix partial additional-source evidence")
+        for m in additional["datasets"]:
+            if m["status"]!="PASS_ONE_SEED":raise AssertionError("Unexpected incomplete extra source")
+            k=m["key"]
+            cfg=REGISTRY12[k]
+            x,y,z=profile_one(k,"ADDITIONAL_PUBLIC12",cfg,m["original_rows"],m["original_features"],INPUT12/f"{k}_prepared.csv")
+            ensure(x["prepared_rows"]==m["prepared_rows"],"12-source prepared rows mismatch "+k)
+            ensure(x["class_count"]==len(m["class_distribution"]),"12-source class count mismatch "+k)
+            ensure({u["class_label"]:u["class_count"] for u in y}=={str(a):int(b) for a,b in m["class_distribution"].items()},
+                   "12-source class distribution mismatch "+k)
+            profiles.append(x);labels.extend(y);columns.extend(z)
     ensure(len([x for x in profiles if x["family"]=="NEW_PUBLIC20"])==20,"Missing one of 20")
-    ensure(len(profiles)>=20,"No data")
+    ensure(len([x for x in profiles if x["family"]=="ADDITIONAL_PUBLIC12"])==12,"Missing newly verified twelve")
+    ensure(len(profiles)==34,"Expect 20 previous + 2 business/industrial + 12 additional")
     for filename,data in [
       ("DATASET_ROW_COUNTS_AND_TYPES.csv",pd.DataFrame(profiles)),
       ("DATASET_CLASS_COUNTS.csv",pd.DataFrame(labels)),
@@ -214,6 +235,7 @@ def run():
     desc={
       "status":"SOURCE_AUDITED_20_EXPERIMENTS","scope":"Seed42 C0/C3; unchanged frozen LEM2 rules; 20 datasets, 2 architectures",
       "profiles":len(profiles),"profile_columns":len(columns),"class_rows":len(labels),
+      "families":{"NEW_PUBLIC20":20,"PREVIOUS_COMMERCE_TECH_4SEEDS":2,"ADDITIONAL_PUBLIC12":12},
       "matched_pairs":len(p),"source_evidence":["PUBLIC20_BASE_RESULTS.csv","PUBLIC20_MANIFEST.json",
                      "public_datasets_20/*_prepared.csv"],
       "improvement_counts":{
@@ -226,14 +248,16 @@ def run():
         "C0 and C3 use different fitted rule systems; architecture contrast is NOT a marginal rule-addition effect",
         "Conflict-free coverage = coverage-conflict, not accuracy nor correct-candidate rate",
         "Four-seed commerce/AI4I domain profiles are not in the matched pair analysis",
+        "Twelve further public source profiles also are not included in the original 20 paired comparison",
+        "Imported source count may differ from UCI's catalog for datasets using multiple source files",
         "Class proportions are for prepared subsets and may differ from raw source distributions"]
     }
     (OUTPUT/"MANIFEST.json").write_text(json.dumps(desc,indent=2,ensure_ascii=False),encoding="utf-8")
     lines=["# 公開資料集逐 row／逐 column 與 Coverage × Conflict 實驗圖譜","",
-     f"- 已驗證：20 個新資料集，20 個相同 Seed 的 C0/C3 配對；實際已發布子集 {len(profiles)} 份，欄位 {len(columns)} 筆，類別統計 {len(labels)} 筆。",
+     f"- 已驗證：20 個原始新資料集＋12 個新增來源；20 個相同 Seed 的 C0/C3 配對；實際已發布子集 {len(profiles)} 份，欄位 {len(columns)} 筆，類別統計 {len(labels)} 筆。",
      "- 核心定義：Coverage=P(至少一條規則命中)；Conflict=P(命中規則指向兩種以上類別)；無衝突覆蓋=Coverage−Conflict。",
      "- 實驗僅 Seed 42，80/20；不是 42 Seeds。資料表原始 rows 與 prepared rows 不可混用。",
-     "- 本次還保留兩個前期電商／工業資料的 profile；不把它們重新計入「新增 20 資料集」。","",
+     "- 本次還保留兩個前期電商／工業資料的 profile，並納入另外12份來源的逐欄位輪廓；原本的 Coverage×Conflict 比較仍僅包含先前20份、相同Seed42的配對結果。","",
      "## 20 配對資料集：Coverage vs Conflict（百分點）","",
      "| 資料集 | 原始→實際 rows | C0 Coverage | C3 Coverage | C0 Conflict | C3 Conflict | Δ 無衝突覆蓋 |",
      "|---|---:|---:|---:|---:|---:|---:|"]
