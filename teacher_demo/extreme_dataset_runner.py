@@ -89,6 +89,11 @@ def read_external(name):
     y=Y.iloc[:,0].astype("string").fillna("__MISSING_TARGET__")
     if cfg.get("label_transform")=="adult_income_strip_period":
         y=y.str.strip().str.removesuffix(".")
+    elif cfg.get("label_transform")=="wine_quality_binary_ge6":
+        # A new, explicitly named binary task on an originally ordinal target.
+        # This threshold is predeclared and never selected from test performance.
+        quality=pd.to_numeric(y,errors="raise")
+        y=pd.Series(np.where(quality>=6,"HIGH_QUALITY_GE6","LOW_QUALITY_LT6"),dtype="string")
     if (y=="__MISSING_TARGET__").any():raise ValueError("Target missing")
     if cfg["feature_mode"]=="EXPLICIT_MIXED":
         cont=list(cfg["continuous_columns"])
