@@ -1,0 +1,424 @@
+dataset,seed,system,client_count,candidate_index,decision,conditions,train_support,train_purity_pct,new_validation_match_count,validation_conflict_delta_pp,validation_accuracy_delta_pp,validation_BA_delta_pp,validation_score_gain,accepted
+adult_income,42,CENTRALIZED,0,0,<=50K,"(('marital_status', 'Never-married'), ('occupation', 'Other-service'))",60,98.33333333333333,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,1,<=50K,"(('hours_per_week_bin', 'Low'), ('marital_status', 'Never-married'))",119,98.31932773109243,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,2,<=50K,"(('education', 'HS-grad'), ('hours_per_week_bin', 'Low'))",55,98.18181818181819,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,3,<=50K,"(('marital_status', 'Never-married'), ('occupation', 'Adm-clerical'))",55,98.18181818181819,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,4,<=50K,"(('marital_status', 'Never-married'), ('occupation', 'Sales'))",49,97.95918367346938,1,0.0,0.0,0.0,0.3472222222222143,True
+adult_income,42,CENTRALIZED,0,5,<=50K,"(('age_bin', 'Low'), ('hours_per_week_bin', 'Low'))",142,97.88732394366197,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,6,<=50K,"(('education', 'HS-grad'), ('marital_status', 'Never-married'))",118,97.45762711864407,4,0.0,0.0,0.0,1.3888888888888857,True
+adult_income,42,CENTRALIZED,0,7,<=50K,"(('age_bin', 'Low'), ('marital_status', 'Never-married'))",360,96.94444444444444,1,0.0,0.0,0.0,0.3472222222222143,True
+adult_income,42,CENTRALIZED,0,8,<=50K,"(('marital_status', 'Never-married'), ('occupation', 'Machine-op-inspct'))",31,96.7741935483871,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,9,<=50K,"(('hours_per_week_bin', 'Low'), ('occupation', 'Sales'))",30,96.66666666666667,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,10,<=50K,"(('marital_status', 'Widowed'),)",30,96.66666666666667,1,0.0,0.0,0.0,0.34722222222222854,True
+adult_income,42,CENTRALIZED,0,11,<=50K,"(('marital_status', 'Never-married'), ('workclass', 'Private'))",306,96.40522875816994,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,12,<=50K,"(('age_bin', 'Low'), ('occupation', 'Other-service'))",79,96.20253164556962,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,13,<=50K,"(('education', 'HS-grad'), ('occupation', 'Other-service'))",46,95.65217391304348,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,14,<=50K,"(('marital_status', 'Never-married'), ('occupation', 'Handlers-cleaners'))",23,95.65217391304348,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,15,<=50K,"(('hours_per_week_bin', 'Low'), ('workclass', 'Private'))",136,95.58823529411765,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,16,<=50K,"(('marital_status', 'Never-married'),)",398,95.47738693467338,1,0.0,0.0,0.0,0.34722222222222854,True
+adult_income,42,CENTRALIZED,0,17,<=50K,"(('hours_per_week_bin', 'Medium'), ('occupation', 'Other-service'))",66,95.45454545454545,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,18,<=50K,"(('education', 'Some-college'), ('hours_per_week_bin', 'Low'))",61,95.08196721311475,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,19,<=50K,"(('age_bin', 'Low'), ('marital_status', 'Never-married'), ('occupation', 'Exec-managerial'), ('workclass', 'Private'))",20,95.0,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,20,<=50K,"(('occupation', 'Other-service'),)",116,94.82758620689656,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,21,<=50K,"(('education', '11th'),)",56,94.64285714285714,1,0.0,0.0,0.0,0.34722222222222854,True
+adult_income,42,CENTRALIZED,0,22,<=50K,"(('education', 'Some-college'), ('marital_status', 'Divorced'))",36,94.44444444444444,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,23,<=50K,"(('age_bin', 'Medium'), ('occupation', 'Other-service'))",34,94.11764705882352,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,24,>50K,"(('age_bin', 'Medium'), ('marital_status', 'Married-civ-spouse'), ('occupation', 'Prof-specialty'), ('workclass', 'Private'))",17,94.11764705882352,1,0.0,0.34722222222222854,0.7246376811594217,1.7964975845410578,True
+adult_income,42,CENTRALIZED,0,25,<=50K,"(('age_bin', 'Medium'), ('occupation', 'Handlers-cleaners'))",17,94.11764705882352,1,0.0,0.0,0.0,0.34722222222222854,True
+adult_income,42,CENTRALIZED,0,26,<=50K,"(('age_bin', 'Low'), ('education', 'Bachelors'), ('marital_status', 'Never-married'), ('workclass', 'Private'))",46,93.47826086956522,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,27,<=50K,"(('hours_per_week_bin', 'Low'),)",208,93.26923076923077,1,0.0,0.0,0.0,0.3472222222222143,True
+adult_income,42,CENTRALIZED,0,28,<=50K,"(('education', 'HS-grad'), ('marital_status', 'Divorced'))",58,93.10344827586206,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,29,<=50K,"(('age_bin', 'Low'), ('workclass', '?'))",29,93.10344827586206,2,0.0,0.0,0.0,0.6944444444444429,True
+adult_income,42,CENTRALIZED,0,30,<=50K,"(('age_bin', 'Low'), ('marital_status', 'Divorced'))",72,93.05555555555556,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,31,<=50K,"(('education', 'Some-college'), ('workclass', 'State-gov'))",14,92.85714285714286,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,32,<=50K,"(('occupation', 'Farming-fishing'), ('workclass', 'Private'))",14,92.85714285714286,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,33,<=50K,"(('education', '10th'),)",26,92.3076923076923,2,0.0,0.0,0.0,0.6944444444444429,True
+adult_income,42,CENTRALIZED,0,34,<=50K,"(('education', '7th-8th'), ('workclass', 'Private'))",13,92.3076923076923,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,35,<=50K,"(('education', 'Some-college'), ('occupation', 'Machine-op-inspct'))",13,92.3076923076923,1,0.0,0.0,0.0,0.34722222222222854,True
+adult_income,42,CENTRALIZED,0,36,<=50K,"(('marital_status', 'Never-married'), ('occupation', 'Tech-support'))",13,92.3076923076923,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,37,>50K,"(('age_bin', 'Medium'), ('marital_status', 'Married-civ-spouse'), ('occupation', 'Exec-managerial'), ('workclass', 'Private'))",25,92.0,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,38,<=50K,"(('education', 'Some-college'), ('workclass', 'Self-emp-not-inc'))",11,90.9090909090909,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,39,>50K,"(('education', 'Masters'), ('occupation', 'Exec-managerial'))",11,90.9090909090909,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,40,<=50K,"(('hours_per_week_bin', 'Low'), ('workclass', '?'))",21,90.47619047619048,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,41,<=50K,"(('age_bin', 'Low'), ('education', 'Bachelors'), ('marital_status', 'Never-married'), ('occupation', 'Exec-managerial'))",10,90.0,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,42,<=50K,"(('age_bin', 'Low'), ('education', 'HS-grad'), ('workclass', 'Local-gov'))",10,90.0,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,43,>50K,"(('education', 'Prof-school'), ('hours_per_week_bin', 'Medium'), ('marital_status', 'Married-civ-spouse'))",10,90.0,0,0.0,0.0,0.0,0.0,False
+adult_income,42,CENTRALIZED,0,44,<=50K,"(('education', 'HS-grad'), ('occupation', 'Prof-specialty'))",10,90.0,0,0.3472222222222223,0.0,0.0,-0.3472222222222223,False
+adult_income,42,CENTRALIZED,0,45,<=50K,"(('education', 'HS-grad'), ('workclass', 'State-gov'))",10,90.0,2,0.0,0.0,0.0,0.6944444444444429,True
+adult_income,42,FEDERATED,3,0,<=50K,"(('marital_status', 'Never-married'), ('occupation', 'Other-service'))",60,98.33333333333333,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,1,<=50K,"(('education', 'HS-grad'), ('hours_per_week_bin', 'Low'))",55,98.18181818181819,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,2,<=50K,"(('marital_status', 'Never-married'), ('occupation', 'Adm-clerical'))",55,98.18181818181819,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,3,<=50K,"(('marital_status', 'Never-married'), ('occupation', 'Sales'))",49,97.95918367346938,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,4,<=50K,"(('age_bin', 'Low'), ('marital_status', 'Never-married'), ('workclass', 'Private'))",280,97.5,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,5,<=50K,"(('age_bin', 'Low'), ('marital_status', 'Never-married'))",360,96.94444444444444,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,6,<=50K,"(('marital_status', 'Widowed'),)",30,96.66666666666667,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,7,<=50K,"(('marital_status', 'Never-married'), ('workclass', 'Private'))",306,96.40522875816994,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,8,<=50K,"(('age_bin', 'Low'), ('occupation', 'Other-service'))",79,96.20253164556962,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,9,<=50K,"(('marital_status', 'Never-married'),)",398,95.47738693467338,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,10,<=50K,"(('hours_per_week_bin', 'Medium'), ('occupation', 'Other-service'))",66,95.45454545454545,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,11,<=50K,"(('occupation', 'Other-service'),)",116,94.82758620689656,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,12,<=50K,"(('education', '11th'),)",56,94.64285714285714,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,13,<=50K,"(('age_bin', 'Medium'), ('occupation', 'Other-service'))",34,94.11764705882352,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,14,<=50K,"(('age_bin', 'Medium'), ('occupation', 'Handlers-cleaners'))",17,94.11764705882352,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,15,<=50K,"(('hours_per_week_bin', 'Low'),)",208,93.26923076923077,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,16,<=50K,"(('education', 'HS-grad'), ('marital_status', 'Divorced'))",58,93.10344827586206,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,17,<=50K,"(('age_bin', 'Low'), ('marital_status', 'Divorced'))",72,93.05555555555556,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,18,<=50K,"(('education', 'Some-college'), ('workclass', 'State-gov'))",14,92.85714285714286,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,19,<=50K,"(('education', '10th'),)",26,92.3076923076923,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,20,<=50K,"(('marital_status', 'Never-married'), ('occupation', 'Tech-support'))",13,92.3076923076923,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,21,>50K,"(('age_bin', 'Medium'), ('marital_status', 'Married-civ-spouse'), ('occupation', 'Exec-managerial'), ('workclass', 'Private'))",25,92.0,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,22,<=50K,"(('education', 'HS-grad'), ('occupation', 'Craft-repair'), ('workclass', 'Private'))",56,91.07142857142857,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,23,<=50K,"(('education', 'Some-college'), ('workclass', 'Self-emp-not-inc'))",11,90.9090909090909,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,24,>50K,"(('education', 'Masters'), ('occupation', 'Exec-managerial'))",11,90.9090909090909,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,25,<=50K,"(('age_bin', 'Low'), ('education', 'Bachelors'), ('marital_status', 'Never-married'))",63,90.47619047619048,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,26,<=50K,"(('education', 'Bachelors'), ('marital_status', 'Never-married'), ('workclass', 'Private'))",52,90.38461538461539,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,27,<=50K,"(('age_bin', 'Low'), ('occupation', 'Craft-repair'), ('workclass', 'Private'))",81,90.12345679012346,0,0.0,0.0,0.0,0.0,False
+adult_income,42,FEDERATED,3,28,<=50K,"(('education', 'HS-grad'), ('occupation', 'Prof-specialty'))",10,90.0,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,CENTRALIZED,0,0,no,"(('job', 'services'), ('marital', 'married'))",53,98.11320754716981,11,0.0,0.0,0.0,3.8194444444444464,True
+bank_marketing,42,CENTRALIZED,0,1,no,"(('age_bin', 'Medium'), ('education', 'secondary'), ('job', 'blue-collar'))",39,97.43589743589743,3,0.0,0.0,0.0,1.0416666666666643,True
+bank_marketing,42,CENTRALIZED,0,2,no,"(('age_bin', 'Medium'), ('education', 'primary'))",74,97.2972972972973,12,0.0,0.0,0.0,4.166666666666671,True
+bank_marketing,42,CENTRALIZED,0,3,no,"(('age_bin', 'Medium'), ('job', 'services'))",30,96.66666666666667,1,0.0,0.0,0.0,0.3472222222222143,True
+bank_marketing,42,CENTRALIZED,0,4,no,"(('job', 'housemaid'), ('marital', 'married'))",29,96.55172413793103,1,0.0,0.0,0.0,0.34722222222222143,True
+bank_marketing,42,CENTRALIZED,0,5,no,"(('job', 'self-employed'), ('marital', 'married'))",27,96.29629629629629,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,CENTRALIZED,0,6,no,"(('age_bin', 'Medium'), ('job', 'blue-collar'))",79,96.20253164556962,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,CENTRALIZED,0,7,no,"(('age_bin', 'Medium'), ('job', 'housemaid'))",22,95.45454545454545,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,CENTRALIZED,0,8,no,"(('job', 'unemployed'), ('marital', 'married'))",22,95.45454545454545,2,0.0,0.0,0.0,0.69444444444445,True
+bank_marketing,42,CENTRALIZED,0,9,no,"(('job', 'technician'), ('marital', 'divorced'))",21,95.23809523809523,3,0.0,0.0,0.0,1.0416666666666643,True
+bank_marketing,42,CENTRALIZED,0,10,no,"(('education', 'primary'), ('job', 'housemaid'))",20,95.0,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,CENTRALIZED,0,11,no,"(('balance_bin', 'Medium'),)",20,95.0,1,0.0,0.0,0.0,0.34722222222222854,True
+bank_marketing,42,CENTRALIZED,0,12,no,"(('job', 'housemaid'),)",39,94.87179487179486,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,CENTRALIZED,0,13,no,"(('education', 'tertiary'), ('job', 'entrepreneur'))",19,94.73684210526315,1,0.0,0.0,0.0,0.34722222222222143,True
+bank_marketing,42,CENTRALIZED,0,14,no,"(('education', 'primary'), ('marital', 'married'))",131,94.65648854961832,20,0.0,0.0,0.0,6.944444444444436,True
+bank_marketing,42,CENTRALIZED,0,15,no,"(('education', 'secondary'), ('job', 'management'), ('marital', 'married'))",18,94.44444444444444,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,CENTRALIZED,0,16,no,"(('education', 'secondary'), ('job', 'self-employed'))",18,94.44444444444444,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,CENTRALIZED,0,17,no,"(('job', 'blue-collar'),)",282,93.97163120567376,25,0.0,0.0,0.0,8.680555555555557,True
+bank_marketing,42,CENTRALIZED,0,18,no,"(('education', 'secondary'), ('job', 'blue-collar'), ('marital', 'single'))",49,93.87755102040816,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,CENTRALIZED,0,19,no,"(('education', 'primary'),)",167,93.41317365269461,1,0.0,0.0,0.0,0.34722222222222854,True
+bank_marketing,42,CENTRALIZED,0,20,no,"(('education', '__MISSING_FEATURE__'), ('job', 'blue-collar'))",15,93.33333333333333,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,CENTRALIZED,0,21,no,"(('job', 'self-employed'),)",44,93.18181818181817,1,0.0,0.0,0.0,0.34722222222222143,True
+bank_marketing,42,CENTRALIZED,0,22,no,"(('job', 'services'),)",87,93.10344827586206,8,0.0,0.0,0.0,2.7777777777777786,True
+bank_marketing,42,CENTRALIZED,0,23,no,"(('age_bin', 'Low'), ('job', 'admin.'))",71,92.95774647887323,19,0.0,0.0,0.0,6.597222222222225,True
+bank_marketing,42,CENTRALIZED,0,24,no,"(('job', 'entrepreneur'),)",40,92.5,1,0.0,0.0,0.0,0.3472222222222143,True
+bank_marketing,42,CENTRALIZED,0,25,no,"(('education', 'tertiary'), ('job', 'self-employed'))",25,92.0,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,CENTRALIZED,0,26,no,"(('job', 'blue-collar'), ('marital', 'single'))",74,91.8918918918919,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,CENTRALIZED,0,27,no,"(('education', 'secondary'), ('job', 'management'), ('previous_bin', 'Low'))",24,91.66666666666666,2,0.0,0.0,0.0,0.6944444444444429,True
+bank_marketing,42,CENTRALIZED,0,28,no,"(('education', 'secondary'), ('marital', 'married'), ('previous_bin', 'Low'))",345,91.59420289855072,17,0.0,0.0,0.0,5.902777777777786,True
+bank_marketing,42,CENTRALIZED,0,29,no,"(('age_bin', 'Low'), ('education', 'secondary'), ('marital', 'divorced'))",23,91.30434782608695,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,CENTRALIZED,0,30,no,"(('age_bin', 'Medium'), ('marital', 'married'))",275,91.27272727272727,14,0.0,0.0,0.0,4.8611111111111,True
+bank_marketing,42,CENTRALIZED,0,31,no,"(('job', 'services'), ('marital', 'single'))",22,90.9090909090909,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,CENTRALIZED,0,32,no,"(('job', 'admin.'),)",117,90.5982905982906,2,0.0,0.0,0.0,0.6944444444444571,True
+bank_marketing,42,CENTRALIZED,0,33,no,"(('marital', 'married'),)",696,90.22988505747126,23,0.0,0.0,0.0,7.9861111111111,True
+bank_marketing,42,CENTRALIZED,0,34,no,"(('age_bin', 'Medium'),)",367,90.19073569482289,8,0.0,0.0,0.0,2.7777777777777715,True
+bank_marketing,42,CENTRALIZED,0,35,no,"(('job', 'admin.'), ('marital', 'married'))",60,90.0,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,CENTRALIZED,0,36,no,"(('age_bin', 'Medium'), ('education', 'secondary'), ('marital', 'single'))",10,90.0,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,0,no,"(('age_bin', 'Medium'), ('education', 'primary'))",74,97.2972972972973,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,1,no,"(('job', 'self-employed'), ('marital', 'married'))",27,96.29629629629629,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,2,no,"(('age_bin', 'Medium'), ('job', 'blue-collar'))",79,96.20253164556962,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,3,no,"(('education', 'primary'), ('job', 'blue-collar'))",96,95.83333333333334,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,4,no,"(('job', 'unemployed'), ('marital', 'married'))",22,95.45454545454545,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,5,no,"(('job', 'technician'), ('marital', 'divorced'))",21,95.23809523809523,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,6,no,"(('balance_bin', 'Medium'),)",20,95.0,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,7,no,"(('job', 'housemaid'),)",39,94.87179487179486,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,8,no,"(('education', 'primary'), ('marital', 'married'))",131,94.65648854961832,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,9,no,"(('job', 'blue-collar'), ('marital', 'married'))",198,94.44444444444444,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,10,no,"(('education', 'secondary'), ('job', 'self-employed'))",18,94.44444444444444,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,11,no,"(('age_bin', 'Low'), ('education', 'primary'))",86,94.18604651162791,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,12,no,"(('job', 'blue-collar'),)",282,93.97163120567376,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,13,no,"(('education', 'secondary'), ('job', 'blue-collar'))",167,93.41317365269461,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,14,no,"(('education', 'primary'),)",167,93.41317365269461,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,15,no,"(('job', 'self-employed'),)",44,93.18181818181817,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,16,no,"(('job', 'services'),)",87,93.10344827586206,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,17,no,"(('age_bin', 'Low'), ('job', 'admin.'))",71,92.95774647887323,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,18,no,"(('age_bin', 'Low'), ('job', 'blue-collar'), ('marital', 'married'))",127,92.91338582677166,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,19,no,"(('education', 'secondary'), ('job', 'blue-collar'), ('marital', 'married'))",112,92.85714285714286,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,20,no,"(('education', 'secondary'), ('job', 'services'))",69,92.7536231884058,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,21,no,"(('job', 'entrepreneur'),)",40,92.5,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,22,no,"(('age_bin', 'Low'), ('education', 'secondary'), ('job', 'blue-collar'))",128,92.1875,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,23,no,"(('education', 'tertiary'), ('job', 'self-employed'))",25,92.0,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,24,no,"(('job', 'blue-collar'), ('marital', 'single'))",74,91.8918918918919,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,25,no,"(('age_bin', 'Medium'), ('marital', 'married'))",275,91.27272727272727,15,0.0,0.0,0.0,5.208333333333314,True
+bank_marketing,42,FEDERATED,3,26,no,"(('education', 'secondary'), ('marital', 'married'))",350,91.14285714285715,8,0.0,0.0,0.0,2.7777777777777857,True
+bank_marketing,42,FEDERATED,3,27,no,"(('age_bin', 'Low'), ('marital', 'married'))",405,91.11111111111111,15,0.0,0.0,0.0,5.208333333333343,True
+bank_marketing,42,FEDERATED,3,28,no,"(('age_bin', 'Low'), ('education', 'secondary'), ('marital', 'married'))",200,91.0,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,29,no,"(('job', 'services'), ('marital', 'single'))",22,90.9090909090909,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,30,no,"(('job', 'admin.'),)",117,90.5982905982906,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,31,no,"(('age_bin', 'Low'), ('education', 'tertiary'), ('marital', 'married'))",127,90.5511811023622,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,32,no,"(('age_bin', 'Medium'), ('education', 'secondary'))",196,90.3061224489796,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,33,no,"(('marital', 'married'),)",696,90.22988505747126,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,34,no,"(('age_bin', 'Medium'),)",367,90.19073569482289,0,0.0,0.0,0.0,0.0,False
+bank_marketing,42,FEDERATED,3,35,no,"(('education', 'secondary'), ('previous_bin', 'Low'))",578,90.13840830449827,2,0.0,0.0,0.0,0.6944444444444287,True
+bank_marketing,42,FEDERATED,3,36,no,"(('job', 'admin.'), ('marital', 'married'))",60,90.0,0,0.0,0.0,0.0,0.0,False
+banknote,42,CENTRALIZED,0,0,1,"(('curtosis_bin', 'Low'), ('variance_bin', 'Low'))",75,98.66666666666667,0,0.0,0.0,0.0,0.0,False
+banknote,42,CENTRALIZED,0,1,1,"(('variance_bin', 'Low'),)",124,98.38709677419355,0,0.0,0.0,0.0,0.0,False
+banknote,42,CENTRALIZED,0,2,0,"(('variance_bin', 'High'),)",320,98.125,45,0.0,0.0,0.0,20.454545454545446,True
+banknote,42,CENTRALIZED,0,3,1,"(('skewness_bin', 'Low'), ('variance_bin', 'Medium'))",61,96.72131147540983,0,0.0,0.0,0.0,0.0,False
+banknote,42,CENTRALIZED,0,4,1,"(('entropy_bin', 'Low'), ('variance_bin', 'Low'))",27,96.29629629629629,0,0.0,0.0,0.0,0.0,False
+banknote,42,CENTRALIZED,0,5,1,"(('entropy_bin', 'Medium'), ('skewness_bin', 'Medium'))",108,92.5925925925926,0,0.0,0.0,0.0,0.0,False
+banknote,42,FEDERATED,3,0,1,"(('variance_bin', 'Low'),)",124,98.38709677419355,0,0.0,0.0,0.0,0.0,False
+banknote,42,FEDERATED,3,1,0,"(('variance_bin', 'High'),)",320,98.125,0,0.0,0.0,0.0,0.0,False
+banknote,42,FEDERATED,3,2,1,"(('skewness_bin', 'Low'), ('variance_bin', 'Medium'))",61,96.72131147540983,0,0.0,0.0,0.0,0.0,False
+banknote,42,FEDERATED,3,3,1,"(('entropy_bin', 'Medium'), ('skewness_bin', 'Medium'))",108,92.5925925925926,0,0.0,0.0,0.0,0.0,False
+breast_diagnostic,42,CENTRALIZED,0,0,M,"(('area1_bin', 'Medium'),)",63,98.4126984126984,2,0.0,2.197802197802204,2.941176470588232,8.080155138978668,True
+breast_diagnostic,42,CENTRALIZED,0,1,B,"(('perimeter1_bin', 'Low'), ('smoothness1_bin', 'Low'))",128,97.65625,8,0.0,0.0,0.0,8.791208791208788,True
+breast_diagnostic,42,CENTRALIZED,0,2,B,"(('perimeter1_bin', 'Low'), ('texture1_bin', 'Low'))",164,95.73170731707317,20,0.0,0.0,0.0,21.978021978021978,True
+breast_diagnostic,42,CENTRALIZED,0,3,B,"(('perimeter1_bin', 'Low'),)",222,92.34234234234235,9,0.0,0.0,0.0,9.890109890109883,True
+breast_diagnostic,42,CENTRALIZED,0,4,M,"(('perimeter1_bin', 'Medium'), ('texture1_bin', 'Medium'))",75,92.0,7,0.0,3.296703296703299,5.598555211558306,18.8894181154243,True
+breast_diagnostic,42,CENTRALIZED,0,5,B,"(('smoothness1_bin', 'Low'), ('texture1_bin', 'Low'))",111,91.8918918918919,3,2.197802197802198,0.0,0.0,1.0989010989011092,True
+breast_diagnostic,42,CENTRALIZED,0,6,M,"(('compactness1_bin', 'Medium'), ('perimeter1_bin', 'Medium'), ('smoothness1_bin', 'Low'))",10,90.0,0,0.0,0.0,0.0,0.0,False
+breast_diagnostic,42,FEDERATED,3,0,M,"(('area1_bin', 'Medium'),)",63,98.4126984126984,0,0.0,0.0,0.0,0.0,False
+breast_diagnostic,42,FEDERATED,3,1,B,"(('perimeter1_bin', 'Low'), ('smoothness1_bin', 'Low'))",128,97.65625,0,0.0,0.0,0.0,0.0,False
+breast_diagnostic,42,FEDERATED,3,2,B,"(('compactness1_bin', 'Low'), ('perimeter1_bin', 'Low'))",195,95.8974358974359,0,0.0,0.0,0.0,0.0,False
+breast_diagnostic,42,FEDERATED,3,3,B,"(('perimeter1_bin', 'Low'), ('texture1_bin', 'Low'))",164,95.73170731707317,1,0.0,0.0,0.0,1.0989010989011092,True
+breast_diagnostic,42,FEDERATED,3,4,M,"(('compactness1_bin', 'Medium'), ('perimeter1_bin', 'Medium'))",65,93.84615384615384,0,0.0,0.0,0.0,0.0,False
+breast_diagnostic,42,FEDERATED,3,5,B,"(('perimeter1_bin', 'Low'),)",222,92.34234234234235,0,0.0,0.0,0.0,0.0,False
+breast_diagnostic,42,FEDERATED,3,6,M,"(('perimeter1_bin', 'Medium'), ('texture1_bin', 'Medium'))",75,92.0,6,0.0,4.395604395604394,6.475748194014457,19.5449029814355,True
+breast_diagnostic,42,FEDERATED,3,7,B,"(('smoothness1_bin', 'Low'), ('texture1_bin', 'Low'))",111,91.8918918918919,3,0.0,0.0,0.0,3.296703296703299,True
+breast_diagnostic,42,FEDERATED,3,8,B,"(('compactness1_bin', 'Low'), ('texture1_bin', 'Low'))",172,91.86046511627907,0,0.0,0.0,0.0,0.0,False
+breast_diagnostic,42,FEDERATED,3,9,B,"(('compactness1_bin', 'Low'), ('smoothness1_bin', 'Medium'), ('texture1_bin', 'Low'))",62,90.32258064516128,0,0.0,0.0,0.0,0.0,False
+covertype,42,CENTRALIZED,0,0,2,"(('aspect_bin', 'High'), ('elevation_bin', 'Medium'), ('horizontal_distance_to_roadways_bin', 'Low'), ('vertical_distance_to_hydrology_bin', 'Medium'))",13,92.3076923076923,0,0.0,0.0,0.0,0.0,False
+covertype,42,CENTRALIZED,0,1,2,"(('elevation_bin', 'Medium'), ('slope_bin', 'Low'), ('vertical_distance_to_hydrology_bin', 'Medium'))",38,92.10526315789474,1,0.0,0.0,0.0,0.347222222222225,True
+covertype,42,CENTRALIZED,0,2,2,"(('aspect_bin', 'High'), ('elevation_bin', 'Medium'), ('horizontal_distance_to_hydrology_bin', 'Medium'), ('horizontal_distance_to_roadways_bin', 'Low'))",12,91.66666666666666,0,0.0,0.0,0.0,0.0,False
+covertype,42,CENTRALIZED,0,3,1,"(('aspect_bin', 'Low'), ('elevation_bin', 'High'), ('horizontal_distance_to_hydrology_bin', 'Medium'), ('horizontal_distance_to_roadways_bin', 'Medium'))",11,90.9090909090909,2,0.0,0.69444444444445,0.2721088435374135,1.2386621315192698,True
+covertype,42,CENTRALIZED,0,4,2,"(('elevation_bin', 'Medium'), ('horizontal_distance_to_hydrology_bin', 'Medium'), ('horizontal_distance_to_roadways_bin', 'High'), ('slope_bin', 'Low'))",21,90.47619047619048,3,0.0,0.0,0.0,1.0416666666666643,True
+covertype,42,FEDERATED,3,0,2,"(('elevation_bin', 'Medium'), ('slope_bin', 'Low'), ('vertical_distance_to_hydrology_bin', 'Medium'))",38,92.10526315789474,0,0.0,0.0,0.0,0.0,False
+dry_bean,42,CENTRALIZED,0,0,HOROZ,"(('aspectratio_bin', 'High'), ('perimeter_bin', 'Low'))",73,98.63013698630137,4,0.0,1.5564202334630366,1.5873015873015888,4.731023408066212,True
+dry_bean,42,CENTRALIZED,0,1,SEKER,"(('eccentricity_bin', 'Low'),)",52,98.07692307692307,12,0.0,4.669260700389103,4.511278195488721,13.691817091366547,True
+dry_bean,42,CENTRALIZED,0,2,HOROZ,"(('aspectratio_bin', 'High'), ('majoraxislength_bin', 'Medium'))",92,97.82608695652173,12,0.0,4.669260700389103,4.761904761904766,14.193070224198642,True
+dry_bean,42,CENTRALIZED,0,3,BARBUNYA,"(('majoraxislength_bin', 'Low'), ('perimeter_bin', 'Medium'))",20,95.0,0,0.0,0.0,0.0,0.0,False
+dry_bean,42,CENTRALIZED,0,4,BARBUNYA,"(('aspectratio_bin', 'Low'), ('minoraxislength_bin', 'Medium'))",37,94.5945945945946,0,0.0,0.0,0.0,0.0,False
+dry_bean,42,FEDERATED,3,0,BARBUNYA,"(('aspectratio_bin', 'Low'), ('minoraxislength_bin', 'Medium'))",37,94.5945945945946,0,0.0,0.0,0.0,0.0,False
+eeg_eye_state,42,CENTRALIZED,0,0,1,"(('af3_bin', 'Medium'), ('f7_bin', 'Low'), ('fc5_bin', 'Low'))",40,97.5,5,0.0,1.0416666666666643,1.235922188094186,4.207955487299483,True
+eeg_eye_state,42,CENTRALIZED,0,1,0,"(('f3_bin', 'Low'), ('p7_bin', 'Medium'))",24,95.83333333333334,1,0.0,0.0,0.0,0.34722222222222143,True
+eeg_eye_state,42,CENTRALIZED,0,2,1,"(('af3_bin', 'Medium'), ('f3_bin', 'Medium'), ('f7_bin', 'Low'))",19,94.73684210526315,2,0.0,0.69444444444445,0.7751937984496138,2.244832041343674,True
+eeg_eye_state,42,CENTRALIZED,0,3,0,"(('f7_bin', 'High'), ('fc5_bin', 'Medium'))",22,90.9090909090909,7,0.0,0.0,0.0,2.4305555555555536,True
+eeg_eye_state,42,FEDERATED,3,0,0,"(('f3_bin', 'Low'), ('p7_bin', 'Medium'))",24,95.83333333333334,0,0.0,0.0,0.0,0.0,False
+eeg_eye_state,42,FEDERATED,3,1,1,"(('af3_bin', 'Medium'), ('f7_bin', 'Low'))",55,94.54545454545455,0,0.0,0.0,0.0,0.0,False
+eeg_eye_state,42,FEDERATED,3,2,0,"(('f3_bin', 'Medium'), ('f7_bin', 'High'))",26,92.3076923076923,0,0.0,0.0,0.0,0.0,False
+eeg_eye_state,42,FEDERATED,3,3,0,"(('f7_bin', 'High'), ('p7_bin', 'Low'))",26,92.3076923076923,0,0.0,0.0,0.0,0.0,False
+eeg_eye_state,42,FEDERATED,3,4,0,"(('af3_bin', 'High'), ('f7_bin', 'High'))",23,91.30434782608695,0,0.0,0.0,0.0,0.0,False
+german_credit,42,CENTRALIZED,0,0,1,"(('attribute1', 'A14'), ('attribute4', 'A41'))",42,97.61904761904762,0,0.0,0.0,0.0,0.0,False
+german_credit,42,CENTRALIZED,0,1,1,"(('attribute4', 'A41'), ('attribute5_bin', 'Low'))",41,97.5609756097561,3,0.0,0.0,0.0,1.874999999999993,True
+german_credit,42,CENTRALIZED,0,2,1,"(('attribute1', 'A14'), ('attribute3', 'A34'), ('attribute4', 'A43'))",39,97.43589743589743,3,0.0,0.0,0.0,1.875000000000007,True
+german_credit,42,CENTRALIZED,0,3,1,"(('attribute1', 'A14'), ('attribute2_bin', 'Low'), ('attribute4', 'A42'))",29,96.55172413793103,5,0.0,0.0,0.0,3.125,True
+german_credit,42,CENTRALIZED,0,4,1,"(('attribute1', 'A14'), ('attribute2_bin', 'Low'), ('attribute3', 'A34'))",82,96.34146341463415,4,0.0,0.0,0.0,2.5,True
+german_credit,42,CENTRALIZED,0,5,1,"(('attribute1', 'A14'), ('attribute3', 'A34'), ('attribute6', 'A65'))",25,96.0,0,0.0,0.0,0.0,0.0,False
+german_credit,42,CENTRALIZED,0,6,1,"(('attribute1', 'A14'), ('attribute4', 'A43'), ('attribute6', 'A61'))",40,95.0,7,0.0,0.0,0.0,4.375,True
+german_credit,42,CENTRALIZED,0,7,1,"(('attribute3', 'A34'), ('attribute6', 'A65'))",37,94.5945945945946,0,0.0,0.0,0.0,0.0,False
+german_credit,42,CENTRALIZED,0,8,1,"(('attribute2_bin', 'Low'), ('attribute4', 'A41'), ('attribute6', 'A61'))",17,94.11764705882352,0,0.0,0.0,0.0,0.0,False
+german_credit,42,CENTRALIZED,0,9,1,"(('attribute3', 'A34'), ('attribute4', 'A43'), ('attribute6', 'A61'))",32,93.75,2,0.0,0.0,0.0,1.25,True
+german_credit,42,CENTRALIZED,0,10,1,"(('attribute1', 'A14'), ('attribute2_bin', 'Medium'), ('attribute4', 'A43'))",16,93.75,0,0.0,0.0,0.0,0.0,False
+german_credit,42,CENTRALIZED,0,11,1,"(('attribute1', 'A14'), ('attribute3', 'A34'))",104,93.26923076923077,0,0.0,0.0,0.0,0.0,False
+german_credit,42,CENTRALIZED,0,12,1,"(('attribute3', 'A34'), ('attribute4', 'A43'))",56,92.85714285714286,0,0.0,0.0,0.0,0.0,False
+german_credit,42,CENTRALIZED,0,13,1,"(('attribute1', 'A14'), ('attribute3', 'A34'), ('attribute4', 'A42'))",14,92.85714285714286,0,0.0,0.0,0.0,0.0,False
+german_credit,42,CENTRALIZED,0,14,1,"(('attribute2_bin', 'Low'), ('attribute3', 'A32'), ('attribute4', 'A49'))",14,92.85714285714286,0,0.0,0.0,0.0,0.0,False
+german_credit,42,CENTRALIZED,0,15,1,"(('attribute2_bin', 'Medium'), ('attribute5_bin', 'Low'), ('attribute6', 'A65'))",14,92.85714285714286,0,0.0,0.0,0.0,0.0,False
+german_credit,42,CENTRALIZED,0,16,1,"(('attribute1', 'A14'), ('attribute2_bin', 'Low'), ('attribute3', 'A32'), ('attribute6', 'A61'))",41,92.6829268292683,0,0.0,0.0,0.0,0.0,False
+german_credit,42,CENTRALIZED,0,17,1,"(('attribute1', 'A14'), ('attribute3', 'A34'), ('attribute6', 'A61'))",54,92.5925925925926,0,0.0,0.0,0.0,0.0,False
+german_credit,42,CENTRALIZED,0,18,1,"(('attribute1', 'A14'), ('attribute2_bin', 'Low'), ('attribute4', 'A43'))",66,92.42424242424242,6,0.0,0.0,0.0,3.75,True
+german_credit,42,CENTRALIZED,0,19,1,"(('attribute2_bin', 'Low'), ('attribute6', 'A64'))",25,92.0,0,0.0,0.0,0.0,0.0,False
+german_credit,42,CENTRALIZED,0,20,1,"(('attribute4', 'A41'), ('attribute6', 'A65'))",24,91.66666666666666,0,0.0,0.0,0.0,0.0,False
+german_credit,42,CENTRALIZED,0,21,1,"(('attribute2_bin', 'Low'), ('attribute3', 'A34'), ('attribute6', 'A62'))",12,91.66666666666666,0,0.0,0.0,0.0,0.0,False
+german_credit,42,CENTRALIZED,0,22,1,"(('attribute2_bin', 'Medium'), ('attribute4', 'A43'), ('attribute6', 'A65'))",12,91.66666666666666,0,0.0,0.0,0.0,0.0,False
+german_credit,42,CENTRALIZED,0,23,1,"(('attribute4', 'A42'), ('attribute6', 'A65'))",12,91.66666666666666,0,0.0,0.0,0.0,0.0,False
+german_credit,42,CENTRALIZED,0,24,1,"(('attribute1', 'A14'), ('attribute6', 'A65'))",70,91.42857142857143,0,0.0,0.0,0.0,0.0,False
+german_credit,42,CENTRALIZED,0,25,1,"(('attribute1', 'A14'), ('attribute4', 'A43'), ('attribute6', 'A65'))",22,90.9090909090909,0,0.0,0.0,0.0,0.0,False
+german_credit,42,CENTRALIZED,0,26,1,"(('attribute3', 'A32'), ('attribute6', 'A64'))",11,90.9090909090909,0,0.0,0.0,0.0,0.0,False
+german_credit,42,CENTRALIZED,0,27,1,"(('attribute3', 'A33'), ('attribute6', 'A65'))",11,90.9090909090909,0,0.0,0.0,0.0,0.0,False
+german_credit,42,CENTRALIZED,0,28,1,"(('attribute1', 'A14'), ('attribute2_bin', 'Low'), ('attribute6', 'A61'))",97,90.72164948453609,0,0.0,0.0,0.0,0.0,False
+german_credit,42,CENTRALIZED,0,29,1,"(('attribute1', 'A14'), ('attribute2_bin', 'Low'), ('attribute6', 'A62'))",21,90.47619047619048,0,0.0,0.0,0.0,0.0,False
+german_credit,42,CENTRALIZED,0,30,1,"(('attribute1', 'A14'), ('attribute2_bin', 'Medium'), ('attribute6', 'A65'))",21,90.47619047619048,0,0.0,0.0,0.0,0.0,False
+german_credit,42,CENTRALIZED,0,31,1,"(('attribute1', 'A12'), ('attribute5_bin', 'Low'), ('attribute6', 'A65'))",20,90.0,1,0.0,0.0,0.0,0.625,True
+german_credit,42,CENTRALIZED,0,32,1,"(('attribute3', 'A34'), ('attribute4', 'A49'))",10,90.0,0,0.0,0.0,0.0,0.0,False
+german_credit,42,FEDERATED,3,0,1,"(('attribute1', 'A14'), ('attribute4', 'A41'))",42,97.61904761904762,0,0.0,0.0,0.0,0.0,False
+german_credit,42,FEDERATED,3,1,1,"(('attribute4', 'A41'), ('attribute5_bin', 'Low'))",41,97.5609756097561,0,0.0,0.0,0.0,0.0,False
+german_credit,42,FEDERATED,3,2,1,"(('attribute2_bin', 'Low'), ('attribute4', 'A41'))",39,94.87179487179486,0,0.0,0.0,0.0,0.0,False
+german_credit,42,FEDERATED,3,3,1,"(('attribute3', 'A34'), ('attribute6', 'A65'))",37,94.5945945945946,0,0.0,0.0,0.0,0.0,False
+german_credit,42,FEDERATED,3,4,1,"(('attribute1', 'A14'), ('attribute2_bin', 'Medium'), ('attribute4', 'A43'))",16,93.75,0,0.0,0.0,0.0,0.0,False
+german_credit,42,FEDERATED,3,5,1,"(('attribute1', 'A14'), ('attribute3', 'A34'))",104,93.26923076923077,0,0.0,0.0,0.0,0.0,False
+german_credit,42,FEDERATED,3,6,1,"(('attribute3', 'A34'), ('attribute4', 'A43'))",56,92.85714285714286,0,0.0,0.0,0.0,0.0,False
+german_credit,42,FEDERATED,3,7,1,"(('attribute2_bin', 'Low'), ('attribute3', 'A32'), ('attribute4', 'A49'))",14,92.85714285714286,0,0.0,0.0,0.0,0.0,False
+german_credit,42,FEDERATED,3,8,1,"(('attribute1', 'A14'), ('attribute4', 'A43'))",83,92.7710843373494,1,0.0,0.0,0.0,0.625,True
+german_credit,42,FEDERATED,3,9,1,"(('attribute4', 'A41'), ('attribute6', 'A65'))",24,91.66666666666666,0,0.0,0.0,0.0,0.0,False
+german_credit,42,FEDERATED,3,10,1,"(('attribute4', 'A42'), ('attribute6', 'A65'))",12,91.66666666666666,0,0.0,0.0,0.0,0.0,False
+german_credit,42,FEDERATED,3,11,1,"(('attribute1', 'A14'), ('attribute6', 'A65'))",70,91.42857142857143,0,0.0,0.0,0.0,0.0,False
+german_credit,42,FEDERATED,3,12,1,"(('attribute1', 'A14'), ('attribute2_bin', 'Low'), ('attribute6', 'A61'))",97,90.72164948453609,0,0.0,0.0,0.0,0.0,False
+german_credit,42,FEDERATED,3,13,1,"(('attribute1', 'A14'), ('attribute2_bin', 'Low'))",199,90.45226130653266,0,0.0,0.0,0.0,0.0,False
+german_credit,42,FEDERATED,3,14,1,"(('attribute3', 'A34'), ('attribute4', 'A49'))",10,90.0,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,0,unstable,"(('tau1_bin', 'High'), ('tau2_bin', 'Medium'), ('tau3_bin', 'High'))",50,96.0,3,0.0,0.0,0.0,1.0416666666666572,True
+grid_stability,42,CENTRALIZED,0,1,unstable,"(('p2_bin', 'Low'), ('tau1_bin', 'Medium'), ('tau2_bin', 'High'), ('tau3_bin', 'Medium'))",23,95.65217391304348,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,2,unstable,"(('tau1_bin', 'High'), ('tau2_bin', 'High'), ('tau4_bin', 'High'))",45,95.55555555555556,1,0.0,0.0,0.0,0.3472222222222143,True
+grid_stability,42,CENTRALIZED,0,3,unstable,"(('p2_bin', 'Medium'), ('tau1_bin', 'Medium'), ('tau2_bin', 'High'), ('tau4_bin', 'Medium'))",22,95.45454545454545,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,4,unstable,"(('tau1_bin', 'Medium'), ('tau2_bin', 'High'), ('tau4_bin', 'High'))",41,95.1219512195122,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,5,unstable,"(('p3_bin', 'Low'), ('tau1_bin', 'High'), ('tau2_bin', 'Medium'), ('tau3_bin', 'High'))",20,95.0,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,6,unstable,"(('tau1_bin', 'High'), ('tau2_bin', 'High'), ('tau4_bin', 'Medium'))",39,94.87179487179486,3,0.0,0.0,0.0,1.0416666666666714,True
+grid_stability,42,CENTRALIZED,0,7,unstable,"(('tau2_bin', 'High'), ('tau3_bin', 'Medium'), ('tau4_bin', 'Medium'))",38,94.73684210526315,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,8,unstable,"(('p2_bin', 'High'), ('p3_bin', 'High'), ('tau1_bin', 'Medium'), ('tau4_bin', 'High'))",19,94.73684210526315,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,9,unstable,"(('p2_bin', 'High'), ('p3_bin', 'Medium'), ('tau2_bin', 'Medium'), ('tau3_bin', 'High'))",19,94.73684210526315,1,0.0,0.0,0.0,0.34722222222222854,True
+grid_stability,42,CENTRALIZED,0,10,unstable,"(('p2_bin', 'High'), ('tau1_bin', 'High'), ('tau3_bin', 'Medium'), ('tau4_bin', 'High'))",19,94.73684210526315,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,11,unstable,"(('p2_bin', 'High'), ('tau1_bin', 'Medium'), ('tau2_bin', 'Medium'), ('tau4_bin', 'High'))",19,94.73684210526315,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,12,unstable,"(('p3_bin', 'High'), ('tau1_bin', 'Medium'), ('tau2_bin', 'High'), ('tau3_bin', 'High'))",19,94.73684210526315,1,0.0,0.0,0.0,0.34722222222222854,True
+grid_stability,42,CENTRALIZED,0,13,unstable,"(('p3_bin', 'Medium'), ('tau1_bin', 'Medium'), ('tau2_bin', 'High'), ('tau4_bin', 'Medium'))",19,94.73684210526315,2,0.0,0.0,0.0,0.6944444444444429,True
+grid_stability,42,CENTRALIZED,0,14,unstable,"(('p2_bin', 'Low'), ('p3_bin', 'Medium'), ('tau2_bin', 'High'), ('tau4_bin', 'High'))",18,94.44444444444444,1,0.0,0.0,0.0,0.3472222222222143,True
+grid_stability,42,CENTRALIZED,0,15,unstable,"(('p2_bin', 'High'), ('tau1_bin', 'Medium'), ('tau3_bin', 'High'), ('tau4_bin', 'Medium'))",17,94.11764705882352,1,0.0,0.0,0.0,0.3472222222222143,True
+grid_stability,42,CENTRALIZED,0,16,unstable,"(('p2_bin', 'Medium'), ('p3_bin', 'High'), ('tau2_bin', 'High'), ('tau3_bin', 'High'))",17,94.11764705882352,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,17,unstable,"(('p3_bin', 'Medium'), ('tau2_bin', 'Medium'), ('tau3_bin', 'High'), ('tau4_bin', 'High'))",17,94.11764705882352,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,18,unstable,"(('tau2_bin', 'High'), ('tau3_bin', 'Medium'), ('tau4_bin', 'High'))",50,94.0,2,0.0,0.0,0.0,0.6944444444444429,True
+grid_stability,42,CENTRALIZED,0,19,unstable,"(('p3_bin', 'Medium'), ('tau2_bin', 'High'), ('tau4_bin', 'High'))",48,93.75,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,20,unstable,"(('p2_bin', 'High'), ('p3_bin', 'Medium'), ('tau3_bin', 'Medium'), ('tau4_bin', 'High'))",16,93.75,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,21,unstable,"(('p2_bin', 'Low'), ('p3_bin', 'Medium'), ('tau1_bin', 'High'), ('tau3_bin', 'Medium'))",16,93.75,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,22,unstable,"(('p2_bin', 'Low'), ('p3_bin', 'Medium'), ('tau3_bin', 'High'), ('tau4_bin', 'High'))",16,93.75,1,0.0,0.0,0.0,0.34722222222222854,True
+grid_stability,42,CENTRALIZED,0,23,unstable,"(('p2_bin', 'Low'), ('p3_bin', 'Medium'), ('tau3_bin', 'Medium'), ('tau4_bin', 'Medium'))",16,93.75,1,0.0,0.0,0.0,0.34722222222222854,True
+grid_stability,42,CENTRALIZED,0,24,unstable,"(('p2_bin', 'Low'), ('tau2_bin', 'Medium'), ('tau3_bin', 'High'), ('tau4_bin', 'High'))",16,93.75,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,25,unstable,"(('p2_bin', 'Medium'), ('p3_bin', 'Low'), ('tau1_bin', 'Medium'), ('tau2_bin', 'High'))",16,93.75,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,26,unstable,"(('p3_bin', 'High'), ('tau2_bin', 'High'), ('tau3_bin', 'High'), ('tau4_bin', 'Medium'))",16,93.75,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,27,unstable,"(('tau1_bin', 'High'), ('tau2_bin', 'Medium'), ('tau3_bin', 'High'), ('tau4_bin', 'Low'))",16,93.75,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,28,unstable,"(('tau1_bin', 'High'), ('tau2_bin', 'High'), ('tau3_bin', 'High'))",47,93.61702127659575,1,0.0,0.0,0.0,0.34722222222222854,True
+grid_stability,42,CENTRALIZED,0,29,unstable,"(('tau1_bin', 'Medium'), ('tau3_bin', 'High'), ('tau4_bin', 'High'))",47,93.61702127659575,3,0.0,0.0,0.0,1.0416666666666572,True
+grid_stability,42,CENTRALIZED,0,30,unstable,"(('tau1_bin', 'Medium'), ('tau2_bin', 'High'), ('tau3_bin', 'High'))",46,93.47826086956522,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,31,stable,"(('p3_bin', 'Low'), ('tau1_bin', 'Low'), ('tau2_bin', 'Low'), ('tau3_bin', 'Low'))",15,93.33333333333333,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,32,unstable,"(('p2_bin', 'High'), ('p3_bin', 'Low'), ('tau1_bin', 'High'), ('tau2_bin', 'High'))",15,93.33333333333333,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,33,unstable,"(('p2_bin', 'High'), ('tau1_bin', 'Medium'), ('tau2_bin', 'High'), ('tau4_bin', 'Medium'))",15,93.33333333333333,1,0.0,0.0,0.0,0.3472222222222143,True
+grid_stability,42,CENTRALIZED,0,34,unstable,"(('p2_bin', 'Low'), ('tau1_bin', 'Medium'), ('tau2_bin', 'High'), ('tau3_bin', 'High'))",15,93.33333333333333,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,35,unstable,"(('p2_bin', 'Medium'), ('tau2_bin', 'High'), ('tau3_bin', 'Medium'), ('tau4_bin', 'High'))",15,93.33333333333333,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,36,unstable,"(('p3_bin', 'High'), ('tau1_bin', 'Medium'), ('tau2_bin', 'Medium'), ('tau4_bin', 'High'))",15,93.33333333333333,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,37,unstable,"(('p3_bin', 'High'), ('tau2_bin', 'High'), ('tau3_bin', 'Medium'), ('tau4_bin', 'High'))",15,93.33333333333333,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,38,unstable,"(('p3_bin', 'Low'), ('tau1_bin', 'High'), ('tau2_bin', 'Medium'), ('tau4_bin', 'Medium'))",15,93.33333333333333,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,39,unstable,"(('p2_bin', 'Low'), ('tau1_bin', 'High'), ('tau4_bin', 'Medium'))",28,92.85714285714286,3,0.0,0.0,0.0,1.0416666666666714,True
+grid_stability,42,CENTRALIZED,0,40,stable,"(('p2_bin', 'Medium'), ('tau1_bin', 'Low'), ('tau2_bin', 'High'), ('tau3_bin', 'Low'))",14,92.85714285714286,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,41,unstable,"(('p2_bin', 'High'), ('tau1_bin', 'Medium'), ('tau2_bin', 'High'), ('tau3_bin', 'High'))",14,92.85714285714286,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,42,unstable,"(('p2_bin', 'Low'), ('p3_bin', 'Low'), ('tau2_bin', 'High'), ('tau3_bin', 'Medium'))",14,92.85714285714286,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,43,unstable,"(('p3_bin', 'Low'), ('tau1_bin', 'Medium'), ('tau2_bin', 'High'), ('tau3_bin', 'High'))",14,92.85714285714286,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,44,unstable,"(('tau1_bin', 'Medium'), ('tau2_bin', 'High'), ('tau4_bin', 'Medium'))",53,92.45283018867924,1,0.0,0.0,0.0,0.34722222222222854,True
+grid_stability,42,CENTRALIZED,0,45,stable,"(('p3_bin', 'High'), ('tau1_bin', 'Low'), ('tau3_bin', 'Low'), ('tau4_bin', 'Low'))",13,92.3076923076923,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,46,stable,"(('p3_bin', 'Low'), ('tau1_bin', 'Low'), ('tau3_bin', 'Low'), ('tau4_bin', 'High'))",13,92.3076923076923,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,47,unstable,"(('p2_bin', 'Low'), ('tau1_bin', 'Medium'), ('tau2_bin', 'Medium'), ('tau4_bin', 'Medium'))",13,92.3076923076923,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,48,unstable,"(('p3_bin', 'High'), ('tau1_bin', 'High'), ('tau2_bin', 'Medium'), ('tau3_bin', 'High'))",13,92.3076923076923,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,49,unstable,"(('p3_bin', 'Low'), ('tau1_bin', 'Medium'), ('tau2_bin', 'High'), ('tau4_bin', 'Medium'))",13,92.3076923076923,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,50,unstable,"(('p3_bin', 'Low'), ('tau2_bin', 'High'), ('tau3_bin', 'Medium'), ('tau4_bin', 'High'))",13,92.3076923076923,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,51,unstable,"(('p3_bin', 'Medium'), ('tau1_bin', 'Medium'), ('tau2_bin', 'High'), ('tau3_bin', 'High'))",13,92.3076923076923,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,52,unstable,"(('p3_bin', 'Low'), ('tau1_bin', 'Medium'), ('tau3_bin', 'Medium'))",36,91.66666666666666,1,0.0,0.0,0.0,0.34722222222222854,True
+grid_stability,42,CENTRALIZED,0,53,stable,"(('p2_bin', 'Medium'), ('p3_bin', 'High'), ('tau1_bin', 'Low'), ('tau3_bin', 'Low'))",12,91.66666666666666,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,54,stable,"(('p2_bin', 'Medium'), ('tau1_bin', 'Low'), ('tau3_bin', 'Low'), ('tau4_bin', 'High'))",12,91.66666666666666,1,0.0,-0.3472222222222143,-0.2717391304347814,-0.19625603864734842,False
+grid_stability,42,CENTRALIZED,0,55,stable,"(('p3_bin', 'Medium'), ('tau2_bin', 'Low'), ('tau3_bin', 'Low'), ('tau4_bin', 'Low'))",12,91.66666666666666,3,0.0,-1.0416666666666572,-0.815217391304337,-0.5887681159420168,False
+grid_stability,42,CENTRALIZED,0,56,unstable,"(('p2_bin', 'Low'), ('tau2_bin', 'High'), ('tau3_bin', 'Low'), ('tau4_bin', 'High'))",12,91.66666666666666,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,57,unstable,"(('p2_bin', 'Medium'), ('tau1_bin', 'High'), ('tau2_bin', 'Medium'), ('tau3_bin', 'Medium'))",12,91.66666666666666,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,58,unstable,"(('p3_bin', 'Medium'), ('tau2_bin', 'Medium'), ('tau3_bin', 'Medium'), ('tau4_bin', 'High'))",12,91.66666666666666,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,59,unstable,"(('tau1_bin', 'High'), ('tau2_bin', 'Medium'), ('tau3_bin', 'High'), ('tau4_bin', 'Medium'))",12,91.66666666666666,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,60,unstable,"(('p2_bin', 'Low'), ('tau2_bin', 'High'), ('tau4_bin', 'High'))",46,91.30434782608695,1,0.0,0.0,0.0,0.3472222222222143,True
+grid_stability,42,CENTRALIZED,0,61,unstable,"(('tau1_bin', 'High'), ('tau2_bin', 'Medium'), ('tau4_bin', 'Medium'))",46,91.30434782608695,1,0.0,0.0,0.0,0.34722222222222854,True
+grid_stability,42,CENTRALIZED,0,62,unstable,"(('tau1_bin', 'Medium'), ('tau2_bin', 'Medium'), ('tau3_bin', 'High'))",45,91.11111111111111,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,63,unstable,"(('tau1_bin', 'Medium'), ('tau3_bin', 'Medium'), ('tau4_bin', 'Medium'))",44,90.9090909090909,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,64,stable,"(('p2_bin', 'Medium'), ('p3_bin', 'High'), ('tau1_bin', 'Low'), ('tau2_bin', 'Low'))",11,90.9090909090909,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,65,stable,"(('p3_bin', 'High'), ('tau1_bin', 'Low'), ('tau2_bin', 'Medium'), ('tau4_bin', 'Low'))",11,90.9090909090909,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,66,stable,"(('p3_bin', 'High'), ('tau1_bin', 'Low'), ('tau3_bin', 'High'), ('tau4_bin', 'Low'))",11,90.9090909090909,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,67,stable,"(('p3_bin', 'Medium'), ('tau1_bin', 'Low'), ('tau2_bin', 'Medium'), ('tau3_bin', 'Low'))",11,90.9090909090909,1,0.0,-0.3472222222222143,-0.2717391304347814,-0.19625603864734842,False
+grid_stability,42,CENTRALIZED,0,68,stable,"(('p3_bin', 'Medium'), ('tau1_bin', 'Low'), ('tau3_bin', 'Medium'), ('tau4_bin', 'Low'))",11,90.9090909090909,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,69,unstable,"(('p2_bin', 'High'), ('p3_bin', 'Medium'), ('tau2_bin', 'Medium'), ('tau3_bin', 'Medium'))",11,90.9090909090909,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,70,unstable,"(('p2_bin', 'Low'), ('p3_bin', 'High'), ('tau2_bin', 'High'), ('tau4_bin', 'Medium'))",11,90.9090909090909,1,0.0,0.0,0.0,0.3472222222222143,True
+grid_stability,42,CENTRALIZED,0,71,unstable,"(('p2_bin', 'Low'), ('tau1_bin', 'High'), ('tau2_bin', 'High'), ('tau3_bin', 'Medium'))",11,90.9090909090909,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,72,unstable,"(('p2_bin', 'Low'), ('tau2_bin', 'Medium'), ('tau3_bin', 'Medium'), ('tau4_bin', 'High'))",11,90.9090909090909,1,0.0,0.0,0.0,0.3472222222222143,True
+grid_stability,42,CENTRALIZED,0,73,unstable,"(('p2_bin', 'Medium'), ('p3_bin', 'Low'), ('tau2_bin', 'High'), ('tau3_bin', 'Medium'))",11,90.9090909090909,1,0.0,0.0,0.0,0.34722222222222854,True
+grid_stability,42,CENTRALIZED,0,74,unstable,"(('p2_bin', 'Medium'), ('p3_bin', 'Medium'), ('tau1_bin', 'Medium'), ('tau4_bin', 'High'))",11,90.9090909090909,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,75,unstable,"(('p3_bin', 'High'), ('tau1_bin', 'High'), ('tau3_bin', 'High'), ('tau4_bin', 'Low'))",11,90.9090909090909,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,76,unstable,"(('p3_bin', 'High'), ('tau1_bin', 'High'), ('tau3_bin', 'High'), ('tau4_bin', 'Medium'))",11,90.9090909090909,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,77,unstable,"(('tau1_bin', 'Medium'), ('tau2_bin', 'Medium'), ('tau4_bin', 'High'))",41,90.2439024390244,1,0.0,0.0,0.0,0.3472222222222143,True
+grid_stability,42,CENTRALIZED,0,78,unstable,"(('p2_bin', 'High'), ('tau1_bin', 'Medium'), ('tau4_bin', 'High'))",51,90.19607843137256,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,CENTRALIZED,0,79,unstable,"(('p2_bin', 'Medium'), ('tau1_bin', 'High'), ('tau3_bin', 'High'))",40,90.0,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,FEDERATED,3,0,unstable,"(('tau1_bin', 'High'), ('tau2_bin', 'Medium'), ('tau3_bin', 'High'))",50,96.0,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,FEDERATED,3,1,unstable,"(('tau1_bin', 'High'), ('tau2_bin', 'High'), ('tau4_bin', 'High'))",45,95.55555555555556,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,FEDERATED,3,2,unstable,"(('tau1_bin', 'Medium'), ('tau2_bin', 'High'), ('tau4_bin', 'High'))",41,95.1219512195122,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,FEDERATED,3,3,unstable,"(('tau2_bin', 'High'), ('tau3_bin', 'Medium'), ('tau4_bin', 'Medium'))",38,94.73684210526315,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,FEDERATED,3,4,unstable,"(('p3_bin', 'Medium'), ('tau2_bin', 'High'), ('tau4_bin', 'High'))",48,93.75,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,FEDERATED,3,5,unstable,"(('p2_bin', 'Low'), ('p3_bin', 'Medium'), ('tau3_bin', 'Medium'), ('tau4_bin', 'Medium'))",16,93.75,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,FEDERATED,3,6,unstable,"(('tau1_bin', 'Medium'), ('tau3_bin', 'High'), ('tau4_bin', 'High'))",47,93.61702127659575,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,FEDERATED,3,7,unstable,"(('tau1_bin', 'Medium'), ('tau2_bin', 'High'), ('tau3_bin', 'High'))",46,93.47826086956522,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,FEDERATED,3,8,unstable,"(('p2_bin', 'Low'), ('tau1_bin', 'High'), ('tau4_bin', 'Medium'))",28,92.85714285714286,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,FEDERATED,3,9,unstable,"(('tau1_bin', 'Medium'), ('tau2_bin', 'High'), ('tau4_bin', 'Medium'))",53,92.45283018867924,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,FEDERATED,3,10,stable,"(('p3_bin', 'Medium'), ('tau1_bin', 'Low'), ('tau2_bin', 'Low'), ('tau4_bin', 'Low'))",13,92.3076923076923,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,FEDERATED,3,11,unstable,"(('p3_bin', 'Low'), ('tau1_bin', 'Medium'), ('tau3_bin', 'Medium'))",36,91.66666666666666,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,FEDERATED,3,12,unstable,"(('p2_bin', 'Low'), ('tau2_bin', 'High'), ('tau4_bin', 'High'))",46,91.30434782608695,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,FEDERATED,3,13,unstable,"(('tau1_bin', 'High'), ('tau2_bin', 'Medium'), ('tau4_bin', 'Medium'))",46,91.30434782608695,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,FEDERATED,3,14,unstable,"(('tau1_bin', 'Medium'), ('tau2_bin', 'Medium'), ('tau3_bin', 'High'))",45,91.11111111111111,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,FEDERATED,3,15,unstable,"(('tau1_bin', 'Medium'), ('tau3_bin', 'Medium'), ('tau4_bin', 'Medium'))",44,90.9090909090909,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,FEDERATED,3,16,stable,"(('p2_bin', 'Medium'), ('p3_bin', 'High'), ('tau1_bin', 'Low'), ('tau2_bin', 'Low'))",11,90.9090909090909,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,FEDERATED,3,17,stable,"(('p3_bin', 'Medium'), ('tau1_bin', 'Low'), ('tau3_bin', 'Medium'), ('tau4_bin', 'Low'))",11,90.9090909090909,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,FEDERATED,3,18,unstable,"(('tau1_bin', 'Medium'), ('tau2_bin', 'Medium'), ('tau4_bin', 'High'))",41,90.2439024390244,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,FEDERATED,3,19,unstable,"(('p2_bin', 'High'), ('tau1_bin', 'Medium'), ('tau4_bin', 'High'))",51,90.19607843137256,0,0.0,0.0,0.0,0.0,False
+grid_stability,42,FEDERATED,3,20,unstable,"(('p2_bin', 'Medium'), ('tau1_bin', 'High'), ('tau3_bin', 'High'))",40,90.0,0,0.0,0.0,0.0,0.0,False
+htru2,42,CENTRALIZED,0,0,0,"(('profile_mean_bin', 'High'),)",235,99.57446808510639,38,0.0,0.0,0.0,13.194444444444443,True
+htru2,42,CENTRALIZED,0,1,0,"(('profile_skewness_bin', 'Low'), ('profile_stdev_bin', 'Low'))",349,98.56733524355302,77,0.0,0.0,0.0,26.736111111111114,True
+htru2,42,CENTRALIZED,0,2,0,"(('profile_skewness_bin', 'Low'),)",1047,98.47182425978987,115,0.0,0.0,0.0,39.93055555555556,True
+htru2,42,CENTRALIZED,0,3,1,"(('dm_stdev_bin', 'Medium'), ('profile_mean_bin', 'Low'))",49,97.95918367346938,1,0.0,0.3472222222222143,1.9230769230769198,4.193376068376054,True
+htru2,42,CENTRALIZED,0,4,0,"(('dm_stdev_bin', 'High'), ('profile_skewness_bin', 'Low'))",44,97.72727272727273,0,0.0,0.0,0.0,0.0,False
+htru2,42,CENTRALIZED,0,5,1,"(('dm_stdev_bin', 'Medium'), ('profile_skewness_bin', 'Medium'), ('profile_stdev_bin', 'Low'))",35,97.14285714285714,0,0.0,0.0,0.0,0.0,False
+htru2,42,CENTRALIZED,0,6,0,"(('dm_stdev_bin', 'Medium'), ('profile_skewness_bin', 'Low'))",53,96.22641509433963,0,0.0,0.0,0.0,0.0,False
+htru2,42,CENTRALIZED,0,7,1,"(('dm_mean_bin', 'Low'), ('profile_mean_bin', 'Low'))",43,95.34883720930233,2,0.0,0.6944444444444429,3.8461538461538396,8.386752136752122,True
+htru2,42,CENTRALIZED,0,8,0,"(('profile_mean_bin', 'Medium'),)",851,94.94712103407755,6,0.0,0.0,0.0,2.083333333333343,True
+htru2,42,CENTRALIZED,0,9,1,"(('dm_mean_bin', 'Medium'), ('profile_mean_bin', 'Low'))",18,94.44444444444444,0,0.0,0.0,0.0,0.0,False
+htru2,42,CENTRALIZED,0,10,0,"(('dm_mean_bin', 'High'), ('profile_stdev_bin', 'Medium'))",12,91.66666666666666,0,0.0,0.0,0.0,0.0,False
+htru2,42,CENTRALIZED,0,11,0,"(('dm_stdev_bin', 'High'), ('profile_stdev_bin', 'Medium'))",43,90.69767441860465,0,0.0,0.0,0.0,0.0,False
+htru2,42,CENTRALIZED,0,12,0,"(('profile_stdev_bin', 'High'),)",10,90.0,0,0.0,0.0,0.0,0.0,False
+htru2,42,FEDERATED,3,0,0,"(('profile_mean_bin', 'High'),)",235,99.57446808510639,0,0.0,0.0,0.0,0.0,False
+htru2,42,FEDERATED,3,1,0,"(('dm_stdev_bin', 'Low'), ('profile_skewness_bin', 'Low'))",950,98.63157894736842,0,0.0,0.0,0.0,0.0,False
+htru2,42,FEDERATED,3,2,0,"(('profile_skewness_bin', 'Low'), ('profile_stdev_bin', 'Low'))",349,98.56733524355302,0,0.0,0.0,0.0,0.0,False
+htru2,42,FEDERATED,3,3,0,"(('profile_skewness_bin', 'Low'),)",1047,98.47182425978987,0,0.0,0.0,0.0,0.0,False
+htru2,42,FEDERATED,3,4,0,"(('profile_skewness_bin', 'Low'), ('profile_stdev_bin', 'Medium'))",689,98.4034833091437,0,0.0,0.0,0.0,0.0,False
+htru2,42,FEDERATED,3,5,0,"(('dm_stdev_bin', 'Low'), ('profile_stdev_bin', 'Medium'))",613,98.04241435562805,0,0.0,0.0,0.0,0.0,False
+htru2,42,FEDERATED,3,6,0,"(('dm_stdev_bin', 'Low'),)",973,97.01952723535457,0,0.0,0.0,0.0,0.0,False
+htru2,42,FEDERATED,3,7,0,"(('dm_stdev_bin', 'Medium'), ('profile_skewness_bin', 'Low'))",53,96.22641509433963,0,0.0,0.0,0.0,0.0,False
+htru2,42,FEDERATED,3,8,0,"(('profile_mean_bin', 'Medium'),)",851,94.94712103407755,0,0.0,0.0,0.0,0.0,False
+htru2,42,FEDERATED,3,9,1,"(('profile_mean_bin', 'Low'),)",66,93.93939393939394,0,0.0,0.0,0.0,0.0,False
+htru2,42,FEDERATED,3,10,0,"(('profile_mean_bin', 'Medium'), ('profile_stdev_bin', 'Low'))",336,92.55952380952381,0,0.0,0.0,0.0,0.0,False
+htru2,42,FEDERATED,3,11,0,"(('profile_stdev_bin', 'High'),)",10,90.0,0,0.0,0.0,0.0,0.0,False
+iris,42,CENTRALIZED,0,0,Iris-virginica,"(('petal_width_bin', 'High'),)",31,96.7741935483871,1,0.0,4.166666666666686,4.166666666666686,12.500000000000057,True
+iris,42,CENTRALIZED,0,1,Iris-versicolor,"(('petal_width_bin', 'Medium'),)",33,93.93939393939394,1,0.0,0.0,0.0,4.166666666666657,True
+iris,42,CENTRALIZED,0,2,Iris-virginica,"(('petal_length_bin', 'High'),)",30,93.33333333333333,0,4.166666666666666,0.0,0.0,-4.166666666666666,False
+iris,42,FEDERATED,3,0,Iris-virginica,"(('petal_width_bin', 'High'),)",31,96.7741935483871,0,0.0,0.0,0.0,0.0,False
+iris,42,FEDERATED,3,1,Iris-versicolor,"(('petal_width_bin', 'Medium'),)",33,93.93939393939394,0,0.0,0.0,0.0,0.0,False
+magic_gamma,42,CENTRALIZED,0,0,h,"(('fwidth_bin', 'Medium'),)",53,98.11320754716981,1,0.0,0.34722222222222854,0.4950495049504937,1.3373212321232097,True
+magic_gamma,42,CENTRALIZED,0,1,h,"(('flength_bin', 'Medium'), ('fsize_bin', 'High'))",16,93.75,0,0.0,0.0,0.0,0.0,False
+magic_gamma,42,CENTRALIZED,0,2,h,"(('fasym_bin', 'Medium'), ('fconc_bin', 'Low'), ('flength_bin', 'Medium'))",40,92.5,4,0.0,0.6944444444444429,1.2177688357070906,3.8244265603030696,True
+magic_gamma,42,CENTRALIZED,0,3,h,"(('flength_bin', 'Medium'), ('fsize_bin', 'Medium'))",68,91.17647058823529,4,0.0,1.3888888888889,1.980198019801982,5.349284928492853,True
+magic_gamma,42,CENTRALIZED,0,4,h,"(('fasym_bin', 'Medium'), ('flength_bin', 'Medium'))",44,90.9090909090909,0,0.0,0.0,0.0,0.0,False
+magic_gamma,42,FEDERATED,3,0,h,"(('fwidth_bin', 'Medium'),)",53,98.11320754716981,0,0.0,0.0,0.0,0.0,False
+magic_gamma,42,FEDERATED,3,1,h,"(('flength_bin', 'Medium'), ('fsize_bin', 'High'))",16,93.75,0,0.0,0.0,0.0,0.0,False
+magic_gamma,42,FEDERATED,3,2,h,"(('flength_bin', 'Medium'), ('fsize_bin', 'Medium'))",68,91.17647058823529,0,0.0,0.0,0.0,0.0,False
+magic_gamma,42,FEDERATED,3,3,h,"(('fasym_bin', 'Medium'), ('flength_bin', 'Medium'))",44,90.9090909090909,0,0.0,0.0,0.0,0.0,False
+mushroom,42,CENTRALIZED,0,0,e,"(('cap_color', 'n'), ('odor', 'n'))",155,98.70967741935483,2,0.0,0.0,0.0,0.78125,True
+mushroom,42,CENTRALIZED,0,1,e,"(('cap_color', 'n'), ('cap_shape', 'x'), ('odor', 'n'))",77,98.7012987012987,0,0.0,0.0,0.0,0.0,False
+mushroom,42,CENTRALIZED,0,2,e,"(('cap_shape', 'x'), ('odor', 'n'))",216,98.61111111111111,0,0.0,0.0,0.0,0.0,False
+mushroom,42,CENTRALIZED,0,3,e,"(('cap_shape', 'x'), ('cap_surface', 'y'), ('odor', 'n'))",63,98.4126984126984,0,0.0,0.0,0.0,0.0,False
+mushroom,42,CENTRALIZED,0,4,e,"(('cap_color', 'n'), ('cap_surface', 'y'), ('odor', 'n'))",40,97.5,0,0.0,0.0,0.0,0.0,False
+mushroom,42,CENTRALIZED,0,5,e,"(('bruises', 'f'), ('odor', 'n'))",195,97.43589743589743,0,0.0,0.0,0.0,0.0,False
+mushroom,42,CENTRALIZED,0,6,e,"(('cap_shape', 'f'), ('odor', 'n'))",191,97.38219895287958,1,0.0,0.0,0.0,0.390625,True
+mushroom,42,CENTRALIZED,0,7,e,"(('odor', 'n'),)",455,97.36263736263736,0,0.0,0.0,0.0,0.0,False
+mushroom,42,CENTRALIZED,0,8,e,"(('bruises', 't'), ('odor', 'n'))",260,97.3076923076923,0,0.0,0.0,0.0,0.0,False
+mushroom,42,CENTRALIZED,0,9,e,"(('cap_surface', 's'), ('odor', 'n'))",110,95.45454545454545,0,0.0,0.0,0.0,0.0,False
+mushroom,42,CENTRALIZED,0,10,e,"(('cap_color', 'w'), ('odor', 'n'))",55,92.72727272727272,0,0.0,0.0,0.0,0.0,False
+mushroom,42,FEDERATED,3,0,e,"(('cap_color', 'n'), ('odor', 'n'))",155,98.70967741935483,0,0.0,0.0,0.0,0.0,False
+mushroom,42,FEDERATED,3,1,e,"(('cap_shape', 'x'), ('odor', 'n'))",216,98.61111111111111,0,0.0,0.0,0.0,0.0,False
+mushroom,42,FEDERATED,3,2,e,"(('bruises', 'f'), ('odor', 'n'))",195,97.43589743589743,0,0.0,0.0,0.0,0.0,False
+mushroom,42,FEDERATED,3,3,e,"(('cap_shape', 'f'), ('odor', 'n'))",191,97.38219895287958,0,0.0,0.0,0.0,0.0,False
+mushroom,42,FEDERATED,3,4,e,"(('odor', 'n'),)",455,97.36263736263736,0,0.0,0.0,0.0,0.0,False
+mushroom,42,FEDERATED,3,5,e,"(('bruises', 't'), ('odor', 'n'))",260,97.3076923076923,0,0.0,0.0,0.0,0.0,False
+mushroom,42,FEDERATED,3,6,e,"(('cap_surface', 'y'), ('odor', 'n'))",138,97.10144927536231,0,0.0,0.0,0.0,0.0,False
+mushroom,42,FEDERATED,3,7,e,"(('cap_surface', 's'), ('odor', 'n'))",110,95.45454545454545,0,0.0,0.0,0.0,0.0,False
+mushroom,42,FEDERATED,3,8,e,"(('cap_color', 'w'), ('odor', 'n'))",55,92.72727272727272,0,0.0,0.0,0.0,0.0,False
+rice,42,CENTRALIZED,0,0,Osmancik,"(('perimeter_bin', 'Low'),)",261,99.23371647509579,23,0.0,0.0,0.0,8.984375,True
+rice,42,CENTRALIZED,0,1,Osmancik,"(('convex_area_bin', 'Low'), ('major_axis_length_bin', 'Low'))",219,99.08675799086758,0,0.0,0.0,0.0,0.0,False
+rice,42,CENTRALIZED,0,2,Osmancik,"(('major_axis_length_bin', 'Low'),)",371,98.92183288409704,25,0.0,0.0,0.0,9.765625,True
+rice,42,CENTRALIZED,0,3,Cammeo,"(('perimeter_bin', 'High'),)",244,98.77049180327869,8,0.0,2.34375,2.839352428393525,8.80370485678705,True
+rice,42,CENTRALIZED,0,4,Osmancik,"(('major_axis_length_bin', 'Low'), ('perimeter_bin', 'Medium'))",124,98.38709677419355,0,0.0,0.0,0.0,0.0,False
+rice,42,CENTRALIZED,0,5,Cammeo,"(('area_bin', 'High'),)",205,98.04878048780488,1,0.0,-0.390625,-0.342465753424662,-0.294306506849324,False
+rice,42,CENTRALIZED,0,6,Cammeo,"(('convex_area_bin', 'High'),)",201,98.00995024875621,1,0.0,-0.390625,-0.342465753424662,-0.294306506849324,False
+rice,42,CENTRALIZED,0,7,Osmancik,"(('eccentricity_bin', 'Low'),)",19,94.73684210526315,0,0.0,0.0,0.0,0.0,False
+rice,42,FEDERATED,3,0,Osmancik,"(('perimeter_bin', 'Low'),)",261,99.23371647509579,0,0.0,0.0,0.0,0.0,False
+rice,42,FEDERATED,3,1,Osmancik,"(('major_axis_length_bin', 'Low'),)",371,98.92183288409704,0,0.0,0.0,0.0,0.0,False
+rice,42,FEDERATED,3,2,Cammeo,"(('perimeter_bin', 'High'),)",244,98.77049180327869,0,0.0,0.0,0.0,0.0,False
+rice,42,FEDERATED,3,3,Cammeo,"(('area_bin', 'High'),)",205,98.04878048780488,0,0.0,0.0,0.0,0.0,False
+rice,42,FEDERATED,3,4,Cammeo,"(('convex_area_bin', 'High'),)",201,98.00995024875621,0,0.0,0.0,0.0,0.0,False
+rice,42,FEDERATED,3,5,Osmancik,"(('convex_area_bin', 'Low'),)",252,96.42857142857143,0,0.0,0.0,0.0,0.0,False
+rice,42,FEDERATED,3,6,Osmancik,"(('eccentricity_bin', 'Low'),)",19,94.73684210526315,0,0.0,0.0,0.0,0.0,False
+wine,42,CENTRALIZED,0,0,2,"(('alcohol_bin', 'Low'), ('ash_bin', 'Medium'))",16,93.75,0,0.0,0.0,0.0,0.0,False
+wine,42,CENTRALIZED,0,1,2,"(('alcohol_bin', 'Low'),)",29,93.10344827586206,0,0.0,0.0,0.0,0.0,False
+wine,42,FEDERATED,3,0,2,"(('alcohol_bin', 'Low'),)",29,93.10344827586206,0,0.0,0.0,0.0,0.0,False

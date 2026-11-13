@@ -1,0 +1,213 @@
+{
+  "status": "ALL_20_EXPERIMENTS_VALIDATED",
+  "new_dataset_count": 20,
+  "dataset_architectures": 40,
+  "comparison_rows": 120,
+  "candidate_gate_events": 423,
+  "seed": 42,
+  "inner_validation_seed": 1042,
+  "data": "UCI pre-existing 20 validated fixed class-stratified prepared subsets",
+  "method": "Classical positive-region reduct + LEM2, Centralized and Federated C3",
+  "protocol": {
+    "outer_test": "20% never fit or gate",
+    "development": "64% induction + preprocessor",
+    "inner_validation": "16% used only to accept/reject supplementary rules",
+    "refit_after_gate": false,
+    "variants": [
+      "BASE_LEM2",
+      "ALL_TRAIN_SUPPLEMENTS",
+      "VALIDATION_GATED_CONFLICT_AWARE"
+    ],
+    "baseline_prediction": "GLOBAL_STRENGTH, majority fallback on exact No Match",
+    "supplement_activation": "ONLY when original exact rule set has No Match",
+    "candidate": "single antecedent deletion; at least five Train examples and 90% Train purity, max80",
+    "selection": "fixed Train-quality order; inner validation greedy one-pass",
+    "gate": "new validation coverage >0, validation accuracy loss <=1pp, BA loss <=2pp, additive conflict budget max(2pp, 0.35*coverage_gain), score coverage-conflict+2*BA",
+    "conflict_types": [
+      "active_conflict_pct",
+      "shadow_conflict_pct"
+    ],
+    "not_implemented": "True abstain / VC-DomLEM / original MLEM2 supplemental algorithm"
+  },
+  "severe_caveats": [
+    "One Seed 42, descriptive pilot only; neither significance nor generalization guarantees",
+    "Discovery trains on 64%, unlike previously frozen 80%-train benchmark",
+    "Gating uses validation labels to select rules; valid test remains untouched but gate can overfit 16%",
+    "Conflict guard is validation-based, and DOES NOT guarantee fewer conflicts on unseen test",
+    "No Match uses train-majority fallback and is not actual rejection",
+    "Source large datasets only run on capped <=1800 rows and <=6 prespecified features"
+  ],
+  "type_domain_results": {
+    "astronomy / ALL_CONTINUOUS": {
+      "dataset_count": 1,
+      "mean_all_test_coverage_gain_pp": 42.5,
+      "mean_gated_test_coverage_gain_pp": 42.5,
+      "mean_all_conflict_gain_pp": 0.0,
+      "mean_gated_conflict_gain_pp": 0.0,
+      "mean_all_accuracy_gain_pp": 0.27777777777777857,
+      "mean_gated_accuracy_gain_pp": 0.27777777777777857
+    },
+    "banking / EXPLICIT_MIXED": {
+      "dataset_count": 1,
+      "mean_all_test_coverage_gain_pp": 38.611111111111114,
+      "mean_gated_test_coverage_gain_pp": 38.47222222222222,
+      "mean_all_conflict_gain_pp": 0.0,
+      "mean_gated_conflict_gain_pp": 0.0,
+      "mean_all_accuracy_gain_pp": 0.0,
+      "mean_gated_accuracy_gain_pp": 0.0
+    },
+    "biology / ALL_CATEGORICAL": {
+      "dataset_count": 1,
+      "mean_all_test_coverage_gain_pp": 0.9375,
+      "mean_gated_test_coverage_gain_pp": 0.9375,
+      "mean_all_conflict_gain_pp": 0.0,
+      "mean_gated_conflict_gain_pp": 0.0,
+      "mean_all_accuracy_gain_pp": 0.0,
+      "mean_gated_accuracy_gain_pp": 0.0
+    },
+    "biology / ALL_CONTINUOUS": {
+      "dataset_count": 1,
+      "mean_all_test_coverage_gain_pp": 0.0,
+      "mean_gated_test_coverage_gain_pp": 0.0,
+      "mean_all_conflict_gain_pp": 0.0,
+      "mean_gated_conflict_gain_pp": 0.0,
+      "mean_all_accuracy_gain_pp": 0.0,
+      "mean_gated_accuracy_gain_pp": 0.0
+    },
+    "character recognition / ALL_CATEGORICAL": {
+      "dataset_count": 1,
+      "mean_all_test_coverage_gain_pp": 0.0,
+      "mean_gated_test_coverage_gain_pp": 0.0,
+      "mean_all_conflict_gain_pp": 0.0,
+      "mean_gated_conflict_gain_pp": 0.0,
+      "mean_all_accuracy_gain_pp": 0.0,
+      "mean_gated_accuracy_gain_pp": 0.0
+    },
+    "chemistry / ALL_CONTINUOUS": {
+      "dataset_count": 1,
+      "mean_all_test_coverage_gain_pp": 0.0,
+      "mean_gated_test_coverage_gain_pp": 0.0,
+      "mean_all_conflict_gain_pp": 0.0,
+      "mean_gated_conflict_gain_pp": 0.0,
+      "mean_all_accuracy_gain_pp": 0.0,
+      "mean_gated_accuracy_gain_pp": 0.0
+    },
+    "computer vision / ALL_CONTINUOUS": {
+      "dataset_count": 2,
+      "mean_all_test_coverage_gain_pp": 9.070581896551724,
+      "mean_gated_test_coverage_gain_pp": 8.836206896551724,
+      "mean_all_conflict_gain_pp": 0.0,
+      "mean_gated_conflict_gain_pp": 0.0,
+      "mean_all_accuracy_gain_pp": 2.9763420846394997,
+      "mean_gated_accuracy_gain_pp": 2.8982170846394997
+    },
+    "credit risk / EXPLICIT_MIXED": {
+      "dataset_count": 1,
+      "mean_all_test_coverage_gain_pp": 6.2500000000000036,
+      "mean_gated_test_coverage_gain_pp": 4.7500000000000036,
+      "mean_all_conflict_gain_pp": 0.0,
+      "mean_gated_conflict_gain_pp": 0.0,
+      "mean_all_accuracy_gain_pp": 0.0,
+      "mean_gated_accuracy_gain_pp": 0.0
+    },
+    "cybersecurity / ALL_CATEGORICAL": {
+      "dataset_count": 1,
+      "mean_all_test_coverage_gain_pp": 0.0,
+      "mean_gated_test_coverage_gain_pp": 0.0,
+      "mean_all_conflict_gain_pp": 0.0,
+      "mean_gated_conflict_gain_pp": 0.0,
+      "mean_all_accuracy_gain_pp": 0.0,
+      "mean_gated_accuracy_gain_pp": 0.0
+    },
+    "cybersecurity / ALL_CONTINUOUS": {
+      "dataset_count": 1,
+      "mean_all_test_coverage_gain_pp": 0.0,
+      "mean_gated_test_coverage_gain_pp": 0.0,
+      "mean_all_conflict_gain_pp": 0.0,
+      "mean_gated_conflict_gain_pp": 0.0,
+      "mean_all_accuracy_gain_pp": 0.0,
+      "mean_gated_accuracy_gain_pp": 0.0
+    },
+    "diagnostic benchmark / ALL_CONTINUOUS": {
+      "dataset_count": 1,
+      "mean_all_test_coverage_gain_pp": 27.433628318584077,
+      "mean_gated_test_coverage_gain_pp": 26.99115044247788,
+      "mean_all_conflict_gain_pp": 0.8849557522123894,
+      "mean_gated_conflict_gain_pp": 0.8849557522123894,
+      "mean_all_accuracy_gain_pp": -1.3274336283185875,
+      "mean_gated_accuracy_gain_pp": -1.3274336283185875
+    },
+    "electrical power system / EXPLICIT_MIXED": {
+      "dataset_count": 1,
+      "mean_all_test_coverage_gain_pp": 5.277777777777779,
+      "mean_gated_test_coverage_gain_pp": 4.027777777777779,
+      "mean_all_conflict_gain_pp": 0.0,
+      "mean_gated_conflict_gain_pp": 0.0,
+      "mean_all_accuracy_gain_pp": 0.0,
+      "mean_gated_accuracy_gain_pp": 0.0
+    },
+    "financial document / ALL_CONTINUOUS": {
+      "dataset_count": 1,
+      "mean_all_test_coverage_gain_pp": 10.583941605839414,
+      "mean_gated_test_coverage_gain_pp": 9.854014598540147,
+      "mean_all_conflict_gain_pp": 0.0,
+      "mean_gated_conflict_gain_pp": 0.0,
+      "mean_all_accuracy_gain_pp": -0.3649635036496335,
+      "mean_gated_accuracy_gain_pp": 0.0
+    },
+    "geospatial / ALL_CONTINUOUS": {
+      "dataset_count": 1,
+      "mean_all_test_coverage_gain_pp": 0.41551246537396125,
+      "mean_gated_test_coverage_gain_pp": 0.41551246537396125,
+      "mean_all_conflict_gain_pp": 0.0,
+      "mean_gated_conflict_gain_pp": 0.0,
+      "mean_all_accuracy_gain_pp": 0.0,
+      "mean_gated_accuracy_gain_pp": 0.0
+    },
+    "health research / ALL_CONTINUOUS": {
+      "dataset_count": 1,
+      "mean_all_test_coverage_gain_pp": 0.0,
+      "mean_gated_test_coverage_gain_pp": 0.0,
+      "mean_all_conflict_gain_pp": 0.0,
+      "mean_gated_conflict_gain_pp": 0.0,
+      "mean_all_accuracy_gain_pp": 0.0,
+      "mean_gated_accuracy_gain_pp": 0.0
+    },
+    "labor economics / EXPLICIT_MIXED": {
+      "dataset_count": 1,
+      "mean_all_test_coverage_gain_pp": 4.583333333333336,
+      "mean_gated_test_coverage_gain_pp": 3.4722222222222285,
+      "mean_all_conflict_gain_pp": 0.2777777777777777,
+      "mean_gated_conflict_gain_pp": 0.13888888888888862,
+      "mean_all_accuracy_gain_pp": 0.13888888888888573,
+      "mean_gated_accuracy_gain_pp": 0.0
+    },
+    "physics / ALL_CONTINUOUS": {
+      "dataset_count": 1,
+      "mean_all_test_coverage_gain_pp": 1.9444444444444442,
+      "mean_gated_test_coverage_gain_pp": 1.9444444444444442,
+      "mean_all_conflict_gain_pp": 0.0,
+      "mean_gated_conflict_gain_pp": 0.0,
+      "mean_all_accuracy_gain_pp": 1.1111111111111143,
+      "mean_gated_accuracy_gain_pp": 1.1111111111111143
+    },
+    "sensor / IoT / ALL_CONTINUOUS": {
+      "dataset_count": 1,
+      "mean_all_test_coverage_gain_pp": 1.8055555555555558,
+      "mean_gated_test_coverage_gain_pp": 1.6666666666666665,
+      "mean_all_conflict_gain_pp": 0.0,
+      "mean_gated_conflict_gain_pp": 0.0,
+      "mean_all_accuracy_gain_pp": 0.4166666666666643,
+      "mean_gated_accuracy_gain_pp": 0.4166666666666643
+    },
+    "signal analysis / ALL_CONTINUOUS": {
+      "dataset_count": 1,
+      "mean_all_test_coverage_gain_pp": 0.0,
+      "mean_gated_test_coverage_gain_pp": 0.0,
+      "mean_all_conflict_gain_pp": 0.0,
+      "mean_gated_conflict_gain_pp": 0.0,
+      "mean_all_accuracy_gain_pp": 0.0,
+      "mean_gated_accuracy_gain_pp": 0.0
+    }
+  }
+}
