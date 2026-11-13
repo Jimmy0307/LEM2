@@ -86,7 +86,7 @@ def original_projection(data,rules,default,weights,supports,classes,target):
     true=data[target].astype(str).to_numpy()
     assert len(preds)==len(true)
     return {
-      "pred":np.asarray(preds,dtype=str),"exact":exact,
+      "pred":np.asarray([str(x) for x in preds],dtype=object),"exact":exact,
       "candidates":base_cands,"true":true,"n":len(true)
     }
 
