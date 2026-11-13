@@ -19,18 +19,23 @@ REGISTRY={
      notes="Original images produce multiple observations; random split can cause correlated train-test records."),
  "vehicle_silhouettes":spec(149,"Statlog Vehicle Silhouettes",None,6,"ALL_CONTINUOUS","machine vision",
      "Four classes and 18 extracted shape attributes; orientation shift sensitivity",classes="4",
-     notes="Raw features integers interpreted continuous, not categorical, for this declared experiment."),
- "wheat_seeds":spec(236,"Wheat Seeds",None,6,"ALL_CONTINUOUS","agri-tech",
-     "210 rows, three equally sized wheat kernel types and seven continuous measurements",classes="3"),
+     notes="UCI imported source has missing compactness; only rows with complete selected six predictor values are retained; measure missing-row loss.",),
+ "heart_disease":spec(45,"Heart Disease Cleveland (binary)",None,6,"EXPLICIT_MIXED","medical research",
+     "303 records, continuous and categorical clinical measures; binary presence >0",
+     ["age","sex","cp","trestbps","chol","fbs"],["age","trestbps","chol"],"num",
+     classes="2",label_transform="heart_disease_binary_gt0",
+     notes="Cleveland historical case data. Binary transform num>0 predeclared, not clinical use. IDs/diagnosis-derived variables excluded."),
  "raisin_grains":spec(850,"Raisin Morphology",None,6,"ALL_CONTINUOUS","agri-tech",
      "900 rows, two balanced visual grain varieties and continuous shape features",classes="2"),
  "wine_quality_ordinal_to_binary":spec(186,"Wine Quality (binary>=6 protocol)",1600,6,"ALL_CONTINUOUS","quality / operations",
      "Originally ordered wine quality labels; explicit secondary BINARY >=6 target task",classes="2",
      target="quality",label_transform="wine_quality_binary_ge6",
      notes="Original quality ordinal regression/multiclass. We deliberately binarize at >=6 for a separate classification protocol; not original UCI target classes."),
- "qsar_biodegradation":spec(254,"QSAR Biodegradation",None,6,"ALL_CONTINUOUS","environmental chemistry",
-     "1055 chemical records, 41 descriptors in source and two biodegradation classes",classes="2",
-     notes="Potential unnamed variables: first six source columns; no structure-model deployment."),
+ "student_performance":spec(320,"Student Final-Grade (binary >=10)",None,6,"EXPLICIT_MIXED","education outcomes",
+     "649 source records, six PRE-grade features only; explicit G3 final score >=10 target",
+     ["school","sex","age","address","famsize","pstatus"],["age"],"g3",
+     classes="2",label_transform="student_final_grade_ge10",
+     notes="No G1/G2/semester grades included. School groups can leak across rows; preliminary stratified split only."),
  "vertebral_column":spec(212,"Vertebral Column",None,6,"ALL_CONTINUOUS","medical research",
      "310 rows, six continuous biomechanics variables, possible two-vs-three target variant",classes="unknown",
      notes="UCI may expose alternative 2/3 label protocols; record actual observed class count, do not invent."),
@@ -45,6 +50,7 @@ REGISTRY={
      "100 volunteers, rare binary outcome and small sample instability",classes="2",
      notes="Only research; privacy and clinical validity cannot be inferred from toy sample.")
 }
+REGISTRY["vehicle_silhouettes"]["drop_incomplete_source_rows"]=True
 if len(REGISTRY)!=12:raise AssertionError("Must have exactly twelve new sources")
 ids={cfg["id"] for cfg in REGISTRY.values()}
 assert len(ids)==len(REGISTRY)
