@@ -1,0 +1,66 @@
+name: LEM2 20 Public Domains - Row/Column Audit and Coverage Conflict Atlas
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - teacher_demo/build_dataset_conflict_atlas.py
+      - .github/workflows/public20-conflict-atlas.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  audit-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: python -m pip install pandas numpy
+      - name: Derive 20 source audits and previous two domain profiles
+        run: python -m teacher_demo.build_dataset_conflict_atlas
+      - name: Independent invariant and denominator audit
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,numpy as np,pandas as pd
+          root=Path("docs/research/teacher_dashboard/conflict_atlas")
+          m=json.loads((root/"MANIFEST.json").read_text())
+          d=pd.read_csv(root/"PUBLIC20_COVERAGE_CONFLICT_PAIRS.csv")
+          classes=pd.read_csv(root/"DATASET_CLASS_COUNTS.csv")
+          profile=pd.read_csv(root/"DATASET_ROW_COUNTS_AND_TYPES.csv")
+          columns=pd.read_csv(root/"DATASET_COLUMN_TYPES_AND_STATS.csv")
+          assert len(d)==20 and d.dataset_key.nunique()==20
+          assert m["matched_pairs"]==20
+          assert len(profile)>=20
+          assert columns.groupby("dataset_key").size().ge(1).all()
+          for _,r in profile.iterrows():
+              z=classes[classes.dataset_key==r.dataset_key]
+              assert len(z)==r.class_count
+              assert z.class_count.sum()==r.prepared_rows
+              assert abs(z.class_pct.sum()-100)<1e-6
+          assert np.allclose(d["delta_unambiguous_pp"],
+                d["delta_coverage_pp"]-d["delta_conflict_pp"],atol=1e-9)
+          for prefix in ("central","fed_c3"):
+              assert (d[prefix+"_conflict_pct"]<=d[prefix+"_coverage_pct"]+1e-9).all()
+              assert (d[prefix+"_candidate_pct"]<=d[prefix+"_coverage_pct"]+1e-9).all()
+          assert (d.delta_unambiguous_pp<0).sum()==5
+          assert (d.delta_coverage_pp>0).sum()==19
+          print("PUBLIC20_CONFLICT_ATLAS_SOURCE_AUDIT_PASS",len(d),len(profile),len(columns),len(classes),flush=True)
+          PY
+      - name: Publish audited source profiles and complete Coverage/Conflict matrix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "${GITHUB_REF_NAME}"
+          git reset --mixed FETCH_HEAD
+          git add docs/research/teacher_dashboard/conflict_atlas/
+          if ! git diff --cached --quiet; then
+            git commit -m "research: publish source-verified 20-dataset row type and conflict atlas [skip ci]"
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lem2-public20-conflict-atlas
+          path: docs/research/teacher_dashboard/conflict_atlas/
+          if-no-files-found: error
