@@ -1,9 +1,9 @@
 # 公開資料集逐 row／逐 column 與 Coverage × Conflict 實驗圖譜
 
-- 已驗證：20 個新資料集，20 個相同 Seed 的 C0/C3 配對；實際已發布子集 22 份，欄位 125 筆，類別統計 80 筆。
+- 已驗證：20 個原始新資料集＋12 個新增來源；20 個相同 Seed 的 C0/C3 配對；實際已發布子集 34 份，欄位 195 筆，類別統計 121 筆。
 - 核心定義：Coverage=P(至少一條規則命中)；Conflict=P(命中規則指向兩種以上類別)；無衝突覆蓋=Coverage−Conflict。
 - 實驗僅 Seed 42，80/20；不是 42 Seeds。資料表原始 rows 與 prepared rows 不可混用。
-- 本次還保留兩個前期電商／工業資料的 profile；不把它們重新計入「新增 20 資料集」。
+- 本次還保留兩個前期電商／工業資料的 profile，並納入另外12份來源的逐欄位輪廓；原本的 Coverage×Conflict 比較仍僅包含先前20份、相同Seed42的配對結果。
 
 ## 20 配對資料集：Coverage vs Conflict（百分點）
 

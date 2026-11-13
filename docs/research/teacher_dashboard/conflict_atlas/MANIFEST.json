@@ -1,9 +1,14 @@
 {
   "status": "SOURCE_AUDITED_20_EXPERIMENTS",
   "scope": "Seed42 C0/C3; unchanged frozen LEM2 rules; 20 datasets, 2 architectures",
-  "profiles": 22,
-  "profile_columns": 125,
-  "class_rows": 80,
+  "profiles": 34,
+  "profile_columns": 195,
+  "class_rows": 121,
+  "families": {
+    "NEW_PUBLIC20": 20,
+    "PREVIOUS_COMMERCE_TECH_4SEEDS": 2,
+    "ADDITIONAL_PUBLIC12": 12
+  },
   "matched_pairs": 20,
   "source_evidence": [
     "PUBLIC20_BASE_RESULTS.csv",
@@ -21,6 +26,8 @@
     "C0 and C3 use different fitted rule systems; architecture contrast is NOT a marginal rule-addition effect",
     "Conflict-free coverage = coverage-conflict, not accuracy nor correct-candidate rate",
     "Four-seed commerce/AI4I domain profiles are not in the matched pair analysis",
+    "Twelve further public source profiles also are not included in the original 20 paired comparison",
+    "Imported source count may differ from UCI's catalog for datasets using multiple source files",
     "Class proportions are for prepared subsets and may differ from raw source distributions"
   ]
 }
