@@ -1,0 +1,31 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>三條規則層級研究｜LEM2</title><link rel="stylesheet" href="../site.css"><style>.studyhero{background:linear-gradient(120deg,#103044,#256d68);color:white;padding:36px max(18px,calc((100vw - 1160px)/2))}.studyhero h1{font-size:clamp(27px,4vw,41px)}.studyhero p{color:#e4f1ef;max-width:940px}.panel table{font-variant-numeric:tabular-nums}.evidence-card{padding:13px;background:#f3f8f9;border:1px solid #d6e6e8;border-radius:10px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stats strong{display:block;font-size:22px}.alertnote{border-left:4px solid #d79a5d;padding:12px;background:#fcf7ed;font-size:13px}@media(max-width:700px){.stats{grid-template-columns:1fr}.studyhero{padding:25px 18px}}</style></head><body>
+<div class="site-top"><a class="brand" href="../">LEM2 Research · 教授報告</a><nav><a href="../">研究首頁</a><a href="../atlas/">Coverage × Conflict 圖譜</a><a class="active" href="./" aria-current="page">規則機制 A/B/C</a><a href="../public20/">20 公開資料集</a></nav></div>
+<header class="studyhero"><div class="eyebrow">RULE-LEVEL LABORATORY · SOURCE-AUDITED</div><h1>從「規則多不多」進一步看<br>規則實際造成了什麼結果</h1>
+<p>六組已完成公開資料的三條獨立研究路線：每條規則前件與支持、Test 資料的正確候選、衝突成本剪枝，以及新增補充規則的邊際價值。每個實驗固定 Seed42，同一個 80/20 切分，和原始基線逐數字核對。</p>
+</header>
+<main class="wrap">
+<section class="panel"><span class="section-tag">EVIDENCE GATE</span><h2>真正跑過的研究證據</h2><p id="state" role="status">確認六份來源與彙整完整性中…</p>
+<div class="stats"><div class="evidence-card"><small>研究資料集</small><strong id="count">—</strong></div><div class="evidence-card"><small>Letter 類別紀錄</small><strong id="classes">—</strong></div><div class="evidence-card"><small>Rule-Level 記錄</small><strong id="rules">—</strong></div></div>
+<p><a href="./MANIFEST.json">實驗結果完整性證據</a> · <a href="./README.md">方法、分母與限制</a></p></section>
+<section class="panel"><span class="section-tag">TRACK A</span><h2>Letter Recognition：26 種類別為何命中了規則卻沒有正解？</h2>
+<p>同時保存每條 IF–THEN 規則的條件、訓練支持數、訓練純度、未見資料命中筆數；並對 26 個真實類別做 Recall／Conflict／Correct Candidate Coverage。已將 Test 每個物件的候選決策保存為可稽核紀錄。</p>
+<p><a href="./TRACK_A_LETTER_PER_CLASS.csv">52 列逐類別結果</a> · <a href="./TRACK_A_LETTER_OBJECT_CASES.csv">364 筆測試物件比對</a> · <a href="./TRACK_A_LETTER_INDUCED_RULES.csv">1,137 條規則紀錄</a></p>
+<div class="alertnote">此 Seed42 每一字母類別的測試數量非常小。高低差異只用於辨識可能的規則失效機制，不足以推論各字母的泛化優劣。</div></section>
+<section class="panel"><span class="section-tag">TRACK B</span><h2>Wine／Grid Stability：衝突成本過高時剪枝能改善嗎？</h2>
+<p>以 Train-only 代價函數決定刪除原規則，未見 Test 僅用於最後量測。Wine C3 衝突明顯降低、Accuracy 上升；Grid C3 衝突也降低，但正確候選與 Accuracy 下降。剪枝不保證改善分類。</p>
+<div style="overflow:auto"><table><thead><tr><th>資料集</th><th>規則數</th><th>Test Conflict</th><th>Test Coverage</th><th>Accuracy</th><th>BA</th></tr></thead><tbody>
+<tr><td>Wine C3</td><td>46 → 38</td><td>47.22% → 36.11%</td><td>100% → 100%</td><td>77.78% → 80.56%</td><td>77.86% → 80.24%</td></tr>
+<tr><td>Grid C3</td><td>375 → 327</td><td>49.44% → 41.67%</td><td>99.44% → 99.17%</td><td>72.22% → 70.28%</td><td>69.73% → 67.71%</td></tr>
+</tbody></table></div>
+<p><a href="./TRACK_B_WINE_GRID_PRUNING.csv">全部四種架構實際結果 CSV</a></p>
+<div class="alertnote">規則是在同一份 TRAIN 上產生、並以其樣本作為剪枝得分，尚未建立巢狀驗證。Test 沒有用來調參，但這不等於已完成無偏調參驗證。</div></section>
+<section class="panel"><span class="section-tag">TRACK C</span><h2>Haberman／Banknote／Rice：新增一條規則帶來多少有效 Coverage？</h2>
+<p>先以訓練資料純度、支持數產生候選補充規則，再逐條比較 Coverage、Conflict 與正確候選的差額；若新增衝突代價超過事先固定門檻，則不採用。最終獨立評估 Test，並分開呈現結構性規則擴充及 No-Match-only 的決策補救。</p>
+<p><a href="./TRACK_C_RULE_BY_RULE_MARGINAL.csv">38 列候選規則邊際增益與選入結果</a> · <a href="./TRACK_C_SAFE_SUPPLEMENT_SUMMARY.csv">6 組架構前後對照</a></p>
+<div class="alertnote">Haberman 在既定 90% 純度條件下沒有選入補充規則；Banknote、Rice 有正向試驗訊號，但仍只是一個 Seed，不可直接聲稱優於既有文獻。</div></section>
+<section class="panel"><span class="section-tag">NEXT VALIDATION</span><h2>要升級為論文證據，仍缺什麼？</h2>
+<p>將 A／B／C 的規則層級資訊與 34 份公開資料的型態、類別比例、欄位基數對齊；對選出的失效情境實施 42 Seeds、巢狀 Train/Validation、類別召回、資源耗用、離散化消融與 non-IID 比較。所有測試規則均不得根據 Test Label 回溯選擇。</p>
+<p><a href="../atlas/">回到 34 份資料結構與 20 組 Coverage × Conflict 圖譜</a></p></section>
+</main><footer class="footer"><a href="../">研究總覽</a> · <a href="./MANIFEST.json">可重現證據</a></footer>
+<script>fetch("./MANIFEST.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw Error("Manifest missing");return r.json()}).then(m=>{if(m.status!=="SIX_REAL_DATASET_RULE_LEVEL_TRACKS_PASS")throw Error("Research gate not complete");document.querySelector("#state").textContent="PASS：六份已發布公開資料、三條研究線全部有凍結基線數值比對。";document.querySelector("#count").textContent=m.dataset_count;document.querySelector("#classes").textContent=m.output_row_counts.A_LETTER_PER_CLASS;document.querySelector("#rules").textContent=m.output_row_counts.A_LETTER_RULE_AUDIT;}).catch(e=>{document.querySelector("#state").textContent="資料尚未通過完整性驗證："+e.message;});</script></body></html>
