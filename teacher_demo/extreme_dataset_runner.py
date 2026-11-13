@@ -65,6 +65,8 @@ def read_external(name):
     cfg=REGISTRY[name]
     dataset=fetch_ucirepo(id=cfg["id"])
     X=dataset.data.features.copy().reset_index(drop=True)
+    unfiltered_source_rows=len(X)
+    excluded_source_rows=0
     Y=dataset.data.targets.copy().reset_index(drop=True)
     if isinstance(Y,pd.Series):Y=Y.to_frame("class")
     Y.columns=[clean_column_name(x) for x in Y.columns]
@@ -94,6 +96,19 @@ def read_external(name):
         # This threshold is predeclared and never selected from test performance.
         quality=pd.to_numeric(y,errors="raise")
         y=pd.Series(np.where(quality>=6,"HIGH_QUALITY_GE6","LOW_QUALITY_LT6"),dtype="string")
+    elif cfg.get("label_transform")=="heart_disease_binary_gt0":
+        vals=pd.to_numeric(y,errors="raise")
+        y=pd.Series(np.where(vals>0,"PRESENT_GT0","ABSENT_0"),dtype="string")
+    elif cfg.get("label_transform")=="student_final_grade_ge10":
+        vals=pd.to_numeric(y,errors="raise")
+        y=pd.Series(np.where(vals>=10,"PASS_GE10","FAIL_LT10"),dtype="string")
+    if cfg.get("drop_incomplete_source_rows"):
+        # Source-level complete-case selection is predeclared and label-blind,
+        # but is not equivalent to model-side train-only imputation.
+        available=X[chosen].notna().all(axis=1)
+        excluded_source_rows=int((~available).sum())
+        X=X.loc[available].reset_index(drop=True)
+        y=y.loc[available].reset_index(drop=True)
     if (y=="__MISSING_TARGET__").any():raise ValueError("Target missing")
     if cfg["feature_mode"]=="EXPLICIT_MIXED":
         cont=list(cfg["continuous_columns"])
@@ -111,7 +126,7 @@ def read_external(name):
         # A missing token is a separate categorical LEVEL, not target-informed imputation.
         X[f]=X[f].astype("string").fillna("__MISSING_FEATURE__").astype(str)
     frame=X.copy();frame["class"]=y.astype(str)
-    raw_rows=len(frame)
+    raw_rows=unfiltered_source_rows
     if cfg["cap_rows"] is not None and len(frame)>cfg["cap_rows"]:
         cap=int(cfg["cap_rows"])
         # Fixed stratified downsampling BEFORE random train/test: same dataset
@@ -143,6 +158,8 @@ def read_external(name):
       "source_rows":raw_rows,"used_rows":len(frame),"source_feature_count":raw_feature_count,
       "used_feature_count":len(chosen),"feature_columns":chosen,
       "reduced_feature_space":len(chosen)<raw_feature_count,"capped_source_rows":len(frame)<raw_rows,
+      "source_rows_excluded_for_missing_selected_features":excluded_source_rows,
+      "complete_case_source_policy":bool(cfg.get("drop_incomplete_source_rows")),
       "sha256_prepared_csv":sha,"class_counts":frame["class"].value_counts().sort_index().to_dict(),
       "min_class_count":int(frame["class"].value_counts().min()),
       "source_missing_token":"__MISSING_FEATURE__",
