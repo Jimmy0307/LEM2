@@ -1,0 +1,157 @@
+{
+  "status": "SIX_REAL_DATASET_RULE_LEVEL_TRACKS_PASS",
+  "seed": [
+    42
+  ],
+  "dataset_count": 6,
+  "tracks": {
+    "A": {
+      "dataset": "letter",
+      "class_count": 26,
+      "purpose": "Per-class exact matched/candidate/conflict and rule antecedent audit"
+    },
+    "B": {
+      "datasets": [
+        "wine",
+        "grid_stability"
+      ],
+      "purpose": "Greedy removal based only on in-sample TRAIN conflict/candidate; TEST remains untouched",
+      "warning": "Train-only IN-SAMPLE pruning on model's training data, not out-of-sample internal validation"
+    },
+    "C": {
+      "datasets": [
+        "haberman",
+        "banknote",
+        "rice"
+      ],
+      "purpose": "Sequential marginal added coverage versus added conflict and correct candidate on TRAIN",
+      "warning": "Structural union and fallback-only supplementation are distinct; report both"
+    }
+  },
+  "dataset_receipts": [
+    {
+      "dataset": "letter",
+      "track": "A",
+      "seed": 42,
+      "architectures": [
+        0,
+        3
+      ],
+      "model": "Classical reduct + LEM2",
+      "source_sha256": "eb26ce42a37f0eae16d9be426b3663421a51ec42f79af1efbaedff7b85856348",
+      "prepared_rows": 900,
+      "row_count": 1553,
+      "source": "committed exact prepared data, same seed and row split",
+      "baseline_crosscheck": "Exact coverage, conflict, candidate and rule count against published PUBLIC20_BASE",
+      "selection_only_train": true,
+      "test_labels_for_parameter_selection": false,
+      "warning": "Exploratory one seed; B prunes on in-sample TRAIN; not nested validation"
+    },
+    {
+      "dataset": "wine",
+      "track": "B",
+      "seed": 42,
+      "architectures": [
+        0,
+        3
+      ],
+      "model": "Classical reduct + LEM2",
+      "source_sha256": "07a67cdf6cc38233663226c099ea1781488ca97916e8b6cce136e3141d3ee299",
+      "prepared_rows": 178,
+      "row_count": 2,
+      "source": "committed exact prepared data, same seed and row split",
+      "baseline_crosscheck": "Exact coverage, conflict, candidate and rule count against published PUBLIC20_BASE",
+      "selection_only_train": true,
+      "test_labels_for_parameter_selection": false,
+      "warning": "Exploratory one seed; B prunes on in-sample TRAIN; not nested validation"
+    },
+    {
+      "dataset": "grid_stability",
+      "track": "B",
+      "seed": 42,
+      "architectures": [
+        0,
+        3
+      ],
+      "model": "Classical reduct + LEM2",
+      "source_sha256": "effb034d923882f06a2800fa13edf19eb9b631973357c8994bae27591ff90c12",
+      "prepared_rows": 1800,
+      "row_count": 2,
+      "source": "committed exact prepared data, same seed and row split",
+      "baseline_crosscheck": "Exact coverage, conflict, candidate and rule count against published PUBLIC20_BASE",
+      "selection_only_train": true,
+      "test_labels_for_parameter_selection": false,
+      "warning": "Exploratory one seed; B prunes on in-sample TRAIN; not nested validation"
+    },
+    {
+      "dataset": "haberman",
+      "track": "C",
+      "seed": 42,
+      "architectures": [
+        0,
+        3
+      ],
+      "model": "Classical reduct + LEM2",
+      "source_sha256": "424990d2c928faba30dade49efe3f5e8944f983227ae4866630a26e871cb26ec",
+      "prepared_rows": 306,
+      "row_count": 2,
+      "source": "committed exact prepared data, same seed and row split",
+      "baseline_crosscheck": "Exact coverage, conflict, candidate and rule count against published PUBLIC20_BASE",
+      "selection_only_train": true,
+      "test_labels_for_parameter_selection": false,
+      "warning": "Exploratory one seed; B prunes on in-sample TRAIN; not nested validation"
+    },
+    {
+      "dataset": "banknote",
+      "track": "C",
+      "seed": 42,
+      "architectures": [
+        0,
+        3
+      ],
+      "model": "Classical reduct + LEM2",
+      "source_sha256": "6da87da586c6089307c59824a5127df375fe14301ac628acc5d7b3b4a32db9a5",
+      "prepared_rows": 1372,
+      "row_count": 13,
+      "source": "committed exact prepared data, same seed and row split",
+      "baseline_crosscheck": "Exact coverage, conflict, candidate and rule count against published PUBLIC20_BASE",
+      "selection_only_train": true,
+      "test_labels_for_parameter_selection": false,
+      "warning": "Exploratory one seed; B prunes on in-sample TRAIN; not nested validation"
+    },
+    {
+      "dataset": "rice",
+      "track": "C",
+      "seed": 42,
+      "architectures": [
+        0,
+        3
+      ],
+      "model": "Classical reduct + LEM2",
+      "source_sha256": "b5aaa8672ce39c9730b5a5429bc9071b8fd0939343f95c3c319a1434c8b4caa6",
+      "prepared_rows": 1600,
+      "row_count": 29,
+      "source": "committed exact prepared data, same seed and row split",
+      "baseline_crosscheck": "Exact coverage, conflict, candidate and rule count against published PUBLIC20_BASE",
+      "selection_only_train": true,
+      "test_labels_for_parameter_selection": false,
+      "warning": "Exploratory one seed; B prunes on in-sample TRAIN; not nested validation"
+    }
+  ],
+  "output_row_counts": {
+    "A_LETTER_PER_CLASS": 52,
+    "A_LETTER_OBJECT_RECAP": 364,
+    "A_LETTER_RULE_AUDIT": 1137,
+    "B_CONFLICT_AWARE_TRAIN_ONLY_PRUNE": 4,
+    "C_SAFE_TRAIN_ONLY_SUPPLEMENT": 6,
+    "C_MARGINAL_RULE_ADD": 38
+  },
+  "base_method": "Classical positive-region reduct+LEM2, C0/C3, seed42, 80/20 holdout",
+  "stopping_condition": "No dataset imputed or omitted; original rule count/cov/conf/candidate matched saved PUBLIC20 baselines",
+  "caveats": [
+    "Not multiple seeds",
+    "No nested validation",
+    "No DRSA or VC-DomLEM implementation",
+    "Rules reused for diagnostics only; never tuned from TEST"
+  ]
+}
