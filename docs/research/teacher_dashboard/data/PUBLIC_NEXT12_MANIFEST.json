@@ -1,0 +1,223 @@
+{
+  "status": "PARTIAL_SOURCES_UNAVAILABLE",
+  "registered": 12,
+  "passed_count": 0,
+  "failed_count": 12,
+  "failed": {
+    "ionosphere": {
+      "error": "TypeError: unsupported operand type(s) for +: 'PosixPath' and 'str'",
+      "stage": "VALIDATION"
+    },
+    "yeast_localization": {
+      "error": "TypeError: unsupported operand type(s) for +: 'PosixPath' and 'str'",
+      "stage": "VALIDATION"
+    },
+    "image_segmentation": {
+      "error": "TypeError: unsupported operand type(s) for +: 'PosixPath' and 'str'",
+      "stage": "VALIDATION"
+    },
+    "vehicle_silhouettes": {
+      "dataset_key": "vehicle_silhouettes",
+      "status": "FAILED_NOT_IMPUTED",
+      "error": "ValueError: Continuous features contain missing values: compactness",
+      "traceback": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\n  File \"/home/runner/work/LEM2/LEM2/teacher_demo/public_next12_runner.py\", line 23, in run\n    experiment.run(key,dest)\n  File \"/home/runner/work/LEM2/LEM2/teacher_demo/public_20_runner.py\", line 37, in run\n    bundle,profile=read_external(dataset)\n                   ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/LEM2/LEM2/teacher_demo/extreme_dataset_runner.py\", line 109, in read_external\n    if X[f].isna().any():raise ValueError(\"Continuous features contain missing values: \"+f)\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: Continuous features contain missing values: compactness\n"
+    },
+    "wheat_seeds": {
+      "dataset_key": "wheat_seeds",
+      "status": "FAILED_NOT_IMPUTED",
+      "error": "DatasetNotFoundError: \"Seeds\" dataset (id=236) exists in the repository, but is not available for import. Please select a dataset from this list: https://archive.ics.uci.edu/datasets?skip=0&take=10&sort=desc&orderBy=NumHits&search=&Python=true",
+      "traceback": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\n  File \"/home/runner/work/LEM2/LEM2/teacher_demo/public_next12_runner.py\", line 23, in run\n    experiment.run(key,dest)\n  File \"/home/runner/work/LEM2/LEM2/teacher_demo/public_20_runner.py\", line 37, in run\n    bundle,profile=read_external(dataset)\n                   ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/LEM2/LEM2/teacher_demo/extreme_dataset_runner.py\", line 66, in read_external\n    dataset=fetch_ucirepo(id=cfg[\"id\"])\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/ucimlrepo/fetch.py\", line 91, in fetch_ucirepo\n    raise DatasetNotFoundError('\"{}\" dataset (id={}) exists in the repository, but is not available for import. Please select a dataset from this list: https://archive.ics.uci.edu/datasets?skip=0&take=10&sort=desc&orderBy=NumHits&search=&Python=true'.format(name, id))\nucimlrepo.fetch.DatasetNotFoundError: \"Seeds\" dataset (id=236) exists in the repository, but is not available for import. Please select a dataset from this list: https://archive.ics.uci.edu/datasets?skip=0&take=10&sort=desc&orderBy=NumHits&search=&Python=true\n"
+    },
+    "raisin_grains": {
+      "error": "TypeError: unsupported operand type(s) for +: 'PosixPath' and 'str'",
+      "stage": "VALIDATION"
+    },
+    "wine_quality_ordinal_to_binary": {
+      "error": "TypeError: unsupported operand type(s) for +: 'PosixPath' and 'str'",
+      "stage": "VALIDATION"
+    },
+    "qsar_biodegradation": {
+      "dataset_key": "qsar_biodegradation",
+      "status": "FAILED_NOT_IMPUTED",
+      "error": "DatasetNotFoundError: \"QSAR biodegradation\" dataset (id=254) exists in the repository, but is not available for import. Please select a dataset from this list: https://archive.ics.uci.edu/datasets?skip=0&take=10&sort=desc&orderBy=NumHits&search=&Python=true",
+      "traceback": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\n  File \"/home/runner/work/LEM2/LEM2/teacher_demo/public_next12_runner.py\", line 23, in run\n    experiment.run(key,dest)\n  File \"/home/runner/work/LEM2/LEM2/teacher_demo/public_20_runner.py\", line 37, in run\n    bundle,profile=read_external(dataset)\n                   ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/LEM2/LEM2/teacher_demo/extreme_dataset_runner.py\", line 66, in read_external\n    dataset=fetch_ucirepo(id=cfg[\"id\"])\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/ucimlrepo/fetch.py\", line 91, in fetch_ucirepo\n    raise DatasetNotFoundError('\"{}\" dataset (id={}) exists in the repository, but is not available for import. Please select a dataset from this list: https://archive.ics.uci.edu/datasets?skip=0&take=10&sort=desc&orderBy=NumHits&search=&Python=true'.format(name, id))\nucimlrepo.fetch.DatasetNotFoundError: \"QSAR biodegradation\" dataset (id=254) exists in the repository, but is not available for import. Please select a dataset from this list: https://archive.ics.uci.edu/datasets?skip=0&take=10&sort=desc&orderBy=NumHits&search=&Python=true\n"
+    },
+    "vertebral_column": {
+      "error": "TypeError: unsupported operand type(s) for +: 'PosixPath' and 'str'",
+      "stage": "VALIDATION"
+    },
+    "student_dropout": {
+      "error": "TypeError: unsupported operand type(s) for +: 'PosixPath' and 'str'",
+      "stage": "VALIDATION"
+    },
+    "blood_donation": {
+      "error": "TypeError: unsupported operand type(s) for +: 'PosixPath' and 'str'",
+      "stage": "VALIDATION"
+    },
+    "fertility": {
+      "error": "TypeError: unsupported operand type(s) for +: 'PosixPath' and 'str'",
+      "stage": "VALIDATION"
+    }
+  },
+  "datasets": [
+    {
+      "key": "ionosphere",
+      "uci_id": 52,
+      "name": "Ionosphere Radar Return",
+      "status": "FAIL_NOT_IMPUTED",
+      "source": "https://archive.ics.uci.edu/dataset/52",
+      "trait": "351 cases, 34 raw continuous features, binary radar validity",
+      "detail": {
+        "error": "TypeError: unsupported operand type(s) for +: 'PosixPath' and 'str'",
+        "stage": "VALIDATION"
+      }
+    },
+    {
+      "key": "yeast_localization",
+      "uci_id": 110,
+      "name": "Yeast Protein Localization",
+      "status": "FAIL_NOT_IMPUTED",
+      "source": "https://archive.ics.uci.edu/dataset/110",
+      "trait": "Ten-class protein localization, class imbalance and rare classes",
+      "detail": {
+        "error": "TypeError: unsupported operand type(s) for +: 'PosixPath' and 'str'",
+        "stage": "VALIDATION"
+      }
+    },
+    {
+      "key": "image_segmentation",
+      "uci_id": 50,
+      "name": "Image Segmentation",
+      "status": "FAIL_NOT_IMPUTED",
+      "source": "https://archive.ics.uci.edu/dataset/50",
+      "trait": "Seven regional image labels from 3x3 image regions; potential shared-image leakage",
+      "detail": {
+        "error": "TypeError: unsupported operand type(s) for +: 'PosixPath' and 'str'",
+        "stage": "VALIDATION"
+      }
+    },
+    {
+      "key": "vehicle_silhouettes",
+      "uci_id": 149,
+      "name": "Statlog Vehicle Silhouettes",
+      "status": "FAIL_NOT_IMPUTED",
+      "source": "https://archive.ics.uci.edu/dataset/149",
+      "trait": "Four classes and 18 extracted shape attributes; orientation shift sensitivity",
+      "detail": {
+        "dataset_key": "vehicle_silhouettes",
+        "status": "FAILED_NOT_IMPUTED",
+        "error": "ValueError: Continuous features contain missing values: compactness",
+        "traceback": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\n  File \"/home/runner/work/LEM2/LEM2/teacher_demo/public_next12_runner.py\", line 23, in run\n    experiment.run(key,dest)\n  File \"/home/runner/work/LEM2/LEM2/teacher_demo/public_20_runner.py\", line 37, in run\n    bundle,profile=read_external(dataset)\n                   ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/LEM2/LEM2/teacher_demo/extreme_dataset_runner.py\", line 109, in read_external\n    if X[f].isna().any():raise ValueError(\"Continuous features contain missing values: \"+f)\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: Continuous features contain missing values: compactness\n"
+      }
+    },
+    {
+      "key": "wheat_seeds",
+      "uci_id": 236,
+      "name": "Wheat Seeds",
+      "status": "FAIL_NOT_IMPUTED",
+      "source": "https://archive.ics.uci.edu/dataset/236",
+      "trait": "210 rows, three equally sized wheat kernel types and seven continuous measurements",
+      "detail": {
+        "dataset_key": "wheat_seeds",
+        "status": "FAILED_NOT_IMPUTED",
+        "error": "DatasetNotFoundError: \"Seeds\" dataset (id=236) exists in the repository, but is not available for import. Please select a dataset from this list: https://archive.ics.uci.edu/datasets?skip=0&take=10&sort=desc&orderBy=NumHits&search=&Python=true",
+        "traceback": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\n  File \"/home/runner/work/LEM2/LEM2/teacher_demo/public_next12_runner.py\", line 23, in run\n    experiment.run(key,dest)\n  File \"/home/runner/work/LEM2/LEM2/teacher_demo/public_20_runner.py\", line 37, in run\n    bundle,profile=read_external(dataset)\n                   ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/LEM2/LEM2/teacher_demo/extreme_dataset_runner.py\", line 66, in read_external\n    dataset=fetch_ucirepo(id=cfg[\"id\"])\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/ucimlrepo/fetch.py\", line 91, in fetch_ucirepo\n    raise DatasetNotFoundError('\"{}\" dataset (id={}) exists in the repository, but is not available for import. Please select a dataset from this list: https://archive.ics.uci.edu/datasets?skip=0&take=10&sort=desc&orderBy=NumHits&search=&Python=true'.format(name, id))\nucimlrepo.fetch.DatasetNotFoundError: \"Seeds\" dataset (id=236) exists in the repository, but is not available for import. Please select a dataset from this list: https://archive.ics.uci.edu/datasets?skip=0&take=10&sort=desc&orderBy=NumHits&search=&Python=true\n"
+      }
+    },
+    {
+      "key": "raisin_grains",
+      "uci_id": 850,
+      "name": "Raisin Morphology",
+      "status": "FAIL_NOT_IMPUTED",
+      "source": "https://archive.ics.uci.edu/dataset/850",
+      "trait": "900 rows, two balanced visual grain varieties and continuous shape features",
+      "detail": {
+        "error": "TypeError: unsupported operand type(s) for +: 'PosixPath' and 'str'",
+        "stage": "VALIDATION"
+      }
+    },
+    {
+      "key": "wine_quality_ordinal_to_binary",
+      "uci_id": 186,
+      "name": "Wine Quality (binary>=6 protocol)",
+      "status": "FAIL_NOT_IMPUTED",
+      "source": "https://archive.ics.uci.edu/dataset/186",
+      "trait": "Originally ordered wine quality labels; explicit secondary BINARY >=6 target task",
+      "detail": {
+        "error": "TypeError: unsupported operand type(s) for +: 'PosixPath' and 'str'",
+        "stage": "VALIDATION"
+      }
+    },
+    {
+      "key": "qsar_biodegradation",
+      "uci_id": 254,
+      "name": "QSAR Biodegradation",
+      "status": "FAIL_NOT_IMPUTED",
+      "source": "https://archive.ics.uci.edu/dataset/254",
+      "trait": "1055 chemical records, 41 descriptors in source and two biodegradation classes",
+      "detail": {
+        "dataset_key": "qsar_biodegradation",
+        "status": "FAILED_NOT_IMPUTED",
+        "error": "DatasetNotFoundError: \"QSAR biodegradation\" dataset (id=254) exists in the repository, but is not available for import. Please select a dataset from this list: https://archive.ics.uci.edu/datasets?skip=0&take=10&sort=desc&orderBy=NumHits&search=&Python=true",
+        "traceback": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\n  File \"/home/runner/work/LEM2/LEM2/teacher_demo/public_next12_runner.py\", line 23, in run\n    experiment.run(key,dest)\n  File \"/home/runner/work/LEM2/LEM2/teacher_demo/public_20_runner.py\", line 37, in run\n    bundle,profile=read_external(dataset)\n                   ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/LEM2/LEM2/teacher_demo/extreme_dataset_runner.py\", line 66, in read_external\n    dataset=fetch_ucirepo(id=cfg[\"id\"])\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/ucimlrepo/fetch.py\", line 91, in fetch_ucirepo\n    raise DatasetNotFoundError('\"{}\" dataset (id={}) exists in the repository, but is not available for import. Please select a dataset from this list: https://archive.ics.uci.edu/datasets?skip=0&take=10&sort=desc&orderBy=NumHits&search=&Python=true'.format(name, id))\nucimlrepo.fetch.DatasetNotFoundError: \"QSAR biodegradation\" dataset (id=254) exists in the repository, but is not available for import. Please select a dataset from this list: https://archive.ics.uci.edu/datasets?skip=0&take=10&sort=desc&orderBy=NumHits&search=&Python=true\n"
+      }
+    },
+    {
+      "key": "vertebral_column",
+      "uci_id": 212,
+      "name": "Vertebral Column",
+      "status": "FAIL_NOT_IMPUTED",
+      "source": "https://archive.ics.uci.edu/dataset/212",
+      "trait": "310 rows, six continuous biomechanics variables, possible two-vs-three target variant",
+      "detail": {
+        "error": "TypeError: unsupported operand type(s) for +: 'PosixPath' and 'str'",
+        "stage": "VALIDATION"
+      }
+    },
+    {
+      "key": "student_dropout",
+      "uci_id": 697,
+      "name": "Higher-Ed Dropout and Academic Success",
+      "status": "FAIL_NOT_IMPUTED",
+      "source": "https://archive.ics.uci.edu/dataset/697",
+      "trait": "4424 records, three classes, 36 source predictors; pre-enrollment coded attributes only",
+      "detail": {
+        "error": "TypeError: unsupported operand type(s) for +: 'PosixPath' and 'str'",
+        "stage": "VALIDATION"
+      }
+    },
+    {
+      "key": "blood_donation",
+      "uci_id": 176,
+      "name": "Blood Transfusion Service Center",
+      "status": "FAIL_NOT_IMPUTED",
+      "source": "https://archive.ics.uci.edu/dataset/176",
+      "trait": "Taiwan donor retention 748 records, RFM/T numeric and 24% positive",
+      "detail": {
+        "error": "TypeError: unsupported operand type(s) for +: 'PosixPath' and 'str'",
+        "stage": "VALIDATION"
+      }
+    },
+    {
+      "key": "fertility",
+      "uci_id": 244,
+      "name": "Fertility",
+      "status": "FAIL_NOT_IMPUTED",
+      "source": "https://archive.ics.uci.edu/dataset/244",
+      "trait": "100 volunteers, rare binary outcome and small sample instability",
+      "detail": {
+        "error": "TypeError: unsupported operand type(s) for +: 'PosixPath' and 'str'",
+        "stage": "VALIDATION"
+      }
+    }
+  ],
+  "seeds": [
+    42
+  ],
+  "protocol": "HOLDOUT_80_20",
+  "method": "Classical positive-region reduct + LEM2; C0 and federated C3; six selection policies; supplemental one-condition-drop purity >=.90",
+  "scope": "Only first seed; capped/6-feature feasibility. NOT full source scalability or 42-seed evidence.",
+  "warn": "Always separate original task class transform, especially Wine Quality >=6 derived binary label.",
+  "base_rows": 0,
+  "supplement_rows": 0
+}
