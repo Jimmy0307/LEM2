@@ -24,13 +24,13 @@ table{font-variant-numeric:tabular-nums}
 <header class="atlas-hero"><div class="eyebrow">SOURCE GRAIN · COLUMNS · RULES · LEARNING TOPOLOGIES</div>
 <h1>先看資料如何構成，<br>再解釋 Coverage 為何產生 Conflict</h1>
 <p>分開呈現來源總筆數、實際抽樣筆數、每個決策類別、每個因素的資料型態／基數，以及 Classical Centralized vs Federated C3 的規則命中、衝突與正確候選。<strong>一切指標以已發布檔案為準。</strong></p>
-<p>第一輪是既有 20 份公開來源（Seed 42），額外兩份商業／工業四 Seed 資料僅作結構盤點。另有新增 12 份來源，須通過來源驗證後才會顯示。</p></header>
+<p>公開資料結構總覽現在包含 20 份原先的探索資料、12 份新增 UCI 資料與 2 份先前商業／工業資料。Coverage × Conflict 配對仍僅限原 20 份 Seed 42 基線，不能跨實驗協定混算。</p></header>
 <main class="wrap">
 <section class="panel"><span class="section-tag">01 · AUDITED SOURCE INVENTORY</span><h2>到底有多少 row、column 和 class？</h2>
 <p role="status" id="status">讀取可稽核資料中…</p>
 <div class="metric-row"><div><small>有資料 CSV 的來源</small><strong id="m_sources">—</strong></div><div><small>特徵欄位紀錄</small><strong id="m_columns">—</strong></div><div><small>類別分布紀錄</small><strong id="m_classes">—</strong></div><div><small>配對 Coverage × Conflict</small><strong id="m_pairs">—</strong></div></div>
 <div class="choices"><label>資料型態<select id="featureType"><option value="ALL">全部</option><option value="ALL_CONTINUOUS">連續數值</option><option value="EXPLICIT_MIXED">混合型</option><option value="ALL_CATEGORICAL">類別／離散</option></select></label>
-<label>來源系列<select id="family"><option value="ALL">全部</option><option value="NEW_PUBLIC20">新增20組</option><option value="PREVIOUS_COMMERCE_TECH_4SEEDS">先前電商／設備</option></select></label>
+<label>來源系列<select id="family"><option value="ALL">全部</option><option value="NEW_PUBLIC20">新增20組</option><option value="ADDITIONAL_PUBLIC12">新增12組</option><option value="PREVIOUS_COMMERCE_TECH_4SEEDS">先前電商／設備</option></select></label>
 <label>排序<select id="order"><option value="source_rows">原始資料筆數</option><option value="prepared_rows">本輪模型筆數</option><option value="class_count">類別數</option><option value="minority_class_rate_pct">少數類別佔比</option></select></label></div>
 <div class="scrolling"><table><thead><tr><th>資料集</th><th>來源 row</th><th>模型 row</th><th>原始特徵數</th><th>模型特徵數</th><th>類別</th><th>稀少類別</th><th>型態</th><th>重複完整列</th></tr></thead><tbody id="inventoryRows"><tr><td colspan="9">讀取中</td></tr></tbody></table></div>
 <p class="small">原始特徵數尚未有可核對的來源欄位時顯示「未保存」；模型特徵數不得冒充原始資料的全部特徵。型態以本實驗的欄位指定為準，非推斷原始資料全部欄位。</p></section>
