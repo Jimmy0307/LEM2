@@ -1,3 +1,13 @@
+## 2026-11-14｜Conflict-Aware 補充規則：三版本研究原型與負面結果
+
+- [互動頁面](./public20/conflict_aware.html) · [研究報告](./public20/CONFLICT_AWARE_FINDINGS.md) · [完整性 Manifest](./data/CONFLICT_AWARE_20_MANIFEST.json)。20 個公開來源 ×（集中式、Fed C3）× 3 個版本，**120 列結果、423 筆逐規則驗證事件**。
+- 為防 Test 調參洩漏，固定開發／驗證／測試 = 64%／16%／20%，先用 64% 產生 Classical LEM2、再用 16% 決定 Train-only 補充規則是否入選，最後在完全未接觸的 20% 評估；不直接與前輪 80% 訓練集版本的數字比較。
+- 三版本分別為原始 LEM2、全部合格補充規則、驗證集 Conflict-Aware 選擇後補充規則；它們在 40 配置上的 Test Coverage 平均為 53.51%、61.43%、61.14%；Active Conflict 平均為 8.65%、8.71%、8.71%，Accuracy 70.27%、70.58%、70.58%。
+- **重要負面結果：Conflict-Aware 篩選只讓 1/40 組 Active Conflict 降低**；因補充規則僅在原始 No Match 時生效，無法影響原始規則的衝突。假設不分層直接合併規則的 Shadow Conflict 確有降低（9.46%→8.90%），但不能混為實際衝突解決能力。
+- 已通過規則擬合／驗證／測試隔離、衝突優先序、類別標籤長度、單元測試與 20/20 完整性稽核。**只有單 Seed 42，尚未證明推廣性與統計顯著性**；下一輪需要核心規則 Conflict-Aware 選擇及多 Seed 驗證。
+
+---
+
 ## 2026-11-12｜新增 20 個公開資料領域：Classical／Federated LEM2 訓練覆蓋率壓力測試
 
 - 研究頁：[20 份不同特性 UCI 資料集與 Train-only Supplement 測試](./public20/)；來源註冊檔 `teacher_demo/public_20_registry.py`，獨立於原三份基線和之前 9 份外部資料（七份壓力資料與兩份商業／工業）。
