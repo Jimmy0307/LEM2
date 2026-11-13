@@ -174,6 +174,25 @@ def main():
             assert not errors, errors
             print("PUBLIC20_SOURCE_AUDIT_TRAIN_TEST_COVERAGE_BROWSER_PASS",flush=True)
 
+            # Nested 64/16/20 three-arm Conflict-Aware experiment is separately
+            # evidence-gated. No synthetic JSON fallback on missing results.
+            page.goto(report+"public20/conflict_aware.html",wait_until="domcontentloaded")
+            page.wait_for_function(
+                "document.querySelector('#status').textContent.includes('已完成 20 個公開資料')",
+                timeout=30000
+            )
+            assert page.locator("#datasetCount").inner_text()=="20/20"
+            assert page.locator("#resultRows tr").count()==40
+            assert "+7.92 pp" in page.locator("#allCov").inner_text()
+            assert "+7.64 pp" in page.locator("#gateCov").inner_text()
+            page.locator("#system").select_option("0")
+            assert page.locator("#resultRows tr").count()==20
+            page.locator("#ds").select_option("banknote")
+            assert page.locator("#resultRows tr").count()==1
+            assert "banknote" in page.locator("#resultRows").inner_text()
+            assert not errors, errors
+            print("CONFLICT_AWARE_20_NESTED_VAL_THREE_ARM_BROWSER_PASS",flush=True)
+
             # Independent evidence drilldown: complete matrix with real selectors.
             page.goto(report+"evidence/",wait_until="domcontentloaded")
             page.wait_for_function("document.getElementById('validState').textContent.includes('PASS')",timeout=30000)
