@@ -1,0 +1,137 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>公開資料集結構與 Coverage × Conflict 圖譜｜LEM2</title>
+<link rel="stylesheet" href="../site.css"><style>
+.atlas-hero{background:linear-gradient(130deg,#123047,#29666e);color:#fff;padding:36px max(18px,calc((100vw - 1160px)/2))}
+.atlas-hero h1{font-size:clamp(26px,4vw,43px);line-height:1.21}.atlas-hero p{max-width:980px;color:#d5eef0}
+.flex2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.metric-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.metric-row>div{background:#f1f7f7;border:1px solid #d5e6e5;border-radius:10px;padding:14px}
+.metric-row strong{font-size:25px;color:#1c5c60;display:block}
+.choices{display:flex;gap:12px;flex-wrap:wrap;margin:15px 0}.choices label{min-width:180px;flex:1 1 190px;display:flex;flex-direction:column;gap:5px}
+.scrolling{overflow:auto;max-height:600px;border:1px solid #dae5e6;border-radius:10px}
+.scrolling thead{position:sticky;top:0;background:#e9f2f4;z-index:2}.scrolling table{margin:0}
+.small{font-size:12px;color:#667780}.good{color:#137a62;font-weight:700}.risk{color:#ad4a35;font-weight:700}
+.pill{background:#e9f2f1;color:#246b61;font-size:12px;padding:3px 7px;border-radius:5px}
+#scatter{width:100%;height:auto;border:1px solid #e0e8eb;border-radius:10px;background:#fff}
+#scatter circle{cursor:pointer;opacity:.85}#scatter circle:hover{stroke:#000;stroke-width:2;opacity:1}
+#scatter text{font:13px system-ui,sans-serif;fill:#495d68}
+table{font-variant-numeric:tabular-nums}
+@media(max-width:780px){.flex2,.metric-row{grid-template-columns:1fr 1fr}.atlas-hero{padding:24px 18px}}
+@media(max-width:500px){.metric-row{grid-template-columns:1fr}}
+</style></head><body>
+<div class="site-top"><a class="brand" href="../">LEM2 · 教授研究</a><nav>
+<a href="../">首頁</a><a href="../public20/">原20來源</a><a href="../three_tracks/">逐規則 A/B/C</a><a class="active" href="./" aria-current="page">資料與衝突圖譜</a><a href="../coverage/">Coverage</a></nav></div>
+<header class="atlas-hero"><div class="eyebrow">SOURCE GRAIN · COLUMNS · RULES · LEARNING TOPOLOGIES</div>
+<h1>先看資料如何構成，<br>再解釋 Coverage 為何產生 Conflict</h1>
+<p>分開呈現來源總筆數、實際抽樣筆數、每個決策類別、每個因素的資料型態／基數，以及 Classical Centralized vs Federated C3 的規則命中、衝突與正確候選。<strong>一切指標以已發布檔案為準。</strong></p>
+<p>第一輪是既有 20 份公開來源（Seed 42），額外兩份商業／工業四 Seed 資料僅作結構盤點。另有新增 12 份來源，須通過來源驗證後才會顯示。</p></header>
+<main class="wrap">
+<section class="panel"><span class="section-tag">01 · AUDITED SOURCE INVENTORY</span><h2>到底有多少 row、column 和 class？</h2>
+<p role="status" id="status">讀取可稽核資料中…</p>
+<div class="metric-row"><div><small>有資料 CSV 的來源</small><strong id="m_sources">—</strong></div><div><small>特徵欄位紀錄</small><strong id="m_columns">—</strong></div><div><small>類別分布紀錄</small><strong id="m_classes">—</strong></div><div><small>配對 Coverage × Conflict</small><strong id="m_pairs">—</strong></div></div>
+<div class="choices"><label>資料型態<select id="featureType"><option value="ALL">全部</option><option value="ALL_CONTINUOUS">連續數值</option><option value="EXPLICIT_MIXED">混合型</option><option value="ALL_CATEGORICAL">類別／離散</option></select></label>
+<label>來源系列<select id="family"><option value="ALL">全部</option><option value="NEW_PUBLIC20">新增20組</option><option value="PREVIOUS_COMMERCE_TECH_4SEEDS">先前電商／設備</option></select></label>
+<label>排序<select id="order"><option value="source_rows">原始資料筆數</option><option value="prepared_rows">本輪模型筆數</option><option value="class_count">類別數</option><option value="minority_class_rate_pct">少數類別佔比</option></select></label></div>
+<div class="scrolling"><table><thead><tr><th>資料集</th><th>來源 row</th><th>模型 row</th><th>原始特徵數</th><th>模型特徵數</th><th>類別</th><th>稀少類別</th><th>型態</th><th>重複完整列</th></tr></thead><tbody id="inventoryRows"><tr><td colspan="9">讀取中</td></tr></tbody></table></div>
+<p class="small">原始特徵數尚未有可核對的來源欄位時顯示「未保存」；模型特徵數不得冒充原始資料的全部特徵。型態以本實驗的欄位指定為準，非推斷原始資料全部欄位。</p></section>
+<section class="panel"><span class="section-tag">02 · SOURCE DETAIL</span><h2>逐資料集看每個類別、每個欄位</h2>
+<div class="choices"><label>選一份資料<select id="detailSource"></select></label></div>
+<div class="flex2">
+<div><h3>各決策類別的筆數與比例</h3><div class="scrolling"><table><thead><tr><th>Class</th><th>Rows</th><th>佔比</th></tr></thead><tbody id="classRows"></tbody></table></div></div>
+<div><h3>來源與資料處理契約</h3><div id="sourceDescription" class="small"></div></div>
+</div>
+<h3>欄位資料型態、基數與分布</h3><div class="scrolling"><table><thead><tr><th>特徵</th><th>研究指定型態</th><th>唯一值</th><th>缺值</th><th>中位數</th><th>p10–p90</th><th>前三常見值</th></tr></thead><tbody id="columnRows"></tbody></table></div>
+</section>
+<section class="panel"><span class="section-tag">03 · 20 PAIRED RULE SYSTEMS</span><h2>20 個資料集：Coverage 增加，Conflict 成本增加多少？</h2>
+<p>每一點是一份資料集相同 Seed 42 下的 C0 與 C3 配對比較。橫軸為 Coverage 差（pp），縱軸為 Conflict Rate 差（pp）。<b>不是單條規則的因果效應</b>，因為兩個架構各自歸納不同的規則集合。</p>
+<svg id="scatter" viewBox="0 0 900 490" role="img" aria-label="20 個資料集的 Coverage 與 Conflict 增幅散佈圖"></svg>
+<p id="clicked" class="small" role="status">點選散佈點即可查看來源指標。</p>
+<div class="scrolling"><table><thead><tr><th>資料</th><th>原始→模型 row</th><th>C3 Coverage</th><th>C3 Conflict</th><th>C3 正確候選</th><th>Δ Coverage</th><th>Δ Conflict</th><th>Δ 無衝突覆蓋</th></tr></thead><tbody id="pairRows"></tbody></table></div>
+<p><a href="../conflict_atlas/PUBLIC20_COVERAGE_CONFLICT_PAIRS.csv">下載 20 配對原始數據</a> · <a href="../conflict_atlas/DATASET_ROW_COUNTS_AND_TYPES.csv">下載所有 row 與資料型態</a> · <a href="../conflict_atlas/DATASET_CLASS_COUNTS.csv">各類別完整分布</a> · <a href="../conflict_atlas/DATASET_COLUMN_TYPES_AND_STATS.csv">逐欄位數值與基數</a></p></section>
+<section class="panel"><span class="section-tag">04 · THREE EXPLAINABLE RESEARCH TRACKS</span><h2>三條機制研究不是只看聚合百分比</h2>
+<div class="flex2"><div>
+<h3>A｜Letter：正確候選缺失</h3>
+<p>對 26 個決策類別逐一統計 Class Recall、匹配數、正確候選及命中規則。<a href="../three_tracks/TRACK_A_LETTER_PER_CLASS.csv">逐 Class 表</a> · <a href="../three_tracks/TRACK_A_LETTER_INDUCED_RULES.csv">逐 Rule 表</a> · <a href="../three_tracks/TRACK_A_LETTER_OBJECT_CASES.csv">逐 Row 表</a></p>
+<h3>B｜Wine／Grid：衝突代價剪枝</h3>
+<p>只根據訓練資料作為剪枝評分，不使用 Test Label 選規則；必須同時報告 Coverage、候選召回、Conflict 與 Accuracy。<a href="../three_tracks/TRACK_B_WINE_GRID_PRUNING.csv">實測前後對照</a></p></div>
+<div><h3>C｜Haberman／Banknote／Rice：逐條增補規則</h3>
+<p>每條規則新增前後測量 Train Coverage、Conflict 與候選率；使用 Train-only 衝突成本門檻做選擇，之後在 Test 評估。<a href="../three_tracks/TRACK_C_RULE_BY_RULE_MARGINAL.csv">逐條邊際貢獻</a> · <a href="../three_tracks/TRACK_C_SAFE_SUPPLEMENT_SUMMARY.csv">補充後結果</a></p>
+<div class="small"><b>三條線研究限制：</b>都是 Seed 42 單次探索，非 42 Seeds。B 在原規則訓練資料上剪枝，沒有巢狀 Train/Validation；其正負結果都不代表泛化定律。</div>
+</div></div><p><a href="../three_tracks/README.md">研究方法與重現說明</a> · <a href="../three_tracks/MANIFEST.json">三軌來源驗證</a></p></section>
+<section class="panel"><span class="section-tag">05 · EXTENSION</span><h2>再增加 12 個公開資料集</h2>
+<p id="extensionState" role="status">12 個新增 UCI 分類來源的狀態以 Manifest 為準。</p>
+<div class="scrolling"><table><thead><tr><th>來源</th><th>研究特性</th><th>原始 row</th><th>本輪模型 row</th><th>狀態</th></tr></thead><tbody id="extensionRows"><tr><td colspan="5">等待發布核對</td></tr></tbody></table></div>
+<p><a href="../data/PUBLIC_NEXT12_MANIFEST.json">公開來源驗證記錄</a> · <a href="../next12/README.md">新增 12 個資料集研究清單</a></p></section>
+</main>
+<footer class="footer"><a href="../">回教授研究首頁</a> · <a href="../public20/">公開 20 組實驗</a> · <a href="../versions/">原始 42 Seeds 基線</a></footer>
+<script>
+(()=>{"use strict";
+const $=id=>document.getElementById(id);
+const esc=x=>String(x??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const num=(x,d=2)=>x==null||!Number.isFinite(Number(x))?"—":Number(x).toFixed(d);
+const pct=x=>num(x)+"%";
+const pname={ALL_CONTINUOUS:"連續型",ALL_CATEGORICAL:"離散型",EXPLICIT_MIXED:"混合型"};
+let a=null;
+function drawInventory(){
+ let set=a.profiles.filter(x=>($("featureType").value==="ALL"||x.feature_mode===$("featureType").value)&&
+ ($("family").value==="ALL"||x.family===$("family").value));
+ const sort=$("order").value;
+ set.sort((u,v)=>(Number(v[sort])||0)-(Number(u[sort])||0));
+ $("inventoryRows").innerHTML=set.map(x=>"<tr><td><a href='"+esc(x.source_url)+"' target='_blank' rel='noopener'>"+esc(x.dataset_key)+"</a></td><td>"+Number(x.source_rows).toLocaleString()+"</td><td>"+Number(x.prepared_rows).toLocaleString()+"</td><td>"+(x.source_features==null?"未保存":num(x.source_features,0))+"</td><td>"+num(x.used_features,0)+"</td><td>"+num(x.class_count,0)+"</td><td>"+pct(x.minority_class_rate_pct)+"</td><td>"+(pname[x.feature_mode]||"—")+"</td><td>"+num(x.duplicates_full_rows,0)+"</td></tr>").join("")||'<tr><td colspan="9">此條件無資料</td></tr>';
+}
+function showDetail(){
+ const key=$("detailSource").value,p=a.profiles.find(x=>x.dataset_key===key);
+ if(!p)return;
+ const classes=a.class_counts.filter(x=>x.dataset_key===key).sort((x,y)=>y.class_count-x.class_count);
+ const cols=a.column_details.filter(x=>x.dataset_key===key);
+ $("classRows").innerHTML=classes.map(x=>"<tr><td>"+esc(x.class_label)+"</td><td>"+num(x.class_count,0)+"</td><td>"+pct(x.class_pct)+"</td></tr>").join("");
+ $("sourceDescription").innerHTML="<p>系列："+esc(p.family)+"</p><p>來源總計："+Number(p.source_rows).toLocaleString()+" rows<br>實驗子集："+Number(p.prepared_rows).toLocaleString()+" rows<br>特徵數："+p.used_features+"<br>重複完整列："+p.duplicates_full_rows+"<br>缺值儲存格："+p.missing_cells_in_prepared+"</p><p><a href='"+esc(p.source_url)+"'>官方資料來源</a></p><p>SHA-256（已發布子集檔）：<code style='word-break:break-all'>"+esc(p.prepared_file_sha256)+"</code></p>";
+ $("columnRows").innerHTML=cols.map(x=>{
+    const top=Object.entries(JSON.parse(x.top_3_values_json||"{}")).map(([k,v])=>esc(k)+":"+v).join("；");
+    return "<tr><td>"+esc(x.column)+"</td><td>"+(x.declared_type==="CONTINUOUS"?"連續":"類別")+"</td><td>"+num(x.unique_values,0)+"</td><td>"+num(x.missing_rows+x.explicit_missing_token_rows,0)+"</td><td>"+num(x.median_numeric,3)+"</td><td>"+num(x.p10_numeric,3)+" – "+num(x.p90_numeric,3)+"</td><td>"+top+"</td></tr>";
+ }).join("");
+}
+function drawScatter(){
+ const root=$("scatter"),svgns="http://www.w3.org/2000/svg",rect=(tag,attrs,text)=>{const el=document.createElementNS(svgns,tag);for(const [k,v] of Object.entries(attrs))el.setAttribute(k,String(v));if(text!=null)el.textContent=text;root.appendChild(el);return el;};
+ root.replaceChildren();
+ const left=65,right=865,top=35,bottom=425,px=x=>left+Math.max(0,Math.min(55,x))/55*(right-left),py=y=>bottom-Math.max(0,Math.min(65,y))/65*(bottom-top);
+ for(let x=0;x<=50;x+=10){rect("line",{x1:px(x),y1:top,x2:px(x),y2:bottom,stroke:"#e6eaea"});rect("text",{x:px(x),y:bottom+22,"text-anchor":"middle"},x+"");}
+ for(let y=0;y<=60;y+=10){rect("line",{x1:left,y1:py(y),x2:right,y2:py(y),stroke:"#e6eaea"});rect("text",{x:left-9,y:py(y)+4,"text-anchor":"end"},y+"");}
+ rect("line",{x1:left,y1:bottom,x2:right,y2:bottom,stroke:"#617780","stroke-width":1.4});
+ rect("line",{x1:left,y1:top,x2:left,y2:bottom,stroke:"#617780","stroke-width":1.4});
+ rect("text",{x:465,y:475,"text-anchor":"middle"},"Coverage 增幅（pp）");
+ rect("text",{x:17,y:245,transform:"rotate(-90 17 245)","text-anchor":"middle"},"Conflict Rate 增幅（pp）");
+ rect("line",{x1:px(0),y1:py(0),x2:px(55),y2:py(55),stroke:"#cf866f","stroke-dasharray":"7,6","stroke-width":"1.6"});
+ for(const r of a.pairs){
+    const x=r.delta_coverage_pp,y=r.delta_conflict_pp;
+    const dot=rect("circle",{cx:px(x),cy:py(y),r:6,fill:y>x?"#b9614d":"#328579",stroke:"#fff","stroke-width":1});
+    dot.appendChild(document.createElementNS(svgns,"title")).textContent=r.dataset_key+"\nΔ Coverage "+num(x)+" pp\nΔ Conflict "+num(y)+" pp";
+    dot.addEventListener("click",()=>{
+        $("clicked").textContent=r.dataset_key+" · Δ Coverage "+num(x)+" pp、Δ Conflict "+num(y)+" pp、Δ 無衝突覆蓋 "+num(r.delta_unambiguous_pp)+" pp";
+        $("detailSource").value=r.dataset_key;showDetail();
+    });
+ }
+}
+function drawPairs(){
+ const r=[...a.pairs].sort((x,y)=>x.delta_unambiguous_pp-y.delta_unambiguous_pp);
+ $("pairRows").innerHTML=r.map(x=>"<tr><td>"+esc(x.dataset_key)+"</td><td>"+Number(x.source_rows).toLocaleString()+" → "+Number(x.prepared_rows).toLocaleString()+"</td><td>"+pct(x.fed_c3_coverage_pct)+"</td><td>"+pct(x.fed_c3_conflict_pct)+"</td><td>"+pct(x.fed_c3_candidate_pct)+"</td><td>"+num(x.delta_coverage_pp)+"</td><td>"+num(x.delta_conflict_pp)+"</td><td class='"+(x.delta_unambiguous_pp<0?"risk":"good")+"'>"+(x.delta_unambiguous_pp>=0?"+":"")+num(x.delta_unambiguous_pp)+"</td></tr>").join("");
+}
+for(const k of ["featureType","family","order"])$(k).addEventListener("change",()=>{if(a)drawInventory()});
+$("detailSource").addEventListener("change",showDetail);
+fetch("../conflict_atlas/ATLAS_DATA.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw Error("未發布 atlas 資料");return r.json()}).then(j=>{
+ if(j.schema!=="PUBLIC20_ATLAS_V1"||j.pairs.length!==20)throw Error("缺少完整 20 對規則系統");
+ a=j;$("status").textContent="來源已核對：原 20 筆 Seed 42 機制比較；加上先前兩份資料輪廓，不把它們混算。";
+ $("m_sources").textContent=j.profiles.length;
+ $("m_columns").textContent=j.column_details.length;
+ $("m_classes").textContent=j.class_counts.length;
+ $("m_pairs").textContent=j.pairs.length;
+ j.profiles.forEach(x=>$("detailSource").appendChild(new Option(x.dataset_key,x.dataset_key)));
+ drawInventory();showDetail();drawScatter();drawPairs();
+}).catch(e=>{$("status").textContent="目前無法核實完整資料："+e.message});
+fetch("../data/PUBLIC_NEXT12_MANIFEST.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw Error("尚未發布");return r.json()}).then(m=>{
+ if(m.registered!==12||!Array.isArray(m.datasets))throw Error("來源清單未通過完整性檢查");
+ $("extensionState").textContent="另外 12 個已規劃公開來源："+m.status+"；成功 "+m.passed_count+"/12。此為獨立 Seed 42 實驗，不與既有 20 份直接合計成 42 Seeds。";
+ $("extensionRows").innerHTML=m.datasets.map(x=>"<tr><td><a href='"+esc(x.source)+"'>"+esc(x.name)+"</a></td><td>"+esc(x.trait)+"</td><td>"+(x.original_rows??"—")+"</td><td>"+(x.prepared_rows??"—")+"</td><td>"+esc(x.status)+"</td></tr>").join("");
+}).catch(e=>{$("extensionState").textContent="12 個新增來源的實測狀態尚未核對："+e.message});
+})();
+</script></body></html>
