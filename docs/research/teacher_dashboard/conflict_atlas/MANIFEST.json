@@ -10,6 +10,8 @@
     "ADDITIONAL_PUBLIC12": 12
   },
   "matched_pairs": 20,
+  "additional_matched_pairs": 12,
+  "combined_matched_pairs": 32,
   "source_evidence": [
     "PUBLIC20_BASE_RESULTS.csv",
     "PUBLIC20_MANIFEST.json",
