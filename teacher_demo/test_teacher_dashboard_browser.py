@@ -205,15 +205,22 @@ def main():
             assert page.locator("#m_sources").inner_text()=="34"
             assert page.locator("#m_columns").inner_text()=="195"
             assert page.locator("#m_classes").inner_text()=="121"
-            assert page.locator("#m_pairs").inner_text()=="20"
+            assert page.locator("#m_pairs").inner_text()=="32"
             assert page.locator("#inventoryRows tr").count()==34
-            assert page.locator("#pairRows tr").count()==20
-            assert page.locator("#scatter circle").count()==20
+            assert page.locator("#pairRows tr").count()==32
+            assert page.locator("#scatter circle").count()==32
             page.wait_for_function(
                 "document.querySelector('#extensionState').textContent.includes('PASS_ALL_12_SOURCES')",
                 timeout=20000
             )
             assert page.locator("#extensionRows tr").count()==12
+            page.locator("#pairFamily").select_option("ADDITIONAL_PUBLIC12")
+            assert page.locator("#pairRows tr").count()==12
+            assert page.locator("#scatter circle").count()==12
+            page.locator("#pairFamily").select_option("ORIGINAL_PUBLIC20")
+            assert page.locator("#pairRows tr").count()==20
+            page.locator("#pairFamily").select_option("ALL32")
+            assert page.locator("#pairRows tr").count()==32
             page.locator("#family").select_option("ADDITIONAL_PUBLIC12")
             assert page.locator("#inventoryRows tr").count()==12
             page.locator("#detailSource").select_option("letter")
@@ -222,7 +229,7 @@ def main():
             page.locator("#detailSource").select_option("student_dropout")
             assert page.locator("#classRows tr").count()==3
             assert not errors, errors
-            print("ATLAS_34_SOURCE_ROW_COLUMN_CLASS_AND_20_CONFLICT_PAIRS_BROWSER_PASS",flush=True)
+            print("ATLAS_34_SOURCE_ROW_COLUMN_CLASS_AND_32_CONFLICT_PAIRS_BROWSER_PASS",flush=True)
 
             # Three actually computed, independent A/B/C rule mechanism tracks.
             page.goto(report+"three_tracks/",wait_until="domcontentloaded")
