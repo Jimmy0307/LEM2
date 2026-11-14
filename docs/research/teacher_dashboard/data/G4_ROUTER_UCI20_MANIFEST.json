@@ -1,0 +1,36 @@
+{
+  "status": "SOURCE_AUDITED_20_UCI_NEW_SEEDS_NESTED_ROUTING",
+  "datasets": 20,
+  "seeds": [
+    11,
+    23
+  ],
+  "regimes": [
+    "IID",
+    "NONIID_05",
+    "NONIID_01"
+  ],
+  "configurations": 120,
+  "method_rows": 1080,
+  "source_hash_policy": "PUBLIC20 published_file_sha256",
+  "selection_uses_test_labels": false,
+  "architecture": "FEDERATED_C3",
+  "protocol": "64percent_induction_16percent_validation_20percent_unseen_test_no_refit",
+  "noniid_regimes": [
+    "DIRICHLET_LABEL_SKEW_ALPHA_0.5",
+    "DIRICHLET_LABEL_SKEW_ALPHA_0.1"
+  ],
+  "why_not_confirmation": [
+    "Dataset domains overlap with earlier PMLB; only seeds are new",
+    "Heuristic/router thresholds chosen after prior exploratory results",
+    "20 source-level CI exploratory, not causal effect of label skew",
+    "Exact coverage and original conflict rate invariant among six resolvers",
+    "Even favorable effect needs truly distinct externally held-out source domains"
+  ],
+  "files": [
+    "G4_ROUTER_UCI20_NEW_SEEDS_RESULTS.csv",
+    "G4_ROUTER_UCI20_NEW_SEEDS_SUMMARY.csv",
+    "G4_ROUTER_UCI20_GATE_DECISIONS.csv",
+    "G4_ROUTER_UCI20_DATASET_BOOTSTRAP.csv"
+  ]
+}
