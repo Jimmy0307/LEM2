@@ -18,15 +18,16 @@ jobs:
         with:
           python-version: "3.12"
       - run: python -m pip install -r requirements-dev.txt
-      - name: Download EXACT source-fixed 117 job outputs and receipts; do not rerun selectively
-        uses: actions/download-artifact@v4
-        with:
-          github-token: ${{ github.token }}
-          repository: ${{ github.repository }}
-          run-id: 43576124536
-          pattern: pmlb117-*
-          merge-multiple: true
-          path: incoming_pmlb_117
+      - name: Paginated download of ALL 117 original source-fixed artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p incoming_pmlb_117 pmlb_archive
+          gh run download 43576124536 --repo "${GITHUB_REPOSITORY}" --pattern "pmlb117-*" --dir pmlb_archive
+          find pmlb_archive -type f -name "RECEIPT_*.json" -exec cp {} incoming_pmlb_117/ \;
+          find pmlb_archive -type f -name "BENCHMARK_*.csv" -exec cp {} incoming_pmlb_117/ \;
+          echo "SOURCE_FILES_RECEIPTS=$(find incoming_pmlb_117 -name 'RECEIPT_*.json' | wc -l)"
+          echo "SOURCE_FILES_MODELS=$(find incoming_pmlb_117 -name 'BENCHMARK_*.csv' | wc -l)"
       - name: Count original 117 receipts with no missing candidate
         run: |
           python - <<'PY'
