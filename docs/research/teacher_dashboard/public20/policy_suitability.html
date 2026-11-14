@@ -106,10 +106,12 @@ function renderRegimes(){
  const o=$("mainObjective").value,key=$("mainFormat").value;
  const values=[["STRATIFIED_IID",null],["DIRICHLET_NON_IID",.5],["DIRICHLET_NON_IID",.1]];
  const filtered=main.filter(x=>x.objective===o);
+ const maxByRegime=values.map(([reg,alpha])=>Math.max(...filtered
+   .filter(x=>x.distribution===reg&&(alpha===null||Math.abs(n(x.alpha)-alpha)<1e-8))
+   .map(x=>n(x[key]))));
  $("regimeRows").innerHTML=policies.map(policy=>{
   const cells=values.map(([reg,alpha])=>{const x=filtered.find(x=>x.policy===policy&&x.distribution===reg&&(alpha===null||Math.abs(n(x.alpha)-alpha)<1e-8));return x?n(x[key]):NaN});
-  const strongest=Math.max(...cells);
-  return "<tr><td>"+labels[policy]+"</td>"+cells.map(v=>"<td"+(Math.abs(v-strongest)<1e-8?' class="mainvalue"':"")+">"+pct(v)+"</td>").join("")+"<td>"+notes[policy]+"</td></tr>";
+  return "<tr><td>"+labels[policy]+"</td>"+cells.map((v,j)=>"<td"+(Math.abs(v-maxByRegime[j])<1e-8?' class="mainvalue"':"")+">"+pct(v)+"</td>").join("")+"<td>"+notes[policy]+"</td></tr>";
  }).join("");
 }
 function renderChoices(){
