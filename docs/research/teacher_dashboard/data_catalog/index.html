@@ -1,0 +1,49 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="教授用粗糙集與 LEM2 研究資料集盤點：161 筆來源，PMLB 109 完整成功，原始與實驗使用 Rows、Features、預測目標、來源及結果都可查核。"><title>公開資料集總目錄｜LEM2 教授報告</title>
+<link rel="stylesheet" href="../site.css"><style>
+.dhero{background:linear-gradient(120deg,#143046,#17576d);color:white;padding:38px max(18px,calc((100vw - 1150px)/2))}.dhero h1{font-size:clamp(27px,4vw,43px);line-height:1.25;margin:10px 0}.dhero p{color:#e4f0f3;max-width:1000px}
+.statgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.statgrid>div{border:1px solid #d8e4e8;border-radius:10px;padding:15px;background:#f8fbfc}.statgrid strong{font-size:26px;color:#165c69;display:block}.statgrid small{color:#536b75}
+.filter-row{display:flex;gap:10px;flex-wrap:wrap}.filter-row label{display:flex;flex:1;min-width:150px;flex-direction:column;gap:6px;font-size:13px}.filter-row input,.filter-row select{padding:9px;border:1px solid #b9cbd1;border-radius:8px;background:white;max-width:100%}
+.scroll-table{max-height:670px;overflow:auto}.scroll-table table{width:100%;font-variant-numeric:tabular-nums}.scroll-table th,.scroll-table td{white-space:nowrap}.scroll-table td.task{white-space:normal;min-width:260px;max-width:380px}.scroll-table thead{position:sticky;top:0;background:#e4f0f2;z-index:2}.scroll-table tr:nth-child(2n){background:#f7fafb}.warn{color:#8f5413;font-weight:bold}.success{color:#166d55;font-weight:bold}
+.note{border-left:4px solid #b59148;padding:13px 17px;background:#fffaed;margin:14px 0}.footnote{font-size:13px;color:#5a7080}
+@media(max-width:790px){.dhero{padding:26px 18px}.statgrid{grid-template-columns:1fr 1fr}.scroll-table td.task{min-width:230px}}
+</style></head><body><div class="site-top"><a class="brand" href="../">LEM2 Research · 教授報告</a><nav><a href="../">研究首頁</a><a href="../pmlb_117/">109 資料實驗</a><a href="../public20/">UCI 20 資料</a><a class="active" href="./" aria-current="page">完整資料存檔</a></nav></div>
+<header class="dhero"><div class="eyebrow">DATASET AUDIT · SOURCE PROVENANCE · SUPERVISOR READY</div><h1>我們用了哪些資料集？<br>每份有多少 Rows、在預測什麼？</h1><p>將 PMLB、UCI、電商／工業研究與三份原始基線集中成一份可查核的目錄。原始來源筆數、模型實際樣本、原始與實際特徵、預測目標及 Seed 全部明確區分。</p>
+<p><a href="../pmlb_117/TEACHER_ALL_DATASETS_ROWS_TASKS_20261114.md" style="color:#bdf7e9">閱讀可列印的教授用逐資料集說明</a> · <a href="../data/TEACHER_DATASET_MASTER_20261114.csv" style="color:#bdf7e9">下載 161 筆 Excel 相容 CSV</a></p></header>
+<main class="wrap"><section class="panel"><span class="section-tag">01 · VERIFIED STUDY INVENTORY</span><h2>登錄範圍與成功率</h2><p id="status" role="status" aria-live="polite">核對逐筆資料完整性中；不會把缺失視作成功。</p>
+<div class="statgrid"><div><small>來源／研究記錄（不去重）</small><strong id="all">—</strong><small>包含重複資料來源與8失敗</small></div><div><small>PMLB 實際完成</small><strong id="pass">—</strong><small>共117個登錄候選</small></div><div><small>來源稽核未通過</small><strong id="fail">—</strong><small>保留失敗記錄</small></div><div><small>其他 UCI 研究記錄</small><strong id="uci">—</strong><small>非獨立新領域數量</small></div></div>
+<div class="note"><b>避免誤解：</b>109 是「完成的 PMLB benchmark 分類表」，不是109個相互獨立的真實產業。PMLB 含同源變體和合成資料；部分 UCI 與 PMLB 是同一原始資料。PMLB最多900個模型樣本與6個特徵，並未對來源原始數十萬筆資料做全量規則搜尋。</div></section>
+<section class="panel"><span class="section-tag">02 · ORIGINAL VS ACTUAL MODEL DATA</span><h2>161 筆可篩選資料：原始 Rows 與實際 Rows</h2>
+<div class="filter-row"><label>搜尋資料集或預測目標<input id="q" type="search" placeholder="例如 mushroom、收入、醫療、維修"></label><label>實驗來源<select id="cohort"><option value="ALL">全部批次</option></select></label><label>執行狀態<select id="state"><option value="ALL">全部狀態</option><option value="PASS">已通過</option><option value="FAILED">未通過</option></select></label><label>資料類型<select id="kind"><option value="ALL">全部類型</option><option value="SYNTHETIC">標示為合成／生成</option><option value="OTHER">其他（部分來源待分類）</option></select></label></div>
+<p class="footnote" id="showing"></p>
+<div class="scroll-table"><table><thead><tr><th>批次</th><th>資料集／來源</th><th>原始 Rows</th><th>使用 Rows</th><th>原始特徵</th><th>使用特徵</th><th>決策類別</th><th>預測／分類什麼</th><th>狀態</th></tr></thead><tbody id="records"><tr><td colspan="9">等待原始實驗登錄</td></tr></tbody></table></div>
+<p class="footnote">原始 Features 若缺乏原來源文件證據，即顯示「—」，不補估值。點選資料集名稱開啟官方／固定上游版本。更完整的特徵欄位、SHA256、授權備註和方法在全欄位 CSV。</p></section>
+<section class="panel"><span class="section-tag">03 · WHAT WAS ACTUALLY TESTED</span><h2>不是只下載資料，而是用它們測什麼？</h2>
+<div class="table-wrap"><table><thead><tr><th>實驗軌</th><th>測試問題</th><th>真實範圍／限制</th></tr></thead><tbody>
+<tr><td>最初三份基線</td><td>六種 Winner Resolution、Conflict／Coverage、42 Seeds</td><td>只限三個原始資料領域</td></tr>
+<tr><td>UCI 20／12</td><td>特徵類型、類別不平衡、Train／Test Coverage、補充規則</td><td>大多是子集、小特徵數；部分僅 Seed42</td></tr>
+<tr><td>極端7／電商2</td><td>標籤噪聲、類別不平衡、電商轉換／合成設備故障</td><td>2／4 Seeds，不是42 Seeds</td></tr>
+<tr><td>PMLB 109（G4–G6）</td><td>IID／Non-IID 標籤偏斜下，六策略何時適合與驗證集選法的效益</td><td>3 Seeds×3分布×C3，109表、981規則系統</td></tr>
+<tr><td>G7 理論／反例</td><td>決策策略不改規則命中和衝突；正確候選的可達上界</td><td>形式化性質核驗，不代表演算法首創</td></tr>
+<tr><td>G8 CPU 階梯</td><td>600/1600/3200 筆 × 4/6/8特徵的時間與記憶體成本</td><td>只有4公開來源、36組，不是全量大數據</td></tr>
+</tbody></table></div>
+<p><a href="../pmlb_117/G4_G8_109_DATASET_VALIDATION_REPORT.md">閱讀 G4–G8 的109筆資料研究結論</a> · <a href="../data/PMLB_117_3SEED_SOURCE_AUDIT.csv">逐來源可查核原始雜湊與實驗筆數</a></p></section>
+<section class="panel"><span class="section-tag">04 · GOVERNANCE</span><h2>資料保存、再現性與授權界線</h2><p>PMLB 保留來源固定 commit、原始資料 SHA-256、準備後 SHA-256、逐配置結果，但不重新上傳未逐一確認轉授權的原始資料。UCI 已發布的處理後子集有來源、雜湊與固定抽樣紀錄。若中文任務描述標記「待查」，應回原作者資料卡確認類別值，而非用此表直接替代資料字典。</p></section></main><footer class="footer"><a href="../">教授報告首頁</a> · <a href="../pmlb_117/">109資料集實驗</a></footer>
+<script>
+(()=>{"use strict";const $=id=>document.getElementById(id);let data=[];
+const plain=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const counts=x=>Number.isFinite(Number(x))&&x!==null&&x!==""?Number(x).toLocaleString("en-US"):"—";
+function filter(){
+const q=$("q").value.toLowerCase().trim(),co=$("cohort").value,st=$("state").value,kind=$("kind").value;
+const filtered=data.filter(x=>(co==="ALL"||x.cohort===co)&&(st==="ALL"||(st==="PASS"?x.status.startsWith("PASS"):!x.status.startsWith("PASS")))&&(kind==="ALL"||(kind==="SYNTHETIC"?/SYNTHETIC|SIMULATED/.test(x.source_kind):!/SYNTHETIC|SIMULATED/.test(x.source_kind)))&&(!q||[x.id,x.name,x.target_meaning,x.domain_family,x.cohort].join(" ").toLowerCase().includes(q)));
+$("showing").textContent="目前顯示 "+filtered.length+"／"+data.length+" 筆登錄記錄。";
+$("records").innerHTML=filtered.map(x=>"<tr><td>"+plain(x.cohort)+"</td><td><a href='"+plain(x.source_url)+"' rel='noopener noreferrer' target='_blank'>"+plain(x.name)+"</a></td><td>"+counts(x.original_rows)+"</td><td>"+counts(x.used_rows)+"</td><td>"+counts(x.original_features)+"</td><td>"+counts(x.used_features)+"</td><td>"+counts(x.classes)+"</td><td class='task'>"+plain(x.target_meaning)+"</td><td class='"+(x.status.startsWith("PASS")?"success":"warn")+"'>"+(x.status.startsWith("PASS")?"完成":"未通過")+"</td></tr>").join("")||"<tr><td colspan='9'>此篩選下沒有登錄資料</td></tr>";
+}
+for(const id of ["q","cohort","state","kind"])$(id).addEventListener(id==="q"?"input":"change",filter);
+fetch("../data/TEACHER_DATASET_MASTER_20261114.json",{cache:"no-store"}).then(async r=>{if(!r.ok)throw Error("主表尚未發布");let j=await r.json();if(j.record_count!==161||j.pmlb_success!==109||j.data.length!==161)throw Error("來源完整性檢查失敗");data=j.data;const pass=data.filter(x=>x.cohort==="PMLB_117"&&x.status.startsWith("PASS")).length;
+$("all").textContent=data.length;$("pass").textContent=pass+"/117";$("fail").textContent=data.filter(x=>!x.status.startsWith("PASS")).length;$("uci").textContent=data.filter(x=>x.cohort!=="PMLB_117").length;
+Object.keys(j.cohort_counts).forEach(key=>$("cohort").add(new Option(key+" ("+j.cohort_counts[key]+")",key)));
+$("status").textContent="來源紀錄驗證通過：161筆跨批次登錄、PMLB109筆完整通過、8筆未通過；Rows與原始／模型特徵分欄。";
+filter();
+}).catch(e=>{$("status").textContent="未能驗證資料主表："+e.message});
+})();
+</script></body></html>
