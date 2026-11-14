@@ -3325,11 +3325,11 @@
       "distribution": "集中式；聯邦 C3 IID",
       "study_question": "規則命中、衝突、六決策策略與補充規則的泛化／Train-Test Coverage",
       "source_url": "https://archive.ics.uci.edu/dataset/2",
-      "source_sha256": "ec4fbe2951119daa8e40f92f188a138a08beb1eef6bf5a9f148bb34767f9c54d",
+      "source_sha256": "",
       "prepared_sha256": "ec4fbe2951119daa8e40f92f188a138a08beb1eef6bf5a9f148bb34767f9c54d",
       "storage": "Prepared CSV 在 GitHub：docs/research/public_datasets_20/adult_income_prepared.csv",
       "license_note": "來源登錄記載：CC BY 4.0；需逐站確認是否允許再散布",
-      "notes": "Protected attributes omitted: sex, race, native country. Historical income is not normative eligibility."
+      "notes": "Protected attributes omitted: sex, race, native country. Historical income is not normative eligibility.；本主表未保存來源原始下載檔SHA，僅有準備資料內部與GitHub檔案摘要；不得把準備資料SHA說成上游raw SHA"
     },
     {
       "cohort": "UCI_NEW20",
@@ -3353,11 +3353,11 @@
       "distribution": "集中式；聯邦 C3 IID",
       "study_question": "規則命中、衝突、六決策策略與補充規則的泛化／Train-Test Coverage",
       "source_url": "https://archive.ics.uci.edu/dataset/222",
-      "source_sha256": "bf42dc7d06143494c4e8c23293adf9cbd7266e38e989e6dd597b3bd18f8c4649",
+      "source_sha256": "",
       "prepared_sha256": "bf42dc7d06143494c4e8c23293adf9cbd7266e38e989e6dd597b3bd18f8c4649",
       "storage": "Prepared CSV 在 GitHub：docs/research/public_datasets_20/bank_marketing_prepared.csv",
       "license_note": "來源登錄記載：CC BY 4.0；需逐站確認是否允許再散布",
-      "notes": "Exclude duration: call length observed only after outcome; no bank IDs."
+      "notes": "Exclude duration: call length observed only after outcome; no bank IDs.；本主表未保存來源原始下載檔SHA，僅有準備資料內部與GitHub檔案摘要；不得把準備資料SHA說成上游raw SHA"
     },
     {
       "cohort": "UCI_NEW20",
@@ -3381,11 +3381,11 @@
       "distribution": "集中式；聯邦 C3 IID",
       "study_question": "規則命中、衝突、六決策策略與補充規則的泛化／Train-Test Coverage",
       "source_url": "https://archive.ics.uci.edu/dataset/267",
-      "source_sha256": "a4e6eb57f00dc0c5696badf6553001e8871644b5b98ab1b2869054af1d255125",
+      "source_sha256": "",
       "prepared_sha256": "6da87da586c6089307c59824a5127df375fe14301ac628acc5d7b3b4a32db9a5",
       "storage": "Prepared CSV 在 GitHub：docs/research/public_datasets_20/banknote_prepared.csv",
       "license_note": "來源登錄記載：CC BY 4.0；需逐站確認是否允許再散布",
-      "notes": "four continuous wavelet statistics; near-balanced binary"
+      "notes": "four continuous wavelet statistics; near-balanced binary；本主表未保存來源原始下載檔SHA，僅有準備資料內部與GitHub檔案摘要；不得把準備資料SHA說成上游raw SHA"
     },
     {
       "cohort": "UCI_NEW20",
@@ -3409,11 +3409,11 @@
       "distribution": "集中式；聯邦 C3 IID",
       "study_question": "規則命中、衝突、六決策策略與補充規則的泛化／Train-Test Coverage",
       "source_url": "https://archive.ics.uci.edu/dataset/17",
-      "source_sha256": "496d6291051149a9fe3f683e4b56f9c85f40c9fc60dac535e5b983226abb61bb",
+      "source_sha256": "",
       "prepared_sha256": "680a55c503b6f7dccde3a730975deb0dfa4095f97063f2bda06bb30238e0bb61",
       "storage": "Prepared CSV 在 GitHub：docs/research/public_datasets_20/breast_diagnostic_prepared.csv",
       "license_note": "來源登錄記載：CC BY 4.0；需逐站確認是否允許再散布",
-      "notes": "Public historical diagnostic research only, not clinical deployment."
+      "notes": "Public historical diagnostic research only, not clinical deployment.；本主表未保存來源原始下載檔SHA，僅有準備資料內部與GitHub檔案摘要；不得把準備資料SHA說成上游raw SHA"
     },
     {
       "cohort": "UCI_NEW20",
@@ -3437,11 +3437,11 @@
       "distribution": "集中式；聯邦 C3 IID",
       "study_question": "規則命中、衝突、六決策策略與補充規則的泛化／Train-Test Coverage",
       "source_url": "https://archive.ics.uci.edu/dataset/31",
-      "source_sha256": "62d4f131d469b669cd7212092b82e8b27fb2de5ec08484c8e5f2019668e10cbb",
+      "source_sha256": "",
       "prepared_sha256": "62d4f131d469b669cd7212092b82e8b27fb2de5ec08484c8e5f2019668e10cbb",
       "storage": "Prepared CSV 在 GitHub：docs/research/public_datasets_20/covertype_prepared.csv",
       "license_note": "來源登錄記載：CC BY 4.0；需逐站確認是否允許再散布",
-      "notes": "Full 581012 rows are acquired for deterministic fixed subset; actual model fit only 1800 rows."
+      "notes": "Full 581012 rows are acquired for deterministic fixed subset; actual model fit only 1800 rows.；本主表未保存來源原始下載檔SHA，僅有準備資料內部與GitHub檔案摘要；不得把準備資料SHA說成上游raw SHA"
     },
     {
       "cohort": "UCI_NEW20",
@@ -3465,11 +3465,11 @@
       "distribution": "集中式；聯邦 C3 IID",
       "study_question": "規則命中、衝突、六決策策略與補充規則的泛化／Train-Test Coverage",
       "source_url": "https://archive.ics.uci.edu/dataset/602",
-      "source_sha256": "9f51ea6e2da4fa39b658814ca48c87fd187fe8cbda6ff2abbb702c0b00db92c8",
+      "source_sha256": "",
       "prepared_sha256": "773b98433fc43157054d321006ac9df99f05f32f78bb2256dac4e10074140a02",
       "storage": "Prepared CSV 在 GitHub：docs/research/public_datasets_20/dry_bean_prepared.csv",
       "license_note": "來源登錄記載：CC BY 4.0；需逐站確認是否允許再散布",
-      "notes": "seven classes; continuous shape descriptors; high overlap"
+      "notes": "seven classes; continuous shape descriptors; high overlap；本主表未保存來源原始下載檔SHA，僅有準備資料內部與GitHub檔案摘要；不得把準備資料SHA說成上游raw SHA"
     },
     {
       "cohort": "UCI_NEW20",
@@ -3493,11 +3493,11 @@
       "distribution": "集中式；聯邦 C3 IID",
       "study_question": "規則命中、衝突、六決策策略與補充規則的泛化／Train-Test Coverage",
       "source_url": "https://archive.ics.uci.edu/dataset/264",
-      "source_sha256": "3c3968f6f42b28ed00237c1fe2d4bf88ed6438da384d081a1ab7b9972caf4aa2",
+      "source_sha256": "",
       "prepared_sha256": "c553e80c8b27a2d1180982609fc011c9c01e1207ec65c5f01f1dc69e2ea58f84",
       "storage": "Prepared CSV 在 GitHub：docs/research/public_datasets_20/eeg_eye_state_prepared.csv",
       "license_note": "來源登錄記載：CC BY 4.0；需逐站確認是否允許再散布",
-      "notes": "EEG records are time-ordered; this feasibility split is randomized, NOT a chronological generalization test. Replaces failed UCI 357 target import."
+      "notes": "EEG records are time-ordered; this feasibility split is randomized, NOT a chronological generalization test. Replaces failed UCI 357 target import.；本主表未保存來源原始下載檔SHA，僅有準備資料內部與GitHub檔案摘要；不得把準備資料SHA說成上游raw SHA"
     },
     {
       "cohort": "UCI_NEW20",
@@ -3521,11 +3521,11 @@
       "distribution": "集中式；聯邦 C3 IID",
       "study_question": "規則命中、衝突、六決策策略與補充規則的泛化／Train-Test Coverage",
       "source_url": "https://archive.ics.uci.edu/dataset/144",
-      "source_sha256": "9ed2dccff4ad5ace0610ccc151b8dc577cc8afd510665dc3e7ed7892e4f06430",
+      "source_sha256": "",
       "prepared_sha256": "9ed2dccff4ad5ace0610ccc151b8dc577cc8afd510665dc3e7ed7892e4f06430",
       "storage": "Prepared CSV 在 GitHub：docs/research/public_datasets_20/german_credit_prepared.csv",
       "license_note": "來源登錄記載：CC BY 4.0；需逐站確認是否允許再散布",
-      "notes": "Historical credit discrimination risks; do not use to decide real loans."
+      "notes": "Historical credit discrimination risks; do not use to decide real loans.；本主表未保存來源原始下載檔SHA，僅有準備資料內部與GitHub檔案摘要；不得把準備資料SHA說成上游raw SHA"
     },
     {
       "cohort": "UCI_NEW20",
@@ -3549,11 +3549,11 @@
       "distribution": "集中式；聯邦 C3 IID",
       "study_question": "規則命中、衝突、六決策策略與補充規則的泛化／Train-Test Coverage",
       "source_url": "https://archive.ics.uci.edu/dataset/471",
-      "source_sha256": "dda821ba6cff9039dd3a6302b600fdd2935d89784c917e35f5ae77cefe3ae941",
+      "source_sha256": "",
       "prepared_sha256": "effb034d923882f06a2800fa13edf19eb9b631973357c8994bae27591ff90c12",
       "storage": "Prepared CSV 在 GitHub：docs/research/public_datasets_20/grid_stability_prepared.csv",
       "license_note": "來源登錄記載：CC BY 4.0；需逐站確認是否允許再散布",
-      "notes": "Predict only categorical stabf from six input predictors. Exclude continuous target stab and derived p1; simulation, not actual utility grid. Replaces unavailable UCI 325 Python import."
+      "notes": "Predict only categorical stabf from six input predictors. Exclude continuous target stab and derived p1; simulation, not actual utility grid. Replaces unavailable UCI 325 Python import.；本主表未保存來源原始下載檔SHA，僅有準備資料內部與GitHub檔案摘要；不得把準備資料SHA說成上游raw SHA"
     },
     {
       "cohort": "UCI_NEW20",
@@ -3577,11 +3577,11 @@
       "distribution": "集中式；聯邦 C3 IID",
       "study_question": "規則命中、衝突、六決策策略與補充規則的泛化／Train-Test Coverage",
       "source_url": "https://archive.ics.uci.edu/dataset/43",
-      "source_sha256": "424990d2c928faba30dade49efe3f5e8944f983227ae4866630a26e871cb26ec",
+      "source_sha256": "",
       "prepared_sha256": "424990d2c928faba30dade49efe3f5e8944f983227ae4866630a26e871cb26ec",
       "storage": "Prepared CSV 在 GitHub：docs/research/public_datasets_20/haberman_prepared.csv",
       "license_note": "來源登錄記載：CC BY 4.0；需逐站確認是否允許再散布",
-      "notes": "Historical medical dataset, research only."
+      "notes": "Historical medical dataset, research only.；本主表未保存來源原始下載檔SHA，僅有準備資料內部與GitHub檔案摘要；不得把準備資料SHA說成上游raw SHA"
     },
     {
       "cohort": "UCI_NEW20",
@@ -3605,11 +3605,11 @@
       "distribution": "集中式；聯邦 C3 IID",
       "study_question": "規則命中、衝突、六決策策略與補充規則的泛化／Train-Test Coverage",
       "source_url": "https://archive.ics.uci.edu/dataset/372",
-      "source_sha256": "427996ade606c406900f2a6ce24c981129a2670be3b1508731209d58d05668a9",
+      "source_sha256": "",
       "prepared_sha256": "90be6205ac58c7d1ab55945140b17c8f56e2f89290f85944e5ac1ab905849354",
       "storage": "Prepared CSV 在 GitHub：docs/research/public_datasets_20/htru2_prepared.csv",
       "license_note": "來源登錄記載：CC BY 4.0；需逐站確認是否允許再散布",
-      "notes": "rare positive pulsar (~9%); continuous"
+      "notes": "rare positive pulsar (~9%); continuous；本主表未保存來源原始下載檔SHA，僅有準備資料內部與GitHub檔案摘要；不得把準備資料SHA說成上游raw SHA"
     },
     {
       "cohort": "UCI_NEW20",
@@ -3633,11 +3633,11 @@
       "distribution": "集中式；聯邦 C3 IID",
       "study_question": "規則命中、衝突、六決策策略與補充規則的泛化／Train-Test Coverage",
       "source_url": "https://archive.ics.uci.edu/dataset/53",
-      "source_sha256": "df9309d8c619401c25493cf27377950ac5111274eebd03bde3ad1f74a97c4ff4",
+      "source_sha256": "",
       "prepared_sha256": "e1412f8c8c69c78fea91c42d8732f7edeb182234e9a67261b29617cc6097cc7b",
       "storage": "Prepared CSV 在 GitHub：docs/research/public_datasets_20/iris_prepared.csv",
       "license_note": "來源登錄記載：CC BY 4.0；需逐站確認是否允許再散布",
-      "notes": "tiny balanced three-class continuous"
+      "notes": "tiny balanced three-class continuous；本主表未保存來源原始下載檔SHA，僅有準備資料內部與GitHub檔案摘要；不得把準備資料SHA說成上游raw SHA"
     },
     {
       "cohort": "UCI_NEW20",
@@ -3661,11 +3661,11 @@
       "distribution": "集中式；聯邦 C3 IID",
       "study_question": "規則命中、衝突、六決策策略與補充規則的泛化／Train-Test Coverage",
       "source_url": "https://archive.ics.uci.edu/dataset/59",
-      "source_sha256": "eb26ce42a37f0eae16d9be426b3663421a51ec42f79af1efbaedff7b85856348",
+      "source_sha256": "",
       "prepared_sha256": "eb26ce42a37f0eae16d9be426b3663421a51ec42f79af1efbaedff7b85856348",
       "storage": "Prepared CSV 在 GitHub：docs/research/public_datasets_20/letter_prepared.csv",
       "license_note": "來源登錄記載：CC BY 4.0；需逐站確認是否允許再散布",
-      "notes": "Original integer features 0..15 interpreted as discrete for this stress condition."
+      "notes": "Original integer features 0..15 interpreted as discrete for this stress condition.；本主表未保存來源原始下載檔SHA，僅有準備資料內部與GitHub檔案摘要；不得把準備資料SHA說成上游raw SHA"
     },
     {
       "cohort": "UCI_NEW20",
@@ -3689,11 +3689,11 @@
       "distribution": "集中式；聯邦 C3 IID",
       "study_question": "規則命中、衝突、六決策策略與補充規則的泛化／Train-Test Coverage",
       "source_url": "https://archive.ics.uci.edu/dataset/159",
-      "source_sha256": "8a7d51d6cb6cf914ab7352ef9f042855b4d2945e83e6b87e18a6ef47b04b2302",
+      "source_sha256": "",
       "prepared_sha256": "8e17cd063b899f07015f7e499933e0e60f1a82bf614e5d1dd05efae70d564834",
       "storage": "Prepared CSV 在 GitHub：docs/research/public_datasets_20/magic_gamma_prepared.csv",
       "license_note": "來源登錄記載：CC BY 4.0；需逐站確認是否允許再散布",
-      "notes": "large continuous detection; binary signal-vs-background"
+      "notes": "large continuous detection; binary signal-vs-background；本主表未保存來源原始下載檔SHA，僅有準備資料內部與GitHub檔案摘要；不得把準備資料SHA說成上游raw SHA"
     },
     {
       "cohort": "UCI_NEW20",
@@ -3717,11 +3717,11 @@
       "distribution": "集中式；聯邦 C3 IID",
       "study_question": "規則命中、衝突、六決策策略與補充規則的泛化／Train-Test Coverage",
       "source_url": "https://archive.ics.uci.edu/dataset/73",
-      "source_sha256": "f79077e58ac74714ebc800e98c9284d81205a8587608d55a31d217db4057731a",
+      "source_sha256": "",
       "prepared_sha256": "f79077e58ac74714ebc800e98c9284d81205a8587608d55a31d217db4057731a",
       "storage": "Prepared CSV 在 GitHub：docs/research/public_datasets_20/mushroom_prepared.csv",
       "license_note": "來源登錄記載：CC BY 4.0；需逐站確認是否允許再散布",
-      "notes": "Do not treat as a real-world mushroom safety classifier."
+      "notes": "Do not treat as a real-world mushroom safety classifier.；本主表未保存來源原始下載檔SHA，僅有準備資料內部與GitHub檔案摘要；不得把準備資料SHA說成上游raw SHA"
     },
     {
       "cohort": "UCI_NEW20",
@@ -3745,11 +3745,11 @@
       "distribution": "集中式；聯邦 C3 IID",
       "study_question": "規則命中、衝突、六決策策略與補充規則的泛化／Train-Test Coverage",
       "source_url": "https://archive.ics.uci.edu/dataset/327",
-      "source_sha256": "807192cd2882f7b73d7ecf9c2add02654cc7c97d6aff3c05088b535a559e0b18",
+      "source_sha256": "",
       "prepared_sha256": "807192cd2882f7b73d7ecf9c2add02654cc7c97d6aff3c05088b535a559e0b18",
       "storage": "Prepared CSV 在 GitHub：docs/research/public_datasets_20/phishing_prepared.csv",
       "license_note": "來源登錄記載：CC BY 4.0；需逐站確認是否允許再散布",
-      "notes": "Historical URL features; not a current security gateway."
+      "notes": "Historical URL features; not a current security gateway.；本主表未保存來源原始下載檔SHA，僅有準備資料內部與GitHub檔案摘要；不得把準備資料SHA說成上游raw SHA"
     },
     {
       "cohort": "UCI_NEW20",
@@ -3773,11 +3773,11 @@
       "distribution": "集中式；聯邦 C3 IID",
       "study_question": "規則命中、衝突、六決策策略與補充規則的泛化／Train-Test Coverage",
       "source_url": "https://archive.ics.uci.edu/dataset/545",
-      "source_sha256": "ae6a01f09198d7e524eb9b457d88ee88b297b09432905b1c0d39e1baeb003e07",
+      "source_sha256": "",
       "prepared_sha256": "b5aaa8672ce39c9730b5a5429bc9071b8fd0939343f95c3c319a1434c8b4caa6",
       "storage": "Prepared CSV 在 GitHub：docs/research/public_datasets_20/rice_prepared.csv",
       "license_note": "來源登錄記載：CC BY 4.0；需逐站確認是否允許再散布",
-      "notes": "binary similar grain shapes; correlated continuous"
+      "notes": "binary similar grain shapes; correlated continuous；本主表未保存來源原始下載檔SHA，僅有準備資料內部與GitHub檔案摘要；不得把準備資料SHA說成上游raw SHA"
     },
     {
       "cohort": "UCI_NEW20",
@@ -3801,11 +3801,11 @@
       "distribution": "集中式；聯邦 C3 IID",
       "study_question": "規則命中、衝突、六決策策略與補充規則的泛化／Train-Test Coverage",
       "source_url": "https://archive.ics.uci.edu/dataset/151",
-      "source_sha256": "94fc2bd5b248b51c86798a9de3d240656a0e07cf1f055e1b385e89a7bdaca2ea",
+      "source_sha256": "",
       "prepared_sha256": "94fc2bd5b248b51c86798a9de3d240656a0e07cf1f055e1b385e89a7bdaca2ea",
       "storage": "Prepared CSV 在 GitHub：docs/research/public_datasets_20/sonar_prepared.csv",
       "license_note": "來源登錄記載：CC BY 4.0；需逐站確認是否允許再散布",
-      "notes": "small-n, high-d 60 features original"
+      "notes": "small-n, high-d 60 features original；本主表未保存來源原始下載檔SHA，僅有準備資料內部與GitHub檔案摘要；不得把準備資料SHA說成上游raw SHA"
     },
     {
       "cohort": "UCI_NEW20",
@@ -3829,11 +3829,11 @@
       "distribution": "集中式；聯邦 C3 IID",
       "study_question": "規則命中、衝突、六決策策略與補充規則的泛化／Train-Test Coverage",
       "source_url": "https://archive.ics.uci.edu/dataset/94",
-      "source_sha256": "df8ac6c7306ab5cc9975f6a39d588742d46818331fa35eb0231cdc2bd641b1be",
+      "source_sha256": "",
       "prepared_sha256": "d628daa9db4524e46c1391a96003a524116609431c26f6670f0687be5c5d3bc0",
       "storage": "Prepared CSV 在 GitHub：docs/research/public_datasets_20/spambase_prepared.csv",
       "license_note": "來源登錄記載：CC BY 4.0；需逐站確認是否允許再散布",
-      "notes": "high-dimensional original; numeric sparse word frequencies"
+      "notes": "high-dimensional original; numeric sparse word frequencies；本主表未保存來源原始下載檔SHA，僅有準備資料內部與GitHub檔案摘要；不得把準備資料SHA說成上游raw SHA"
     },
     {
       "cohort": "UCI_NEW20",
@@ -3857,11 +3857,11 @@
       "distribution": "集中式；聯邦 C3 IID",
       "study_question": "規則命中、衝突、六決策策略與補充規則的泛化／Train-Test Coverage",
       "source_url": "https://archive.ics.uci.edu/dataset/109",
-      "source_sha256": "c858f77b0be722096b052532641465404bf89b1507733b2b6d44ec52c1688e2b",
+      "source_sha256": "",
       "prepared_sha256": "07a67cdf6cc38233663226c099ea1781488ca97916e8b6cce136e3141d3ee299",
       "storage": "Prepared CSV 在 GitHub：docs/research/public_datasets_20/wine_prepared.csv",
       "license_note": "來源登錄記載：CC BY 4.0；需逐站確認是否允許再散布",
-      "notes": "tiny three-class continuous; many attributes in original"
+      "notes": "tiny three-class continuous; many attributes in original；本主表未保存來源原始下載檔SHA，僅有準備資料內部與GitHub檔案摘要；不得把準備資料SHA說成上游raw SHA"
     },
     {
       "cohort": "UCI_NEXT12",
@@ -4535,5 +4535,6 @@
       "license_note": "以 UCI 資料卡為準",
       "notes": "與 PMLB 同名 benchmark 可能共源，不能重複算獨立資料集"
     }
-  ]
+  ],
+  "provenance_correction": "UCI_NEW20 source_sha256 deliberately empty (raw source bytes were not hashed in the manifest); prepared_sha256 retains GitHub published sample sha only; PMLB gzip raw SHA verified independently."
 }
