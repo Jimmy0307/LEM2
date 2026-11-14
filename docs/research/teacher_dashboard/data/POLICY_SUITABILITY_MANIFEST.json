@@ -1,0 +1,41 @@
+{
+  "status": "PASS_GROUNDED_DESCRIPTIVE_ATLAS",
+  "source_research_branch": "research/report-ready-dashboard-20261109",
+  "n_uci_20": 20,
+  "one_seed_pilot": 42,
+  "n_policy_comparisons": 40,
+  "twenty_rows": 720,
+  "twenty_groups": 270,
+  "n_original_42": 3,
+  "original_42_seeds": 42,
+  "original_42_regimes": [
+    "IID-C2-C5",
+    "nonIID-alpha=0.5-C2-C5",
+    "nonIID-alpha=0.1-C2-C5"
+  ],
+  "original_42_rows": 54,
+  "no_claims": [
+    "A feature type does not independently cause a certain policy to win",
+    "Twenty datasets each have only one holdout seed, many tied winners",
+    "Original 42-seed domains are only Balance Scale, Car Evaluation, Hayes-Roth",
+    "Class ratios in PUBLIC20 manifest profile the complete prepared subset, not train-only meta-features",
+    "Conflict and candidate coverage in this atlas are TEST diagnostic metrics, must never be fed into a deployed selector",
+    "Class imbalance and per-client label skew are different dimensions",
+    "Original 42 non-IID experiment varies label allocation using Dirichlet alpha; quantity/feature/time drift not validated",
+    "Zero conflict yields identical six-policy predictions by design",
+    "No-match training-majority fallback is not explicit abstention"
+  ],
+  "next_valid_design": [
+    "For each dataset and seed, outer holdout stays untouched",
+    "Compute feature type, train-only entropy, minority share, condition value cardinality, class count, client label JS divergence, client row count CV, and rule structural stats using only train",
+    "Fit six policies using the same frozen induction rules; evaluate on INNER validation",
+    "Learn a policy selector on meta-features and validate leave-one-dataset-out; evaluate only after lock",
+    "Compare against globally fixed-best and six-method-oracle diagnostic (oracle never deployed)",
+    "Report Balanced Accuracy, Macro-F1, minority recall, regret, runtime, and coverage/conflict separate"
+  ],
+  "outputs": [
+    "POLICY_SUITABILITY_20_MATCHUPS.csv",
+    "POLICY_SUITABILITY_20_GROUPS.csv",
+    "POLICY_SUITABILITY_42_DISTRIBUTIONS.csv"
+  ]
+}
