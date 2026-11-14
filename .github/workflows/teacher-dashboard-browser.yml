@@ -16,6 +16,11 @@ on:
       - docs/research/teacher_dashboard/public_data/**
       - docs/research/teacher_dashboard/public20/**
       - docs/research/teacher_dashboard/data_catalog/**
+      - docs/research/teacher_dashboard/g4_g8/**
+      - docs/research/teacher_dashboard/data/G4_ROUTER_UCI20_*
+      - docs/research/teacher_dashboard/data/G2_JOINT_COVERAGE_CONFLICT_*
+      - docs/research/teacher_dashboard/data/G8_OPTIMIZED_REDUCT_*
+      - docs/research/teacher_dashboard/data/G8_GREEDY_FULL_LEM2_TEST_*
       - docs/research/teacher_dashboard/data/TEACHER_DATASET_*
       - docs/research/teacher_dashboard/data/TEACHER_UCI20_*
       - docs/research/teacher_dashboard/atlas/**
