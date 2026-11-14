@@ -1,0 +1,4340 @@
+{
+  "generated_date": "2026-11-14",
+  "status": "PASS_20_PUBLIC_UCI_X_3_SEEDS_X_2_SYSTEMS_X_6_POLICIES",
+  "dataset_count": 20,
+  "architectures": [
+    "CENTRALIZED",
+    "FEDERATED"
+  ],
+  "seeds": [
+    1,
+    7,
+    42
+  ],
+  "policy_rows": 720,
+  "aggregated_rows": 240,
+  "protocol": "64% inductive Train;16% inner validation;20% untouched Test; fixed Classical reduct+LEM2 per dataset/seed/architecture; resolver-only comparison",
+  "not_full_original_dataset": true,
+  "records": [
+    {
+      "dataset": "adult_income",
+      "architecture": "CENTRALIZED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 58.98121428333334,
+      "mean_test_accuracy_pct": 76.01851851666666,
+      "mean_test_macro_f1_pct": 59.84664718333333,
+      "mean_test_exact_rule_coverage_pct": 71.57407407333332,
+      "mean_rule_count": 220,
+      "total_dataset_rows": 1800,
+      "source_sha256": "ec4fbe2951119daa8e40f92f188a138a08beb1eef6bf5a9f148bb34767f9c54d"
+    },
+    {
+      "dataset": "adult_income",
+      "architecture": "CENTRALIZED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 59.141062639999994,
+      "mean_test_accuracy_pct": 76.66666666666666,
+      "mean_test_macro_f1_pct": 60.08961717,
+      "mean_test_exact_rule_coverage_pct": 71.57407407333332,
+      "mean_rule_count": 220,
+      "total_dataset_rows": 1800,
+      "source_sha256": "ec4fbe2951119daa8e40f92f188a138a08beb1eef6bf5a9f148bb34767f9c54d"
+    },
+    {
+      "dataset": "adult_income",
+      "architecture": "CENTRALIZED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 59.672947433333334,
+      "mean_test_accuracy_pct": 76.66666666666666,
+      "mean_test_macro_f1_pct": 60.72935133333333,
+      "mean_test_exact_rule_coverage_pct": 71.57407407333332,
+      "mean_rule_count": 220,
+      "total_dataset_rows": 1800,
+      "source_sha256": "ec4fbe2951119daa8e40f92f188a138a08beb1eef6bf5a9f148bb34767f9c54d"
+    },
+    {
+      "dataset": "adult_income",
+      "architecture": "CENTRALIZED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 60.238782320000006,
+      "mean_test_accuracy_pct": 76.11111111,
+      "mean_test_macro_f1_pct": 61.29520772,
+      "mean_test_exact_rule_coverage_pct": 71.57407407333332,
+      "mean_rule_count": 220,
+      "total_dataset_rows": 1800,
+      "source_sha256": "ec4fbe2951119daa8e40f92f188a138a08beb1eef6bf5a9f148bb34767f9c54d"
+    },
+    {
+      "dataset": "adult_income",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 59.672947433333334,
+      "mean_test_accuracy_pct": 76.66666666666666,
+      "mean_test_macro_f1_pct": 60.72935133333333,
+      "mean_test_exact_rule_coverage_pct": 71.57407407333332,
+      "mean_rule_count": 220,
+      "total_dataset_rows": 1800,
+      "source_sha256": "ec4fbe2951119daa8e40f92f188a138a08beb1eef6bf5a9f148bb34767f9c54d"
+    },
+    {
+      "dataset": "adult_income",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 60.238782320000006,
+      "mean_test_accuracy_pct": 76.11111111,
+      "mean_test_macro_f1_pct": 61.29520772,
+      "mean_test_exact_rule_coverage_pct": 71.57407407333332,
+      "mean_rule_count": 220,
+      "total_dataset_rows": 1800,
+      "source_sha256": "ec4fbe2951119daa8e40f92f188a138a08beb1eef6bf5a9f148bb34767f9c54d"
+    },
+    {
+      "dataset": "adult_income",
+      "architecture": "FEDERATED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 66.52662253333334,
+      "mean_test_accuracy_pct": 76.57407407333335,
+      "mean_test_macro_f1_pct": 66.87715364333333,
+      "mean_test_exact_rule_coverage_pct": 99.25925926,
+      "mean_rule_count": 275,
+      "total_dataset_rows": 1800,
+      "source_sha256": "ec4fbe2951119daa8e40f92f188a138a08beb1eef6bf5a9f148bb34767f9c54d"
+    },
+    {
+      "dataset": "adult_income",
+      "architecture": "FEDERATED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 64.08080122,
+      "mean_test_accuracy_pct": 78.51851851666667,
+      "mean_test_macro_f1_pct": 65.71359614333333,
+      "mean_test_exact_rule_coverage_pct": 99.25925926,
+      "mean_rule_count": 275,
+      "total_dataset_rows": 1800,
+      "source_sha256": "ec4fbe2951119daa8e40f92f188a138a08beb1eef6bf5a9f148bb34767f9c54d"
+    },
+    {
+      "dataset": "adult_income",
+      "architecture": "FEDERATED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 64.06948452333333,
+      "mean_test_accuracy_pct": 78.70370370333333,
+      "mean_test_macro_f1_pct": 65.74319864666667,
+      "mean_test_exact_rule_coverage_pct": 99.25925926,
+      "mean_rule_count": 275,
+      "total_dataset_rows": 1800,
+      "source_sha256": "ec4fbe2951119daa8e40f92f188a138a08beb1eef6bf5a9f148bb34767f9c54d"
+    },
+    {
+      "dataset": "adult_income",
+      "architecture": "FEDERATED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 70.04187178,
+      "mean_test_accuracy_pct": 78.88888889,
+      "mean_test_macro_f1_pct": 70.32899635999999,
+      "mean_test_exact_rule_coverage_pct": 99.25925926,
+      "mean_rule_count": 275,
+      "total_dataset_rows": 1800,
+      "source_sha256": "ec4fbe2951119daa8e40f92f188a138a08beb1eef6bf5a9f148bb34767f9c54d"
+    },
+    {
+      "dataset": "adult_income",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 64.05816782666666,
+      "mean_test_accuracy_pct": 78.88888889,
+      "mean_test_macro_f1_pct": 65.79807365,
+      "mean_test_exact_rule_coverage_pct": 99.25925926,
+      "mean_rule_count": 275,
+      "total_dataset_rows": 1800,
+      "source_sha256": "ec4fbe2951119daa8e40f92f188a138a08beb1eef6bf5a9f148bb34767f9c54d"
+    },
+    {
+      "dataset": "adult_income",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 69.13370678666666,
+      "mean_test_accuracy_pct": 78.51851851666667,
+      "mean_test_macro_f1_pct": 69.57880236,
+      "mean_test_exact_rule_coverage_pct": 99.25925926,
+      "mean_rule_count": 275,
+      "total_dataset_rows": 1800,
+      "source_sha256": "ec4fbe2951119daa8e40f92f188a138a08beb1eef6bf5a9f148bb34767f9c54d"
+    },
+    {
+      "dataset": "bank_marketing",
+      "architecture": "CENTRALIZED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.958370769999995,
+      "mean_test_accuracy_pct": 87.59259259333334,
+      "mean_test_macro_f1_pct": 49.429317430000005,
+      "mean_test_exact_rule_coverage_pct": 28.98148148,
+      "mean_rule_count": 67.33333333333333,
+      "total_dataset_rows": 1800,
+      "source_sha256": "bf42dc7d06143494c4e8c23293adf9cbd7266e38e989e6dd597b3bd18f8c4649"
+    },
+    {
+      "dataset": "bank_marketing",
+      "architecture": "CENTRALIZED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.958370769999995,
+      "mean_test_accuracy_pct": 87.59259259333334,
+      "mean_test_macro_f1_pct": 49.429317430000005,
+      "mean_test_exact_rule_coverage_pct": 28.98148148,
+      "mean_rule_count": 67.33333333333333,
+      "total_dataset_rows": 1800,
+      "source_sha256": "bf42dc7d06143494c4e8c23293adf9cbd7266e38e989e6dd597b3bd18f8c4649"
+    },
+    {
+      "dataset": "bank_marketing",
+      "architecture": "CENTRALIZED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.958370769999995,
+      "mean_test_accuracy_pct": 87.59259259333334,
+      "mean_test_macro_f1_pct": 49.429317430000005,
+      "mean_test_exact_rule_coverage_pct": 28.98148148,
+      "mean_rule_count": 67.33333333333333,
+      "total_dataset_rows": 1800,
+      "source_sha256": "bf42dc7d06143494c4e8c23293adf9cbd7266e38e989e6dd597b3bd18f8c4649"
+    },
+    {
+      "dataset": "bank_marketing",
+      "architecture": "CENTRALIZED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.801138066666674,
+      "mean_test_accuracy_pct": 87.31481481666667,
+      "mean_test_macro_f1_pct": 49.27095442666667,
+      "mean_test_exact_rule_coverage_pct": 28.98148148,
+      "mean_rule_count": 67.33333333333333,
+      "total_dataset_rows": 1800,
+      "source_sha256": "bf42dc7d06143494c4e8c23293adf9cbd7266e38e989e6dd597b3bd18f8c4649"
+    },
+    {
+      "dataset": "bank_marketing",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.958370769999995,
+      "mean_test_accuracy_pct": 87.59259259333334,
+      "mean_test_macro_f1_pct": 49.429317430000005,
+      "mean_test_exact_rule_coverage_pct": 28.98148148,
+      "mean_rule_count": 67.33333333333333,
+      "total_dataset_rows": 1800,
+      "source_sha256": "bf42dc7d06143494c4e8c23293adf9cbd7266e38e989e6dd597b3bd18f8c4649"
+    },
+    {
+      "dataset": "bank_marketing",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.801138066666674,
+      "mean_test_accuracy_pct": 87.31481481666667,
+      "mean_test_macro_f1_pct": 49.27095442666667,
+      "mean_test_exact_rule_coverage_pct": 28.98148148,
+      "mean_rule_count": 67.33333333333333,
+      "total_dataset_rows": 1800,
+      "source_sha256": "bf42dc7d06143494c4e8c23293adf9cbd7266e38e989e6dd597b3bd18f8c4649"
+    },
+    {
+      "dataset": "bank_marketing",
+      "architecture": "FEDERATED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 48.51003294333333,
+      "mean_test_accuracy_pct": 85.09259259000001,
+      "mean_test_macro_f1_pct": 46.65997379666666,
+      "mean_test_exact_rule_coverage_pct": 79.44444444,
+      "mean_rule_count": 112,
+      "total_dataset_rows": 1800,
+      "source_sha256": "bf42dc7d06143494c4e8c23293adf9cbd7266e38e989e6dd597b3bd18f8c4649"
+    },
+    {
+      "dataset": "bank_marketing",
+      "architecture": "FEDERATED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.37436358333333,
+      "mean_test_accuracy_pct": 87.77777778,
+      "mean_test_macro_f1_pct": 48.15763237666666,
+      "mean_test_exact_rule_coverage_pct": 79.44444444,
+      "mean_rule_count": 112,
+      "total_dataset_rows": 1800,
+      "source_sha256": "bf42dc7d06143494c4e8c23293adf9cbd7266e38e989e6dd597b3bd18f8c4649"
+    },
+    {
+      "dataset": "bank_marketing",
+      "architecture": "FEDERATED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.08235999,
+      "mean_test_accuracy_pct": 87.87037037333333,
+      "mean_test_macro_f1_pct": 47.50930941,
+      "mean_test_exact_rule_coverage_pct": 79.44444444,
+      "mean_rule_count": 112,
+      "total_dataset_rows": 1800,
+      "source_sha256": "bf42dc7d06143494c4e8c23293adf9cbd7266e38e989e6dd597b3bd18f8c4649"
+    },
+    {
+      "dataset": "bank_marketing",
+      "architecture": "FEDERATED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 51.310272536666666,
+      "mean_test_accuracy_pct": 86.38888888666668,
+      "mean_test_macro_f1_pct": 50.78412490666667,
+      "mean_test_exact_rule_coverage_pct": 79.44444444,
+      "mean_rule_count": 112,
+      "total_dataset_rows": 1800,
+      "source_sha256": "bf42dc7d06143494c4e8c23293adf9cbd7266e38e989e6dd597b3bd18f8c4649"
+    },
+    {
+      "dataset": "bank_marketing",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.08235999,
+      "mean_test_accuracy_pct": 87.87037037333333,
+      "mean_test_macro_f1_pct": 47.50930941,
+      "mean_test_exact_rule_coverage_pct": 79.44444444,
+      "mean_rule_count": 112,
+      "total_dataset_rows": 1800,
+      "source_sha256": "bf42dc7d06143494c4e8c23293adf9cbd7266e38e989e6dd597b3bd18f8c4649"
+    },
+    {
+      "dataset": "bank_marketing",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 51.31027253666666,
+      "mean_test_accuracy_pct": 86.38888889,
+      "mean_test_macro_f1_pct": 50.76036442666666,
+      "mean_test_exact_rule_coverage_pct": 79.44444444,
+      "mean_rule_count": 112,
+      "total_dataset_rows": 1800,
+      "source_sha256": "bf42dc7d06143494c4e8c23293adf9cbd7266e38e989e6dd597b3bd18f8c4649"
+    },
+    {
+      "dataset": "banknote",
+      "architecture": "CENTRALIZED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 75.21750072,
+      "mean_test_accuracy_pct": 77.85888077999999,
+      "mean_test_macro_f1_pct": 75.07772664,
+      "mean_test_exact_rule_coverage_pct": 49.75669099666667,
+      "mean_rule_count": 10.666666666666666,
+      "total_dataset_rows": 1372,
+      "source_sha256": "6da87da586c6089307c59824a5127df375fe14301ac628acc5d7b3b4a32db9a5"
+    },
+    {
+      "dataset": "banknote",
+      "architecture": "CENTRALIZED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 75.21750072,
+      "mean_test_accuracy_pct": 77.85888077999999,
+      "mean_test_macro_f1_pct": 75.07772664,
+      "mean_test_exact_rule_coverage_pct": 49.75669099666667,
+      "mean_rule_count": 10.666666666666666,
+      "total_dataset_rows": 1372,
+      "source_sha256": "6da87da586c6089307c59824a5127df375fe14301ac628acc5d7b3b4a32db9a5"
+    },
+    {
+      "dataset": "banknote",
+      "architecture": "CENTRALIZED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 75.21750072,
+      "mean_test_accuracy_pct": 77.85888077999999,
+      "mean_test_macro_f1_pct": 75.07772664,
+      "mean_test_exact_rule_coverage_pct": 49.75669099666667,
+      "mean_rule_count": 10.666666666666666,
+      "total_dataset_rows": 1372,
+      "source_sha256": "6da87da586c6089307c59824a5127df375fe14301ac628acc5d7b3b4a32db9a5"
+    },
+    {
+      "dataset": "banknote",
+      "architecture": "CENTRALIZED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 75.21750072,
+      "mean_test_accuracy_pct": 77.85888077999999,
+      "mean_test_macro_f1_pct": 75.07772664,
+      "mean_test_exact_rule_coverage_pct": 49.75669099666667,
+      "mean_rule_count": 10.666666666666666,
+      "total_dataset_rows": 1372,
+      "source_sha256": "6da87da586c6089307c59824a5127df375fe14301ac628acc5d7b3b4a32db9a5"
+    },
+    {
+      "dataset": "banknote",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 75.21750072,
+      "mean_test_accuracy_pct": 77.85888077999999,
+      "mean_test_macro_f1_pct": 75.07772664,
+      "mean_test_exact_rule_coverage_pct": 49.75669099666667,
+      "mean_rule_count": 10.666666666666666,
+      "total_dataset_rows": 1372,
+      "source_sha256": "6da87da586c6089307c59824a5127df375fe14301ac628acc5d7b3b4a32db9a5"
+    },
+    {
+      "dataset": "banknote",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 75.21750072,
+      "mean_test_accuracy_pct": 77.85888077999999,
+      "mean_test_macro_f1_pct": 75.07772664,
+      "mean_test_exact_rule_coverage_pct": 49.75669099666667,
+      "mean_rule_count": 10.666666666666666,
+      "total_dataset_rows": 1372,
+      "source_sha256": "6da87da586c6089307c59824a5127df375fe14301ac628acc5d7b3b4a32db9a5"
+    },
+    {
+      "dataset": "banknote",
+      "architecture": "FEDERATED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 82.15415588333332,
+      "mean_test_accuracy_pct": 83.81995133666668,
+      "mean_test_macro_f1_pct": 82.79223197,
+      "mean_test_exact_rule_coverage_pct": 74.20924574333333,
+      "mean_rule_count": 16.333333333333332,
+      "total_dataset_rows": 1372,
+      "source_sha256": "6da87da586c6089307c59824a5127df375fe14301ac628acc5d7b3b4a32db9a5"
+    },
+    {
+      "dataset": "banknote",
+      "architecture": "FEDERATED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 82.15415588333332,
+      "mean_test_accuracy_pct": 83.81995133666668,
+      "mean_test_macro_f1_pct": 82.79223197,
+      "mean_test_exact_rule_coverage_pct": 74.20924574333333,
+      "mean_rule_count": 16.333333333333332,
+      "total_dataset_rows": 1372,
+      "source_sha256": "6da87da586c6089307c59824a5127df375fe14301ac628acc5d7b3b4a32db9a5"
+    },
+    {
+      "dataset": "banknote",
+      "architecture": "FEDERATED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 82.59095484666666,
+      "mean_test_accuracy_pct": 84.18491484,
+      "mean_test_macro_f1_pct": 83.21126894000001,
+      "mean_test_exact_rule_coverage_pct": 74.20924574333333,
+      "mean_rule_count": 16.333333333333332,
+      "total_dataset_rows": 1372,
+      "source_sha256": "6da87da586c6089307c59824a5127df375fe14301ac628acc5d7b3b4a32db9a5"
+    },
+    {
+      "dataset": "banknote",
+      "architecture": "FEDERATED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 82.59095484666666,
+      "mean_test_accuracy_pct": 84.18491484,
+      "mean_test_macro_f1_pct": 83.21126894000001,
+      "mean_test_exact_rule_coverage_pct": 74.20924574333333,
+      "mean_rule_count": 16.333333333333332,
+      "total_dataset_rows": 1372,
+      "source_sha256": "6da87da586c6089307c59824a5127df375fe14301ac628acc5d7b3b4a32db9a5"
+    },
+    {
+      "dataset": "banknote",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 82.59095484666666,
+      "mean_test_accuracy_pct": 84.18491484,
+      "mean_test_macro_f1_pct": 83.21126894000001,
+      "mean_test_exact_rule_coverage_pct": 74.20924574333333,
+      "mean_rule_count": 16.333333333333332,
+      "total_dataset_rows": 1372,
+      "source_sha256": "6da87da586c6089307c59824a5127df375fe14301ac628acc5d7b3b4a32db9a5"
+    },
+    {
+      "dataset": "banknote",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 82.59095484666666,
+      "mean_test_accuracy_pct": 84.18491484,
+      "mean_test_macro_f1_pct": 83.21126894000001,
+      "mean_test_exact_rule_coverage_pct": 74.20924574333333,
+      "mean_rule_count": 16.333333333333332,
+      "total_dataset_rows": 1372,
+      "source_sha256": "6da87da586c6089307c59824a5127df375fe14301ac628acc5d7b3b4a32db9a5"
+    },
+    {
+      "dataset": "breast_diagnostic",
+      "architecture": "CENTRALIZED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 83.65750055666666,
+      "mean_test_accuracy_pct": 87.61061946666668,
+      "mean_test_macro_f1_pct": 85.65546095333333,
+      "mean_test_exact_rule_coverage_pct": 48.96755162,
+      "mean_rule_count": 13.333333333333334,
+      "total_dataset_rows": 569,
+      "source_sha256": "680a55c503b6f7dccde3a730975deb0dfa4095f97063f2bda06bb30238e0bb61"
+    },
+    {
+      "dataset": "breast_diagnostic",
+      "architecture": "CENTRALIZED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 83.65750055666666,
+      "mean_test_accuracy_pct": 87.61061946666668,
+      "mean_test_macro_f1_pct": 85.65546095333333,
+      "mean_test_exact_rule_coverage_pct": 48.96755162,
+      "mean_rule_count": 13.333333333333334,
+      "total_dataset_rows": 569,
+      "source_sha256": "680a55c503b6f7dccde3a730975deb0dfa4095f97063f2bda06bb30238e0bb61"
+    },
+    {
+      "dataset": "breast_diagnostic",
+      "architecture": "CENTRALIZED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 83.65750055666666,
+      "mean_test_accuracy_pct": 87.61061946666668,
+      "mean_test_macro_f1_pct": 85.65546095333333,
+      "mean_test_exact_rule_coverage_pct": 48.96755162,
+      "mean_rule_count": 13.333333333333334,
+      "total_dataset_rows": 569,
+      "source_sha256": "680a55c503b6f7dccde3a730975deb0dfa4095f97063f2bda06bb30238e0bb61"
+    },
+    {
+      "dataset": "breast_diagnostic",
+      "architecture": "CENTRALIZED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 83.65750055666666,
+      "mean_test_accuracy_pct": 87.61061946666668,
+      "mean_test_macro_f1_pct": 85.65546095333333,
+      "mean_test_exact_rule_coverage_pct": 48.96755162,
+      "mean_rule_count": 13.333333333333334,
+      "total_dataset_rows": 569,
+      "source_sha256": "680a55c503b6f7dccde3a730975deb0dfa4095f97063f2bda06bb30238e0bb61"
+    },
+    {
+      "dataset": "breast_diagnostic",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 83.65750055666666,
+      "mean_test_accuracy_pct": 87.61061946666668,
+      "mean_test_macro_f1_pct": 85.65546095333333,
+      "mean_test_exact_rule_coverage_pct": 48.96755162,
+      "mean_rule_count": 13.333333333333334,
+      "total_dataset_rows": 569,
+      "source_sha256": "680a55c503b6f7dccde3a730975deb0dfa4095f97063f2bda06bb30238e0bb61"
+    },
+    {
+      "dataset": "breast_diagnostic",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 83.65750055666666,
+      "mean_test_accuracy_pct": 87.61061946666668,
+      "mean_test_macro_f1_pct": 85.65546095333333,
+      "mean_test_exact_rule_coverage_pct": 48.96755162,
+      "mean_rule_count": 13.333333333333334,
+      "total_dataset_rows": 569,
+      "source_sha256": "680a55c503b6f7dccde3a730975deb0dfa4095f97063f2bda06bb30238e0bb61"
+    },
+    {
+      "dataset": "breast_diagnostic",
+      "architecture": "FEDERATED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 88.92242342666667,
+      "mean_test_accuracy_pct": 90.56047197666666,
+      "mean_test_macro_f1_pct": 89.69475751666667,
+      "mean_test_exact_rule_coverage_pct": 89.97050147666667,
+      "mean_rule_count": 26.666666666666668,
+      "total_dataset_rows": 569,
+      "source_sha256": "680a55c503b6f7dccde3a730975deb0dfa4095f97063f2bda06bb30238e0bb61"
+    },
+    {
+      "dataset": "breast_diagnostic",
+      "architecture": "FEDERATED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 86.37938743333335,
+      "mean_test_accuracy_pct": 88.79056046999999,
+      "mean_test_macro_f1_pct": 87.55663990666666,
+      "mean_test_exact_rule_coverage_pct": 89.97050147666667,
+      "mean_rule_count": 26.666666666666668,
+      "total_dataset_rows": 569,
+      "source_sha256": "680a55c503b6f7dccde3a730975deb0dfa4095f97063f2bda06bb30238e0bb61"
+    },
+    {
+      "dataset": "breast_diagnostic",
+      "architecture": "FEDERATED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 88.05611446333333,
+      "mean_test_accuracy_pct": 89.67551622333333,
+      "mean_test_macro_f1_pct": 88.74099337333334,
+      "mean_test_exact_rule_coverage_pct": 89.97050147666667,
+      "mean_rule_count": 26.666666666666668,
+      "total_dataset_rows": 569,
+      "source_sha256": "680a55c503b6f7dccde3a730975deb0dfa4095f97063f2bda06bb30238e0bb61"
+    },
+    {
+      "dataset": "breast_diagnostic",
+      "architecture": "FEDERATED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 88.84976525666667,
+      "mean_test_accuracy_pct": 90.26548672333334,
+      "mean_test_macro_f1_pct": 89.42792027666667,
+      "mean_test_exact_rule_coverage_pct": 89.97050147666667,
+      "mean_rule_count": 26.666666666666668,
+      "total_dataset_rows": 569,
+      "source_sha256": "680a55c503b6f7dccde3a730975deb0dfa4095f97063f2bda06bb30238e0bb61"
+    },
+    {
+      "dataset": "breast_diagnostic",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 88.05611446333333,
+      "mean_test_accuracy_pct": 89.67551622333333,
+      "mean_test_macro_f1_pct": 88.74099337333334,
+      "mean_test_exact_rule_coverage_pct": 89.97050147666667,
+      "mean_rule_count": 26.666666666666668,
+      "total_dataset_rows": 569,
+      "source_sha256": "680a55c503b6f7dccde3a730975deb0dfa4095f97063f2bda06bb30238e0bb61"
+    },
+    {
+      "dataset": "breast_diagnostic",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 88.84976525666667,
+      "mean_test_accuracy_pct": 90.26548672333334,
+      "mean_test_macro_f1_pct": 89.42792027666667,
+      "mean_test_exact_rule_coverage_pct": 89.97050147666667,
+      "mean_rule_count": 26.666666666666668,
+      "total_dataset_rows": 569,
+      "source_sha256": "680a55c503b6f7dccde3a730975deb0dfa4095f97063f2bda06bb30238e0bb61"
+    },
+    {
+      "dataset": "covertype",
+      "architecture": "CENTRALIZED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 20.38508565333333,
+      "mean_test_accuracy_pct": 52.16989843333333,
+      "mean_test_macro_f1_pct": 19.684781880000003,
+      "mean_test_exact_rule_coverage_pct": 19.66759003,
+      "mean_rule_count": 62.666666666666664,
+      "total_dataset_rows": 1800,
+      "source_sha256": "62d4f131d469b669cd7212092b82e8b27fb2de5ec08484c8e5f2019668e10cbb"
+    },
+    {
+      "dataset": "covertype",
+      "architecture": "CENTRALIZED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 20.348735233333333,
+      "mean_test_accuracy_pct": 52.07756232666667,
+      "mean_test_macro_f1_pct": 19.617867506666666,
+      "mean_test_exact_rule_coverage_pct": 19.66759003,
+      "mean_rule_count": 62.666666666666664,
+      "total_dataset_rows": 1800,
+      "source_sha256": "62d4f131d469b669cd7212092b82e8b27fb2de5ec08484c8e5f2019668e10cbb"
+    },
+    {
+      "dataset": "covertype",
+      "architecture": "CENTRALIZED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 20.44849235,
+      "mean_test_accuracy_pct": 52.354570640000006,
+      "mean_test_macro_f1_pct": 19.75970297333333,
+      "mean_test_exact_rule_coverage_pct": 19.66759003,
+      "mean_rule_count": 62.666666666666664,
+      "total_dataset_rows": 1800,
+      "source_sha256": "62d4f131d469b669cd7212092b82e8b27fb2de5ec08484c8e5f2019668e10cbb"
+    },
+    {
+      "dataset": "covertype",
+      "architecture": "CENTRALIZED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 20.467080633333335,
+      "mean_test_accuracy_pct": 52.35457063666667,
+      "mean_test_macro_f1_pct": 19.79070211,
+      "mean_test_exact_rule_coverage_pct": 19.66759003,
+      "mean_rule_count": 62.666666666666664,
+      "total_dataset_rows": 1800,
+      "source_sha256": "62d4f131d469b669cd7212092b82e8b27fb2de5ec08484c8e5f2019668e10cbb"
+    },
+    {
+      "dataset": "covertype",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 20.44849235,
+      "mean_test_accuracy_pct": 52.354570640000006,
+      "mean_test_macro_f1_pct": 19.75970297333333,
+      "mean_test_exact_rule_coverage_pct": 19.66759003,
+      "mean_rule_count": 62.666666666666664,
+      "total_dataset_rows": 1800,
+      "source_sha256": "62d4f131d469b669cd7212092b82e8b27fb2de5ec08484c8e5f2019668e10cbb"
+    },
+    {
+      "dataset": "covertype",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 20.49413691,
+      "mean_test_accuracy_pct": 52.44690674333333,
+      "mean_test_macro_f1_pct": 19.80731651333333,
+      "mean_test_exact_rule_coverage_pct": 19.66759003,
+      "mean_rule_count": 62.666666666666664,
+      "total_dataset_rows": 1800,
+      "source_sha256": "62d4f131d469b669cd7212092b82e8b27fb2de5ec08484c8e5f2019668e10cbb"
+    },
+    {
+      "dataset": "covertype",
+      "architecture": "FEDERATED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 24.087331246666665,
+      "mean_test_accuracy_pct": 55.86334256666666,
+      "mean_test_macro_f1_pct": 24.204652356666667,
+      "mean_test_exact_rule_coverage_pct": 48.384118189999995,
+      "mean_rule_count": 122.33333333333333,
+      "total_dataset_rows": 1800,
+      "source_sha256": "62d4f131d469b669cd7212092b82e8b27fb2de5ec08484c8e5f2019668e10cbb"
+    },
+    {
+      "dataset": "covertype",
+      "architecture": "FEDERATED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 25.253118383333334,
+      "mean_test_accuracy_pct": 57.89473683999999,
+      "mean_test_macro_f1_pct": 25.065855040000002,
+      "mean_test_exact_rule_coverage_pct": 48.384118189999995,
+      "mean_rule_count": 122.33333333333333,
+      "total_dataset_rows": 1800,
+      "source_sha256": "62d4f131d469b669cd7212092b82e8b27fb2de5ec08484c8e5f2019668e10cbb"
+    },
+    {
+      "dataset": "covertype",
+      "architecture": "FEDERATED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 25.599686573333337,
+      "mean_test_accuracy_pct": 58.63342566666666,
+      "mean_test_macro_f1_pct": 25.51933271666667,
+      "mean_test_exact_rule_coverage_pct": 48.384118189999995,
+      "mean_rule_count": 122.33333333333333,
+      "total_dataset_rows": 1800,
+      "source_sha256": "62d4f131d469b669cd7212092b82e8b27fb2de5ec08484c8e5f2019668e10cbb"
+    },
+    {
+      "dataset": "covertype",
+      "architecture": "FEDERATED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 26.902979336666665,
+      "mean_test_accuracy_pct": 56.87903970333333,
+      "mean_test_macro_f1_pct": 27.31145233666667,
+      "mean_test_exact_rule_coverage_pct": 48.384118189999995,
+      "mean_rule_count": 122.33333333333333,
+      "total_dataset_rows": 1800,
+      "source_sha256": "62d4f131d469b669cd7212092b82e8b27fb2de5ec08484c8e5f2019668e10cbb"
+    },
+    {
+      "dataset": "covertype",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 25.599686573333337,
+      "mean_test_accuracy_pct": 58.63342566666666,
+      "mean_test_macro_f1_pct": 25.51933271666667,
+      "mean_test_exact_rule_coverage_pct": 48.384118189999995,
+      "mean_rule_count": 122.33333333333333,
+      "total_dataset_rows": 1800,
+      "source_sha256": "62d4f131d469b669cd7212092b82e8b27fb2de5ec08484c8e5f2019668e10cbb"
+    },
+    {
+      "dataset": "covertype",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 26.794754230000002,
+      "mean_test_accuracy_pct": 56.509695289999996,
+      "mean_test_macro_f1_pct": 27.092123316666665,
+      "mean_test_exact_rule_coverage_pct": 48.384118189999995,
+      "mean_rule_count": 122.33333333333333,
+      "total_dataset_rows": 1800,
+      "source_sha256": "62d4f131d469b669cd7212092b82e8b27fb2de5ec08484c8e5f2019668e10cbb"
+    },
+    {
+      "dataset": "dry_bean",
+      "architecture": "CENTRALIZED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 38.52222402,
+      "mean_test_accuracy_pct": 38.97596656,
+      "mean_test_macro_f1_pct": 36.20896387666666,
+      "mean_test_exact_rule_coverage_pct": 13.584117033333335,
+      "mean_rule_count": 7.333333333333333,
+      "total_dataset_rows": 1600,
+      "source_sha256": "773b98433fc43157054d321006ac9df99f05f32f78bb2256dac4e10074140a02"
+    },
+    {
+      "dataset": "dry_bean",
+      "architecture": "CENTRALIZED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 38.52222402,
+      "mean_test_accuracy_pct": 38.97596656,
+      "mean_test_macro_f1_pct": 36.20896387666666,
+      "mean_test_exact_rule_coverage_pct": 13.584117033333335,
+      "mean_rule_count": 7.333333333333333,
+      "total_dataset_rows": 1600,
+      "source_sha256": "773b98433fc43157054d321006ac9df99f05f32f78bb2256dac4e10074140a02"
+    },
+    {
+      "dataset": "dry_bean",
+      "architecture": "CENTRALIZED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 38.52222402,
+      "mean_test_accuracy_pct": 38.97596656,
+      "mean_test_macro_f1_pct": 36.20896387666666,
+      "mean_test_exact_rule_coverage_pct": 13.584117033333335,
+      "mean_rule_count": 7.333333333333333,
+      "total_dataset_rows": 1600,
+      "source_sha256": "773b98433fc43157054d321006ac9df99f05f32f78bb2256dac4e10074140a02"
+    },
+    {
+      "dataset": "dry_bean",
+      "architecture": "CENTRALIZED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 38.52222402,
+      "mean_test_accuracy_pct": 38.97596656,
+      "mean_test_macro_f1_pct": 36.20896387666666,
+      "mean_test_exact_rule_coverage_pct": 13.584117033333335,
+      "mean_rule_count": 7.333333333333333,
+      "total_dataset_rows": 1600,
+      "source_sha256": "773b98433fc43157054d321006ac9df99f05f32f78bb2256dac4e10074140a02"
+    },
+    {
+      "dataset": "dry_bean",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 38.52222402,
+      "mean_test_accuracy_pct": 38.97596656,
+      "mean_test_macro_f1_pct": 36.20896387666666,
+      "mean_test_exact_rule_coverage_pct": 13.584117033333335,
+      "mean_rule_count": 7.333333333333333,
+      "total_dataset_rows": 1600,
+      "source_sha256": "773b98433fc43157054d321006ac9df99f05f32f78bb2256dac4e10074140a02"
+    },
+    {
+      "dataset": "dry_bean",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 38.52222402,
+      "mean_test_accuracy_pct": 38.97596656,
+      "mean_test_macro_f1_pct": 36.20896387666666,
+      "mean_test_exact_rule_coverage_pct": 13.584117033333335,
+      "mean_rule_count": 7.333333333333333,
+      "total_dataset_rows": 1600,
+      "source_sha256": "773b98433fc43157054d321006ac9df99f05f32f78bb2256dac4e10074140a02"
+    },
+    {
+      "dataset": "dry_bean",
+      "architecture": "FEDERATED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.306968166666664,
+      "mean_test_accuracy_pct": 49.94775339666667,
+      "mean_test_macro_f1_pct": 49.93852606666667,
+      "mean_test_exact_rule_coverage_pct": 24.973876696666668,
+      "mean_rule_count": 16,
+      "total_dataset_rows": 1600,
+      "source_sha256": "773b98433fc43157054d321006ac9df99f05f32f78bb2256dac4e10074140a02"
+    },
+    {
+      "dataset": "dry_bean",
+      "architecture": "FEDERATED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.162958946666656,
+      "mean_test_accuracy_pct": 49.73876698,
+      "mean_test_macro_f1_pct": 49.70539649333334,
+      "mean_test_exact_rule_coverage_pct": 24.973876696666668,
+      "mean_rule_count": 16,
+      "total_dataset_rows": 1600,
+      "source_sha256": "773b98433fc43157054d321006ac9df99f05f32f78bb2256dac4e10074140a02"
+    },
+    {
+      "dataset": "dry_bean",
+      "architecture": "FEDERATED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.162958946666656,
+      "mean_test_accuracy_pct": 49.73876698,
+      "mean_test_macro_f1_pct": 49.70539649333334,
+      "mean_test_exact_rule_coverage_pct": 24.973876696666668,
+      "mean_rule_count": 16,
+      "total_dataset_rows": 1600,
+      "source_sha256": "773b98433fc43157054d321006ac9df99f05f32f78bb2256dac4e10074140a02"
+    },
+    {
+      "dataset": "dry_bean",
+      "architecture": "FEDERATED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.162958946666656,
+      "mean_test_accuracy_pct": 49.73876698,
+      "mean_test_macro_f1_pct": 49.70539649333334,
+      "mean_test_exact_rule_coverage_pct": 24.973876696666668,
+      "mean_rule_count": 16,
+      "total_dataset_rows": 1600,
+      "source_sha256": "773b98433fc43157054d321006ac9df99f05f32f78bb2256dac4e10074140a02"
+    },
+    {
+      "dataset": "dry_bean",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.162958946666656,
+      "mean_test_accuracy_pct": 49.73876698,
+      "mean_test_macro_f1_pct": 49.70539649333334,
+      "mean_test_exact_rule_coverage_pct": 24.973876696666668,
+      "mean_rule_count": 16,
+      "total_dataset_rows": 1600,
+      "source_sha256": "773b98433fc43157054d321006ac9df99f05f32f78bb2256dac4e10074140a02"
+    },
+    {
+      "dataset": "dry_bean",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.162958946666656,
+      "mean_test_accuracy_pct": 49.73876698,
+      "mean_test_macro_f1_pct": 49.70539649333334,
+      "mean_test_exact_rule_coverage_pct": 24.973876696666668,
+      "mean_rule_count": 16,
+      "total_dataset_rows": 1600,
+      "source_sha256": "773b98433fc43157054d321006ac9df99f05f32f78bb2256dac4e10074140a02"
+    },
+    {
+      "dataset": "eeg_eye_state",
+      "architecture": "CENTRALIZED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.87916199000001,
+      "mean_test_accuracy_pct": 55.74074074000001,
+      "mean_test_macro_f1_pct": 37.77141421333334,
+      "mean_test_exact_rule_coverage_pct": 3.7962962933333335,
+      "mean_rule_count": 12,
+      "total_dataset_rows": 1800,
+      "source_sha256": "c553e80c8b27a2d1180982609fc011c9c01e1207ec65c5f01f1dc69e2ea58f84"
+    },
+    {
+      "dataset": "eeg_eye_state",
+      "architecture": "CENTRALIZED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.87916199000001,
+      "mean_test_accuracy_pct": 55.74074074000001,
+      "mean_test_macro_f1_pct": 37.77141421333334,
+      "mean_test_exact_rule_coverage_pct": 3.7962962933333335,
+      "mean_rule_count": 12,
+      "total_dataset_rows": 1800,
+      "source_sha256": "c553e80c8b27a2d1180982609fc011c9c01e1207ec65c5f01f1dc69e2ea58f84"
+    },
+    {
+      "dataset": "eeg_eye_state",
+      "architecture": "CENTRALIZED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.87916199000001,
+      "mean_test_accuracy_pct": 55.74074074000001,
+      "mean_test_macro_f1_pct": 37.77141421333334,
+      "mean_test_exact_rule_coverage_pct": 3.7962962933333335,
+      "mean_rule_count": 12,
+      "total_dataset_rows": 1800,
+      "source_sha256": "c553e80c8b27a2d1180982609fc011c9c01e1207ec65c5f01f1dc69e2ea58f84"
+    },
+    {
+      "dataset": "eeg_eye_state",
+      "architecture": "CENTRALIZED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.87916199000001,
+      "mean_test_accuracy_pct": 55.74074074000001,
+      "mean_test_macro_f1_pct": 37.77141421333334,
+      "mean_test_exact_rule_coverage_pct": 3.7962962933333335,
+      "mean_rule_count": 12,
+      "total_dataset_rows": 1800,
+      "source_sha256": "c553e80c8b27a2d1180982609fc011c9c01e1207ec65c5f01f1dc69e2ea58f84"
+    },
+    {
+      "dataset": "eeg_eye_state",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.87916199000001,
+      "mean_test_accuracy_pct": 55.74074074000001,
+      "mean_test_macro_f1_pct": 37.77141421333334,
+      "mean_test_exact_rule_coverage_pct": 3.7962962933333335,
+      "mean_rule_count": 12,
+      "total_dataset_rows": 1800,
+      "source_sha256": "c553e80c8b27a2d1180982609fc011c9c01e1207ec65c5f01f1dc69e2ea58f84"
+    },
+    {
+      "dataset": "eeg_eye_state",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.87916199000001,
+      "mean_test_accuracy_pct": 55.74074074000001,
+      "mean_test_macro_f1_pct": 37.77141421333334,
+      "mean_test_exact_rule_coverage_pct": 3.7962962933333335,
+      "mean_rule_count": 12,
+      "total_dataset_rows": 1800,
+      "source_sha256": "c553e80c8b27a2d1180982609fc011c9c01e1207ec65c5f01f1dc69e2ea58f84"
+    },
+    {
+      "dataset": "eeg_eye_state",
+      "architecture": "FEDERATED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 52.65619154333333,
+      "mean_test_accuracy_pct": 57.22222222333333,
+      "mean_test_macro_f1_pct": 41.82380955,
+      "mean_test_exact_rule_coverage_pct": 9.074074073333334,
+      "mean_rule_count": 22.333333333333332,
+      "total_dataset_rows": 1800,
+      "source_sha256": "c553e80c8b27a2d1180982609fc011c9c01e1207ec65c5f01f1dc69e2ea58f84"
+    },
+    {
+      "dataset": "eeg_eye_state",
+      "architecture": "FEDERATED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 52.99289188,
+      "mean_test_accuracy_pct": 57.59259258999999,
+      "mean_test_macro_f1_pct": 42.09332202666667,
+      "mean_test_exact_rule_coverage_pct": 9.074074073333334,
+      "mean_rule_count": 22.333333333333332,
+      "total_dataset_rows": 1800,
+      "source_sha256": "c553e80c8b27a2d1180982609fc011c9c01e1207ec65c5f01f1dc69e2ea58f84"
+    },
+    {
+      "dataset": "eeg_eye_state",
+      "architecture": "FEDERATED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 52.927422373333336,
+      "mean_test_accuracy_pct": 57.49999999999999,
+      "mean_test_macro_f1_pct": 42.154821319999996,
+      "mean_test_exact_rule_coverage_pct": 9.074074073333334,
+      "mean_rule_count": 22.333333333333332,
+      "total_dataset_rows": 1800,
+      "source_sha256": "c553e80c8b27a2d1180982609fc011c9c01e1207ec65c5f01f1dc69e2ea58f84"
+    },
+    {
+      "dataset": "eeg_eye_state",
+      "architecture": "FEDERATED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 52.69360269333333,
+      "mean_test_accuracy_pct": 57.22222222,
+      "mean_test_macro_f1_pct": 42.115105056666664,
+      "mean_test_exact_rule_coverage_pct": 9.074074073333334,
+      "mean_rule_count": 22.333333333333332,
+      "total_dataset_rows": 1800,
+      "source_sha256": "c553e80c8b27a2d1180982609fc011c9c01e1207ec65c5f01f1dc69e2ea58f84"
+    },
+    {
+      "dataset": "eeg_eye_state",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 52.590722033333336,
+      "mean_test_accuracy_pct": 57.129629630000004,
+      "mean_test_macro_f1_pct": 41.943898583333336,
+      "mean_test_exact_rule_coverage_pct": 9.074074073333334,
+      "mean_rule_count": 22.333333333333332,
+      "total_dataset_rows": 1800,
+      "source_sha256": "c553e80c8b27a2d1180982609fc011c9c01e1207ec65c5f01f1dc69e2ea58f84"
+    },
+    {
+      "dataset": "eeg_eye_state",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 52.525252523333336,
+      "mean_test_accuracy_pct": 57.03703703666666,
+      "mean_test_macro_f1_pct": 41.987396133333334,
+      "mean_test_exact_rule_coverage_pct": 9.074074073333334,
+      "mean_rule_count": 22.333333333333332,
+      "total_dataset_rows": 1800,
+      "source_sha256": "c553e80c8b27a2d1180982609fc011c9c01e1207ec65c5f01f1dc69e2ea58f84"
+    },
+    {
+      "dataset": "german_credit",
+      "architecture": "CENTRALIZED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 58.53174603000001,
+      "mean_test_accuracy_pct": 70.16666666666667,
+      "mean_test_macro_f1_pct": 58.47914075,
+      "mean_test_exact_rule_coverage_pct": 64,
+      "mean_rule_count": 147.33333333333334,
+      "total_dataset_rows": 1000,
+      "source_sha256": "9ed2dccff4ad5ace0610ccc151b8dc577cc8afd510665dc3e7ed7892e4f06430"
+    },
+    {
+      "dataset": "german_credit",
+      "architecture": "CENTRALIZED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 58.57142857000001,
+      "mean_test_accuracy_pct": 70.66666666666667,
+      "mean_test_macro_f1_pct": 58.57939261333334,
+      "mean_test_exact_rule_coverage_pct": 64,
+      "mean_rule_count": 147.33333333333334,
+      "total_dataset_rows": 1000,
+      "source_sha256": "9ed2dccff4ad5ace0610ccc151b8dc577cc8afd510665dc3e7ed7892e4f06430"
+    },
+    {
+      "dataset": "german_credit",
+      "architecture": "CENTRALIZED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 58.76984127,
+      "mean_test_accuracy_pct": 70.5,
+      "mean_test_macro_f1_pct": 58.81857290666667,
+      "mean_test_exact_rule_coverage_pct": 64,
+      "mean_rule_count": 147.33333333333334,
+      "total_dataset_rows": 1000,
+      "source_sha256": "9ed2dccff4ad5ace0610ccc151b8dc577cc8afd510665dc3e7ed7892e4f06430"
+    },
+    {
+      "dataset": "german_credit",
+      "architecture": "CENTRALIZED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 59.920634920000005,
+      "mean_test_accuracy_pct": 71,
+      "mean_test_macro_f1_pct": 60.27381535666666,
+      "mean_test_exact_rule_coverage_pct": 64,
+      "mean_rule_count": 147.33333333333334,
+      "total_dataset_rows": 1000,
+      "source_sha256": "9ed2dccff4ad5ace0610ccc151b8dc577cc8afd510665dc3e7ed7892e4f06430"
+    },
+    {
+      "dataset": "german_credit",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 58.76984127,
+      "mean_test_accuracy_pct": 70.5,
+      "mean_test_macro_f1_pct": 58.81857290666667,
+      "mean_test_exact_rule_coverage_pct": 64,
+      "mean_rule_count": 147.33333333333334,
+      "total_dataset_rows": 1000,
+      "source_sha256": "9ed2dccff4ad5ace0610ccc151b8dc577cc8afd510665dc3e7ed7892e4f06430"
+    },
+    {
+      "dataset": "german_credit",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 59.8015873,
+      "mean_test_accuracy_pct": 70.83333333333334,
+      "mean_test_macro_f1_pct": 60.13690524666666,
+      "mean_test_exact_rule_coverage_pct": 64,
+      "mean_rule_count": 147.33333333333334,
+      "total_dataset_rows": 1000,
+      "source_sha256": "9ed2dccff4ad5ace0610ccc151b8dc577cc8afd510665dc3e7ed7892e4f06430"
+    },
+    {
+      "dataset": "german_credit",
+      "architecture": "FEDERATED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 60.95238095333334,
+      "mean_test_accuracy_pct": 70.66666666666666,
+      "mean_test_macro_f1_pct": 61.352591323333336,
+      "mean_test_exact_rule_coverage_pct": 94.66666666666667,
+      "mean_rule_count": 185,
+      "total_dataset_rows": 1000,
+      "source_sha256": "9ed2dccff4ad5ace0610ccc151b8dc577cc8afd510665dc3e7ed7892e4f06430"
+    },
+    {
+      "dataset": "german_credit",
+      "architecture": "FEDERATED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 61.90476190333333,
+      "mean_test_accuracy_pct": 73.99999999999999,
+      "mean_test_macro_f1_pct": 62.69095784666666,
+      "mean_test_exact_rule_coverage_pct": 94.66666666666667,
+      "mean_rule_count": 185,
+      "total_dataset_rows": 1000,
+      "source_sha256": "9ed2dccff4ad5ace0610ccc151b8dc577cc8afd510665dc3e7ed7892e4f06430"
+    },
+    {
+      "dataset": "german_credit",
+      "architecture": "FEDERATED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 60.27777777666666,
+      "mean_test_accuracy_pct": 72.83333333333331,
+      "mean_test_macro_f1_pct": 60.705679329999995,
+      "mean_test_exact_rule_coverage_pct": 94.66666666666667,
+      "mean_rule_count": 185,
+      "total_dataset_rows": 1000,
+      "source_sha256": "9ed2dccff4ad5ace0610ccc151b8dc577cc8afd510665dc3e7ed7892e4f06430"
+    },
+    {
+      "dataset": "german_credit",
+      "architecture": "FEDERATED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 63.45238095333333,
+      "mean_test_accuracy_pct": 73.5,
+      "mean_test_macro_f1_pct": 64.42117835666666,
+      "mean_test_exact_rule_coverage_pct": 94.66666666666667,
+      "mean_rule_count": 185,
+      "total_dataset_rows": 1000,
+      "source_sha256": "9ed2dccff4ad5ace0610ccc151b8dc577cc8afd510665dc3e7ed7892e4f06430"
+    },
+    {
+      "dataset": "german_credit",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 59.28571428666666,
+      "mean_test_accuracy_pct": 72.33333333333333,
+      "mean_test_macro_f1_pct": 59.41690043333333,
+      "mean_test_exact_rule_coverage_pct": 94.66666666666667,
+      "mean_rule_count": 185,
+      "total_dataset_rows": 1000,
+      "source_sha256": "9ed2dccff4ad5ace0610ccc151b8dc577cc8afd510665dc3e7ed7892e4f06430"
+    },
+    {
+      "dataset": "german_credit",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 61.82539682666667,
+      "mean_test_accuracy_pct": 72.33333333333333,
+      "mean_test_macro_f1_pct": 62.57262111000001,
+      "mean_test_exact_rule_coverage_pct": 94.66666666666667,
+      "mean_rule_count": 185,
+      "total_dataset_rows": 1000,
+      "source_sha256": "9ed2dccff4ad5ace0610ccc151b8dc577cc8afd510665dc3e7ed7892e4f06430"
+    },
+    {
+      "dataset": "grid_stability",
+      "architecture": "CENTRALIZED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 61.47714604333333,
+      "mean_test_accuracy_pct": 66.94444444333332,
+      "mean_test_macro_f1_pct": 61.77950082,
+      "mean_test_exact_rule_coverage_pct": 74.35185185,
+      "mean_rule_count": 209.33333333333334,
+      "total_dataset_rows": 1800,
+      "source_sha256": "effb034d923882f06a2800fa13edf19eb9b631973357c8994bae27591ff90c12"
+    },
+    {
+      "dataset": "grid_stability",
+      "architecture": "CENTRALIZED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 61.22630992333333,
+      "mean_test_accuracy_pct": 67.40740740666666,
+      "mean_test_macro_f1_pct": 61.466181936666665,
+      "mean_test_exact_rule_coverage_pct": 74.35185185,
+      "mean_rule_count": 209.33333333333334,
+      "total_dataset_rows": 1800,
+      "source_sha256": "effb034d923882f06a2800fa13edf19eb9b631973357c8994bae27591ff90c12"
+    },
+    {
+      "dataset": "grid_stability",
+      "architecture": "CENTRALIZED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 61.09810479333333,
+      "mean_test_accuracy_pct": 67.31481481333333,
+      "mean_test_macro_f1_pct": 61.32519577333333,
+      "mean_test_exact_rule_coverage_pct": 74.35185185,
+      "mean_rule_count": 209.33333333333334,
+      "total_dataset_rows": 1800,
+      "source_sha256": "effb034d923882f06a2800fa13edf19eb9b631973357c8994bae27591ff90c12"
+    },
+    {
+      "dataset": "grid_stability",
+      "architecture": "CENTRALIZED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 61.32107023333333,
+      "mean_test_accuracy_pct": 67.31481481666667,
+      "mean_test_macro_f1_pct": 61.58454256,
+      "mean_test_exact_rule_coverage_pct": 74.35185185,
+      "mean_rule_count": 209.33333333333334,
+      "total_dataset_rows": 1800,
+      "source_sha256": "effb034d923882f06a2800fa13edf19eb9b631973357c8994bae27591ff90c12"
+    },
+    {
+      "dataset": "grid_stability",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 61.09810479333333,
+      "mean_test_accuracy_pct": 67.31481481333333,
+      "mean_test_macro_f1_pct": 61.32519577333333,
+      "mean_test_exact_rule_coverage_pct": 74.35185185,
+      "mean_rule_count": 209.33333333333334,
+      "total_dataset_rows": 1800,
+      "source_sha256": "effb034d923882f06a2800fa13edf19eb9b631973357c8994bae27591ff90c12"
+    },
+    {
+      "dataset": "grid_stability",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 61.32107023333333,
+      "mean_test_accuracy_pct": 67.31481481666667,
+      "mean_test_macro_f1_pct": 61.58454256,
+      "mean_test_exact_rule_coverage_pct": 74.35185185,
+      "mean_rule_count": 209.33333333333334,
+      "total_dataset_rows": 1800,
+      "source_sha256": "effb034d923882f06a2800fa13edf19eb9b631973357c8994bae27591ff90c12"
+    },
+    {
+      "dataset": "grid_stability",
+      "architecture": "FEDERATED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 66.20401337666667,
+      "mean_test_accuracy_pct": 67.5,
+      "mean_test_macro_f1_pct": 65.68684732999999,
+      "mean_test_exact_rule_coverage_pct": 99.44444444333334,
+      "mean_rule_count": 324.3333333333333,
+      "total_dataset_rows": 1800,
+      "source_sha256": "effb034d923882f06a2800fa13edf19eb9b631973357c8994bae27591ff90c12"
+    },
+    {
+      "dataset": "grid_stability",
+      "architecture": "FEDERATED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 64.87736900666667,
+      "mean_test_accuracy_pct": 68.79629629666667,
+      "mean_test_macro_f1_pct": 65.14008437666666,
+      "mean_test_exact_rule_coverage_pct": 99.44444444333334,
+      "mean_rule_count": 324.3333333333333,
+      "total_dataset_rows": 1800,
+      "source_sha256": "effb034d923882f06a2800fa13edf19eb9b631973357c8994bae27591ff90c12"
+    },
+    {
+      "dataset": "grid_stability",
+      "architecture": "FEDERATED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 66.64437012333333,
+      "mean_test_accuracy_pct": 70.55555555666668,
+      "mean_test_macro_f1_pct": 66.92767302333334,
+      "mean_test_exact_rule_coverage_pct": 99.44444444333334,
+      "mean_rule_count": 324.3333333333333,
+      "total_dataset_rows": 1800,
+      "source_sha256": "effb034d923882f06a2800fa13edf19eb9b631973357c8994bae27591ff90c12"
+    },
+    {
+      "dataset": "grid_stability",
+      "architecture": "FEDERATED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 67.80379041333333,
+      "mean_test_accuracy_pct": 70.18518518666667,
+      "mean_test_macro_f1_pct": 67.69351695,
+      "mean_test_exact_rule_coverage_pct": 99.44444444333334,
+      "mean_rule_count": 324.3333333333333,
+      "total_dataset_rows": 1800,
+      "source_sha256": "effb034d923882f06a2800fa13edf19eb9b631973357c8994bae27591ff90c12"
+    },
+    {
+      "dataset": "grid_stability",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 66.71125975333332,
+      "mean_test_accuracy_pct": 70.92592592333334,
+      "mean_test_macro_f1_pct": 67.11309842,
+      "mean_test_exact_rule_coverage_pct": 99.44444444333334,
+      "mean_rule_count": 324.3333333333333,
+      "total_dataset_rows": 1800,
+      "source_sha256": "effb034d923882f06a2800fa13edf19eb9b631973357c8994bae27591ff90c12"
+    },
+    {
+      "dataset": "grid_stability",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 67.73132664666667,
+      "mean_test_accuracy_pct": 70.09259259333334,
+      "mean_test_macro_f1_pct": 67.62544835666667,
+      "mean_test_exact_rule_coverage_pct": 99.44444444333334,
+      "mean_rule_count": 324.3333333333333,
+      "total_dataset_rows": 1800,
+      "source_sha256": "effb034d923882f06a2800fa13edf19eb9b631973357c8994bae27591ff90c12"
+    },
+    {
+      "dataset": "haberman",
+      "architecture": "CENTRALIZED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 47.77777778,
+      "mean_test_accuracy_pct": 70.49180327999998,
+      "mean_test_macro_f1_pct": 41.34615385,
+      "mean_test_exact_rule_coverage_pct": 5.464480876666666,
+      "mean_rule_count": 5.333333333333333,
+      "total_dataset_rows": 306,
+      "source_sha256": "424990d2c928faba30dade49efe3f5e8944f983227ae4866630a26e871cb26ec"
+    },
+    {
+      "dataset": "haberman",
+      "architecture": "CENTRALIZED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 47.77777778,
+      "mean_test_accuracy_pct": 70.49180327999998,
+      "mean_test_macro_f1_pct": 41.34615385,
+      "mean_test_exact_rule_coverage_pct": 5.464480876666666,
+      "mean_rule_count": 5.333333333333333,
+      "total_dataset_rows": 306,
+      "source_sha256": "424990d2c928faba30dade49efe3f5e8944f983227ae4866630a26e871cb26ec"
+    },
+    {
+      "dataset": "haberman",
+      "architecture": "CENTRALIZED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 47.77777778,
+      "mean_test_accuracy_pct": 70.49180327999998,
+      "mean_test_macro_f1_pct": 41.34615385,
+      "mean_test_exact_rule_coverage_pct": 5.464480876666666,
+      "mean_rule_count": 5.333333333333333,
+      "total_dataset_rows": 306,
+      "source_sha256": "424990d2c928faba30dade49efe3f5e8944f983227ae4866630a26e871cb26ec"
+    },
+    {
+      "dataset": "haberman",
+      "architecture": "CENTRALIZED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 47.77777778,
+      "mean_test_accuracy_pct": 70.49180327999998,
+      "mean_test_macro_f1_pct": 41.34615385,
+      "mean_test_exact_rule_coverage_pct": 5.464480876666666,
+      "mean_rule_count": 5.333333333333333,
+      "total_dataset_rows": 306,
+      "source_sha256": "424990d2c928faba30dade49efe3f5e8944f983227ae4866630a26e871cb26ec"
+    },
+    {
+      "dataset": "haberman",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 47.77777778,
+      "mean_test_accuracy_pct": 70.49180327999998,
+      "mean_test_macro_f1_pct": 41.34615385,
+      "mean_test_exact_rule_coverage_pct": 5.464480876666666,
+      "mean_rule_count": 5.333333333333333,
+      "total_dataset_rows": 306,
+      "source_sha256": "424990d2c928faba30dade49efe3f5e8944f983227ae4866630a26e871cb26ec"
+    },
+    {
+      "dataset": "haberman",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 47.77777778,
+      "mean_test_accuracy_pct": 70.49180327999998,
+      "mean_test_macro_f1_pct": 41.34615385,
+      "mean_test_exact_rule_coverage_pct": 5.464480876666666,
+      "mean_rule_count": 5.333333333333333,
+      "total_dataset_rows": 306,
+      "source_sha256": "424990d2c928faba30dade49efe3f5e8944f983227ae4866630a26e871cb26ec"
+    },
+    {
+      "dataset": "haberman",
+      "architecture": "FEDERATED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 51.94444444333334,
+      "mean_test_accuracy_pct": 72.67759563,
+      "mean_test_macro_f1_pct": 48.84323758,
+      "mean_test_exact_rule_coverage_pct": 53.55191256666667,
+      "mean_rule_count": 12.333333333333334,
+      "total_dataset_rows": 306,
+      "source_sha256": "424990d2c928faba30dade49efe3f5e8944f983227ae4866630a26e871cb26ec"
+    },
+    {
+      "dataset": "haberman",
+      "architecture": "FEDERATED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 51.64351852000001,
+      "mean_test_accuracy_pct": 73.22404371333334,
+      "mean_test_macro_f1_pct": 47.20680788333333,
+      "mean_test_exact_rule_coverage_pct": 53.55191256666667,
+      "mean_rule_count": 12.333333333333334,
+      "total_dataset_rows": 306,
+      "source_sha256": "424990d2c928faba30dade49efe3f5e8944f983227ae4866630a26e871cb26ec"
+    },
+    {
+      "dataset": "haberman",
+      "architecture": "FEDERATED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 51.64351852,
+      "mean_test_accuracy_pct": 73.22404371666667,
+      "mean_test_macro_f1_pct": 47.38675166666667,
+      "mean_test_exact_rule_coverage_pct": 53.55191256666667,
+      "mean_rule_count": 12.333333333333334,
+      "total_dataset_rows": 306,
+      "source_sha256": "424990d2c928faba30dade49efe3f5e8944f983227ae4866630a26e871cb26ec"
+    },
+    {
+      "dataset": "haberman",
+      "architecture": "FEDERATED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 53.287037039999994,
+      "mean_test_accuracy_pct": 72.67759562666667,
+      "mean_test_macro_f1_pct": 51.32323232666667,
+      "mean_test_exact_rule_coverage_pct": 53.55191256666667,
+      "mean_rule_count": 12.333333333333334,
+      "total_dataset_rows": 306,
+      "source_sha256": "424990d2c928faba30dade49efe3f5e8944f983227ae4866630a26e871cb26ec"
+    },
+    {
+      "dataset": "haberman",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 51.64351852,
+      "mean_test_accuracy_pct": 73.22404371666667,
+      "mean_test_macro_f1_pct": 47.38675166666667,
+      "mean_test_exact_rule_coverage_pct": 53.55191256666667,
+      "mean_rule_count": 12.333333333333334,
+      "total_dataset_rows": 306,
+      "source_sha256": "424990d2c928faba30dade49efe3f5e8944f983227ae4866630a26e871cb26ec"
+    },
+    {
+      "dataset": "haberman",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 53.287037039999994,
+      "mean_test_accuracy_pct": 72.67759562666667,
+      "mean_test_macro_f1_pct": 51.32323232666667,
+      "mean_test_exact_rule_coverage_pct": 53.55191256666667,
+      "mean_rule_count": 12.333333333333334,
+      "total_dataset_rows": 306,
+      "source_sha256": "424990d2c928faba30dade49efe3f5e8944f983227ae4866630a26e871cb26ec"
+    },
+    {
+      "dataset": "htru2",
+      "architecture": "CENTRALIZED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 78.02798628333333,
+      "mean_test_accuracy_pct": 95.55555555333333,
+      "mean_test_macro_f1_pct": 83.63110570333333,
+      "mean_test_exact_rule_coverage_pct": 20.462962963333332,
+      "mean_rule_count": 16,
+      "total_dataset_rows": 1800,
+      "source_sha256": "90be6205ac58c7d1ab55945140b17c8f56e2f89290f85944e5ac1ab905849354"
+    },
+    {
+      "dataset": "htru2",
+      "architecture": "CENTRALIZED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 78.02798628333333,
+      "mean_test_accuracy_pct": 95.55555555333333,
+      "mean_test_macro_f1_pct": 83.63110570333333,
+      "mean_test_exact_rule_coverage_pct": 20.462962963333332,
+      "mean_rule_count": 16,
+      "total_dataset_rows": 1800,
+      "source_sha256": "90be6205ac58c7d1ab55945140b17c8f56e2f89290f85944e5ac1ab905849354"
+    },
+    {
+      "dataset": "htru2",
+      "architecture": "CENTRALIZED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 78.02798628333333,
+      "mean_test_accuracy_pct": 95.55555555333333,
+      "mean_test_macro_f1_pct": 83.63110570333333,
+      "mean_test_exact_rule_coverage_pct": 20.462962963333332,
+      "mean_rule_count": 16,
+      "total_dataset_rows": 1800,
+      "source_sha256": "90be6205ac58c7d1ab55945140b17c8f56e2f89290f85944e5ac1ab905849354"
+    },
+    {
+      "dataset": "htru2",
+      "architecture": "CENTRALIZED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 78.02798628333333,
+      "mean_test_accuracy_pct": 95.55555555333333,
+      "mean_test_macro_f1_pct": 83.63110570333333,
+      "mean_test_exact_rule_coverage_pct": 20.462962963333332,
+      "mean_rule_count": 16,
+      "total_dataset_rows": 1800,
+      "source_sha256": "90be6205ac58c7d1ab55945140b17c8f56e2f89290f85944e5ac1ab905849354"
+    },
+    {
+      "dataset": "htru2",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 78.02798628333333,
+      "mean_test_accuracy_pct": 95.55555555333333,
+      "mean_test_macro_f1_pct": 83.63110570333333,
+      "mean_test_exact_rule_coverage_pct": 20.462962963333332,
+      "mean_rule_count": 16,
+      "total_dataset_rows": 1800,
+      "source_sha256": "90be6205ac58c7d1ab55945140b17c8f56e2f89290f85944e5ac1ab905849354"
+    },
+    {
+      "dataset": "htru2",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 78.02798628333333,
+      "mean_test_accuracy_pct": 95.55555555333333,
+      "mean_test_macro_f1_pct": 83.63110570333333,
+      "mean_test_exact_rule_coverage_pct": 20.462962963333332,
+      "mean_rule_count": 16,
+      "total_dataset_rows": 1800,
+      "source_sha256": "90be6205ac58c7d1ab55945140b17c8f56e2f89290f85944e5ac1ab905849354"
+    },
+    {
+      "dataset": "htru2",
+      "architecture": "FEDERATED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 89.74145121,
+      "mean_test_accuracy_pct": 97.03703703666666,
+      "mean_test_macro_f1_pct": 90.79880054333333,
+      "mean_test_exact_rule_coverage_pct": 74.72222222,
+      "mean_rule_count": 24.666666666666668,
+      "total_dataset_rows": 1800,
+      "source_sha256": "90be6205ac58c7d1ab55945140b17c8f56e2f89290f85944e5ac1ab905849354"
+    },
+    {
+      "dataset": "htru2",
+      "architecture": "FEDERATED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 92.26670373333333,
+      "mean_test_accuracy_pct": 97.5,
+      "mean_test_macro_f1_pct": 92.47323732,
+      "mean_test_exact_rule_coverage_pct": 74.72222222,
+      "mean_rule_count": 24.666666666666668,
+      "total_dataset_rows": 1800,
+      "source_sha256": "90be6205ac58c7d1ab55945140b17c8f56e2f89290f85944e5ac1ab905849354"
+    },
+    {
+      "dataset": "htru2",
+      "architecture": "FEDERATED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 92.72078584,
+      "mean_test_accuracy_pct": 97.5,
+      "mean_test_macro_f1_pct": 92.53262032666667,
+      "mean_test_exact_rule_coverage_pct": 74.72222222,
+      "mean_rule_count": 24.666666666666668,
+      "total_dataset_rows": 1800,
+      "source_sha256": "90be6205ac58c7d1ab55945140b17c8f56e2f89290f85944e5ac1ab905849354"
+    },
+    {
+      "dataset": "htru2",
+      "architecture": "FEDERATED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 92.72078584,
+      "mean_test_accuracy_pct": 97.5,
+      "mean_test_macro_f1_pct": 92.53262032666667,
+      "mean_test_exact_rule_coverage_pct": 74.72222222,
+      "mean_rule_count": 24.666666666666668,
+      "total_dataset_rows": 1800,
+      "source_sha256": "90be6205ac58c7d1ab55945140b17c8f56e2f89290f85944e5ac1ab905849354"
+    },
+    {
+      "dataset": "htru2",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 92.72078584,
+      "mean_test_accuracy_pct": 97.5,
+      "mean_test_macro_f1_pct": 92.53262032666667,
+      "mean_test_exact_rule_coverage_pct": 74.72222222,
+      "mean_rule_count": 24.666666666666668,
+      "total_dataset_rows": 1800,
+      "source_sha256": "90be6205ac58c7d1ab55945140b17c8f56e2f89290f85944e5ac1ab905849354"
+    },
+    {
+      "dataset": "htru2",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 92.72078584,
+      "mean_test_accuracy_pct": 97.5,
+      "mean_test_macro_f1_pct": 92.53262032666667,
+      "mean_test_exact_rule_coverage_pct": 74.72222222,
+      "mean_rule_count": 24.666666666666668,
+      "total_dataset_rows": 1800,
+      "source_sha256": "90be6205ac58c7d1ab55945140b17c8f56e2f89290f85944e5ac1ab905849354"
+    },
+    {
+      "dataset": "iris",
+      "architecture": "CENTRALIZED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 92.22222222333333,
+      "mean_test_accuracy_pct": 92.22222222333333,
+      "mean_test_macro_f1_pct": 92.12026445333333,
+      "mean_test_exact_rule_coverage_pct": 95.55555555666668,
+      "mean_rule_count": 5.666666666666667,
+      "total_dataset_rows": 150,
+      "source_sha256": "e1412f8c8c69c78fea91c42d8732f7edeb182234e9a67261b29617cc6097cc7b"
+    },
+    {
+      "dataset": "iris",
+      "architecture": "CENTRALIZED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 92.22222222333333,
+      "mean_test_accuracy_pct": 92.22222222333333,
+      "mean_test_macro_f1_pct": 92.12026445333333,
+      "mean_test_exact_rule_coverage_pct": 95.55555555666668,
+      "mean_rule_count": 5.666666666666667,
+      "total_dataset_rows": 150,
+      "source_sha256": "e1412f8c8c69c78fea91c42d8732f7edeb182234e9a67261b29617cc6097cc7b"
+    },
+    {
+      "dataset": "iris",
+      "architecture": "CENTRALIZED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 92.22222222333333,
+      "mean_test_accuracy_pct": 92.22222222333333,
+      "mean_test_macro_f1_pct": 92.12026445333333,
+      "mean_test_exact_rule_coverage_pct": 95.55555555666668,
+      "mean_rule_count": 5.666666666666667,
+      "total_dataset_rows": 150,
+      "source_sha256": "e1412f8c8c69c78fea91c42d8732f7edeb182234e9a67261b29617cc6097cc7b"
+    },
+    {
+      "dataset": "iris",
+      "architecture": "CENTRALIZED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 92.22222222333333,
+      "mean_test_accuracy_pct": 92.22222222333333,
+      "mean_test_macro_f1_pct": 92.12026445333333,
+      "mean_test_exact_rule_coverage_pct": 95.55555555666668,
+      "mean_rule_count": 5.666666666666667,
+      "total_dataset_rows": 150,
+      "source_sha256": "e1412f8c8c69c78fea91c42d8732f7edeb182234e9a67261b29617cc6097cc7b"
+    },
+    {
+      "dataset": "iris",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 92.22222222333333,
+      "mean_test_accuracy_pct": 92.22222222333333,
+      "mean_test_macro_f1_pct": 92.12026445333333,
+      "mean_test_exact_rule_coverage_pct": 95.55555555666668,
+      "mean_rule_count": 5.666666666666667,
+      "total_dataset_rows": 150,
+      "source_sha256": "e1412f8c8c69c78fea91c42d8732f7edeb182234e9a67261b29617cc6097cc7b"
+    },
+    {
+      "dataset": "iris",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 92.22222222333333,
+      "mean_test_accuracy_pct": 92.22222222333333,
+      "mean_test_macro_f1_pct": 92.12026445333333,
+      "mean_test_exact_rule_coverage_pct": 95.55555555666668,
+      "mean_rule_count": 5.666666666666667,
+      "total_dataset_rows": 150,
+      "source_sha256": "e1412f8c8c69c78fea91c42d8732f7edeb182234e9a67261b29617cc6097cc7b"
+    },
+    {
+      "dataset": "iris",
+      "architecture": "FEDERATED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 97.77777777666668,
+      "mean_test_accuracy_pct": 97.77777777666668,
+      "mean_test_macro_f1_pct": 97.75533109,
+      "mean_test_exact_rule_coverage_pct": 100,
+      "mean_rule_count": 9,
+      "total_dataset_rows": 150,
+      "source_sha256": "e1412f8c8c69c78fea91c42d8732f7edeb182234e9a67261b29617cc6097cc7b"
+    },
+    {
+      "dataset": "iris",
+      "architecture": "FEDERATED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 95.55555555333333,
+      "mean_test_accuracy_pct": 95.55555555333333,
+      "mean_test_macro_f1_pct": 95.53310886666667,
+      "mean_test_exact_rule_coverage_pct": 100,
+      "mean_rule_count": 9,
+      "total_dataset_rows": 150,
+      "source_sha256": "e1412f8c8c69c78fea91c42d8732f7edeb182234e9a67261b29617cc6097cc7b"
+    },
+    {
+      "dataset": "iris",
+      "architecture": "FEDERATED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 95.55555555333333,
+      "mean_test_accuracy_pct": 95.55555555333333,
+      "mean_test_macro_f1_pct": 95.53310886666667,
+      "mean_test_exact_rule_coverage_pct": 100,
+      "mean_rule_count": 9,
+      "total_dataset_rows": 150,
+      "source_sha256": "e1412f8c8c69c78fea91c42d8732f7edeb182234e9a67261b29617cc6097cc7b"
+    },
+    {
+      "dataset": "iris",
+      "architecture": "FEDERATED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 95.55555555333333,
+      "mean_test_accuracy_pct": 95.55555555333333,
+      "mean_test_macro_f1_pct": 95.53310886666667,
+      "mean_test_exact_rule_coverage_pct": 100,
+      "mean_rule_count": 9,
+      "total_dataset_rows": 150,
+      "source_sha256": "e1412f8c8c69c78fea91c42d8732f7edeb182234e9a67261b29617cc6097cc7b"
+    },
+    {
+      "dataset": "iris",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 95.55555555333333,
+      "mean_test_accuracy_pct": 95.55555555333333,
+      "mean_test_macro_f1_pct": 95.53310886666667,
+      "mean_test_exact_rule_coverage_pct": 100,
+      "mean_rule_count": 9,
+      "total_dataset_rows": 150,
+      "source_sha256": "e1412f8c8c69c78fea91c42d8732f7edeb182234e9a67261b29617cc6097cc7b"
+    },
+    {
+      "dataset": "iris",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 95.55555555333333,
+      "mean_test_accuracy_pct": 95.55555555333333,
+      "mean_test_macro_f1_pct": 95.53310886666667,
+      "mean_test_exact_rule_coverage_pct": 100,
+      "mean_rule_count": 9,
+      "total_dataset_rows": 150,
+      "source_sha256": "e1412f8c8c69c78fea91c42d8732f7edeb182234e9a67261b29617cc6097cc7b"
+    },
+    {
+      "dataset": "letter",
+      "architecture": "CENTRALIZED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 11.904761906666666,
+      "mean_test_accuracy_pct": 11.904761906666666,
+      "mean_test_macro_f1_pct": 12.072105246666666,
+      "mean_test_exact_rule_coverage_pct": 71.97802198000001,
+      "mean_rule_count": 437.3333333333333,
+      "total_dataset_rows": 900,
+      "source_sha256": "eb26ce42a37f0eae16d9be426b3663421a51ec42f79af1efbaedff7b85856348"
+    },
+    {
+      "dataset": "letter",
+      "architecture": "CENTRALIZED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 12.087912089999998,
+      "mean_test_accuracy_pct": 12.087912089999998,
+      "mean_test_macro_f1_pct": 12.141988863333335,
+      "mean_test_exact_rule_coverage_pct": 71.97802198000001,
+      "mean_rule_count": 437.3333333333333,
+      "total_dataset_rows": 900,
+      "source_sha256": "eb26ce42a37f0eae16d9be426b3663421a51ec42f79af1efbaedff7b85856348"
+    },
+    {
+      "dataset": "letter",
+      "architecture": "CENTRALIZED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 12.271062273333333,
+      "mean_test_accuracy_pct": 12.271062273333333,
+      "mean_test_macro_f1_pct": 12.290348340000001,
+      "mean_test_exact_rule_coverage_pct": 71.97802198000001,
+      "mean_rule_count": 437.3333333333333,
+      "total_dataset_rows": 900,
+      "source_sha256": "eb26ce42a37f0eae16d9be426b3663421a51ec42f79af1efbaedff7b85856348"
+    },
+    {
+      "dataset": "letter",
+      "architecture": "CENTRALIZED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 12.454212456666665,
+      "mean_test_accuracy_pct": 12.454212456666665,
+      "mean_test_macro_f1_pct": 12.621752516666666,
+      "mean_test_exact_rule_coverage_pct": 71.97802198000001,
+      "mean_rule_count": 437.3333333333333,
+      "total_dataset_rows": 900,
+      "source_sha256": "eb26ce42a37f0eae16d9be426b3663421a51ec42f79af1efbaedff7b85856348"
+    },
+    {
+      "dataset": "letter",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 12.271062273333333,
+      "mean_test_accuracy_pct": 12.271062273333333,
+      "mean_test_macro_f1_pct": 12.290348340000001,
+      "mean_test_exact_rule_coverage_pct": 71.97802198000001,
+      "mean_rule_count": 437.3333333333333,
+      "total_dataset_rows": 900,
+      "source_sha256": "eb26ce42a37f0eae16d9be426b3663421a51ec42f79af1efbaedff7b85856348"
+    },
+    {
+      "dataset": "letter",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 12.454212456666665,
+      "mean_test_accuracy_pct": 12.454212456666665,
+      "mean_test_macro_f1_pct": 12.621752516666666,
+      "mean_test_exact_rule_coverage_pct": 71.97802198000001,
+      "mean_rule_count": 437.3333333333333,
+      "total_dataset_rows": 900,
+      "source_sha256": "eb26ce42a37f0eae16d9be426b3663421a51ec42f79af1efbaedff7b85856348"
+    },
+    {
+      "dataset": "letter",
+      "architecture": "FEDERATED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 10.256410256666666,
+      "mean_test_accuracy_pct": 10.256410256666666,
+      "mean_test_macro_f1_pct": 10.119503443333333,
+      "mean_test_exact_rule_coverage_pct": 95.97069597,
+      "mean_rule_count": 485.3333333333333,
+      "total_dataset_rows": 900,
+      "source_sha256": "eb26ce42a37f0eae16d9be426b3663421a51ec42f79af1efbaedff7b85856348"
+    },
+    {
+      "dataset": "letter",
+      "architecture": "FEDERATED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 10.805860806666667,
+      "mean_test_accuracy_pct": 10.805860806666667,
+      "mean_test_macro_f1_pct": 9.618932166666667,
+      "mean_test_exact_rule_coverage_pct": 95.97069597,
+      "mean_rule_count": 485.3333333333333,
+      "total_dataset_rows": 900,
+      "source_sha256": "eb26ce42a37f0eae16d9be426b3663421a51ec42f79af1efbaedff7b85856348"
+    },
+    {
+      "dataset": "letter",
+      "architecture": "FEDERATED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 10.073260073333334,
+      "mean_test_accuracy_pct": 10.073260073333334,
+      "mean_test_macro_f1_pct": 9.743822753333333,
+      "mean_test_exact_rule_coverage_pct": 95.97069597,
+      "mean_rule_count": 485.3333333333333,
+      "total_dataset_rows": 900,
+      "source_sha256": "eb26ce42a37f0eae16d9be426b3663421a51ec42f79af1efbaedff7b85856348"
+    },
+    {
+      "dataset": "letter",
+      "architecture": "FEDERATED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 10.43956044,
+      "mean_test_accuracy_pct": 10.43956044,
+      "mean_test_macro_f1_pct": 9.845365,
+      "mean_test_exact_rule_coverage_pct": 95.97069597,
+      "mean_rule_count": 485.3333333333333,
+      "total_dataset_rows": 900,
+      "source_sha256": "eb26ce42a37f0eae16d9be426b3663421a51ec42f79af1efbaedff7b85856348"
+    },
+    {
+      "dataset": "letter",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 10.073260073333334,
+      "mean_test_accuracy_pct": 10.073260073333334,
+      "mean_test_macro_f1_pct": 9.548124419999999,
+      "mean_test_exact_rule_coverage_pct": 95.97069597,
+      "mean_rule_count": 485.3333333333333,
+      "total_dataset_rows": 900,
+      "source_sha256": "eb26ce42a37f0eae16d9be426b3663421a51ec42f79af1efbaedff7b85856348"
+    },
+    {
+      "dataset": "letter",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 10.256410256666666,
+      "mean_test_accuracy_pct": 10.256410256666666,
+      "mean_test_macro_f1_pct": 9.634859696666666,
+      "mean_test_exact_rule_coverage_pct": 95.97069597,
+      "mean_rule_count": 485.3333333333333,
+      "total_dataset_rows": 900,
+      "source_sha256": "eb26ce42a37f0eae16d9be426b3663421a51ec42f79af1efbaedff7b85856348"
+    },
+    {
+      "dataset": "magic_gamma",
+      "architecture": "CENTRALIZED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 58.17252993666667,
+      "mean_test_accuracy_pct": 70.27777777666667,
+      "mean_test_macro_f1_pct": 54.97786294666667,
+      "mean_test_exact_rule_coverage_pct": 8.88888889,
+      "mean_rule_count": 14,
+      "total_dataset_rows": 1800,
+      "source_sha256": "8e17cd063b899f07015f7e499933e0e60f1a82bf614e5d1dd05efae70d564834"
+    },
+    {
+      "dataset": "magic_gamma",
+      "architecture": "CENTRALIZED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 58.17252993666667,
+      "mean_test_accuracy_pct": 70.27777777666667,
+      "mean_test_macro_f1_pct": 54.97786294666667,
+      "mean_test_exact_rule_coverage_pct": 8.88888889,
+      "mean_rule_count": 14,
+      "total_dataset_rows": 1800,
+      "source_sha256": "8e17cd063b899f07015f7e499933e0e60f1a82bf614e5d1dd05efae70d564834"
+    },
+    {
+      "dataset": "magic_gamma",
+      "architecture": "CENTRALIZED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 58.17252993666667,
+      "mean_test_accuracy_pct": 70.27777777666667,
+      "mean_test_macro_f1_pct": 54.97786294666667,
+      "mean_test_exact_rule_coverage_pct": 8.88888889,
+      "mean_rule_count": 14,
+      "total_dataset_rows": 1800,
+      "source_sha256": "8e17cd063b899f07015f7e499933e0e60f1a82bf614e5d1dd05efae70d564834"
+    },
+    {
+      "dataset": "magic_gamma",
+      "architecture": "CENTRALIZED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 58.17252993666667,
+      "mean_test_accuracy_pct": 70.27777777666667,
+      "mean_test_macro_f1_pct": 54.97786294666667,
+      "mean_test_exact_rule_coverage_pct": 8.88888889,
+      "mean_rule_count": 14,
+      "total_dataset_rows": 1800,
+      "source_sha256": "8e17cd063b899f07015f7e499933e0e60f1a82bf614e5d1dd05efae70d564834"
+    },
+    {
+      "dataset": "magic_gamma",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 58.17252993666667,
+      "mean_test_accuracy_pct": 70.27777777666667,
+      "mean_test_macro_f1_pct": 54.97786294666667,
+      "mean_test_exact_rule_coverage_pct": 8.88888889,
+      "mean_rule_count": 14,
+      "total_dataset_rows": 1800,
+      "source_sha256": "8e17cd063b899f07015f7e499933e0e60f1a82bf614e5d1dd05efae70d564834"
+    },
+    {
+      "dataset": "magic_gamma",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 58.17252993666667,
+      "mean_test_accuracy_pct": 70.27777777666667,
+      "mean_test_macro_f1_pct": 54.97786294666667,
+      "mean_test_exact_rule_coverage_pct": 8.88888889,
+      "mean_rule_count": 14,
+      "total_dataset_rows": 1800,
+      "source_sha256": "8e17cd063b899f07015f7e499933e0e60f1a82bf614e5d1dd05efae70d564834"
+    },
+    {
+      "dataset": "magic_gamma",
+      "architecture": "FEDERATED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 60.22495578666667,
+      "mean_test_accuracy_pct": 71.38888888666666,
+      "mean_test_macro_f1_pct": 58.42782187000001,
+      "mean_test_exact_rule_coverage_pct": 14.074074073333334,
+      "mean_rule_count": 22.333333333333332,
+      "total_dataset_rows": 1800,
+      "source_sha256": "8e17cd063b899f07015f7e499933e0e60f1a82bf614e5d1dd05efae70d564834"
+    },
+    {
+      "dataset": "magic_gamma",
+      "architecture": "FEDERATED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 60.89295169,
+      "mean_test_accuracy_pct": 71.94444444333334,
+      "mean_test_macro_f1_pct": 59.38944114666667,
+      "mean_test_exact_rule_coverage_pct": 14.074074073333334,
+      "mean_rule_count": 22.333333333333332,
+      "total_dataset_rows": 1800,
+      "source_sha256": "8e17cd063b899f07015f7e499933e0e60f1a82bf614e5d1dd05efae70d564834"
+    },
+    {
+      "dataset": "magic_gamma",
+      "architecture": "FEDERATED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 60.95265452333334,
+      "mean_test_accuracy_pct": 71.94444444333334,
+      "mean_test_macro_f1_pct": 59.50028940999999,
+      "mean_test_exact_rule_coverage_pct": 14.074074073333334,
+      "mean_rule_count": 22.333333333333332,
+      "total_dataset_rows": 1800,
+      "source_sha256": "8e17cd063b899f07015f7e499933e0e60f1a82bf614e5d1dd05efae70d564834"
+    },
+    {
+      "dataset": "magic_gamma",
+      "architecture": "FEDERATED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 60.881123763333335,
+      "mean_test_accuracy_pct": 71.85185185333333,
+      "mean_test_macro_f1_pct": 59.43212890333333,
+      "mean_test_exact_rule_coverage_pct": 14.074074073333334,
+      "mean_rule_count": 22.333333333333332,
+      "total_dataset_rows": 1800,
+      "source_sha256": "8e17cd063b899f07015f7e499933e0e60f1a82bf614e5d1dd05efae70d564834"
+    },
+    {
+      "dataset": "magic_gamma",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 60.95265452333334,
+      "mean_test_accuracy_pct": 71.94444444333334,
+      "mean_test_macro_f1_pct": 59.50028940999999,
+      "mean_test_exact_rule_coverage_pct": 14.074074073333334,
+      "mean_rule_count": 22.333333333333332,
+      "total_dataset_rows": 1800,
+      "source_sha256": "8e17cd063b899f07015f7e499933e0e60f1a82bf614e5d1dd05efae70d564834"
+    },
+    {
+      "dataset": "magic_gamma",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 60.881123763333335,
+      "mean_test_accuracy_pct": 71.85185185333333,
+      "mean_test_macro_f1_pct": 59.43212890333333,
+      "mean_test_exact_rule_coverage_pct": 14.074074073333334,
+      "mean_rule_count": 22.333333333333332,
+      "total_dataset_rows": 1800,
+      "source_sha256": "8e17cd063b899f07015f7e499933e0e60f1a82bf614e5d1dd05efae70d564834"
+    },
+    {
+      "dataset": "mushroom",
+      "architecture": "CENTRALIZED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 99.14202263666667,
+      "mean_test_accuracy_pct": 99.16666666666667,
+      "mean_test_macro_f1_pct": 99.16506238333334,
+      "mean_test_exact_rule_coverage_pct": 98.4375,
+      "mean_rule_count": 24.666666666666668,
+      "total_dataset_rows": 1600,
+      "source_sha256": "f79077e58ac74714ebc800e98c9284d81205a8587608d55a31d217db4057731a"
+    },
+    {
+      "dataset": "mushroom",
+      "architecture": "CENTRALIZED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 99.14202263666667,
+      "mean_test_accuracy_pct": 99.16666666666667,
+      "mean_test_macro_f1_pct": 99.16506238333334,
+      "mean_test_exact_rule_coverage_pct": 98.4375,
+      "mean_rule_count": 24.666666666666668,
+      "total_dataset_rows": 1600,
+      "source_sha256": "f79077e58ac74714ebc800e98c9284d81205a8587608d55a31d217db4057731a"
+    },
+    {
+      "dataset": "mushroom",
+      "architecture": "CENTRALIZED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 99.25024774666666,
+      "mean_test_accuracy_pct": 99.27083333333333,
+      "mean_test_macro_f1_pct": 99.26945226999999,
+      "mean_test_exact_rule_coverage_pct": 98.4375,
+      "mean_rule_count": 24.666666666666668,
+      "total_dataset_rows": 1600,
+      "source_sha256": "f79077e58ac74714ebc800e98c9284d81205a8587608d55a31d217db4057731a"
+    },
+    {
+      "dataset": "mushroom",
+      "architecture": "CENTRALIZED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 99.25024774666666,
+      "mean_test_accuracy_pct": 99.27083333333333,
+      "mean_test_macro_f1_pct": 99.26945226999999,
+      "mean_test_exact_rule_coverage_pct": 98.4375,
+      "mean_rule_count": 24.666666666666668,
+      "total_dataset_rows": 1600,
+      "source_sha256": "f79077e58ac74714ebc800e98c9284d81205a8587608d55a31d217db4057731a"
+    },
+    {
+      "dataset": "mushroom",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 99.25024774666666,
+      "mean_test_accuracy_pct": 99.27083333333333,
+      "mean_test_macro_f1_pct": 99.26945226999999,
+      "mean_test_exact_rule_coverage_pct": 98.4375,
+      "mean_rule_count": 24.666666666666668,
+      "total_dataset_rows": 1600,
+      "source_sha256": "f79077e58ac74714ebc800e98c9284d81205a8587608d55a31d217db4057731a"
+    },
+    {
+      "dataset": "mushroom",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 99.25024774666666,
+      "mean_test_accuracy_pct": 99.27083333333333,
+      "mean_test_macro_f1_pct": 99.26945226999999,
+      "mean_test_exact_rule_coverage_pct": 98.4375,
+      "mean_rule_count": 24.666666666666668,
+      "total_dataset_rows": 1600,
+      "source_sha256": "f79077e58ac74714ebc800e98c9284d81205a8587608d55a31d217db4057731a"
+    },
+    {
+      "dataset": "mushroom",
+      "architecture": "FEDERATED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 98.50831898999999,
+      "mean_test_accuracy_pct": 98.54166666666666,
+      "mean_test_macro_f1_pct": 98.53872883333334,
+      "mean_test_exact_rule_coverage_pct": 99.79166666666667,
+      "mean_rule_count": 35.666666666666664,
+      "total_dataset_rows": 1600,
+      "source_sha256": "f79077e58ac74714ebc800e98c9284d81205a8587608d55a31d217db4057731a"
+    },
+    {
+      "dataset": "mushroom",
+      "architecture": "FEDERATED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 98.7012987,
+      "mean_test_accuracy_pct": 98.75000000000001,
+      "mean_test_macro_f1_pct": 98.74686717,
+      "mean_test_exact_rule_coverage_pct": 99.79166666666667,
+      "mean_rule_count": 35.666666666666664,
+      "total_dataset_rows": 1600,
+      "source_sha256": "f79077e58ac74714ebc800e98c9284d81205a8587608d55a31d217db4057731a"
+    },
+    {
+      "dataset": "mushroom",
+      "architecture": "FEDERATED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 98.70912220333334,
+      "mean_test_accuracy_pct": 98.75000000000001,
+      "mean_test_macro_f1_pct": 98.74712063666666,
+      "mean_test_exact_rule_coverage_pct": 99.79166666666667,
+      "mean_rule_count": 35.666666666666664,
+      "total_dataset_rows": 1600,
+      "source_sha256": "f79077e58ac74714ebc800e98c9284d81205a8587608d55a31d217db4057731a"
+    },
+    {
+      "dataset": "mushroom",
+      "architecture": "FEDERATED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 98.70912220333334,
+      "mean_test_accuracy_pct": 98.75000000000001,
+      "mean_test_macro_f1_pct": 98.74712063666666,
+      "mean_test_exact_rule_coverage_pct": 99.79166666666667,
+      "mean_rule_count": 35.666666666666664,
+      "total_dataset_rows": 1600,
+      "source_sha256": "f79077e58ac74714ebc800e98c9284d81205a8587608d55a31d217db4057731a"
+    },
+    {
+      "dataset": "mushroom",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 98.70912220333334,
+      "mean_test_accuracy_pct": 98.75000000000001,
+      "mean_test_macro_f1_pct": 98.74712063666666,
+      "mean_test_exact_rule_coverage_pct": 99.79166666666667,
+      "mean_rule_count": 35.666666666666664,
+      "total_dataset_rows": 1600,
+      "source_sha256": "f79077e58ac74714ebc800e98c9284d81205a8587608d55a31d217db4057731a"
+    },
+    {
+      "dataset": "mushroom",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 98.70912220333334,
+      "mean_test_accuracy_pct": 98.75000000000001,
+      "mean_test_macro_f1_pct": 98.74712063666666,
+      "mean_test_exact_rule_coverage_pct": 99.79166666666667,
+      "mean_rule_count": 35.666666666666664,
+      "total_dataset_rows": 1600,
+      "source_sha256": "f79077e58ac74714ebc800e98c9284d81205a8587608d55a31d217db4057731a"
+    },
+    {
+      "dataset": "phishing",
+      "architecture": "CENTRALIZED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.96402384333333,
+      "mean_test_accuracy_pct": 56.35416666666667,
+      "mean_test_macro_f1_pct": 38.71546827666667,
+      "mean_test_exact_rule_coverage_pct": 17.708333333333336,
+      "mean_rule_count": 8.333333333333334,
+      "total_dataset_rows": 1600,
+      "source_sha256": "807192cd2882f7b73d7ecf9c2add02654cc7c97d6aff3c05088b535a559e0b18"
+    },
+    {
+      "dataset": "phishing",
+      "architecture": "CENTRALIZED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 51.010180933333324,
+      "mean_test_accuracy_pct": 56.458333333333336,
+      "mean_test_macro_f1_pct": 38.377309716666666,
+      "mean_test_exact_rule_coverage_pct": 17.708333333333336,
+      "mean_rule_count": 8.333333333333334,
+      "total_dataset_rows": 1600,
+      "source_sha256": "807192cd2882f7b73d7ecf9c2add02654cc7c97d6aff3c05088b535a559e0b18"
+    },
+    {
+      "dataset": "phishing",
+      "architecture": "CENTRALIZED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 51.010180933333324,
+      "mean_test_accuracy_pct": 56.458333333333336,
+      "mean_test_macro_f1_pct": 38.377309716666666,
+      "mean_test_exact_rule_coverage_pct": 17.708333333333336,
+      "mean_rule_count": 8.333333333333334,
+      "total_dataset_rows": 1600,
+      "source_sha256": "807192cd2882f7b73d7ecf9c2add02654cc7c97d6aff3c05088b535a559e0b18"
+    },
+    {
+      "dataset": "phishing",
+      "architecture": "CENTRALIZED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 51.010180933333324,
+      "mean_test_accuracy_pct": 56.458333333333336,
+      "mean_test_macro_f1_pct": 38.377309716666666,
+      "mean_test_exact_rule_coverage_pct": 17.708333333333336,
+      "mean_rule_count": 8.333333333333334,
+      "total_dataset_rows": 1600,
+      "source_sha256": "807192cd2882f7b73d7ecf9c2add02654cc7c97d6aff3c05088b535a559e0b18"
+    },
+    {
+      "dataset": "phishing",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 51.010180933333324,
+      "mean_test_accuracy_pct": 56.458333333333336,
+      "mean_test_macro_f1_pct": 38.377309716666666,
+      "mean_test_exact_rule_coverage_pct": 17.708333333333336,
+      "mean_rule_count": 8.333333333333334,
+      "total_dataset_rows": 1600,
+      "source_sha256": "807192cd2882f7b73d7ecf9c2add02654cc7c97d6aff3c05088b535a559e0b18"
+    },
+    {
+      "dataset": "phishing",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 51.010180933333324,
+      "mean_test_accuracy_pct": 56.458333333333336,
+      "mean_test_macro_f1_pct": 38.377309716666666,
+      "mean_test_exact_rule_coverage_pct": 17.708333333333336,
+      "mean_rule_count": 8.333333333333334,
+      "total_dataset_rows": 1600,
+      "source_sha256": "807192cd2882f7b73d7ecf9c2add02654cc7c97d6aff3c05088b535a559e0b18"
+    },
+    {
+      "dataset": "phishing",
+      "architecture": "FEDERATED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 52.77338186666666,
+      "mean_test_accuracy_pct": 57.812500000000014,
+      "mean_test_macro_f1_pct": 43.05311103333334,
+      "mean_test_exact_rule_coverage_pct": 24.791666666666664,
+      "mean_rule_count": 17.666666666666668,
+      "total_dataset_rows": 1600,
+      "source_sha256": "807192cd2882f7b73d7ecf9c2add02654cc7c97d6aff3c05088b535a559e0b18"
+    },
+    {
+      "dataset": "phishing",
+      "architecture": "FEDERATED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 52.6546922,
+      "mean_test_accuracy_pct": 57.812500000000014,
+      "mean_test_macro_f1_pct": 42.159802703333334,
+      "mean_test_exact_rule_coverage_pct": 24.791666666666664,
+      "mean_rule_count": 17.666666666666668,
+      "total_dataset_rows": 1600,
+      "source_sha256": "807192cd2882f7b73d7ecf9c2add02654cc7c97d6aff3c05088b535a559e0b18"
+    },
+    {
+      "dataset": "phishing",
+      "architecture": "FEDERATED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 52.53732130666666,
+      "mean_test_accuracy_pct": 57.70833333333333,
+      "mean_test_macro_f1_pct": 41.954303083333336,
+      "mean_test_exact_rule_coverage_pct": 24.791666666666664,
+      "mean_rule_count": 17.666666666666668,
+      "total_dataset_rows": 1600,
+      "source_sha256": "807192cd2882f7b73d7ecf9c2add02654cc7c97d6aff3c05088b535a559e0b18"
+    },
+    {
+      "dataset": "phishing",
+      "architecture": "FEDERATED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 52.53732130666666,
+      "mean_test_accuracy_pct": 57.70833333333333,
+      "mean_test_macro_f1_pct": 41.954303083333336,
+      "mean_test_exact_rule_coverage_pct": 24.791666666666664,
+      "mean_rule_count": 17.666666666666668,
+      "total_dataset_rows": 1600,
+      "source_sha256": "807192cd2882f7b73d7ecf9c2add02654cc7c97d6aff3c05088b535a559e0b18"
+    },
+    {
+      "dataset": "phishing",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 52.63095426333333,
+      "mean_test_accuracy_pct": 57.8125,
+      "mean_test_macro_f1_pct": 42.008237326666666,
+      "mean_test_exact_rule_coverage_pct": 24.791666666666664,
+      "mean_rule_count": 17.666666666666668,
+      "total_dataset_rows": 1600,
+      "source_sha256": "807192cd2882f7b73d7ecf9c2add02654cc7c97d6aff3c05088b535a559e0b18"
+    },
+    {
+      "dataset": "phishing",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 52.53732130666666,
+      "mean_test_accuracy_pct": 57.70833333333333,
+      "mean_test_macro_f1_pct": 41.954303083333336,
+      "mean_test_exact_rule_coverage_pct": 24.791666666666664,
+      "mean_rule_count": 17.666666666666668,
+      "total_dataset_rows": 1600,
+      "source_sha256": "807192cd2882f7b73d7ecf9c2add02654cc7c97d6aff3c05088b535a559e0b18"
+    },
+    {
+      "dataset": "rice",
+      "architecture": "CENTRALIZED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 79.19774507333334,
+      "mean_test_accuracy_pct": 82.08333333333333,
+      "mean_test_macro_f1_pct": 80.02908246333332,
+      "mean_test_exact_rule_coverage_pct": 52.70833333333332,
+      "mean_rule_count": 11.333333333333334,
+      "total_dataset_rows": 1600,
+      "source_sha256": "b5aaa8672ce39c9730b5a5429bc9071b8fd0939343f95c3c319a1434c8b4caa6"
+    },
+    {
+      "dataset": "rice",
+      "architecture": "CENTRALIZED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 79.19774507333334,
+      "mean_test_accuracy_pct": 82.08333333333333,
+      "mean_test_macro_f1_pct": 80.02908246333332,
+      "mean_test_exact_rule_coverage_pct": 52.70833333333332,
+      "mean_rule_count": 11.333333333333334,
+      "total_dataset_rows": 1600,
+      "source_sha256": "b5aaa8672ce39c9730b5a5429bc9071b8fd0939343f95c3c319a1434c8b4caa6"
+    },
+    {
+      "dataset": "rice",
+      "architecture": "CENTRALIZED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 79.19774507333334,
+      "mean_test_accuracy_pct": 82.08333333333333,
+      "mean_test_macro_f1_pct": 80.02908246333332,
+      "mean_test_exact_rule_coverage_pct": 52.70833333333332,
+      "mean_rule_count": 11.333333333333334,
+      "total_dataset_rows": 1600,
+      "source_sha256": "b5aaa8672ce39c9730b5a5429bc9071b8fd0939343f95c3c319a1434c8b4caa6"
+    },
+    {
+      "dataset": "rice",
+      "architecture": "CENTRALIZED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 79.19774507333334,
+      "mean_test_accuracy_pct": 82.08333333333333,
+      "mean_test_macro_f1_pct": 80.02908246333332,
+      "mean_test_exact_rule_coverage_pct": 52.70833333333332,
+      "mean_rule_count": 11.333333333333334,
+      "total_dataset_rows": 1600,
+      "source_sha256": "b5aaa8672ce39c9730b5a5429bc9071b8fd0939343f95c3c319a1434c8b4caa6"
+    },
+    {
+      "dataset": "rice",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 79.19774507333334,
+      "mean_test_accuracy_pct": 82.08333333333333,
+      "mean_test_macro_f1_pct": 80.02908246333332,
+      "mean_test_exact_rule_coverage_pct": 52.70833333333332,
+      "mean_rule_count": 11.333333333333334,
+      "total_dataset_rows": 1600,
+      "source_sha256": "b5aaa8672ce39c9730b5a5429bc9071b8fd0939343f95c3c319a1434c8b4caa6"
+    },
+    {
+      "dataset": "rice",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 79.19774507333334,
+      "mean_test_accuracy_pct": 82.08333333333333,
+      "mean_test_macro_f1_pct": 80.02908246333332,
+      "mean_test_exact_rule_coverage_pct": 52.70833333333332,
+      "mean_rule_count": 11.333333333333334,
+      "total_dataset_rows": 1600,
+      "source_sha256": "b5aaa8672ce39c9730b5a5429bc9071b8fd0939343f95c3c319a1434c8b4caa6"
+    },
+    {
+      "dataset": "rice",
+      "architecture": "FEDERATED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 82.05695823666666,
+      "mean_test_accuracy_pct": 84.47916666666666,
+      "mean_test_macro_f1_pct": 83.08741864666666,
+      "mean_test_exact_rule_coverage_pct": 75.52083333333334,
+      "mean_rule_count": 20.666666666666668,
+      "total_dataset_rows": 1600,
+      "source_sha256": "b5aaa8672ce39c9730b5a5429bc9071b8fd0939343f95c3c319a1434c8b4caa6"
+    },
+    {
+      "dataset": "rice",
+      "architecture": "FEDERATED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 81.69199473333335,
+      "mean_test_accuracy_pct": 84.16666666666669,
+      "mean_test_macro_f1_pct": 82.71008933666667,
+      "mean_test_exact_rule_coverage_pct": 75.52083333333334,
+      "mean_rule_count": 20.666666666666668,
+      "total_dataset_rows": 1600,
+      "source_sha256": "b5aaa8672ce39c9730b5a5429bc9071b8fd0939343f95c3c319a1434c8b4caa6"
+    },
+    {
+      "dataset": "rice",
+      "architecture": "FEDERATED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 82.30026724,
+      "mean_test_accuracy_pct": 84.68750000000001,
+      "mean_test_macro_f1_pct": 83.33833755333333,
+      "mean_test_exact_rule_coverage_pct": 75.52083333333334,
+      "mean_rule_count": 20.666666666666668,
+      "total_dataset_rows": 1600,
+      "source_sha256": "b5aaa8672ce39c9730b5a5429bc9071b8fd0939343f95c3c319a1434c8b4caa6"
+    },
+    {
+      "dataset": "rice",
+      "architecture": "FEDERATED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 82.30026724,
+      "mean_test_accuracy_pct": 84.68750000000001,
+      "mean_test_macro_f1_pct": 83.33833755333333,
+      "mean_test_exact_rule_coverage_pct": 75.52083333333334,
+      "mean_rule_count": 20.666666666666668,
+      "total_dataset_rows": 1600,
+      "source_sha256": "b5aaa8672ce39c9730b5a5429bc9071b8fd0939343f95c3c319a1434c8b4caa6"
+    },
+    {
+      "dataset": "rice",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 82.30026724,
+      "mean_test_accuracy_pct": 84.68750000000001,
+      "mean_test_macro_f1_pct": 83.33833755333333,
+      "mean_test_exact_rule_coverage_pct": 75.52083333333334,
+      "mean_rule_count": 20.666666666666668,
+      "total_dataset_rows": 1600,
+      "source_sha256": "b5aaa8672ce39c9730b5a5429bc9071b8fd0939343f95c3c319a1434c8b4caa6"
+    },
+    {
+      "dataset": "rice",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 82.30026724,
+      "mean_test_accuracy_pct": 84.68750000000001,
+      "mean_test_macro_f1_pct": 83.33833755333333,
+      "mean_test_exact_rule_coverage_pct": 75.52083333333334,
+      "mean_rule_count": 20.666666666666668,
+      "total_dataset_rows": 1600,
+      "source_sha256": "b5aaa8672ce39c9730b5a5429bc9071b8fd0939343f95c3c319a1434c8b4caa6"
+    },
+    {
+      "dataset": "sonar",
+      "architecture": "CENTRALIZED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 49.441786283333336,
+      "mean_test_accuracy_pct": 52.03252033,
+      "mean_test_macro_f1_pct": 40.93800132333333,
+      "mean_test_exact_rule_coverage_pct": 34.959349593333336,
+      "mean_rule_count": 13.333333333333334,
+      "total_dataset_rows": 208,
+      "source_sha256": "94fc2bd5b248b51c86798a9de3d240656a0e07cf1f055e1b385e89a7bdaca2ea"
+    },
+    {
+      "dataset": "sonar",
+      "architecture": "CENTRALIZED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.71770335,
+      "mean_test_accuracy_pct": 53.658536590000004,
+      "mean_test_macro_f1_pct": 41.41652606666666,
+      "mean_test_exact_rule_coverage_pct": 34.959349593333336,
+      "mean_rule_count": 13.333333333333334,
+      "total_dataset_rows": 208,
+      "source_sha256": "94fc2bd5b248b51c86798a9de3d240656a0e07cf1f055e1b385e89a7bdaca2ea"
+    },
+    {
+      "dataset": "sonar",
+      "architecture": "CENTRALIZED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.71770335,
+      "mean_test_accuracy_pct": 53.658536590000004,
+      "mean_test_macro_f1_pct": 41.41652606666666,
+      "mean_test_exact_rule_coverage_pct": 34.959349593333336,
+      "mean_rule_count": 13.333333333333334,
+      "total_dataset_rows": 208,
+      "source_sha256": "94fc2bd5b248b51c86798a9de3d240656a0e07cf1f055e1b385e89a7bdaca2ea"
+    },
+    {
+      "dataset": "sonar",
+      "architecture": "CENTRALIZED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.71770335,
+      "mean_test_accuracy_pct": 53.658536590000004,
+      "mean_test_macro_f1_pct": 41.41652606666666,
+      "mean_test_exact_rule_coverage_pct": 34.959349593333336,
+      "mean_rule_count": 13.333333333333334,
+      "total_dataset_rows": 208,
+      "source_sha256": "94fc2bd5b248b51c86798a9de3d240656a0e07cf1f055e1b385e89a7bdaca2ea"
+    },
+    {
+      "dataset": "sonar",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.71770335,
+      "mean_test_accuracy_pct": 53.658536590000004,
+      "mean_test_macro_f1_pct": 41.41652606666666,
+      "mean_test_exact_rule_coverage_pct": 34.959349593333336,
+      "mean_rule_count": 13.333333333333334,
+      "total_dataset_rows": 208,
+      "source_sha256": "94fc2bd5b248b51c86798a9de3d240656a0e07cf1f055e1b385e89a7bdaca2ea"
+    },
+    {
+      "dataset": "sonar",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.71770335,
+      "mean_test_accuracy_pct": 53.658536590000004,
+      "mean_test_macro_f1_pct": 41.41652606666666,
+      "mean_test_exact_rule_coverage_pct": 34.959349593333336,
+      "mean_rule_count": 13.333333333333334,
+      "total_dataset_rows": 208,
+      "source_sha256": "94fc2bd5b248b51c86798a9de3d240656a0e07cf1f055e1b385e89a7bdaca2ea"
+    },
+    {
+      "dataset": "sonar",
+      "architecture": "FEDERATED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 47.527910686666665,
+      "mean_test_accuracy_pct": 49.59349593333333,
+      "mean_test_macro_f1_pct": 43.114850479999994,
+      "mean_test_exact_rule_coverage_pct": 47.96747967666668,
+      "mean_rule_count": 24,
+      "total_dataset_rows": 208,
+      "source_sha256": "94fc2bd5b248b51c86798a9de3d240656a0e07cf1f055e1b385e89a7bdaca2ea"
+    },
+    {
+      "dataset": "sonar",
+      "architecture": "FEDERATED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 46.690590113333336,
+      "mean_test_accuracy_pct": 49.59349593666666,
+      "mean_test_macro_f1_pct": 36.381936286666665,
+      "mean_test_exact_rule_coverage_pct": 47.96747967666668,
+      "mean_rule_count": 24,
+      "total_dataset_rows": 208,
+      "source_sha256": "94fc2bd5b248b51c86798a9de3d240656a0e07cf1f055e1b385e89a7bdaca2ea"
+    },
+    {
+      "dataset": "sonar",
+      "architecture": "FEDERATED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 48.96331738666667,
+      "mean_test_accuracy_pct": 52.03252033,
+      "mean_test_macro_f1_pct": 38.186266143333334,
+      "mean_test_exact_rule_coverage_pct": 47.96747967666668,
+      "mean_rule_count": 24,
+      "total_dataset_rows": 208,
+      "source_sha256": "94fc2bd5b248b51c86798a9de3d240656a0e07cf1f055e1b385e89a7bdaca2ea"
+    },
+    {
+      "dataset": "sonar",
+      "architecture": "FEDERATED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 51.59489633333333,
+      "mean_test_accuracy_pct": 54.47154472000001,
+      "mean_test_macro_f1_pct": 43.34991796,
+      "mean_test_exact_rule_coverage_pct": 47.96747967666668,
+      "mean_rule_count": 24,
+      "total_dataset_rows": 208,
+      "source_sha256": "94fc2bd5b248b51c86798a9de3d240656a0e07cf1f055e1b385e89a7bdaca2ea"
+    },
+    {
+      "dataset": "sonar",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 49.72089314333333,
+      "mean_test_accuracy_pct": 52.845528460000004,
+      "mean_test_macro_f1_pct": 38.777896733333336,
+      "mean_test_exact_rule_coverage_pct": 47.96747967666668,
+      "mean_rule_count": 24,
+      "total_dataset_rows": 208,
+      "source_sha256": "94fc2bd5b248b51c86798a9de3d240656a0e07cf1f055e1b385e89a7bdaca2ea"
+    },
+    {
+      "dataset": "sonar",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.83732057666667,
+      "mean_test_accuracy_pct": 53.658536590000004,
+      "mean_test_macro_f1_pct": 42.758287370000005,
+      "mean_test_exact_rule_coverage_pct": 47.96747967666668,
+      "mean_rule_count": 24,
+      "total_dataset_rows": 208,
+      "source_sha256": "94fc2bd5b248b51c86798a9de3d240656a0e07cf1f055e1b385e89a7bdaca2ea"
+    },
+    {
+      "dataset": "spambase",
+      "architecture": "CENTRALIZED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.11737089333334,
+      "mean_test_accuracy_pct": 60.64814814999999,
+      "mean_test_macro_f1_pct": 37.971151926666664,
+      "mean_test_exact_rule_coverage_pct": 1.01851852,
+      "mean_rule_count": 7.666666666666667,
+      "total_dataset_rows": 1800,
+      "source_sha256": "d628daa9db4524e46c1391a96003a524116609431c26f6670f0687be5c5d3bc0"
+    },
+    {
+      "dataset": "spambase",
+      "architecture": "CENTRALIZED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.11737089333334,
+      "mean_test_accuracy_pct": 60.64814814999999,
+      "mean_test_macro_f1_pct": 37.971151926666664,
+      "mean_test_exact_rule_coverage_pct": 1.01851852,
+      "mean_rule_count": 7.666666666666667,
+      "total_dataset_rows": 1800,
+      "source_sha256": "d628daa9db4524e46c1391a96003a524116609431c26f6670f0687be5c5d3bc0"
+    },
+    {
+      "dataset": "spambase",
+      "architecture": "CENTRALIZED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.11737089333334,
+      "mean_test_accuracy_pct": 60.64814814999999,
+      "mean_test_macro_f1_pct": 37.971151926666664,
+      "mean_test_exact_rule_coverage_pct": 1.01851852,
+      "mean_rule_count": 7.666666666666667,
+      "total_dataset_rows": 1800,
+      "source_sha256": "d628daa9db4524e46c1391a96003a524116609431c26f6670f0687be5c5d3bc0"
+    },
+    {
+      "dataset": "spambase",
+      "architecture": "CENTRALIZED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.11737089333334,
+      "mean_test_accuracy_pct": 60.64814814999999,
+      "mean_test_macro_f1_pct": 37.971151926666664,
+      "mean_test_exact_rule_coverage_pct": 1.01851852,
+      "mean_rule_count": 7.666666666666667,
+      "total_dataset_rows": 1800,
+      "source_sha256": "d628daa9db4524e46c1391a96003a524116609431c26f6670f0687be5c5d3bc0"
+    },
+    {
+      "dataset": "spambase",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.11737089333334,
+      "mean_test_accuracy_pct": 60.64814814999999,
+      "mean_test_macro_f1_pct": 37.971151926666664,
+      "mean_test_exact_rule_coverage_pct": 1.01851852,
+      "mean_rule_count": 7.666666666666667,
+      "total_dataset_rows": 1800,
+      "source_sha256": "d628daa9db4524e46c1391a96003a524116609431c26f6670f0687be5c5d3bc0"
+    },
+    {
+      "dataset": "spambase",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.11737089333334,
+      "mean_test_accuracy_pct": 60.64814814999999,
+      "mean_test_macro_f1_pct": 37.971151926666664,
+      "mean_test_exact_rule_coverage_pct": 1.01851852,
+      "mean_rule_count": 7.666666666666667,
+      "total_dataset_rows": 1800,
+      "source_sha256": "d628daa9db4524e46c1391a96003a524116609431c26f6670f0687be5c5d3bc0"
+    },
+    {
+      "dataset": "spambase",
+      "architecture": "FEDERATED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.78606194,
+      "mean_test_accuracy_pct": 61.11111111,
+      "mean_test_macro_f1_pct": 39.61886549333333,
+      "mean_test_exact_rule_coverage_pct": 2.962962963333333,
+      "mean_rule_count": 11.333333333333334,
+      "total_dataset_rows": 1800,
+      "source_sha256": "d628daa9db4524e46c1391a96003a524116609431c26f6670f0687be5c5d3bc0"
+    },
+    {
+      "dataset": "spambase",
+      "architecture": "FEDERATED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.78606194,
+      "mean_test_accuracy_pct": 61.11111111,
+      "mean_test_macro_f1_pct": 39.61886549333333,
+      "mean_test_exact_rule_coverage_pct": 2.962962963333333,
+      "mean_rule_count": 11.333333333333334,
+      "total_dataset_rows": 1800,
+      "source_sha256": "d628daa9db4524e46c1391a96003a524116609431c26f6670f0687be5c5d3bc0"
+    },
+    {
+      "dataset": "spambase",
+      "architecture": "FEDERATED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.78606194,
+      "mean_test_accuracy_pct": 61.11111111,
+      "mean_test_macro_f1_pct": 39.61886549333333,
+      "mean_test_exact_rule_coverage_pct": 2.962962963333333,
+      "mean_rule_count": 11.333333333333334,
+      "total_dataset_rows": 1800,
+      "source_sha256": "d628daa9db4524e46c1391a96003a524116609431c26f6670f0687be5c5d3bc0"
+    },
+    {
+      "dataset": "spambase",
+      "architecture": "FEDERATED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.78606194,
+      "mean_test_accuracy_pct": 61.11111111,
+      "mean_test_macro_f1_pct": 39.61886549333333,
+      "mean_test_exact_rule_coverage_pct": 2.962962963333333,
+      "mean_rule_count": 11.333333333333334,
+      "total_dataset_rows": 1800,
+      "source_sha256": "d628daa9db4524e46c1391a96003a524116609431c26f6670f0687be5c5d3bc0"
+    },
+    {
+      "dataset": "spambase",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.78606194,
+      "mean_test_accuracy_pct": 61.11111111,
+      "mean_test_macro_f1_pct": 39.61886549333333,
+      "mean_test_exact_rule_coverage_pct": 2.962962963333333,
+      "mean_rule_count": 11.333333333333334,
+      "total_dataset_rows": 1800,
+      "source_sha256": "d628daa9db4524e46c1391a96003a524116609431c26f6670f0687be5c5d3bc0"
+    },
+    {
+      "dataset": "spambase",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 50.78606194,
+      "mean_test_accuracy_pct": 61.11111111,
+      "mean_test_macro_f1_pct": 39.61886549333333,
+      "mean_test_exact_rule_coverage_pct": 2.962962963333333,
+      "mean_rule_count": 11.333333333333334,
+      "total_dataset_rows": 1800,
+      "source_sha256": "d628daa9db4524e46c1391a96003a524116609431c26f6670f0687be5c5d3bc0"
+    },
+    {
+      "dataset": "wine",
+      "architecture": "CENTRALIZED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 73.96825396999999,
+      "mean_test_accuracy_pct": 75,
+      "mean_test_macro_f1_pct": 74.15405686999999,
+      "mean_test_exact_rule_coverage_pct": 81.48148148333334,
+      "mean_rule_count": 24.666666666666668,
+      "total_dataset_rows": 178,
+      "source_sha256": "07a67cdf6cc38233663226c099ea1781488ca97916e8b6cce136e3141d3ee299"
+    },
+    {
+      "dataset": "wine",
+      "architecture": "CENTRALIZED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 74.62962963000001,
+      "mean_test_accuracy_pct": 75.92592592999999,
+      "mean_test_macro_f1_pct": 75.04947335666668,
+      "mean_test_exact_rule_coverage_pct": 81.48148148333334,
+      "mean_rule_count": 24.666666666666668,
+      "total_dataset_rows": 178,
+      "source_sha256": "07a67cdf6cc38233663226c099ea1781488ca97916e8b6cce136e3141d3ee299"
+    },
+    {
+      "dataset": "wine",
+      "architecture": "CENTRALIZED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 75.07936508,
+      "mean_test_accuracy_pct": 75.92592592666666,
+      "mean_test_macro_f1_pct": 75.28148352333334,
+      "mean_test_exact_rule_coverage_pct": 81.48148148333334,
+      "mean_rule_count": 24.666666666666668,
+      "total_dataset_rows": 178,
+      "source_sha256": "07a67cdf6cc38233663226c099ea1781488ca97916e8b6cce136e3141d3ee299"
+    },
+    {
+      "dataset": "wine",
+      "architecture": "CENTRALIZED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 76.19047619,
+      "mean_test_accuracy_pct": 76.85185185333333,
+      "mean_test_macro_f1_pct": 76.2901781,
+      "mean_test_exact_rule_coverage_pct": 81.48148148333334,
+      "mean_rule_count": 24.666666666666668,
+      "total_dataset_rows": 178,
+      "source_sha256": "07a67cdf6cc38233663226c099ea1781488ca97916e8b6cce136e3141d3ee299"
+    },
+    {
+      "dataset": "wine",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 75.07936508,
+      "mean_test_accuracy_pct": 75.92592592666666,
+      "mean_test_macro_f1_pct": 75.28148352333334,
+      "mean_test_exact_rule_coverage_pct": 81.48148148333334,
+      "mean_rule_count": 24.666666666666668,
+      "total_dataset_rows": 178,
+      "source_sha256": "07a67cdf6cc38233663226c099ea1781488ca97916e8b6cce136e3141d3ee299"
+    },
+    {
+      "dataset": "wine",
+      "architecture": "CENTRALIZED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 76.19047619,
+      "mean_test_accuracy_pct": 76.85185185333333,
+      "mean_test_macro_f1_pct": 76.2901781,
+      "mean_test_exact_rule_coverage_pct": 81.48148148333334,
+      "mean_rule_count": 24.666666666666668,
+      "total_dataset_rows": 178,
+      "source_sha256": "07a67cdf6cc38233663226c099ea1781488ca97916e8b6cce136e3141d3ee299"
+    },
+    {
+      "dataset": "wine",
+      "architecture": "FEDERATED",
+      "policy": "FIRST_MATCH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 72.93650793666666,
+      "mean_test_accuracy_pct": 74.07407407333334,
+      "mean_test_macro_f1_pct": 72.45028866333332,
+      "mean_test_exact_rule_coverage_pct": 100,
+      "mean_rule_count": 32.666666666666664,
+      "total_dataset_rows": 178,
+      "source_sha256": "07a67cdf6cc38233663226c099ea1781488ca97916e8b6cce136e3141d3ee299"
+    },
+    {
+      "dataset": "wine",
+      "architecture": "FEDERATED",
+      "policy": "SIMPLE_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 73.78306878333333,
+      "mean_test_accuracy_pct": 75,
+      "mean_test_macro_f1_pct": 73.97535549666668,
+      "mean_test_exact_rule_coverage_pct": 100,
+      "mean_rule_count": 32.666666666666664,
+      "total_dataset_rows": 178,
+      "source_sha256": "07a67cdf6cc38233663226c099ea1781488ca97916e8b6cce136e3141d3ee299"
+    },
+    {
+      "dataset": "wine",
+      "architecture": "FEDERATED",
+      "policy": "STANDARD_VOTING",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 75,
+      "mean_test_accuracy_pct": 75,
+      "mean_test_macro_f1_pct": 74.46561432333333,
+      "mean_test_exact_rule_coverage_pct": 100,
+      "mean_rule_count": 32.666666666666664,
+      "total_dataset_rows": 178,
+      "source_sha256": "07a67cdf6cc38233663226c099ea1781488ca97916e8b6cce136e3141d3ee299"
+    },
+    {
+      "dataset": "wine",
+      "architecture": "FEDERATED",
+      "policy": "GLOBAL_STRENGTH",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 76.90476190666668,
+      "mean_test_accuracy_pct": 76.85185185333334,
+      "mean_test_macro_f1_pct": 76.40959106,
+      "mean_test_exact_rule_coverage_pct": 100,
+      "mean_rule_count": 32.666666666666664,
+      "total_dataset_rows": 178,
+      "source_sha256": "07a67cdf6cc38233663226c099ea1781488ca97916e8b6cce136e3141d3ee299"
+    },
+    {
+      "dataset": "wine",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_STANDARD",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 76.26984127,
+      "mean_test_accuracy_pct": 76.85185185333334,
+      "mean_test_macro_f1_pct": 76.12506598333333,
+      "mean_test_exact_rule_coverage_pct": 100,
+      "mean_rule_count": 32.666666666666664,
+      "total_dataset_rows": 178,
+      "source_sha256": "07a67cdf6cc38233663226c099ea1781488ca97916e8b6cce136e3141d3ee299"
+    },
+    {
+      "dataset": "wine",
+      "architecture": "FEDERATED",
+      "policy": "POPULATION_GLOBAL",
+      "n_seeds": 3,
+      "seeds": [
+        1,
+        7,
+        42
+      ],
+      "mean_test_balanced_accuracy_pct": 74.39153438999999,
+      "mean_test_accuracy_pct": 74.07407407333334,
+      "mean_test_macro_f1_pct": 73.62890196333332,
+      "mean_test_exact_rule_coverage_pct": 100,
+      "mean_rule_count": 32.666666666666664,
+      "total_dataset_rows": 178,
+      "source_sha256": "07a67cdf6cc38233663226c099ea1781488ca97916e8b6cce136e3141d3ee299"
+    }
+  ]
+}
