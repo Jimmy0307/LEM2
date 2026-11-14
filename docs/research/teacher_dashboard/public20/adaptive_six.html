@@ -1,0 +1,93 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>六策略自適應選擇｜20 資料集 × 3 Seeds × LODO Meta-learning</title>
+<meta name="description" content="驗證是否能只靠 Train 與 Inner Validation 的資料與規則特性，提前選擇最合適的 LEM2 決策策略：20 公開資料集、三 Seeds、跨資料集留一與固定策略對照。">
+<link rel="stylesheet" href="../site.css"><style>
+.hero{padding:34px max(18px,calc((100vw - 1150px)/2));background:linear-gradient(125deg,#112c43,#285e70);color:white}
+.hero h1{font-size:clamp(27px,4vw,43px);line-height:1.22;margin:10px 0}.hero p{color:#e1f0f3;max-width:1000px}
+.topcards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.topcards>div{border:1px solid #d8e4e8;border-radius:11px;background:#f7fafb;padding:14px}
+.topcards strong{font-size:22px;display:block;color:#185f68}.topcards small{color:#647983}
+.controls{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0}.controls label{display:flex;flex-direction:column;gap:4px;min-width:190px;flex:1}
+.tablescroll{overflow:auto;max-height:700px}.tablescroll table{font-variant-numeric:tabular-nums}
+.tablescroll th,.tablescroll td{white-space:nowrap}.tablescroll thead{background:#e7f0f2;position:sticky;top:0}
+.method-top{font-weight:750;color:#16646b}.mini{font-size:13px;color:#607681}.caution{border-left:4px solid #c39549;background:#fff8e8;padding:13px}
+@media(max-width:790px){.hero{padding:25px 18px}.topcards{grid-template-columns:1fr 1fr}}
+</style></head><body>
+<div class="site-top"><a class="brand" href="../">LEM2 Research · 教授報告</a><nav><a href="../">研究首頁</a><a href="./">20 公開資料</a><a href="./policy_suitability.html">策略適用性</a><a class="active" href="./adaptive_six.html" aria-current="page">自適應策略驗證</a></nav></div>
+<header class="hero"><div class="eyebrow">ALGORITHM VALIDATION · NO OUTER-TEST SELECTION</div>
+<h1>能否事前替不同資料集<br>選對六種 LEM2 決策策略？</h1>
+<p>每個公開資料集使用 64% 開發、16% 內層驗證、20% 未見測試。比較固定六策略、同資料集的驗證集選法，以及**跨 19 個其他資料集學習的留一策略選擇器**。另列測試 Oracle 作診斷上限，絕對不當成可部署方法。</p>
+<p><a href="./ADAPTIVE_SIX_ALGORITHM_SPEC.md" style="color:#dcfff5">閱讀演算法正式定義與 G0–G8 成熟度稽核</a></p>
+</header><main class="wrap">
+<section class="panel" id="evidence"><span class="section-tag">01 · SOURCE AND LEAKAGE GATE</span><h2>公開來源、真正的資料隔離與執行狀態</h2><p id="status" role="status" aria-live="polite">正在確認 20 個來源、3 Seeds 與三層隔離證據；未驗證前不顯示推估成績。</p>
+<div class="topcards">
+<div><small>公開資料集</small><strong>20</strong><small>整個資料集留一，防 Seed 洩漏</small></div>
+<div><small>實驗種子</small><strong>1／7／42</strong><small>每資料集 3 次切分</small></div>
+<div><small>凍結規則系統</small><strong>120</strong><small>20 × 3 × 2 架構</small></div>
+<div><small>六策略測試結果</small><strong>720</strong><small>同一規則集合上比較</small></div></div>
+<p><a href="../data/ADAPTIVE_SIX_20_MANIFEST.json">來源與方法 Manifest</a> · <a href="../data/ADAPTIVE_SIX_20_ALL_POLICIES.csv">六策略完整測試明細 CSV</a> · <a href="../data/ADAPTIVE_SIX_20_SELECTORS.csv">事前選法與後驗成績 CSV</a></p>
+</section>
+<section class="panel" id="comparison"><span class="section-tag">02 · ACTUAL OUTER-TEST PERFORMANCE</span><h2>自適應選擇是否真的優於固定策略？</h2>
+<div class="controls"><label>主要指標<select id="objective"><option value="balanced_accuracy">Balanced Accuracy</option><option value="macro_f1">Macro-F1</option><option value="accuracy">Accuracy</option></select></label></div>
+<div class="tablescroll"><table><thead><tr><th>方法</th><th>平均 Test 分數</th><th>相對 Test Oracle 後悔值（pp）</th><th>配對配置數</th><th>不同資料集</th></tr></thead><tbody id="summaryRows"><tr><td colspan="5">尚無可確認結果</td></tr></tbody></table></div>
+<p class="mini">平均是 20 個來源 × 三 Seeds × 兩架構等權；Oracle 使用 Test 最佳策略，僅表示理想上限，並非可執行的選法。六種固定策略可作公平基線。</p>
+</section>
+<section class="panel"><span class="section-tag">03 · CROSS-DOMAIN ROBUSTNESS</span><h2>提升有沒有跨資料集的穩定性？</h2>
+<p>區間計算以「資料集」為重抽樣單位，先將同資料集 Seeds／架構平均，避免把 120 個高度相關的配置當成 120 份獨立資料。</p>
+<div class="tablescroll"><table><thead><tr><th>策略選擇方法</th><th>固定基線</th><th>平均提升（pp）</th><th>探索性 95% 區間</th><th>改善／退步／平手資料集</th></tr></thead><tbody id="intervalRows"><tr><td colspan="5">尚無可確認結果</td></tr></tbody></table></div>
+<div class="caution"><strong>停止條件：</strong>如果 LODO Meta Selector 未穩定超過固定策略，研究應如實報告負面結果，不能改用 Test 來挑選超參數，也不能說已經找到六種方法的泛用最佳選擇法。</div>
+</section>
+<section class="panel"><span class="section-tag">04 · CASE-LEVEL RESEARCH</span><h2>哪些資料集選對？哪些資料集選錯？</h2>
+<div class="controls"><label>資料集<select id="dataset"><option value="ALL">全部 20 份</option></select></label><label>架構<select id="architecture"><option value="ALL">集中式＋Federated C3</option><option value="0">集中式</option><option value="3">Federated C3</option></select></label><label>方法<select id="method"><option value="ALL">所有方法</option><option value="LOCAL_VALIDATION_BEST">本地驗證選法</option><option value="LODO_GLOBAL_VAL">跨域固定驗證基線</option><option value="LODO_META_KNN_5">跨域 Meta KNN</option><option value="FIXED_GLOBAL_STRENGTH">固定 Global Strength</option><option value="FIXED_SIMPLE_VOTING">固定 Simple Voting</option></select></label></div>
+<div class="tablescroll"><table><thead><tr><th>資料集</th><th>Seed</th><th>架構</th><th>選擇方式</th><th>實際使用策略</th><th>Test 分數</th><th>Oracle 差距（pp）</th></tr></thead><tbody id="caseRows"><tr><td colspan="7">等待實測資料</td></tr></tbody></table></div>
+</section>
+<section class="panel"><span class="section-tag">05 · WHAT IT MEANS TO BECOME AN ALGORITHM</span><h2>六種策略現在還缺什麼？</h2>
+<p>六種方法本來就是已定義的決策解析程序，但尚不是六種獨立新規則學習演算法。要發展成新研究方法，至少需要：跨資料集泛化、明確的 Train-only Meta Feature、對原始規則衝突有機制改善、完整消融、與既有 Meta-learning 及 Rule Pruning 的新穎性對照，以及真正大型資料／Non-IID 擴展性測試。</p>
+<p><a href="./ADAPTIVE_SIX_ALGORITHM_SPEC.md">G0–G8 研究成熟度及論文驗收條件</a> · <a href="./POLICY_SUITABILITY_FINDINGS.md">既有 42-Seed 偏斜適用性證據</a> · <a href="./CONFLICT_AWARE_FINDINGS.md">補充規則衝突守門負面結果</a></p>
+</section>
+</main><footer class="footer"><a href="./">20 資料集總覽</a> · <a href="../">教授報告首頁</a></footer>
+<script>
+(()=>{"use strict";
+const $=x=>document.getElementById(x);let summary=[],intervals=[],cases=[];
+const n=x=>x===""||x===null||x===undefined?NaN:Number(x);
+const pct=x=>Number.isFinite(n(x))?n(x).toFixed(2)+"%":"—";
+const num=x=>Number.isFinite(n(x))?n(x).toFixed(2):"—";
+const signed=x=>Number.isFinite(n(x))?(n(x)>=0?"+":"")+num(x):"—";
+const methodLabel={LOCAL_VALIDATION_BEST:"同資料集內層驗證",LODO_GLOBAL_VAL:"其他 19 資料集固定最佳",LODO_META_KNN_5:"跨資料集留一 Meta KNN",TEST_ORACLE_DIAGNOSTIC:"事後測試 Oracle（不可部署）"};
+function parseCSV(text){const out=[];let row=[],value="",quote=false;for(let i=0;i<text.length;i++){const ch=text[i];if(ch==='"'){if(quote&&text[i+1]==='"'){value+='"';i++}else quote=!quote;}else if(ch===','&&!quote){row.push(value);value=""}else if((ch==='\n'||ch==='\r')&&!quote){if(ch==='\r'&&text[i+1]==='\n')i++;row.push(value);value="";if(row.some(x=>x.trim()))out.push(row);row=[]}else value+=ch;}if(value||row.length){row.push(value);out.push(row)}const h=out.shift();return out.map(row=>Object.fromEntries(h.map((k,i)=>[k,row[i]??""])));}
+const lab=m=>methodLabel[m]||m.replace("FIXED_","固定 ");
+function render(){
+ const obj=$("objective").value;
+ const s=summary.filter(x=>x.objective===obj).sort((a,b)=>n(b.mean_outer_test_pct)-n(a.mean_outer_test_pct));
+ $("summaryRows").innerHTML=s.map(x=>"<tr><td>"+lab(x.method)+"</td><td>"+pct(x.mean_outer_test_pct)+"</td><td>"+num(x.mean_regret_pp)+"</td><td>"+x.comparisons+"</td><td>"+x.datasets+"</td></tr>").join("");
+ $("intervalRows").innerHTML=intervals.filter(x=>x.objective===obj).sort((a,b)=>n(b.mean_gain_pp)-n(a.mean_gain_pp)).map(x=>"<tr><td>"+lab(x.candidate)+"</td><td>"+lab(x.benchmark)+"</td><td>"+signed(x.mean_gain_pp)+"</td><td>["+num(x.ci95_low_pp)+", "+num(x.ci95_high_pp)+"]</td><td>"+x.dataset_improved+"／"+x.dataset_harmed+"／"+x.dataset_tied+"</td></tr>").join("");
+ renderCases();
+}
+function renderCases(){
+ const obj=$("objective").value,ds=$("dataset").value,client=$("architecture").value,method=$("method").value;
+ let rows=cases.filter(x=>x.objective===obj&&(ds==="ALL"||x.dataset===ds)&&(client==="ALL"||x.client_count===client)&&(method==="ALL"||x.method===method));
+ rows=rows.filter(x=>x.method!=="TEST_ORACLE_DIAGNOSTIC");
+ rows.sort((a,b)=>n(b.test_regret_pp)-n(a.test_regret_pp));
+ rows=rows.slice(0,80);
+ $("caseRows").innerHTML=rows.map(x=>"<tr><td>"+x.dataset+"</td><td>"+x.seed+"</td><td>"+(x.client_count==="0"?"Centralized":"Fed C3")+"</td><td>"+lab(x.method)+"</td><td>"+x.policy+"</td><td>"+pct(x.outer_test_score_pct)+"</td><td>"+num(x.test_regret_pp)+"</td></tr>").join("")||'<tr><td colspan="7">沒有資料</td></tr>';
+}
+$("objective").addEventListener("change",render);
+for(const id of ["dataset","architecture","method"])$(id).addEventListener("change",renderCases);
+Promise.all([
+ fetch("../data/ADAPTIVE_SIX_20_MANIFEST.json",{cache:"no-store"}),
+ fetch("../data/ADAPTIVE_SIX_20_SUMMARY.csv",{cache:"no-store"}),
+ fetch("../data/ADAPTIVE_SIX_20_DATASET_BOOTSTRAP.csv",{cache:"no-store"}),
+ fetch("../data/ADAPTIVE_SIX_20_SELECTORS.csv",{cache:"no-store"})
+]).then(async ([a,b,c,d])=>{
+ if(!a.ok||!b.ok||!c.ok||!d.ok)throw Error("三 Seeds 實驗尚未完整公布");
+ const m=await a.json();if(m.status!=="VALIDATED_20_DOMAINS_3_SEEDS_6_POLICIES"||m.frozen_rulesets!==120)throw Error("證據完整性不通過");
+ summary=parseCSV(await b.text());intervals=parseCSV(await c.text());cases=parseCSV(await d.text());
+ if(cases.length!==m.outer_selector_evaluations||summary.length!==m.strategy_count*3)throw Error("六策略配置明細不完整");
+ if(cases.some(x=>x.meta_reference_excludes_own_dataset!=="True"))throw Error("有未隔離 meta dataset 的紀錄");
+ $("status").textContent="驗證 PASS：20 份真實 UCI 來源 × 3 Seeds × 2 架構、共 120 組凍結規則系統，720 筆 Test 策略結果，來源與資料隔離已核對。";
+ [...new Set(cases.map(x=>x.dataset))].sort().forEach(d=>$("dataset").add(new Option(d,d)));
+ render();
+}).catch(e=>{$("status").textContent="尚未取得完整、可重現的實測結果："+e.message;});
+})();
+</script>
+</body></html>
