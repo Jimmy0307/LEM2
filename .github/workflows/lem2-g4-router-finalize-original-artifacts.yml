@@ -1,0 +1,65 @@
+name: LEM2 G4 Finalize Original Prospective Source Artifacts
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - .github/workflows/lem2-g4-router-finalize-original-artifacts.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  recount-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 43621645619
+          pattern: g4-router-*
+          path: g4_router_incoming
+          merge-multiple: true
+      - name: Fail closed unless source-locked original 120 configurations exist
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path("g4_router_incoming")
+          assert len(list(p.glob("G4_ROUTER_*.csv")))==120
+          assert len(list(p.glob("G4_EVENTS_*.json")))==120
+          print("G4_UNMODIFIED_120_SOURCE_CONFIG_ARTIFACTS_REUSED_PASS")
+          PY
+      - run: python -m teacher_demo.g4_conflict_router_aggregate
+      - name: Validate 20 domain 2 seed 3 regime source completeness
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd,json
+          d=Path("docs/research/teacher_dashboard/data")
+          m=json.loads((d/"G4_ROUTER_UCI20_MANIFEST.json").read_text())
+          b=pd.read_csv(d/"G4_ROUTER_UCI20_DATASET_BOOTSTRAP.csv")
+          s=pd.read_csv(d/"G4_ROUTER_UCI20_NEW_SEEDS_SUMMARY.csv")
+          assert m["configurations"]==120 and m["method_rows"]==1080
+          assert s.groupby("scenario").size().eq(9).all()
+          assert not b.duplicated(["scenario","candidate","baseline"]).any()
+          assert b[(b.candidate=="CONFLICT_BUCKET_ROUTER_V1")&(b.baseline=="VALIDATION_BEST")].scenario.nunique()==3
+          assert b.independent_source_clusters.eq(20).all()
+          print("G4_PROSPECTIVE_20_DOMAIN_ROUTER_VS_VALIDATION_BEST_REANALYSIS_PASS")
+          PY
+      - name: Publish only audited unmodified input recomputation
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "${GITHUB_REF_NAME}"
+          git reset --mixed FETCH_HEAD
+          git add docs/research/teacher_dashboard/data/G4_ROUTER_UCI20_*
+          if ! git diff --cached --quiet; then
+            git commit -m "research(G4): clean source-locked contrasts including router vs ValidationBest [skip ci]"
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
