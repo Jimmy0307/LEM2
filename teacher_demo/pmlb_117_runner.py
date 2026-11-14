@@ -22,7 +22,7 @@ from urllib.parse import quote
 
 import numpy as np
 import pandas as pd
-import requests
+from urllib.request import Request,urlopen
 
 from roughset.adapters import DatasetBundle
 from roughset.app import _run_split
@@ -57,11 +57,11 @@ def download(spec):
     url=spec["raw_url"]
     assert url.startswith("https://media.githubusercontent.com/media/EpistasisLab/pmlb/")
     t=time.perf_counter()
-    with requests.get(url,timeout=(15,100),stream=True,headers={"User-Agent":"LEM2-research-source-audit/1.0"}) as response:
-        response.raise_for_status()
+    with urlopen(Request(url,headers={"User-Agent":"LEM2-research-source-audit/1.0"}),timeout=100) as response:
         chunks=[];total=0
-        for c in response.iter_content(chunk_size=1<<20):
-            if not c:continue
+        while True:
+            c=response.read(1<<20)
+            if not c:break
             total+=len(c)
             if total>MAX_COMPRESSED_BYTES:raise ValueError("SOURCE_TOO_LARGE_COMPRESSED")
             chunks.append(c)
