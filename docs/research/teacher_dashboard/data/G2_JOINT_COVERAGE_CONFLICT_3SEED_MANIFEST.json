@@ -1,0 +1,36 @@
+{
+  "status": "SOURCE_AUDITED_20_UCI_3SEEDS_NESTED_CONFLICT_AWARE_SUPPLEMENTS",
+  "datasets": 20,
+  "seeds": [
+    1,
+    7,
+    42
+  ],
+  "architectures": [
+    "CENTRALIZED",
+    "FEDERATED"
+  ],
+  "frozen_models": 120,
+  "variant_rows": 360,
+  "source_audit": "Each row matches original UCI prepared published SHA",
+  "gated_supplement_rules_selected_on_inner_validation_only": true,
+  "raw_induction_rules_unchanged": true,
+  "augmented_coverage_is_not_exact_Lem2_rule_coverage": true,
+  "active_conflict_is_not_full_union_shadow_conflict": true,
+  "no_match_is_not_abstention": true,
+  "criteria_not_retuned_after_test": true,
+  "warnings": [
+    "Validation gate may overfit small classes",
+    "This is a custom one-condition-drop supplement, not MLEM2 or VC-DOMLEM",
+    "No new mechanism can increase exact original LEM2 coverage unless rules are actually augmented",
+    "Three seeds across 20 domains is exploratory, not definitive causal proof",
+    "Separately report coverage gain, correct candidate gain, conflict cost, BA and accuracy"
+  ],
+  "files": [
+    "G2_JOINT_COVERAGE_CONFLICT_3SEED_RESULTS.csv",
+    "G2_JOINT_COVERAGE_CONFLICT_3SEED_EVENTS.csv",
+    "G2_JOINT_COVERAGE_CONFLICT_3SEED_AUDIT.csv",
+    "G2_JOINT_COVERAGE_CONFLICT_3SEED_SUMMARY.csv",
+    "G2_JOINT_COVERAGE_CONFLICT_3SEED_CLUSTER_BOOTSTRAP.csv"
+  ]
+}
