@@ -1,0 +1,92 @@
+name: LEM2 G4 Prospective Rule-Conflict Router - UCI20 Seeds11,23 IID/NonIID
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - .github/workflows/lem2-g4-conflict-router-noniid.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  no-test-leak-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m pytest -q teacher_demo/test_g4_conflict_router.py
+  run-public-sources:
+    needs: no-test-leak-tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    strategy:
+      max-parallel: 10
+      fail-fast: false
+      matrix:
+        dataset: [adult_income,bank_marketing,banknote,breast_diagnostic,covertype,dry_bean,eeg_eye_state,german_credit,grid_stability,haberman,htru2,iris,letter,magic_gamma,mushroom,phishing,rice,sonar,spambase,wine]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Induce same rules on train, gate on inner validation, test unseen new seeds
+        run: python -m teacher_demo.g4_rule_conflict_router --dataset ${{ matrix.dataset }} --seeds 11,23 --scenarios IID,NONIID_05,NONIID_01
+      - name: Check six actual source-split receipts and immutable resolution contracts
+        run: |
+          python - <<'PY'
+          import pandas as pd,json
+          from pathlib import Path
+          p=Path("outputs/g4_router")
+          files=list(p.glob("G4_ROUTER_*.csv"))
+          events=list(p.glob("G4_EVENTS_*.json"))
+          assert len(files)==len(events)==6,(len(files),len(events))
+          for f in files:
+              a=pd.read_csv(f)
+              assert len(a)==9 and set(a.seed).issubset({11,23})
+              assert a.method.nunique()==9
+              assert a.outer_test_coverage.nunique()==1
+              assert a.outer_test_conflict.nunique()==1
+          print("G4_NEW_SEED_NESTED_SOURCE_AND_INVARIANCE_PASS",len(files),flush=True)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: g4-router-${{ matrix.dataset }}
+          path: outputs/g4_router/G4_*
+          if-no-files-found: error
+          retention-days: 90
+  source-audit-publish:
+    needs: run-public-sources
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: g4-router-*
+          path: g4_router_incoming
+          merge-multiple: true
+      - run: python -m teacher_demo.g4_conflict_router_aggregate
+      - name: Evidence-gated publication only to research branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "${GITHUB_REF_NAME}"
+          git reset --mixed FETCH_HEAD
+          git add docs/research/teacher_dashboard/data/G4_ROUTER_UCI20_*
+          if ! git diff --cached --quiet; then
+            git commit -m "research(G4): publish prospective nested rule-conflict routing metrics [skip ci]"
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: g4-new-seed-20-source-audited-results
+          path: docs/research/teacher_dashboard/data/G4_ROUTER_UCI20_*
+          if-no-files-found: error
