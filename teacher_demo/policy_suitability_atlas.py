@@ -117,12 +117,41 @@ def public_twenty():
     summarized.to_csv(DATA/"POLICY_SUITABILITY_20_GROUPS.csv",index=False,float_format="%.10f")
     return out,summarized
 
+def iid_federated_42_win_shares():
+    """Directly comparable 504 IID matchups: 3 datasets x 42 seeds x C2-C5.
+
+    This repairs the denominator mismatch of an earlier public win-summary,
+    which also counted Centralized (C0) in the IID win frequencies.
+    """
+    f=Path("docs/research/seed_sweep_1_42/tables/SEED_SWEEP_8820.csv")
+    raw=pd.read_csv(f)
+    assert_ok(len(raw)==8820,"Frozen 8820-row matrix changed")
+    iid=raw[
+        raw.split_mode.eq("HOLDOUT_80_20") &
+        raw.system.eq("FEDERATED") &
+        raw.selection_policy.isin(POLICIES)
+    ].copy()
+    assert_ok(len(iid)==3*42*4*6,"Expected 3024 IID Federated policy rows")
+    assert_ok(iid.dataset.nunique()==3 and iid.seed.nunique()==42,"Wrong original 42 dataset evidence")
+    wins={obj:dict.fromkeys(POLICIES,0.) for obj in OBJECTIVES}
+    for (ds,seed,client),block in iid.groupby(["dataset","seed","client_count"]):
+        assert_ok(len(block)==6 and set(block.selection_policy)==set(POLICIES),
+                  "Missing exactly six policies in one IID Fed matchup")
+        for obj in OBJECTIVES:
+            scores=pd.to_numeric(block[obj],errors="coerce")
+            assert_ok(scores.notna().all(),"Undefined Fed IID prediction metric")
+            winners=block[np.isclose(scores,scores.max(),rtol=1e-10,atol=1e-12)].selection_policy.tolist()
+            for p in winners:wins[obj][p]+=1/len(winners)
+    for obj in OBJECTIVES:assert_ok(abs(sum(wins[obj].values())-504)<1e-6,"Incorrect Fed-only IID win denominator")
+    return {o:{p:100*v/504 for p,v in values.items()} for o,values in wins.items()}
+
 def original_42():
     n=json.loads((DATA/"NONIID_42_SUMMARY.json").read_text(encoding="utf-8"))
     assert_ok(n["fully_complete"] and n["valid_rows"]==7056 and n["invalid_configurations"]==0,
               "Non IID 42-seed source not fully valid")
     c=pd.DataFrame(n["comparisons"])
     win=pd.read_csv(DATA/"POLICY_WINS_BY_DATASET.csv")
+    comparable_iid_shares=iid_federated_42_win_shares()
     target_win={"accuracy_pct":"accuracy","balanced_accuracy_pct":"balanced_accuracy","macro_f1_pct":"macro_f1"}
     out=[]
     for regime,alpha in [("STRATIFIED_IID",None),("DIRICHLET_NON_IID",.5),("DIRICHLET_NON_IID",.1)]:
@@ -139,20 +168,22 @@ def original_42():
             # The available policy win table on IID includes CENTRALIZED;
             # DO NOT attach it to the Fed-only mean as if denominators matched.
             if regime=="STRATIFIED_IID":
-                win_rows=win[(win.regime=="STRATIFIED_IID") & (win.metric.eq(objective+"_pct")) & (win.winning_policy.eq(policy))]
-                assert_ok(len(win_rows)==3,"Missing three IID win rows")
-                win_scope="IID_C0_C2_C5_630_CONFIGS_NOT_DIRECTLY_COMPARABLE_TO_FED_ONLY_MEAN"
+                # Recount only 42-seed IID Federated C2-C5, not Centralized.
+                share=comparable_iid_shares[objective][policy]
+                competitions=504
             else:
                 win_rows=win[(win.regime=="DIRICHLET_NON_IID") & (win.metric.eq(objective+"_pct")) &
                              (win.winning_policy.eq(policy)) &
                              np.isclose(win.dirichlet_alpha.astype(float),float(alpha))]
                 assert_ok(len(win_rows)==3,"Missing three nonIID win rows")
-                win_scope="FED_C2_C5_504_CONFIGS"
-            share=float(win_rows.fractional_wins.sum()/win_rows.opportunities.sum())*100
+                competitions=int(win_rows.opportunities.sum())
+                assert_ok(competitions==504,"Non IID denominator not 504")
+                share=float(win_rows.fractional_wins.sum()/competitions)*100
+            win_scope="FED_ONLY_C2_C3_C4_C5_504_SAME_CONFIGS"
             out.append({"distribution":regime,"alpha":alpha,"objective":objective,
                "policy":policy,"metric_mean_pct":v,
                "fractional_win_share_pct":share,
-               "win_competitions":int(win_rows.opportunities.sum()),
+               "win_competitions":int(competitions),
                "win_scope":win_scope,
                "source_method":"Classical positive-region reduct + LEM2",
                "datasets":3,"seed_count":42,"client_counts":"C2,C3,C4,C5",
@@ -172,6 +203,8 @@ def main():
        "twenty_groups":len(g),"n_original_42":3,"original_42_seeds":42,
        "original_42_regimes":["IID-C2-C5","nonIID-alpha=0.5-C2-C5","nonIID-alpha=0.1-C2-C5"],
        "original_42_rows":len(d),
+       "comparable_win_competitions_per_regime":504,
+       "iid_wins_recomputed_from_frozen_8820_holdout_federated_only":True,
        "no_claims":[
         "A feature type does not independently cause a certain policy to win",
         "Twenty datasets each have only one holdout seed, many tied winners",
