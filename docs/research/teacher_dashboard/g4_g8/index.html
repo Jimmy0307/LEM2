@@ -23,6 +23,11 @@
 <div class="metrics"><div><small>真實樣本／維度配置</small><strong id="g8total">—</strong></div><div><small>可與原始精確搜尋配對</small><strong id="g8exact">—</strong></div><div><small>實測最高特徵數</small><strong id="g8max">—</strong></div></div>
 <div class="tools"><label>公開資料來源<select id="g8source"><option value="connect_4">Connect-4</option><option value="adult">Adult</option><option value="spambase">Spambase</option><option value="mnist">MNIST</option></select></label></div>
 <div class="scroll-table"><table><thead><tr><th>Rows</th><th>Features</th><th>原精確搜尋（秒）</th><th>快取精確搜尋（秒）</th><th>貪婪法（秒）</th><th>貪婪選出特徵數</th><th>訓練正域相同</th></tr></thead><tbody id="g8rows"><tr><td colspan="7">等待核驗結果</td></tr></tbody></table></div>
+<h3>貪婪法保留 Train POS，是否也保留真正的 Test 準確率？</h3>
+<p>另外使用 Adult、Connect-4、Spambase 各600／1,600筆與8／12／16特徵，共16組相同Train／Test的完整規則歸納配對。基準是<b>全部所選原始特徵</b>，不是精確最小約簡；差距是貪婪減掉全部特徵的Test績效。</p>
+<div id="g8qualityStatus" class="status pending" role="status">正在核對完整規則歸納及未見測試品質實證。</div>
+<div class="scroll-table"><table><thead><tr><th>來源</th><th>Rows</th><th>Features</th><th>Greedy − Full BA（pp）</th><th>Greedy − Full Test Coverage（pp）</th><th>規則數差</th><th>歸納與支持運算時間差（秒）</th></tr></thead><tbody id="g8qualityRows"><tr><td colspan="7">等待完整Test品質來源</td></tr></tbody></table></div>
+<p class="links"><a href="../data/G8_GREEDY_FULL_LEM2_TEST_PAIRED.csv">16組相同外測配對</a><a href="../data/G8_GREEDY_FULL_LEM2_TEST_MANIFEST.json">訓練正域不變性與來源稽核</a></p>
 <div class="status">注意：部分MNIST來源前幾欄為常數／低資訊欄，正域可能為0或產生空約簡；這是特徵採樣設計限制，不應解讀為高維MNIST真實分類能力。單次 CPU 延遲不得外推到GPU、700GB或大型聯邦。</div>
 <p class="links"><a href="../data/G8_OPTIMIZED_REDUCT_REAL_CPU.csv">82組真實CPU量測</a><a href="../data/G8_OPTIMIZED_REDUCT_MANIFEST.json">來源限制及稽核</a><a href="https://github.com/Jimmy0307/LEM2/actions/workflows/lem2-g8-reduct-optimized.yml">正式測試</a></p>
 </section>
@@ -33,7 +38,7 @@
 <script>
 (()=>{"use strict";const $=x=>document.getElementById(x);const pct=x=>Number.isFinite(Number(x))&&x!==""?Number(x).toFixed(2)+"%":"—",num=x=>Number.isFinite(Number(x))&&x!==""?Number(x).toFixed(3):"—";
 const rowNames={FIXED_GLOBAL_STRENGTH:"固定 Global Strength",FIXED_SIMPLE_VOTING:"固定 Simple Voting",VALIDATION_BEST:"同資料集驗證最佳",CONFLICT_BUCKET_ROUTER_V1:"規則衝突類型路由器",TEST_ORACLE_DIAGNOSTIC:"測試 Oracle（僅診斷）",BASE_LEM2:"原始 LEM2",ALL_TRAIN_SUPPLEMENTS:"全部 Train 補充規則",VALIDATION_GATED_CONFLICT_AWARE:"內驗證衝突守門補充規則"};
-let g4=[],g2=[],g8=[];function parseCSV(text){const out=[];let row=[],cell="",quote=false;for(let i=0;i<text.length;i++){const c=text[i];if(c==='"'){if(quote&&text[i+1]==='"'){cell+='"';i++}else quote=!quote;}else if(c===','&&!quote){row.push(cell);cell=""}else if((c==='\r'||c==='\n')&&!quote){if(c==='\r'&&text[i+1]==='\n')i++;row.push(cell);cell="";if(row.some(x=>x.trim()))out.push(row);row=[]}else cell+=c}if(cell||row.length){row.push(cell);out.push(row)}const cols=out.shift();return out.map(z=>Object.fromEntries(cols.map((k,i)=>[k,z[i]??""])));}
+let g4=[],g2=[],g8=[],g8quality=[];function parseCSV(text){const out=[];let row=[],cell="",quote=false;for(let i=0;i<text.length;i++){const c=text[i];if(c==='"'){if(quote&&text[i+1]==='"'){cell+='"';i++}else quote=!quote;}else if(c===','&&!quote){row.push(cell);cell=""}else if((c==='\r'||c==='\n')&&!quote){if(c==='\r'&&text[i+1]==='\n')i++;row.push(cell);cell="";if(row.some(x=>x.trim()))out.push(row);row=[]}else cell+=c}if(cell||row.length){row.push(cell);out.push(row)}const cols=out.shift();return out.map(z=>Object.fromEntries(cols.map((k,i)=>[k,z[i]??""])));}
 function status(id,msg,ok){$(id).className="status "+(ok?"pass":"pending");$(id).textContent=msg}
 function render4(){const s=$("g4regime").value;let x=g4.filter(y=>y.scenario===s);
  const methods=["FIXED_GLOBAL_STRENGTH","FIXED_SIMPLE_VOTING","VALIDATION_BEST","CONFLICT_BUCKET_ROUTER_V1","TEST_ORACLE_DIAGNOSTIC"];x=methods.map(m=>x.find(y=>y.method===m)).filter(Boolean);
@@ -43,6 +48,13 @@ function render2(){const s=$("g2arch").value,methods=["BASE_LEM2","ALL_TRAIN_SUP
  $("g2rows").innerHTML=x.map(y=>"<tr><td>"+rowNames[y.variant]+"</td><td>"+pct(y.coverage_pct)+"</td><td>"+pct(y.no_match_pct)+"</td><td>"+pct(y.active_conflict_pct)+"</td><td>"+pct(y.shadow_conflict_pct)+"</td><td>"+pct(y.candidate_coverage_pct)+"</td><td>"+pct(y.balanced_accuracy_pct)+"</td></tr>").join("")||"<tr><td colspan='7'>可核驗報表尚未發布</td></tr>"}
 function render8(){const src=$("g8source").value;const x=g8.filter(y=>y.dataset===src).sort((a,b)=>Number(a.rows)-Number(b.rows)||Number(a.features)-Number(b.features));
  $("g8rows").innerHTML=x.map(y=>"<tr><td>"+y.rows+"</td><td>"+y.features+"</td><td>"+num(y.reference_seconds)+"</td><td>"+num(y.exact_cache_seconds)+"</td><td>"+num(y.approximate_seconds)+"</td><td>"+y.approximate_selected_size+"</td><td>"+(y.actual_positive_region_equal==="True"?"是":"—")+"</td></tr>").join("")||"<tr><td colspan='7'>沒有符合來源限制的配置</td></tr>"}
+function renderQuality(){
+ const x=g8quality;
+ $("g8qualityRows").innerHTML=x.map(y=>"<tr><td>"+y.dataset+"</td><td>"+y.rows+"</td><td>"+y.features+"</td><td>"+num(y.delta_test_balanced_accuracy_pct_greedy_minus_full)+"</td><td>"+num(y.delta_test_coverage_pct_greedy_minus_full)+"</td><td>"+num(y.delta_rules_greedy_minus_full)+"</td><td>"+num(y.delta_rule_induction_and_support_seconds_greedy_minus_full)+"</td></tr>").join("")||"<tr><td colspan='7'>完整資料尚未公布</td></tr>";
+}
+Promise.all([fetch("../data/G8_GREEDY_FULL_LEM2_TEST_MANIFEST.json",{cache:"no-store"}),fetch("../data/G8_GREEDY_FULL_LEM2_TEST_PAIRED.csv",{cache:"no-store"})])
+.then(async([a,b])=>{if(!a.ok||!b.ok)throw Error("外測結果尚未發布");const m=await a.json();g8quality=parseCSV(await b.text());if(m.status!=="REAL_SAME_TEST_LEM2_RULE_INDUCTION_G8_QUALITY"||m.paired_configs!==16||m.actual_model_runs!==32||g8quality.length!==16)throw Error("無法通過Test配對完整性核對");status("g8qualityStatus","實際完整 LEM2 Test 品質驗證 PASS：3份來源、16組外測配對，Greedy Train POS 均與全所選特徵一致；然而Test BA可能不同。",true);renderQuality()})
+.catch(e=>status("g8qualityStatus","未取得可驗證品質數據："+e.message,false));
 $("g4regime").addEventListener("change",render4);$("g2arch").addEventListener("change",render2);$("g8source").addEventListener("change",render8);
 Promise.all([fetch("../data/G4_ROUTER_UCI20_MANIFEST.json",{cache:"no-store"}),fetch("../data/G4_ROUTER_UCI20_NEW_SEEDS_SUMMARY.csv",{cache:"no-store"})])
 .then(async ([a,b])=>{if(!a.ok||!b.ok)throw Error("來源實驗尚未完成");const m=await a.json();g4=parseCSV(await b.text());if(m.status!=="SOURCE_AUDITED_20_UCI_NEW_SEEDS_NESTED_ROUTING"||m.configurations!==120||m.method_rows!==1080||g4.length!==27)throw Error("來源／配置完整性不符");status("g4status","已核驗：20資料集×Seeds11,23×IID／NonIID，共120組固定規則、1080筆解析結果；所有路由在Test前凍結。",true);render4()})
