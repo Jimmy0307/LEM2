@@ -1,3 +1,15 @@
+## 2026-11-14｜G4–G8：117 預登錄、109 真正完成的 PMLB 六策略適用性驗證
+
+- [109 份資料 G4–G8 互動教授報告](./pmlb_117/) · [正式研究結論、統計與限制](./pmlb_117/G4_G8_109_DATASET_VALIDATION_REPORT.md) · [原始來源完整性 Manifest](./data/PMLB_117_3SEED_MANIFEST.json)。
+- Penn Machine Learning Benchmarks（來源 commit `7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68`），預登錄 117 份分類基準資料表，**109 份真實模型成功且來源/Prepared SHA 不重複**、8 份不合格且保留失敗紀錄。實際為 88 個**初步**相關來源家族，不等於 109 個獨立真實產業。
+- IID、Dirichlet Label Skew α=.5／.1 × Seeds 1／7／42 × Federated C3；**981 組規則系統、5886 筆六策略測試、32373 筆策略選擇結果**；Train 64%、Inner Validation 16%、Outer Test 20%，測試集不參與選法。**實際 Fit ≤900 筆、≤6 特徵**，不是來源完整大型資料訓練。
+- G4 在 Non-IID 有條件 PASS：α=.5 原 109 資料表等權平均 ValidationBest BA **54.113%**，固定 Simple Voting **52.429%**；α=.1 分別 **49.524%** vs **47.707%**；IID ValidationBest **55.718%** vs 固定 Global Strength **55.877%**，無提升。
+- G6 五項預先指定的來源家族分群 Wilcoxon/Holm：α=.5、.1 ValidationBest 相對 Simple Voting 均通過多重比較校正（Holm p≈0.000560／0.00000105），但 GuardedSkew 與 LOFO Meta KNN7 **未**證實優於固定 Simple Voting，不能直接視為新的自適應演算法已成功。
+- G5 已核驗 Client Label Skew＋資料形態／候選 Coverage／Conflict 條件，但未核驗 Feature/Quantity/Temporal Drift。G7 六方法對固定規則的結構不變性、候選正確率上界已用測試確認，**學術首創仍待證明**。G8 四公開來源、600/1600/3200 筆×4/6/8特徵的 **36組真實 CPU/Memory**，只完成有限規模可行性，不能宣稱 700GB 等級驗證。
+- 可重現原始 117 三 Seed [實驗 PASS](https://github.com/Jimmy0307/LEM2/actions/runs/43576756817) · [G6 完整性稽核 PASS](https://github.com/Jimmy0307/LEM2/actions/runs/43577032785) · [G7 實驗 PASS](https://github.com/Jimmy0307/LEM2/actions/runs/43577343600) · [G8 36組 PASS](https://github.com/Jimmy0307/LEM2/actions/runs/43576899493)。
+
+---
+
 ## 2026-11-14｜34 份公開資料逐 row／column + 32 組 Coverage × Conflict 配對與三條規則機制
 
 - [可互動的資料型態／類別與 Coverage × Conflict 散佈圖](./atlas/)：**34 個公開子集**（原先20、新增12、前期電商／工業2）；已驗證 **195 個實驗特徵欄位紀錄、121 筆類別分布紀錄**。逐資料集保留 UCI 來源、匯入筆數、實際經抽樣／缺值處理後筆數、欄位資料型態、唯一值、缺失值、三個最常見值、數值 p10/p50/p90、重複完整列和 prepared CSV SHA。原始全部特徵數若先前未保存，維持空值而不是臆造。
