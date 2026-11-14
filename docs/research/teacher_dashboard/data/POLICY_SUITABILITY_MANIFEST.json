@@ -14,6 +14,8 @@
     "nonIID-alpha=0.1-C2-C5"
   ],
   "original_42_rows": 54,
+  "comparable_win_competitions_per_regime": 504,
+  "iid_wins_recomputed_from_frozen_8820_holdout_federated_only": true,
   "no_claims": [
     "A feature type does not independently cause a certain policy to win",
     "Twenty datasets each have only one holdout seed, many tied winners",
