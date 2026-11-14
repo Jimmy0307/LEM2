@@ -1,3 +1,13 @@
+## 2026-11-15｜G4衝突類型路由、Coverage/Conflict聯合守門與G8約簡＋外測品質
+
+- [新研究互動頁](./g4_g8/) · [正式實驗結論、失敗條件與G4–G8門檻](./g4_g8/G4_G2_G8_VALIDATED_FINDINGS_20261115.md)。
+- **G4**：20份公開UCI×新Seeds11、23×IID、Dirichlet α=.5／.1、C3，120組相同規則、1080筆策略結果。Conflict Bucket Router相對固定SV在Non-IID α=.1 **BA +2.314pp**（20來源Bootstrap CI [+0.696,+4.157]）；α=.5 **+0.683pp**；但α=.5不如ValidationBest，不能宣稱原G4跨域Meta停止條件通過。來源稽核與Bootstrap [PASS](https://github.com/Jimmy0307/LEM2/actions/runs/43622293509)。
+- **Coverage/Conflict**：20份UCI×3 Seeds×C0/C3，120組凍結規則、360筆比較。集中式Validation-gated supplements 有效Coverage **+13.173pp**、BA **+1.582pp**，Active Conflict **+0.068pp**；聯邦式有效Coverage **+2.391pp**、Active Conflict不變、BA **−0.015pp**。這是有效補充覆蓋非原始Exact Coverage，不將NoMatch當作Rejection。來源實驗 [PASS](https://github.com/Jimmy0307/LEM2/actions/runs/43621841892)。
+- **G8 CPU**：4份公開來源、82組實測、36組精確約簡基準配對（候選集合及最小約簡完全一致）、最多6400筆／24特徵Greedy Train POS不變。另在Adult、Connect4、Spambase做**16組全LEM2相同Test配對**，14組BA一樣，1組 +1.099pp、1組 −3.719pp，說明Train POS不等於Test品質，也不能宣稱Greedy是最小基數或完整大數據加速。CPU原始實驗 [PASS](https://github.com/Jimmy0307/LEM2/actions/runs/43621213749)，模型Test品質 [PASS](https://github.com/Jimmy0307/LEM2/actions/runs/43622531133)。
+- 只在研究分支新增模組／工作流程／網站，不更動封存基線或聲稱全面G4–G8驗收。資料來源、SHA與不利結果全數保留。
+
+---
+
 ## 2026-11-14｜教授用 161 筆完整資料留底（原始／實驗 Rows、Features、分類目標）
 
 - [互動可搜尋資料總目錄](./data_catalog/) · [161 筆 Excel 可開啟 CSV](./data/TEACHER_DATASET_MASTER_20261114.csv) · [161 筆全欄位 JSON](./data/TEACHER_DATASET_MASTER_20261114.json) · [逐筆可列印研究說明](./pmlb_117/TEACHER_ALL_DATASETS_ROWS_TASKS_20261114.md)。
