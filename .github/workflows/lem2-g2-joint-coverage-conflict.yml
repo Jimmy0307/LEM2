@@ -1,0 +1,90 @@
+name: LEM2 G2 Joint Coverage Conflict - 20 UCI x 3 Seeds Nested Validation
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - .github/workflows/lem2-g2-joint-coverage-conflict.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  leakage-and-risk-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m pytest -q teacher_demo/test_conflict_aware_coverage.py
+  joint-source-experiments:
+    needs: leakage-and-risk-tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    strategy:
+      max-parallel: 8
+      fail-fast: false
+      matrix:
+        dataset: [adult_income,bank_marketing,banknote,breast_diagnostic,covertype,dry_bean,eeg_eye_state,german_credit,grid_stability,haberman,htru2,iris,letter,magic_gamma,mushroom,phishing,rice,sonar,spambase,wine]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Baseline / unconditional supplemental / validation-gated, 3 fresh paired seeds
+        run: python -m teacher_demo.joint_coverage_conflict_3seed --dataset ${{ matrix.dataset }}
+      - name: Assert 3 seeds x 2 systems x 3 variants with source receipts
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          from pathlib import Path
+          root=Path("outputs/joint_coverage_conflict")
+          paths=list(root.glob("JOINT_RESULTS_*_seed*.csv"))
+          assert len(paths)==3,len(paths)
+          for p in paths:
+            x=pd.read_csv(p)
+            assert len(x)==6
+            assert x.groupby("system").size().eq(3).all()
+            assert x.source_sha256.notna().all()
+          print("G2_THREE_SEED_REAL_SOURCE_RUN_PASS",len(paths),flush=True)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: joint-risk-${{ matrix.dataset }}
+          path: outputs/joint_coverage_conflict/JOINT_*
+          if-no-files-found: error
+          retention-days: 90
+  evidence-audit:
+    needs: joint-source-experiments
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: joint-risk-*
+          path: joint_coverage_incoming
+          merge-multiple: true
+      - run: python -m teacher_demo.joint_coverage_conflict_aggregate
+      - name: Publish only complete source-audited evidence, never modify frozen baseline
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "${GITHUB_REF_NAME}"
+          git reset --mixed FETCH_HEAD
+          git add docs/research/teacher_dashboard/data/G2_JOINT_COVERAGE_CONFLICT_*
+          if ! git diff --cached --quiet; then
+            git commit -m "research(G2): publish three-seed coverage-conflict paired risk/benefit [skip ci]"
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: g2-joint-coverage-conflict-source-audited
+          path: docs/research/teacher_dashboard/data/G2_JOINT_COVERAGE_CONFLICT_*
+          if-no-files-found: error
