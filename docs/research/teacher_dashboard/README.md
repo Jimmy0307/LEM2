@@ -1,3 +1,13 @@
+## 2026-11-14｜教授用 161 筆完整資料留底（原始／實驗 Rows、Features、分類目標）
+
+- [互動可搜尋資料總目錄](./data_catalog/) · [161 筆 Excel 可開啟 CSV](./data/TEACHER_DATASET_MASTER_20261114.csv) · [161 筆全欄位 JSON](./data/TEACHER_DATASET_MASTER_20261114.json) · [逐筆可列印研究說明](./pmlb_117/TEACHER_ALL_DATASETS_ROWS_TASKS_20261114.md)。
+- 範圍：PMLB117 候選（109成功、8失敗）、UCI 新20、追加12、極端7、電商／設備2、三份原始基線＝**161筆批次來源紀錄**。不是161個獨立來源：PMLB有合成、同源多任務，PMLB與UCI可重疊。
+- 每筆清楚分開原始資料 Rows／實際進模型資料池 Rows、原始與本輪使用特徵數、類別數、預測任務、來源 URL、成功狀態、Seeds／分布、資料 SHA 與授權限制。
+- PMLB 原始資料不重新散布，因單份任務的原始授權尚需查核；保留固定上游 commit、raw/prepared SHA、程式與完整 Test 指標。UCI 來源有明確 Prepared 子集的可下載存檔。
+- 需對老師強調：109份PMLB完成981組、5886筆策略評估，但每個資料來源實際 Fit 最多900筆、6特徵，不能宣稱109個真實獨立產業領域或原始大資料全量測試。PMLB部分 `target` 類別語義待回上游原始資料卡確認。
+
+---
+
 ## 2026-11-14｜G4–G8：117 預登錄、109 真正完成的 PMLB 六策略適用性驗證
 
 - [109 份資料 G4–G8 互動教授報告](./pmlb_117/) · [正式研究結論、統計與限制](./pmlb_117/G4_G8_109_DATASET_VALIDATION_REPORT.md) · [原始來源完整性 Manifest](./data/PMLB_117_3SEED_MANIFEST.json)。
