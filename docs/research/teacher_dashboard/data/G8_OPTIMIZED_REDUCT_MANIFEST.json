@@ -1,0 +1,108 @@
+{
+  "status": "SOURCE_LOCKED_EXACT_PARITY_AND_GREEDY_TRAIN_POS",
+  "sources": [
+    "adult",
+    "connect_4",
+    "mnist",
+    "spambase"
+  ],
+  "n_sources": 4,
+  "actual_configs": 82,
+  "paired_exact_configs": 36,
+  "max_rows": 6400,
+  "max_features": 24,
+  "worker_failures": {
+    "adult": [],
+    "connect_4": [],
+    "mnist": [],
+    "spambase": []
+  },
+  "unavailable_budgets": {
+    "adult": [
+      {
+        "rows": 600,
+        "features": 16,
+        "reason": "SOURCE_BUDGET_NOT_AVAILABLE"
+      },
+      {
+        "rows": 600,
+        "features": 24,
+        "reason": "SOURCE_BUDGET_NOT_AVAILABLE"
+      },
+      {
+        "rows": 1600,
+        "features": 16,
+        "reason": "SOURCE_BUDGET_NOT_AVAILABLE"
+      },
+      {
+        "rows": 1600,
+        "features": 24,
+        "reason": "SOURCE_BUDGET_NOT_AVAILABLE"
+      },
+      {
+        "rows": 3200,
+        "features": 16,
+        "reason": "SOURCE_BUDGET_NOT_AVAILABLE"
+      },
+      {
+        "rows": 3200,
+        "features": 24,
+        "reason": "SOURCE_BUDGET_NOT_AVAILABLE"
+      },
+      {
+        "rows": 6400,
+        "features": 16,
+        "reason": "SOURCE_BUDGET_NOT_AVAILABLE"
+      },
+      {
+        "rows": 6400,
+        "features": 24,
+        "reason": "SOURCE_BUDGET_NOT_AVAILABLE"
+      }
+    ],
+    "connect_4": [],
+    "mnist": [],
+    "spambase": [
+      {
+        "rows": 6400,
+        "features": 4,
+        "reason": "SOURCE_BUDGET_NOT_AVAILABLE"
+      },
+      {
+        "rows": 6400,
+        "features": 6,
+        "reason": "SOURCE_BUDGET_NOT_AVAILABLE"
+      },
+      {
+        "rows": 6400,
+        "features": 8,
+        "reason": "SOURCE_BUDGET_NOT_AVAILABLE"
+      },
+      {
+        "rows": 6400,
+        "features": 12,
+        "reason": "SOURCE_BUDGET_NOT_AVAILABLE"
+      },
+      {
+        "rows": 6400,
+        "features": 16,
+        "reason": "SOURCE_BUDGET_NOT_AVAILABLE"
+      },
+      {
+        "rows": 6400,
+        "features": 24,
+        "reason": "SOURCE_BUDGET_NOT_AVAILABLE"
+      }
+    ]
+  },
+  "limits": [
+    "Not a new exact polynomial reduct",
+    "Greedy does not guarantee minimum size",
+    "No big-data full-Lem2 test on 24 features, reduct stage only",
+    "No GPU or thousand client evaluation",
+    "Source 6400 budget inapplicable for Spambase"
+  ],
+  "files": [
+    "G8_OPTIMIZED_REDUCT_REAL_CPU.csv"
+  ]
+}
