@@ -233,6 +233,32 @@ def main():
             assert not errors, errors
             print("ADAPTIVE_SIX_20_3SEEDS_LODO_META_BROWSER_PASS",flush=True)
 
+            # G4-G8 full 109/117 source-locked three-seed public PMLB study.
+            # No fabricated values permitted when one evidence file is missing.
+            page.goto(report+"pmlb_117/",wait_until="domcontentloaded")
+            page.wait_for_function(
+                "document.querySelector('#status').textContent.includes('VALIDATED')",
+                timeout=40000
+            )
+            assert page.locator("#sourceCount").inner_text()=="109/117"
+            assert page.locator("#systemCount").inner_text()=="981"
+            assert page.locator("#evalCount").inner_text()=="5,886"
+            assert page.locator("#familyCount").inner_text()=="88"
+            assert page.locator("#strategyRows tr").count()==11
+            assert page.locator("#statsRows tr").count()==5
+            assert page.locator("#resourceRows tr").count()==9
+            page.locator("#scenario").select_option("NONIID_01")
+            assert "49.52%" in page.locator("#strategyRows").inner_text()
+            assert "47.71%" in page.locator("#strategyRows").inner_text()
+            page.locator("#scenario").select_option("NONIID_05")
+            assert "54.11%" in page.locator("#strategyRows").inner_text()
+            page.locator("#groupType").select_option("conflict_band")
+            assert page.locator("#groupRows tr").count()>=6
+            page.locator("#groupType").select_option("feature_mode")
+            assert page.locator("#groupRows tr").count()>=6
+            assert not errors, errors
+            print("PMLB_109_3SEEDS_981_CONFIGS_G4_G8_BENCHMARK_BROWSER_PASS",flush=True)
+
             # New total = 20 previous + 12 added public + two older commerce /
             # industrial domains. Only original 20 have C0 vs C3 pair evidence.
             page.goto(report,wait_until="domcontentloaded")
