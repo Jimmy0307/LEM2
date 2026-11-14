@@ -1,0 +1,56 @@
+name: LEM2 PMLB 117 Source-Pinned IID and NonIID Six Policy Sweep
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - .github/workflows/pmlb-117-full-sweep.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  pmlb-public-dataset:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      max-parallel: 18
+      matrix:
+        dataset: ["adult","agaricus_lepiota","allbp","allhyper","allhypo","allrep","analcatdata_authorship","analcatdata_dmft","analcatdata_germangss","analcatdata_lawsuit","ann_thyroid","auto_insurance_symboling","backache","balance_scale","banana","biomed","breast_cancer","breast_cancer_wisconsin_diagnostic","breast_cancer_wisconsin_original","bupa","calendarDOW","car_evaluation","cars","chess","churn","clean1","clean2","coil2000","congressional_voting_records","connect_4","contraceptive_method","corral","credit_approval_australia","credit_approval_germany","dermatology","dis","dna","ecoli","fars","flags","GAMETES_Epistasis_2_Way_1000atts_0.4H_EDM_1_EDM_1_1","GAMETES_Epistasis_2_Way_20atts_0.1H_EDM_1_1","GAMETES_Epistasis_2_Way_20atts_0.4H_EDM_1_1","GAMETES_Epistasis_3_Way_20atts_0.2H_EDM_1_1","GAMETES_Heterogeneity_20atts_1600_Het_0.4_0.2_50_EDM_2_001","GAMETES_Heterogeneity_20atts_1600_Het_0.4_0.2_75_EDM_2_001","glass2","haberman","hayes_roth","heart_disease_cleveland","heart_disease_hungarian","heart_disease_va_long_beach","hepatitis","Hill_Valley_with_noise","Hill_Valley_without_noise","horse_colic_lesion_type","horse_colic_outcome","horse_colic_surgery","hypothyroid","ionosphere","iris","irish","kr_vs_kp","led24","led7","magic","mfeat_factors","mfeat_fourier","mfeat_karhunen","mfeat_morphological","mfeat_pixel","mfeat_zernike","mnist","mofn_3_7_10","monk1","monk2","monk3","mushroom","new_thyroid","nursery","optdigits","page_blocks","parity5+5","pendigits","penguins","phoneme","prnn_crabs","prnn_synth","profb","ring","saheart","satimage","schizo","segmentation","shuttle","sleep","sonar","spambase","spect","spectf","splice","tae","texture","threeOf9","tic_tac_toe","titanic","tokyo1","twonorm","vehicle","vowel","waveform_21","waveform_40","wine_quality_red","wine_quality_white","wine_recognition","xd6","yeast"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Pinned scientific dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Load pinned PMLB public benchmark and run 64-16-20 IID + alpha .5/.1
+        run: |
+          python -m teacher_demo.pmlb_117_runner \
+            --dataset "${{ matrix.dataset }}" \
+            --seeds 42 \
+            --scenarios IID,NONIID_05,NONIID_01 \
+            --output outputs/pmlb
+      - name: Record source failures and do not fake model outcomes
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=list(Path("outputs/pmlb").glob("RECEIPT_*.json"))
+          assert len(p)==1
+          j=json.loads(p[0].read_text())
+          assert j["research_status"] in {"PASS","PARTIAL","NO_VALID_MODEL"}
+          if j["research_status"]=="NO_VALID_MODEL":
+            print("PMLB_CANDIDATE_NOT_COUNTED_MODEL_FAILED",j["name"],j["failures"],flush=True)
+          else:
+            import pandas as pd
+            rows=pd.read_csv(next(Path("outputs/pmlb").glob("BENCHMARK_*.csv")))
+            assert len(rows)==j["configs_passed"]*6 and rows.policy.nunique()==6
+            assert "IID" in set(rows.scenario),("IID is required for a counted dataset",j)
+            print("PMLB_SOURCE_CHECKED_VALID_MODEL",j["name"],j["configs_passed"],flush=True)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pmlb117-${{ matrix.dataset }}
+          path: outputs/pmlb/*
+          if-no-files-found: error
+          retention-days: 90
