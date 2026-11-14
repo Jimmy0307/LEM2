@@ -2,6 +2,22 @@
 
 **研究日期：2026-11-14。** 此規格的主要目標不是挑最高的單次測試分數，而是驗證：**對未知的資料集，只用可在部署前取得的訓練／內部驗證特徵，選擇哪個決策解析策略能穩定改善 Balanced Accuracy 或 Macro-F1。**
 
+## G4–G8 大規模增補（2026-11-14，保留原始停止條件）
+
+這一節是新增的 **109 個公開 PMLB 資料表 × 3 Seeds × 3 分布** 驗證，舊的 20 資料集 IID 失敗實驗及其 G4 止損條件不被刪除或回寫。
+
+- [完整 G4–G8 研究報告](../pmlb_117/G4_G8_109_DATASET_VALIDATION_REPORT.md) · [109 份 G4–G8 互動瀏覽](../pmlb_117/) · [完整 PMLB 源證據 Manifest](../data/PMLB_117_3SEED_MANIFEST.json)。
+- 預註冊 117 分類表，109 份資料來源與模型成功（8 份失敗保留）。3 Seeds [1,7,42] × IID/Dirichlet α=.5/.1 × 3 Clients，**981 配置、5,886 六策略績效、32,373 選擇器對照**。每份模型最多 900 筆與前6特徵，相關資料表暫分88家族，不等於獨立產業。
+- **G4 原訂跨資料集 LODO Meta 優越性停止條件仍未通過**：Non-IID α=.1，跨家族 KNN7 BA 47.604%，固定 Simple Voting 47.707%。IID 則 Meta 不如固定 Global Strength。不能事後把原 G4 定義換成另一個較容易的門檻。
+- **G4 的獨立「同資料集有標籤內驗證策略選擇」子軌有條件 PASS**：α=.5 內驗證選法 BA 54.113%、固定 Simple 52.429%；α=.1 分別49.524%、47.707%。家族等權、配對 Wilcoxon/Holm 校正後，兩種偏斜的正向比較 p≈0.000560／0.00000105。IID ValBest 55.718% 不如固定 GS 55.877%。
+- **G5 只完成 Client Label Skew 面向**（含 Train JS divergence、Validation Conflict、Coverage、類別比例與型態的分組）；Quantity/Feature/Temporal Drift 以及42 Seeds *仍未達原完整停止條件*。
+- **G6 基準內的三 Seeds／初步88來源家族統計 PASS；跨真正獨立來源與預註冊的外部效度未完成**。PMLB 的相關變體不能當作互異自然領域，G6 完整條件只能標記 PARTIAL。
+- **G7 Structural Audit PASS，但 Novel-Algorithm Claim NOT VERIFIED**。六方法共用規則結構，No Match/Single Candidate 不可能靠投票改善；模型選擇及衝突規則加權都有既有文獻。
+- **G8 小中型 CPU 36 次 600–3,200 筆 ×4–8特徵 PASS，但正式 Large Scale/10+ Clients/20+ Features NOT VERIFIED**。
+- 建議將目前成果稱為「**Classical/Federated LEM2 的內驗證適應性選擇：Non-IID 條件下的實證效益與效能邊界**」，不是「已完成所有 Gate 的全新粗糙集演算法」。
+
+---
+
 ## 最新驗證結果與決策（2026-11-14）
 
 - 20 個已核對公開 UCI 來源 × Seeds [1,7,42] × C0/C3，完整 **120 組凍結規則、720 筆測試策略輸出、3,600 筆研究對照**。
