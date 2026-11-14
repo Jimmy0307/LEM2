@@ -9,6 +9,18 @@
 
 ---
 
+## 2026-11-14｜六策略自適應選擇：20 公開資料集 × 3 Seeds × Cross-Domain LODO 正式外測
+
+- [研究互動頁面](./public20/adaptive_six.html) · [源證據、實測結果與負面結論](./public20/ADAPTIVE_SIX_FINDINGS.md) · [演算法 G0–G8 成熟度規格](./public20/ADAPTIVE_SIX_ALGORITHM_SPEC.md)。
+- 20 已驗證 UCI 來源 × 3 Seeds [1,7,42] × 2 架構 [C0,C3]，形成 **120 組真正凍結規則系統**；六策略共 **720 筆**獨立外層測試、3,600 筆跨方法比較。64% 開發＋16% 內層驗證＋20% 未見測試；LODO 嚴格排除整份目標資料集所有 Seeds。
+- 可實作比較：固定六方法、Inner Validation Best、用 19 個其他資料集驗證成績挑固定方法、其他 19 資料集 Train+Validation Meta-KNN5；Test Oracle 僅不可部署診斷上限。
+- 主指標 Balanced Accuracy：固定 GS **61.892%**；LODO Meta **61.744%**；同資料集驗證選法 **61.627%**；不可實施 Test Oracle **62.142%**。Meta 相對固定 GS **−0.148 pp**（20 資料集 Cluster Bootstrap 95% CI 約 [−0.286, −0.038]）。**不能宣稱自適應策略優於固定 GS**。
+- 本輪 IID 20 資料集的最佳策略空間非常小，Test Oracle 對固定 GS 也僅 **+0.250 pp**。原 42 Seeds Non-IID α=.1 的更大策略反轉，仍需另做 Train-only 可操作的非 IID 自適應選法驗證，不可把現有 Test 得分當訓練資料。
+- [GitHub Actions 原始 60 個實驗來源 PASS（彙整先遇到報表語法錯誤）](https://github.com/Jimmy0307/LEM2/actions/runs/43571344581)；[復用原始 artifacts 完成封版稽核 PASS](https://github.com/Jimmy0307/LEM2/actions/runs/43571781178)。
+- 學術定位：六方法是共享 Classical LEM2 規則的決策解析程序，Meta-learning/Algorithm Selection 不是新發明；要具備新演算法貢獻仍需 G4 收益、G5 嚴重 Non-IID 穩健、G6 跨資料集統計、G7 消融與理論新穎、G8 大樣本運算成本評估。
+
+---
+
 ## 2026-11-14｜六種策略與資料型態／類別偏斜／Client 分布偏斜的適用性分析
 
 - [六策略適用性互動頁](./public20/policy_suitability.html)；[方法定義、適用性矩陣與限制](./public20/POLICY_SUITABILITY_FINDINGS.md)。
