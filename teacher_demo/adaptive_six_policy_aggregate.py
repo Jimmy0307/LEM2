@@ -65,7 +65,8 @@ def validate_one(dataset,seed):
     require(x.development_rows.add(x.inner_validation_rows).add(x.outer_test_rows).eq(x.total_rows).all(),
             "split conservation broken")
     require(x[["development_rows","inner_validation_rows","outer_test_rows"]].gt(0).all().all(),"empty sample")
-    require(x[["inner_rule_coverage","inner_rule_conflict","inner_correct_candidate_coverage"]].between(0,1).all().all(),
+    diag=x[["inner_rule_coverage","inner_rule_conflict","inner_correct_candidate_coverage"]]
+    require(((diag>=0)&(diag<=1)).all().all(),
             "incorrect validation diagnostic range")
     for obj in OBJECTIVES:
         require(x["inner_val_"+obj].between(0,1).all(),"bad inner objective")
