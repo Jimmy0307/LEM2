@@ -9,6 +9,16 @@
 
 ---
 
+## 2026-11-14｜六種策略與資料型態／類別偏斜／Client 分布偏斜的適用性分析
+
+- [六策略適用性互動頁](./public20/policy_suitability.html)；[方法定義、適用性矩陣與限制](./public20/POLICY_SUITABILITY_FINDINGS.md)。
+- 以 20 個新資料集 Seed 42 的 40 組規則架構 × 六種選法 × Accuracy／Balanced Accuracy／Macro-F1 建立 **720 列保留平票的策略對照**、270 列資料形態分組；形態包括連續／類別／混合、類別多寡與 class imbalance。特徵型態效應尚未能以單 Seed 推論。
+- 重新核算原三資料集 42 Seeds 的 **IID／non-IID α=.5／α=.1**，統一各分布 Federated C2–C5 的 **504 組配對比較**；從原始 8,820 矩陣直接重算 IID 聯邦獲勝次數，避免把 Centralized C0 混進 IID 分母。受控 Dirichlet α=.1 下，Simple Voting 平均 BA=49.22% 優於 Global Strength 的 37.93%；IID 則 Global Strength BA=69.25%，Simple Voting 59.63%。
+- 保留每組資料的原始來源與 20 資料集的完整子集類別占比（僅做事後描述）；Test Conflict、Test 正確候選不得作為正式 Meta-Selector 的輸入。正式方法需 Train-only profiles 與 Inner Validation 的規則結構指標，並使用跨資料集留一測試。
+- 輸出：`data/POLICY_SUITABILITY_20_MATCHUPS.csv`、`data/POLICY_SUITABILITY_20_GROUPS.csv`、`data/POLICY_SUITABILITY_42_DISTRIBUTIONS.csv`、`data/POLICY_SUITABILITY_MANIFEST.json`。GitHub Actions: `policy-suitability-atlas.yml`。
+
+---
+
 ## 2026-11-14｜Conflict-Aware 補充規則：三版本研究原型與負面結果
 
 - [互動頁面](./public20/conflict_aware.html) · [研究報告](./public20/CONFLICT_AWARE_FINDINGS.md) · [完整性 Manifest](./data/CONFLICT_AWARE_20_MANIFEST.json)。20 個公開來源 ×（集中式、Fed C3）× 3 個版本，**120 列結果、423 筆逐規則驗證事件**。
