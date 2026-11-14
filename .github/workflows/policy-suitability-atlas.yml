@@ -1,0 +1,63 @@
+name: LEM2 Six Policy Suitability - Audited Dataset Meta-Analysis
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - teacher_demo/policy_suitability_atlas.py
+      - .github/workflows/policy-suitability-atlas.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  audit-atlas:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install analysis runtime
+        run: python -m pip install pandas numpy
+      - name: Build six-policy meta features and regime comparisons with tie-adjusted winners
+        run: python -m teacher_demo.policy_suitability_atlas
+      - name: Validate group-size denominator, objective scope and 42-seed IID source
+        run: |
+          python - <<'PY'
+          import json,pandas as pd,numpy as np
+          from pathlib import Path
+          d=Path("docs/research/teacher_dashboard/data")
+          j=json.loads((d/"POLICY_SUITABILITY_MANIFEST.json").read_text(encoding="utf-8"))
+          a=pd.read_csv(d/"POLICY_SUITABILITY_20_MATCHUPS.csv")
+          g=pd.read_csv(d/"POLICY_SUITABILITY_20_GROUPS.csv")
+          b=pd.read_csv(d/"POLICY_SUITABILITY_42_DISTRIBUTIONS.csv")
+          assert j["status"]=="PASS_GROUNDED_DESCRIPTIVE_ATLAS"
+          assert a.dataset.nunique()==20 and len(a)==720
+          assert a.groupby(["dataset","client_count","objective"]).size().eq(6).all()
+          assert np.allclose(a.groupby(["dataset","client_count","objective"]).fractional_win.sum(),1)
+          assert a.groupby(["objective","policy"]).size().eq(40).all()
+          assert set(g.group_type)=={"feature_mode","skew_band","class_band","conflict_band","architecture"}
+          assert b.groupby(["distribution","alpha"],dropna=False).size().eq(18).all()
+          assert len(b)==54
+          assert set(b.seed_count)=={42}
+          assert b[b.distribution=="STRATIFIED_IID"].win_competitions.eq(630).all()
+          assert b[b.distribution=="DIRICHLET_NON_IID"].win_competitions.eq(504).all()
+          assert b.metric_mean_pct.between(0,100).all()
+          print("SIX_POLICY_SUITABILITY_ATLAS_SOURCE_AND_DENOMINATOR_PASS",len(a),len(g),len(b))
+          PY
+      - name: Publish inspected outputs to same research branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "${GITHUB_REF_NAME}"
+          git reset --mixed FETCH_HEAD
+          git add docs/research/teacher_dashboard/data/POLICY_SUITABILITY_*
+          if ! git diff --cached --quiet; then
+            git commit -m "research: publish empirical six-policy suitability matrix, class skew and client skew [skip ci]"
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: six-policy-suitability-meta-evidence
+          path: docs/research/teacher_dashboard/data/POLICY_SUITABILITY_*
+          if-no-files-found: error
