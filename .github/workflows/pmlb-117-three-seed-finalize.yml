@@ -1,0 +1,84 @@
+name: LEM2 G4-G6 PMLB 117 Full Three-Seed Family-Cluster Finalize
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - .github/workflows/pmlb-117-three-seed-finalize.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  full-multiseed-confirmation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt scipy==1.16.3
+      - name: Paginate ALL 117 already-executed original source jobs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p incoming_pmlb_117 pmlb_multiseed_archives
+          gh run download 43576756817 --repo "${GITHUB_REPOSITORY}" --pattern "pmlb-ms-*" --dir pmlb_multiseed_archives
+          find pmlb_multiseed_archives -type f -name "RECEIPT_*.json" -exec cp {} incoming_pmlb_117/ \;
+          find pmlb_multiseed_archives -type f -name "BENCHMARK_*.csv" -exec cp {} incoming_pmlb_117/ \;
+      - name: Verify all prespecified source attempts and multiseed artifacts
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          path=Path("incoming_pmlb_117")
+          receipts=list(path.glob("RECEIPT_*.json"))
+          assert len(receipts)==117,len(receipts)
+          for p in receipts:
+              r=json.loads(p.read_text())
+              assert r["requested_seeds"]=="1,7,42"
+              assert r["requested_scenarios"]=="IID,NONIID_05,NONIID_01"
+          print("G4_G5_G6_ORIGINAL_117_THREE_SEED_RECEIPTS_VALIDATED",flush=True)
+          PY
+      - name: Build 3-seed independent source manifest, six-policy and LOFO comparisons
+        run: python -m teacher_demo.pmlb_117_aggregate --input incoming_pmlb_117 --prefix PMLB_117_3SEED --min-dataset-count 101
+      - name: Preregistered family-level G6 Wilcoxon Holm Friedman comparisons
+        run: python -m teacher_demo.pmlb_117_statistical_tests
+      - name: Guard no invented data/seed leakage/zero independent family
+        run: |
+          python - <<'PY'
+          import pandas as pd,json
+          from pathlib import Path
+          p=Path("docs/research/teacher_dashboard/data")
+          m=json.loads((p/"PMLB_117_3SEED_MANIFEST.json").read_text())
+          assert m["status"]=="PASS_OVER_100_PUBLIC_BENCHMARK_TABLES"
+          assert m["seeds"]==[1,7,42]
+          assert m["successful_iid_tables"]>=101 and m["unique_prepared_sha"]>=101
+          a=pd.read_csv(p/"PMLB_117_3SEED_SIX_POLICY_RAW.csv")
+          s=pd.read_csv(p/"PMLB_117_3SEED_POLICY_SELECTIONS.csv")
+          t=pd.read_csv(p/"PMLB_117_3SEED_G6_WILCOXON_HOLM.csv")
+          assert a.groupby(["dataset","seed","scenario"]).size().eq(6).all()
+          assert s.groupby(["dataset","seed","scenario","objective"]).size().eq(11).all()
+          assert s[s.method.str.startswith("LOFO")].meta_reference_tables.ge(30).all()
+          assert s.oracle_regret_pp.ge(-1e-6).all()
+          assert len(t)==5 and t.independent_family_clusters_provisional.ge(70).all()
+          assert t.holm_adjusted_p.between(0,1).all()
+          print("G4_G5_G6_100_PLUS_PUBLIC_TABLES_THREE_SEED_FAMILY_TEST_PASS",len(a),len(s),flush=True)
+          PY
+      - name: Publish stronger three-seed source and statistical evidence; preserve one-seed files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "${GITHUB_REF_NAME}"
+          git reset --mixed FETCH_HEAD
+          git add docs/research/teacher_dashboard/data/PMLB_117_3SEED_*
+          if ! git diff --cached --quiet; then
+            git commit -m "research: finalize 117 PMLB candidates across 3 seeds x IID nonIID and family Holm G6 tests [skip ci]"
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pmlb117-3seed-source-and-family-G6-final-audit
+          path: docs/research/teacher_dashboard/data/PMLB_117_3SEED_*
+          if-no-files-found: error
+          retention-days: 90
