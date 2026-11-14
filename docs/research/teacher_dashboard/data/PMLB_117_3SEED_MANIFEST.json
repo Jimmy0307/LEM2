@@ -1,0 +1,45 @@
+{
+  "status": "PASS_OVER_100_PUBLIC_BENCHMARK_TABLES",
+  "registered_candidates": 117,
+  "source_valid_count": 109,
+  "successful_models": 109,
+  "successful_iid_tables": 109,
+  "unique_raw_source_sha": 109,
+  "unique_prepared_sha": 109,
+  "unique_families_in_success": 88,
+  "family_identity_note": "PMLB family is partially heuristic: not a guarantee of independent real-world domains",
+  "real_vs_synthetic_note": "PMLB includes synthetic/generated tasks and related original UCI sources; not 117 new real-domain datasets",
+  "source_github": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68",
+  "source_paper": "https://academic.oup.com/bioinformatics/article/38/3/878/6408434",
+  "source_license": "Original per-dataset licensing not presumed from PMLB code; raw rows not redistributed",
+  "seed_protocol": "seed(s) 1,7,42 on PMLB; 64/16/20; 3 Client; IID and Dirichlet alpha .5/.1",
+  "seeds": [
+    1,
+    7,
+    42
+  ],
+  "config_pass_counts": {
+    "IID": 109,
+    "NONIID_01": 109,
+    "NONIID_05": 109
+  },
+  "raw_evaluation_rows": 5886,
+  "model_configurations": 981,
+  "thresholds": {
+    "guard_client_js": 0.1,
+    "guard_validation_conflict": 0.1,
+    "guard_val_ba_gain": 0.02
+  },
+  "output_status": "Evidence only; preselected rules shared across six strategy results",
+  "cautions": [
+    "Even three PMLB seeds cannot establish independence of related PMLB tasks: per-origin dedup/licensing review still needed",
+    "PMLB has multiple related classification tasks and synthetic datasets; don't treat as independent source domains",
+    "Model fits <=900 rows x <=6 features; original millions of rows / high-dimensional metadata not actually fit",
+    "Unknown original per-dataset license: do not republish datasets themselves",
+    "No Meta or Guard thresholds changed using outer Test labels",
+    "Some Dirichlet configurations may fail; count failed scenarios explicitly",
+    "IID/nonIID may substantially shift true candidate coverage and rule counts independently from resolver",
+    "Meta source family grouping is heuristic, not final origin reconciliation"
+  ],
+  "selector_evaluations": 32373
+}
