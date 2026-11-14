@@ -1,0 +1,99 @@
+name: LEM2 G8 Full Rule-Learning Quality - Greedy vs All Source Features
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - .github/workflows/lem2-g8-full-lem2-greedy-quality.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  compare-full-rule-learning:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        dataset: [adult,connect_4,spambase]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Real train-only discretization, full vs greedy rules, same external held-out test
+        run: python -m teacher_demo.g8_greedy_lem2_quality --dataset ${{ matrix.dataset }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: g8-lem2-quality-${{ matrix.dataset }}
+          path: outputs/g8_quality/G8_QUALITY_*
+          if-no-files-found: error
+  audit-quality-and-publish:
+    needs: compare-full-rule-learning
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas numpy
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: g8-lem2-quality-*
+          path: g8_quality_incoming
+          merge-multiple: true
+      - name: Verify paired source hashes, preserve exact Train POS and Test metric deltas
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,pandas as pd
+          d=Path("g8_quality_incoming");out=Path("docs/research/teacher_dashboard/data")
+          results=[];receipts=[]
+          for ds in ["adult","connect_4","spambase"]:
+            r=json.loads((d/f"G8_QUALITY_RECEIPT_{ds}.json").read_text())
+            receipts.append(r)
+            if r["errors"]:print("SOURCE_ERROR",ds,r["errors"])
+            csv=d/f"G8_QUALITY_{ds}.csv"
+            if csv.exists():
+              x=pd.read_csv(csv)
+              assert len(x)==r["success_rows"]
+              assert x.source_gzip_sha256.eq(r["source"]["source_gzip_sha256"]).all()
+              assert x.train_full_pos.eq(x.train_selected_pos).all()
+              results.append(x)
+          assert results
+          x=pd.concat(results,ignore_index=True)
+          assert x.groupby(["dataset","rows","features"]).method.nunique().eq(2).all()
+          x.to_csv(out/"G8_GREEDY_FULL_LEM2_TEST_QUALITY.csv",index=False,float_format="%.10f")
+          z=x.pivot_table(index=["dataset","rows","features"],columns="method",
+                          values=["test_balanced_accuracy_pct","test_accuracy_pct","test_coverage_pct","rules","rule_induction_and_support_seconds"])
+          z.columns=[a+"_"+b for a,b in z.columns];z=z.reset_index()
+          for key in ["test_balanced_accuracy_pct","test_accuracy_pct","test_coverage_pct","rules","rule_induction_and_support_seconds"]:
+            z["delta_"+key+"_greedy_minus_full"]=z[key+"_GREEDY_POS_PRESERVING_REDUCT"]-z[key+"_FULL_SOURCE_FEATURE_SET"]
+          z.to_csv(out/"G8_GREEDY_FULL_LEM2_TEST_PAIRED.csv",index=False,float_format="%.10f")
+          m={"status":"REAL_SAME_TEST_LEM2_RULE_INDUCTION_G8_QUALITY",
+            "sources":["adult","connect_4","spambase"],"actual_model_runs":len(x),"paired_configs":len(z),
+            "source_failures":{r["dataset"]:r["errors"] for r in receipts},
+            "max_rows":int(x.rows.max()),"max_features":int(x.features.max()),
+            "train_positive_region_invariant":True,
+            "limits":["The full-source-feature baseline is not an exact minimal reduct",
+                      "Greedy reduction is not minimum cardinality or globally optimal",
+                      "Max actual original source pool 1600 rows; not a full 700GB system test",
+                      "Subset selection is fixed original feature order and not semantic feature ranking",
+                      "Only 3 source domains and one seed; no publishable generalization claims"]}
+          (out/"G8_GREEDY_FULL_LEM2_TEST_MANIFEST.json").write_text(json.dumps(m,indent=2),encoding="utf-8")
+          print("G8_EXACT_TRAIN_POS_TEST_QUALITY_CONTRACT_PASS",len(z),"pairs")
+          print(z[["dataset","rows","features","delta_test_balanced_accuracy_pct_greedy_minus_full"]].to_string(index=False))
+          PY
+      - name: Publish source-backed results on research branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "${GITHUB_REF_NAME}"
+          git reset --mixed FETCH_HEAD
+          git add docs/research/teacher_dashboard/data/G8_GREEDY_FULL_LEM2_TEST_*
+          if ! git diff --cached --quiet; then
+            git commit -m "research(G8): report actual greedy-vs-all-feature heldout LEM2 quality [skip ci]"
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
