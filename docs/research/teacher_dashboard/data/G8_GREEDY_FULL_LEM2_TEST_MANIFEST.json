@@ -1,0 +1,25 @@
+{
+  "status": "REAL_SAME_TEST_LEM2_RULE_INDUCTION_G8_QUALITY",
+  "sources": [
+    "adult",
+    "connect_4",
+    "spambase"
+  ],
+  "actual_model_runs": 32,
+  "paired_configs": 16,
+  "source_failures": {
+    "adult": [],
+    "connect_4": [],
+    "spambase": []
+  },
+  "max_rows": 1600,
+  "max_features": 16,
+  "train_positive_region_invariant": true,
+  "limits": [
+    "The full-source-feature baseline is not an exact minimal reduct",
+    "Greedy reduction is not minimum cardinality or globally optimal",
+    "Max actual original source pool 1600 rows; not a full 700GB system test",
+    "Subset selection is fixed original feature order and not semantic feature ranking",
+    "Only 3 source domains and one seed; no publishable generalization claims"
+  ]
+}
