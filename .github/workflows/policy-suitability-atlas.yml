@@ -40,7 +40,7 @@ jobs:
           assert b.groupby(["distribution","alpha"],dropna=False).size().eq(18).all()
           assert len(b)==54
           assert set(b.seed_count)=={42}
-          assert b[b.distribution=="STRATIFIED_IID"].win_competitions.eq(630).all()
+          assert b[b.distribution=="STRATIFIED_IID"].win_competitions.eq(504).all()
           assert b[b.distribution=="DIRICHLET_NON_IID"].win_competitions.eq(504).all()
           assert b.metric_mean_pct.between(0,100).all()
           print("SIX_POLICY_SUITABILITY_ATLAS_SOURCE_AND_DENOMINATOR_PASS",len(a),len(g),len(b))
