@@ -245,11 +245,11 @@ def summarize_scaling(data):
     return summary
 
 def main():
+    global IN
     parser=argparse.ArgumentParser()
     parser.add_argument("--input",default=str(IN))
     parser.add_argument("--min-dataset-count",type=int,default=101)
     args=parser.parse_args()
-    global IN
     IN=Path(args.input)
     OUT.mkdir(parents=True,exist_ok=True)
     registry,receipt,data=read_source()
