@@ -1,0 +1,120 @@
+name: LEM2 G8 Exact POS Cache vs Greedy Reduct - Real CPU 4-24 Features
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - .github/workflows/lem2-g8-reduct-optimized.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  parity-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m pytest -q teacher_demo/test_reduct_fast.py
+  source-matched-scaling:
+    needs: parity-tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        dataset: [adult,connect_4,mnist,spambase]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m teacher_demo.reduct_scaling_optimized --dataset ${{ matrix.dataset }}
+      - name: Preserve source receipts, errors and actual performance only
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          p=list(Path("outputs/fast_reduct").glob("REDUCT_FAST_RECEIPT_*.json"))
+          assert len(p)==1
+          j=json.loads(p[0].read_text())
+          assert j["source_metadata"] and len(j["source_metadata"]["source_gzip_sha256"])==64
+          assert j["successful"]>0
+          print("G8_SOURCE_LOCKED_RECEIPT",j["dataset"],j["successful"],"errors",len(j["failures"]))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: reduct-fast-${{ matrix.dataset }}
+          path: outputs/fast_reduct/REDUCT_FAST_*
+          if-no-files-found: error
+  summary:
+    needs: source-matched-scaling
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas numpy
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: reduct-fast-*
+          path: g8_incoming
+          merge-multiple: true
+      - name: Audit parity, minimum cardinality honesty and source budget
+        run: |
+          python - <<'PY'
+          import pandas as pd,json
+          from pathlib import Path
+          src=Path("g8_incoming");out=Path("docs/research/teacher_dashboard/data")
+          out.mkdir(parents=True,exist_ok=True)
+          names=["adult","connect_4","mnist","spambase"]
+          rows=[];receipts=[]
+          for name in names:
+            j=json.loads((src/f"REDUCT_FAST_RECEIPT_{name}.json").read_text())
+            receipts.append(j)
+            f=pd.read_csv(src/f"REDUCT_FAST_{name}.csv")
+            assert len(f)==j["successful"]
+            assert f.actual_positive_region_equal.eq(True).all()
+            assert f.approximate_is_minimum_claim.eq(False).all()
+            paired=f[f.reference_status.eq("REFERENCE_EXACT_PASS")]
+            assert (paired.exact_cache_selected_size==paired.reference_selected_size).all()
+            assert f.source_gzip_sha256.eq(j["source_metadata"]["source_gzip_sha256"]).all()
+            rows.append(f)
+          merged=pd.concat(rows,ignore_index=True)
+          merged.to_csv(out/"G8_OPTIMIZED_REDUCT_REAL_CPU.csv",index=False,float_format="%.10f")
+          summary={"status":"SOURCE_LOCKED_EXACT_PARITY_AND_GREEDY_TRAIN_POS",
+            "sources":names,"n_sources":len(names),"actual_configs":len(merged),
+            "paired_exact_configs":int(merged.reference_seconds.notna().sum()),
+            "max_rows":int(merged.rows.max()),"max_features":int(merged.features.max()),
+            "worker_failures":{j["dataset"]:j["failures"] for j in receipts},
+            "unavailable_budgets":{j["dataset"]:j["unsupported_source_budgets"] for j in receipts},
+            "limits":["Not a new exact polynomial reduct","Greedy does not guarantee minimum size",
+                      "No big-data full-Lem2 test on 24 features, reduct stage only",
+                      "No GPU or thousand client evaluation",
+                      "Source 6400 budget inapplicable for Spambase"],
+            "files":["G8_OPTIMIZED_REDUCT_REAL_CPU.csv"]}
+          (out/"G8_OPTIMIZED_REDUCT_MANIFEST.json").write_text(json.dumps(summary,indent=2),encoding="utf-8")
+          print("G8_FAST_REDUCT_EVIDENCE_PASS",len(merged),"paired",summary["paired_exact_configs"])
+          PY
+      - name: Publish source-verified data to same research branch only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "${GITHUB_REF_NAME}"
+          git reset --mixed FETCH_HEAD
+          git add docs/research/teacher_dashboard/data/G8_OPTIMIZED_REDUCT_*
+          if ! git diff --cached --quiet; then
+            git commit -m "research(G8): publish real-source CPU exact-vs-greedy reducer benchmark [skip ci]"
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: g8-source-audited-optimized-reduct
+          path: docs/research/teacher_dashboard/data/G8_OPTIMIZED_REDUCT_*
+          if-no-files-found: error
