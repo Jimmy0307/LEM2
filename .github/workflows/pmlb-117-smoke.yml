@@ -1,4 +1,5 @@
 name: LEM2 PMLB 117 External Source and Non-IID Smoke
+# stdlib HTTPS downloader, no extra runtime dependency
 on:
   push:
     branches: [research/report-ready-dashboard-20261109]
