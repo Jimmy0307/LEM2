@@ -1,0 +1,26 @@
+{
+  "status": "4_SOURCES_ALL_36_REAL_CPU_CONFIGS_PASS",
+  "actual_trials": 36,
+  "distinct_sources": 4,
+  "dataset_names": [
+    "adult",
+    "connect_4",
+    "magic",
+    "spambase"
+  ],
+  "source_run_id": 43576654666,
+  "dataset_slow_vs_fast_fit_ratios": {
+    "adult": 24.981167663516963,
+    "connect_4": 24.971849072107766,
+    "magic": 20.457367784286877,
+    "spambase": 10.711983473666079
+  },
+  "scope": "Actual CPU Classical LEM2; 600/1600/3200 total source rows and 4/6/8 first features",
+  "limitations": [
+    "Not full PMLB data or 100+ sources, sample budgets are capped",
+    "Do not extrapolate runtime to 700 GB, GPU, 20+ features or hundreds of clients",
+    "Peak RSS is max process since start, and therefore monotonic within each process; not isolated incremental memory",
+    "No confidence interval on runtimes: one run per configuration",
+    "This is bounded G8 feasibility, not enterprise large-data scaling proof"
+  ]
+}
