@@ -213,6 +213,26 @@ def main():
             assert not errors, errors
             print("POLICY_SUITABILITY_20_FEATURES_42SEED_504_MATCHUPS_BROWSER_PASS",flush=True)
 
+            # Cross-domain LODO adaptive selector: actual 20-source x 3 seed
+            # evidence must be complete before the interface displays numbers.
+            page.goto(report+"public20/adaptive_six.html",wait_until="domcontentloaded")
+            page.wait_for_function(
+                "document.querySelector('#status').textContent.includes('驗證 PASS')",
+                timeout=35000
+            )
+            assert page.locator("#summaryRows tr").count()==10
+            assert page.locator("#intervalRows tr").count()==9
+            assert "61.89%" in page.locator("#summaryRows").inner_text()
+            assert "62.14%" in page.locator("#summaryRows").inner_text()
+            page.locator("#objective").select_option("macro_f1")
+            assert page.locator("#summaryRows tr").count()==10
+            page.locator("#dataset").select_option("sonar")
+            page.locator("#architecture").select_option("3")
+            page.locator("#method").select_option("LODO_META_KNN_5")
+            assert page.locator("#caseRows tr").count()==3
+            assert not errors, errors
+            print("ADAPTIVE_SIX_20_3SEEDS_LODO_META_BROWSER_PASS",flush=True)
+
             # New total = 20 previous + 12 added public + two older commerce /
             # industrial domains. Only original 20 have C0 vs C3 pair evidence.
             page.goto(report,wait_until="domcontentloaded")
