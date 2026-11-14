@@ -71,6 +71,7 @@
 <p>提出 Meta-Selector 的方式：先用 Train 資料計算特徵型態、Class Entropy、Minority Share、Client Label JS Divergence、Client Quantity CV 等，再透過 Inner Validation 測得規則 Coverage、Conflict、支持重複度及六策略的 Balanced Accuracy。選定後才到 Outer Test 報告成績。</p>
 <p>需要同時比較：固定 Simple Voting、固定 Global Strength、固定 Standard Voting，以及由訓練特徵判斷的自適應策略。採跨資料集留一驗證，測試新資料集是否能正確選法；**不能用 Test 的最佳策略當選擇器訓練標籤後又在同一份 Test 上宣稱成功**。</p>
 <p>參考研究：<a href="https://doi.org/10.1109/34.990132">Ho &amp; Basu（2002），分類問題複雜度</a>；<a href="https://doi.org/10.1016/j.eswa.2013.02.025">Cano（2013），資料複雜度與分類器行為</a>。本研究仍需驗證資料型態與策略表現的獨立關係，而不能直接由文獻延伸為既定結論。</p>
+<p><a href="./adaptive_six.html">實測：真正的 Train/Validation 自適應選法在未見 Test 能否勝出？ →</a> · <a href="./ADAPTIVE_SIX_FINDINGS.md">20 領域×3 Seeds 結果</a></p>
 <p><a href="./POLICY_SUITABILITY_FINDINGS.md">查看完整研究解釋、公式與實驗限制</a> · <a href="../data/POLICY_SUITABILITY_20_MATCHUPS.csv">720 筆逐策略資料</a> · <a href="../data/POLICY_SUITABILITY_20_GROUPS.csv">270 筆資料型態群組比較</a> · <a href="../data/POLICY_SUITABILITY_42_DISTRIBUTIONS.csv">54 筆 42-Seed 對照</a></p>
 </section>
 </main><footer class="footer"><a href="../">回到教授報告</a> · <a href="./">20 資料集</a> · <a href="./conflict_aware.html">Conflict-Aware</a></footer>
