@@ -193,6 +193,26 @@ def main():
             assert not errors, errors
             print("CONFLICT_AWARE_20_NESTED_VAL_THREE_ARM_BROWSER_PASS",flush=True)
 
+            # Audited policy-suitability table: three 42-seed distributions use
+            # the same C2-C5 504-matchup denominator, with tie credit.
+            page.goto(report+"public20/policy_suitability.html",wait_until="domcontentloaded")
+            page.wait_for_function(
+                "document.querySelector('#status').textContent.includes('來源審核通過')",
+                timeout=30000
+            )
+            assert page.locator("#regimeRows tr").count()==6
+            assert page.locator("#groupRows tr").count()==6
+            assert "69.25%" in page.locator("#regimeRows").inner_text()
+            assert "49.22%" in page.locator("#regimeRows").inner_text()
+            page.locator("#mainFormat").select_option("fractional_win_share_pct")
+            assert "48.90%" in page.locator("#regimeRows").inner_text()
+            page.locator("#groupType").select_option("skew_band")
+            assert page.locator("#groupRows tr").count()==6
+            page.locator("#groupObjective").select_option("accuracy")
+            assert page.locator("#groupRows tr").count()==6
+            assert not errors, errors
+            print("POLICY_SUITABILITY_20_FEATURES_42SEED_504_MATCHUPS_BROWSER_PASS",flush=True)
+
             # New total = 20 previous + 12 added public + two older commerce /
             # industrial domains. Only original 20 have C0 vs C3 pair evidence.
             page.goto(report,wait_until="domcontentloaded")
