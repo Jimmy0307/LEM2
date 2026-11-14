@@ -1,0 +1,137 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LEM2 | G4–G8 · 109 個公開基準資料表的六策略適用性驗證</title>
+<meta name="description" content="109 個真正跑完的 PMLB 分類表、3 Seeds、IID與Non-IID、六策略內層驗證、5項 Holm 檢定、G7 形式性質與 36 組 G8 CPU 規模。">
+<link rel="stylesheet" href="../site.css"><style>
+.hero{padding:35px max(18px,calc((100vw - 1150px)/2));background:linear-gradient(115deg,#143148,#24586c);color:white}
+.hero h1{font-size:clamp(26px,4vw,42px);line-height:1.23;margin:12px 0}.hero p{color:#ddecf2;max-width:1020px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.stats>div{background:#f7fafb;border:1px solid #dae4e8;padding:15px;border-radius:12px}
+.stats strong{display:block;font-size:25px;color:#1d6575}.stats small{color:#596c79}
+.controls{display:flex;gap:14px;flex-wrap:wrap;margin:14px 0}
+.controls label{display:flex;flex-direction:column;gap:6px;flex:1 1 180px;font-size:13px}
+.scroll-table{overflow:auto;max-height:650px}.scroll-table th,.scroll-table td{white-space:nowrap;font-variant-numeric:tabular-nums}
+.scroll-table thead{position:sticky;top:0;background:#eaf2f3}
+.primary{font-weight:750;color:#0a6973}.warn{background:#fff6e7;border-left:4px solid #c69a4d;padding:13px 15px}
+.note{font-size:13px;color:#627786}
+@media(max-width:770px){.hero{padding:27px 18px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style></head><body>
+<div class="site-top"><a class="brand" href="../">LEM2 Research · 教授報告</a><nav>
+<a href="../">研究首頁</a><a href="../public20/">20 資料集</a><a href="../public20/policy_suitability.html">六策略適用性</a><a href="../public20/adaptive_six.html">跨域選擇</a><a class="active" aria-current="page" href="./">109 資料 G4–G8</a>
+</nav></div>
+<header class="hero"><div class="eyebrow">SOURCE-LOCKED · 117 CANDIDATES · G4–G8</div>
+<h1>六種 LEM2 決策策略<br>在什麼資料條件下真的比較好？</h1>
+<p>109 個公開基準資料表、三個 Seeds、三種 Client 類別分布，以真正的 Train／Inner Validation／Test 隔離比較六個策略及驗證集自動選法。另保留來源失敗紀錄、跨來源家族統計、數學界限與實際 CPU 規模測試。</p>
+<p><a style="color:#d8fff3" href="./G4_G8_109_DATASET_VALIDATION_REPORT.md">閱讀完整 G4–G8 研究報告</a> · <a style="color:#d8fff3" href="../data/PMLB_117_3SEED_MANIFEST.json">檢視資料與稽核 Manifest</a></p>
+</header>
+<main class="wrap">
+<section class="panel"><span class="section-tag">01 · VERIFIED PUBLIC BENCHMARKS</span><h2>來源是否真的超過 100 份？</h2>
+<p id="status" role="status" aria-live="polite">正在確認所有資料來源與完整模型證據；驗證前不顯示研究成績。</p>
+<div class="stats">
+<div><small>成功模型資料表／預登錄候選</small><strong id="sourceCount">—</strong><small>每份都有來源 SHA-256</small></div>
+<div><small>有效規則系統</small><strong id="systemCount">—</strong><small>3 Seeds × 3 分布</small></div>
+<div><small>六策略外測筆數</small><strong id="evalCount">—</strong><small>各規則系統六解析器</small></div>
+<div><small>相關來源家族（初步）</small><strong id="familyCount">—</strong><small>不等於真實獨立領域</small></div>
+</div>
+<p><a href="../data/PMLB_117_3SEED_SOURCE_AUDIT.csv">117 個候選逐個成功／失敗原因</a> · <a href="../data/PMLB_117_3SEED_SIX_POLICY_RAW.csv">5,886 筆原始測試指標</a> · <a href="../data/PMLB_117_3SEED_POLICY_SELECTIONS.csv">32,373 筆選法與 Regret</a></p>
+<div class="warn"><strong>研究邊界：</strong>公開來源包含合成資料、同一原始研究的變體；109 份是實測且來源 SHA 不同的基準<strong>資料表</strong>，不是 109 個互相獨立的真實產業。模型使用每表最多 900 筆、前六特徵，沒有直接訓練完整百萬筆資料。原始資料的各別授權仍需複核。</div>
+</section>
+<section class="panel"><span class="section-tag">02 · STRATEGY BEHAVIOR</span><h2>偏斜程度改變時，六策略排名如何改變？</h2>
+<div class="controls"><label>資料分布<select id="scenario"><option value="IID">IID 分層（同質 Client）</option><option value="NONIID_05">Non-IID α=0.5（中度偏斜）</option><option value="NONIID_01">Non-IID α=0.1（極端偏斜）</option></select></label>
+<label>決策績效<select id="objective"><option value="balanced_accuracy">Balanced Accuracy</option><option value="macro_f1">Macro-F1</option><option value="accuracy">Accuracy</option></select></label></div>
+<div class="scroll-table"><table><thead><tr><th>決策策略或選擇器</th><th>平均 Test 分數</th><th>距離 Test Oracle（pp）</th><th>規則配置數</th><th>不同資料表</th></tr></thead><tbody id="strategyRows"><tr><td colspan="5">等待來源核驗</td></tr></tbody></table></div>
+<p id="scenarioNote" class="note"></p>
+<div class="warn"><strong>Interpretation：</strong>Test Oracle 使用外層測試真實答案，僅是事後診斷上限，不可部署。VALIDATION_BEST 只使用**有標籤**的內層驗證集挑選策略；無標籤的 Meta KNN7 並未在 Non-IID 穩定勝過固定 Simple Voting。</div>
+</section>
+<section class="panel"><span class="section-tag">03 · WHEN DOES SELECTION HELP?</span><h2>按資料形態、類別偏斜、規則衝突分組</h2>
+<p>下表的群組分界只使用 Train 或 Inner Validation 可取得的特徵。各群組結果是描述性探索；同一資料集的 Seeds 並不獨立。</p>
+<div class="controls"><label>條件維度<select id="groupType">
+<option value="client_divergence">Client label JS divergence</option>
+<option value="conflict_band">內驗證 Conflict Rate</option>
+<option value="coverage_band">內驗證 Exact Coverage</option>
+<option value="class_imbalance">訓練集類別不平衡</option>
+<option value="feature_mode">訓練集特徵型態</option>
+<option value="target_classes">決策類別數</option>
+</select></label></div>
+<div class="scroll-table"><table><thead><tr><th>分布</th><th>資料條件</th><th>配置數</th><th>原始資料表</th><th>GS Balanced Accuracy</th><th>Simple Voting</th><th>驗證集選法</th><th>ValBest − SV（pp）</th></tr></thead><tbody id="groupRows"><tr><td colspan="8">等待實測分組資料</td></tr></tbody></table></div>
+<p class="note">可參考內驗證 Conflict≥40% 且 Non-IID α=0.1 的群組：實測效益比較明顯。相反地，IID 低 Coverage 的問題並非選擇投票策略能修復。</p>
+</section>
+<section class="panel"><span class="section-tag">04 · G6 FAMILY-GROUPED VALIDATION</span><h2>跨家族統計與預定比較</h2>
+<div class="scroll-table"><table><thead><tr><th>偏斜程度／比較</th><th>家族數</th><th>家族平均提升</th><th>95% Bootstrap 區間</th><th>Holm 校正 p 值</th><th>判定</th></tr></thead><tbody id="statsRows"><tr><td colspan="6">等待 G6 統計資料</td></tr></tbody></table></div>
+<p class="note">以上只涵蓋事前指定的五項 Balanced Accuracy 比較；來源家族身分是初步規則合併，仍待原始出處人工審核。此統計不能證明跨全部產業領域或所有分布的一般性。</p>
+</section>
+<section class="panel"><span class="section-tag">05 · G7 WHAT IS / IS NOT AN ALGORITHM CONTRIBUTION</span><h2>演算法性質與新穎性邊界</h2>
+<p>六種決策解析器已是明確可執行的演算法；但它們**共用同一套 Classical LEM2 規則**，不等於六個獨立規則歸納器。已驗證的結構性質包括：</p>
+<p><strong>Coverage/Conflict 不因六種選法而改變；無衝突物件的六方法輸出相同；任何兩種策略的不同預測比例不可能超過 Conflict Rate；已命中但正確候選不存在時，只換投票法不能創造正確答案。</strong></p>
+<p>因此 G7 的<strong>結構驗證與文獻對照已完成</strong>，但一般的模型選擇、Rule Pruning、Conflict-Aware Ranking 早有先例；研究要主張學術首創仍需提出新的理論機制、消融和跨獨立資料庫對比。<a href="./G4_G8_109_DATASET_VALIDATION_REPORT.md">查看形式化命題與先行研究比較</a>。</p>
+</section>
+<section class="panel"><span class="section-tag">06 · G8 MEASURED CPU RESOURCES</span><h2>資料量與特徵數增加時，計算成本如何變動？</h2>
+<p>來自四份真實公開來源（Adult、MAGIC、Connect-4、Spambase），共 36 組實際 CPU 運算；這是小／中型效能階梯，**不等於**百萬筆資料或 700GB 大型系統可用性的保證。</p>
+<div class="scroll-table"><table><thead><tr><th>實際總筆數</th><th>輸入特徵數</th><th>Fit 時間中位數（秒）</th><th>實測來源數</th></tr></thead><tbody id="resourceRows"><tr><td colspan="4">等待 CPU 實測證據</td></tr></tbody></table></div>
+<p><a href="../data/PMLB_G8_REAL_CPU_STAIRCASE_36.csv">36 組逐配置時間、規則數、記憶體</a> · <a href="../data/PMLB_G8_REAL_CPU_STAIRCASE_MANIFEST.json">規模測試條件與限制</a></p>
+</section>
+<section class="panel"><span class="section-tag">07 · GATES AND RESEARCH DECISION</span><h2>G4–G8 現階段驗收</h2>
+<div class="scroll-table"><table><thead><tr><th>Gate</th><th>已完成的可複驗證據</th><th>仍無法宣稱</th></tr></thead><tbody>
+<tr><td>G4</td><td>Non-IID 有標籤 Inner Validation 在 109 表×3 Seeds 優於最佳固定策略</td><td>IID 或無標籤 Meta KNN 也普遍更好</td></tr>
+<tr><td>G5</td><td>Client label skew、Train 類別比例、Inner Conflict／Coverage 條件分析</td><td>已處理 Feature/Quantity/Time Drift</td></tr>
+<tr><td>G6</td><td>88 個暫定家族、三 Seeds、五項 Holm 與六策略 Friedman</td><td>109 個獨立真實應用領域的普遍推論</td></tr>
+<tr><td>G7</td><td>數學界限、4 項性質測試、與先行演算法文獻比對</td><td>首次提出模型選擇或 Conflict-Aware 理論</td></tr>
+<tr><td>G8</td><td>4 個公開來源×9 組規模 = 36 次 CPU 實測</td><td>超大資料庫、20+特徵、分散式加速已驗證</td></tr>
+</tbody></table></div>
+<p><a href="./G4_G8_109_DATASET_VALIDATION_REPORT.md">研究論文可引用的完整版本、全部原始證據鏈</a></p>
+</section>
+</main><footer class="footer"><a href="../">回到研究首頁</a> · <a href="../public20/adaptive_six.html">20 領域 IID 對照</a> · <a href="./G4_G8_109_DATASET_VALIDATION_REPORT.md">完整研究報告</a></footer>
+<script>
+(()=>{"use strict";
+const $=id=>document.getElementById(id);
+const f=n=>Number.isFinite(+n)?Number(n).toFixed(2):"—";
+const p=n=>f(n)+"%";
+const pp=n=>Number.isFinite(+n)?(Number(n)>=0?"+":"")+f(n)+" pp":"—";
+const esc=s=>String(s??"").replace(/[&<>"]/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
+let all=[],groups=[],g6=[],scale=[];
+function parseCSV(text){const rows=[];let row=[],cell="",quoted=false;
+for(let i=0;i<text.length;i++){let ch=text[i];if(ch==='"'){if(quoted&&text[i+1]==='"'){cell+='"';i++}else quoted=!quoted;}
+else if(ch===","&&!quoted){row.push(cell);cell=""}
+else if((ch==="\n"||ch==="\r")&&!quoted){if(ch==="\r"&&text[i+1]==="\n")i++;row.push(cell);cell="";if(row.some(x=>x.trim()))rows.push(row);row=[]}
+else cell+=ch}
+if(cell||row.length){row.push(cell);rows.push(row)}
+const headers=rows.shift();return rows.map(values=>Object.fromEntries(headers.map((h,i)=>[h,values[i]??""])));
+}
+const lab={FIXED_GLOBAL_STRENGTH:"固定 Global Strength",FIXED_SIMPLE_VOTING:"固定 Simple Voting",VALIDATION_BEST:"內部驗證自動選法",GUARDED_SKEW_V1:"事先固定 JS／Conflict 門檻",
+LOFO_GLOBAL_VAL:"跨家族固定最佳",LOFO_META_KNN7:"跨家族 Meta KNN7",TEST_ORACLE_DIAGNOSTIC:"Test Oracle（僅診斷）"};
+function strategy(){
+ const scenario=$("scenario").value,obj=$("objective").value;
+ const z=all.filter(x=>x.scenario===scenario&&x.objective===obj).sort((a,b)=>Number(b.mean_test_pct)-Number(a.mean_test_pct));
+ $("strategyRows").innerHTML=z.map(x=>"<tr><td>"+esc(lab[x.method]||x.method.replace("FIXED_","固定 "))+"</td><td>"+p(x.mean_test_pct)+"</td><td>"+f(x.mean_regret_pp)+"</td><td>"+esc(x.configs)+"</td><td>"+esc(x.distinct_tables)+"</td></tr>").join("");
+ const r=z[0];$("scenarioNote").textContent=r?"配置數："+r.configs+"；平均 Client Label JS："+f(r.mean_label_js)+"；Validation Conflict："+p(r.mean_validation_conflict_pct)+"；Validation Exact Coverage："+p(r.mean_validation_coverage_pct)+"。":"";
+}
+function group(){
+ const type=$("groupType").value;
+ const z=groups.filter(x=>x.group_by===type).sort((a,b)=>["IID","NONIID_05","NONIID_01"].indexOf(a.scenario)-["IID","NONIID_05","NONIID_01"].indexOf(b.scenario)||String(a.group_value).localeCompare(String(b.group_value)));
+ $("groupRows").innerHTML=z.map(x=>"<tr><td>"+esc(x.scenario)+"</td><td>"+esc(x.group_value)+"</td><td>"+esc(x.comparisons)+"</td><td>"+esc(x.datasets)+"</td><td>"+p(x.BA_FIXED_GLOBAL_STRENGTH)+"</td><td>"+p(x.BA_FIXED_SIMPLE_VOTING)+"</td><td>"+p(x.BA_VALIDATION_BEST)+"</td><td>"+pp(x.delta_VALIDATION_BEST_vs_SV_pp)+"</td></tr>").join("");
+}
+$("scenario").addEventListener("change",strategy);$("objective").addEventListener("change",strategy);$("groupType").addEventListener("change",group);
+Promise.all([
+ fetch("../data/PMLB_117_3SEED_MANIFEST.json",{cache:"no-store"}),
+ fetch("../data/PMLB_117_3SEED_METHOD_SUMMARY.csv",{cache:"no-store"}),
+ fetch("../data/PMLB_117_3SEED_CONDITIONAL_EFFECTS.csv",{cache:"no-store"}),
+ fetch("../data/PMLB_117_3SEED_G6_WILCOXON_HOLM.csv",{cache:"no-store"}),
+ fetch("../data/PMLB_G8_REAL_CPU_STAIRCASE_SUMMARY.csv",{cache:"no-store"}),
+ fetch("../data/PMLB_G8_REAL_CPU_STAIRCASE_MANIFEST.json",{cache:"no-store"})
+]).then(async results=>{
+ if(results.some(r=>!r.ok))throw Error("有實際研究證據檔尚未發布");
+ const m=await results[0].json();const g8=await results[5].json();
+ if(m.status!=="PASS_OVER_100_PUBLIC_BENCHMARK_TABLES"||m.successful_iid_tables!==109||m.model_configurations!==981||m.raw_evaluation_rows!==5886||m.seeds.join(",")!=="1,7,42")throw Error("109 個資料來源或三 Seeds 完整性尚未驗證");
+ if(g8.status!=="4_SOURCES_ALL_36_REAL_CPU_CONFIGS_PASS"||g8.actual_trials!==36)throw Error("G8 CPU 測試尚未通過來源核驗");
+ all=parseCSV(await results[1].text());groups=parseCSV(await results[2].text());g6=parseCSV(await results[3].text());scale=parseCSV(await results[4].text());
+ if(all.length!==99||groups.length<40||g6.length!==5||scale.length!==9)throw Error("彙整輸出行數與 Manifest 不一致");
+ $("sourceCount").textContent=m.successful_models+"/"+m.registered_candidates;
+ $("systemCount").textContent=m.model_configurations;
+ $("evalCount").textContent=m.raw_evaluation_rows.toLocaleString("zh-TW");
+ $("familyCount").textContent=m.unique_families_in_success;
+ $("status").textContent="VALIDATED：109 個來源、三 Seeds、981 個固定規則配置、5,886 筆六策略結果及 36 組 CPU 計算皆通過來源完整性檢查。";
+ $("statsRows").innerHTML=g6.map(x=>"<tr><td>"+esc(x.scenario)+"｜"+esc(lab[x.candidate]||x.candidate)+" − "+esc(lab[x.baseline]||x.baseline)+"</td><td>"+esc(x.independent_family_clusters_provisional)+"</td><td>"+pp(x.mean_gain_pp)+"</td><td>["+f(x.bootstrap_ci95_low_pp)+", "+f(x.bootstrap_ci95_high_pp)+"]</td><td>"+(+x.holm_adjusted_p).toExponential(2)+"</td><td>"+(x.holm_significant_005==="True"?"符合預設門檻":"未通過")+"</td></tr>").join("");
+ $("resourceRows").innerHTML=scale.map(x=>"<tr><td>"+esc(x.rows)+"</td><td>"+esc(x.features)+"</td><td>"+f(x.median_fit_seconds)+"</td><td>"+esc(x.n)+"</td></tr>").join("");
+ strategy();group();
+}).catch(err=>{$("status").textContent="目前無法確認完整實驗結果："+err.message});
+})();
+</script></body></html>
