@@ -89,7 +89,7 @@ def main():
         sub=df[df.scenario.eq(regime)]
         base="FIXED_"+DEFAULT_BASE[regime]
         for method in ("CONFLICT_BUCKET_ROUTER_V1","VALIDATION_BEST"):
-            for ref in (base,"FIXED_GLOBAL_STRENGTH","FIXED_SIMPLE_VOTING"):
+            for ref in dict.fromkeys((base,"FIXED_GLOBAL_STRENGTH","FIXED_SIMPLE_VOTING","VALIDATION_BEST")):
                 if method==ref:continue
                 bs.append({"scenario":regime,"candidate":method,"baseline":ref,
                            **bootstrap(sub,method,ref)})
