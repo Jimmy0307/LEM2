@@ -309,6 +309,31 @@ def main():
             assert not errors, errors
             print("TEACHER_DATASET_INPAGE_DEEPDIVE_SIX_POLICY_REAL_RESULTS_PASS",flush=True)
 
+            # New research synthesis: every card is backed by completed source
+            # manifests; check all 3 lanes and actual heldout rule quality.
+            page.goto(report+"g4_g8/",wait_until="domcontentloaded")
+            page.wait_for_function(
+              "['g4status','g2status','g8status','g8qualityStatus'].every(id => document.getElementById(id).classList.contains('pass'))",
+              timeout=40000
+            )
+            assert page.locator("#g4rows tr").count()==5
+            assert "55.63%" in page.locator("#g4rows").inner_text()
+            page.locator("#g4regime").select_option("NONIID_05")
+            assert "60.95%" in page.locator("#g4rows").inner_text()
+            assert page.locator("#g2rows tr").count()==3
+            assert "67.83%" in page.locator("#g2rows").inner_text()
+            page.locator("#g2arch").select_option("CENTRALIZED")
+            assert "56.34%" in page.locator("#g2rows").inner_text()
+            assert page.locator("#g8total").inner_text()=="82"
+            assert page.locator("#g8exact").inner_text()=="36"
+            assert page.locator("#g8rows tr").count()==24
+            assert page.locator("#g8qualityRows tr").count()==16
+            assert "-3.719" in page.locator("#g8qualityRows").inner_text()
+            page.locator("#g8source").select_option("adult")
+            assert page.locator("#g8rows tr").count()==16
+            assert not errors, errors
+            print("G4_G2_G8_EVIDENCE_GATED_NEW_SEEDS_RULE_RESCUE_FULL_LEM2_TEST_BROWSER_PASS",flush=True)
+
             # New total = 20 previous + 12 added public + two older commerce /
             # industrial domains. Only original 20 have C0 vs C3 pair evidence.
             page.goto(report,wait_until="domcontentloaded")
