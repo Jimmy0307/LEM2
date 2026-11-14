@@ -1,0 +1,89 @@
+name: LEM2 Adaptive Six - Finalize 20 Sources x 3 Seeds From Original Artifacts
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - .github/workflows/adaptive-six-finalize-reuse.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  source-locked-finalize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Reuse real 20 UCI x 3 seed experiments; do not regenerate or guess results
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 43571344581
+          pattern: adaptive-six-*
+          path: adaptive_six_incoming
+          merge-multiple: true
+      - name: Assert source artifact completeness before aggregating
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd
+          root=Path("adaptive_six_incoming")
+          files=list(root.glob("ADAPTIVE_SIX_*_seed*.csv"))
+          assert len(files)==60,len(files)
+          for f in files:
+              df=pd.read_csv(f)
+              assert len(df)==12,f
+              assert df.groupby(["client_count"]).size().to_dict()=={0:6,3:6},f
+              assert df["source_sha256"].notna().all()
+          print("ALL_60_ORIGINAL_PUBLIC_SOURCE_JOBS_REUSED_PASS",flush=True)
+          PY
+      - name: Re-run no-test-leakage and dataset-level meta-learning tests
+        run: python -m pytest -q teacher_demo/test_adaptive_six_policy_selection.py
+      - name: Aggregate with guarded source SHA and LODO group exclusion
+        run: python -m teacher_demo.adaptive_six_policy_aggregate
+      - name: Fail closed if 20-domain x 3-seed evidence incomplete
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import pandas as pd,numpy as np
+          root=Path("docs/research/teacher_dashboard/data")
+          m=json.loads((root/"ADAPTIVE_SIX_20_MANIFEST.json").read_text(encoding="utf-8"))
+          a=pd.read_csv(root/"ADAPTIVE_SIX_20_ALL_POLICIES.csv")
+          b=pd.read_csv(root/"ADAPTIVE_SIX_20_SELECTORS.csv")
+          summary=pd.read_csv(root/"ADAPTIVE_SIX_20_SUMMARY.csv")
+          ci=pd.read_csv(root/"ADAPTIVE_SIX_20_DATASET_BOOTSTRAP.csv")
+          assert m["status"]=="VALIDATED_20_DOMAINS_3_SEEDS_6_POLICIES"
+          assert m["frozen_rulesets"]==120 and m["policy_eval_rows"]==720
+          assert len(a)==720 and len(b)==m["outer_selector_evaluations"]
+          assert b.groupby(["dataset","seed","client_count","objective"]).size().eq(10).all()
+          assert len(summary)==30 and len(ci)==27
+          assert b.dataset.nunique()==20 and set(b.seed)=={1,7,42}
+          assert a.groupby(["dataset","seed","client_count"]).size().eq(6).all()
+          assert b.test_regret_pp.ge(-1e-7).all()
+          assert b[b.method.str.startswith("LODO")].meta_reference_dataset_count.eq(19).all()
+          assert m["protocol"]["cross_domain"].startswith("Leave one WHOLE dataset out")
+          print("ADAPTIVE_META_20_UCI_3SEED_SOURCE_LOCKED_NO_TEST_LEAK_PASS",flush=True)
+          PY
+      - name: Publish verified original artifacts and source-locked meta results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "${GITHUB_REF_NAME}"
+          git reset --mixed FETCH_HEAD
+          git add docs/research/teacher_dashboard/data/ADAPTIVE_SIX_20_*
+          if ! git diff --cached --quiet; then
+            git commit -m "research: publish 20-domain 3-seed leakage-safe LODO selector audit [skip ci]"
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: adaptive-six-verified-original-artifact-reanalysis
+          path: docs/research/teacher_dashboard/data/ADAPTIVE_SIX_20_*
+          if-no-files-found: error
+          retention-days: 90
