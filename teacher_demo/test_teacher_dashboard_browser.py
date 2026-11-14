@@ -259,6 +259,32 @@ def main():
             assert not errors, errors
             print("PMLB_109_3SEEDS_981_CONFIGS_G4_G8_BENCHMARK_BROWSER_PASS",flush=True)
 
+            # Supervisor dataset dictionary: 161 source/batch records, 109
+            # verified PMLB successes and 8 explicit failures, with row counts.
+            page.goto(report+"data_catalog/",wait_until="domcontentloaded")
+            page.wait_for_function(
+                "document.querySelector('#status').textContent.includes('來源紀錄驗證通過')",
+                timeout=40000
+            )
+            assert page.locator("#all").inner_text()=="161"
+            assert page.locator("#pass").inner_text()=="109/117"
+            assert page.locator("#fail").inner_text()=="8"
+            assert page.locator("#uci").inner_text()=="44"
+            assert page.locator("#records tr").count()==161
+            page.locator("#cohort").select_option("PMLB_117")
+            assert page.locator("#records tr").count()==117
+            page.locator("#state").select_option("FAILED")
+            assert page.locator("#records tr").count()==8
+            page.locator("#state").select_option("ALL")
+            page.locator("#cohort").select_option("UCI_NEW20")
+            assert page.locator("#records tr").count()==20
+            page.locator("#q").fill("Covertype")
+            assert page.locator("#records tr").count()==1
+            assert "581,012" in page.locator("#records").inner_text()
+            assert "1,800" in page.locator("#records").inner_text()
+            assert not errors, errors
+            print("TEACHER_DATASET_161_ROWS_TASKS_SOURCE_AUDIT_BROWSER_PASS",flush=True)
+
             # New total = 20 previous + 12 added public + two older commerce /
             # industrial domains. Only original 20 have C0 vs C3 pair evidence.
             page.goto(report,wait_until="domcontentloaded")
