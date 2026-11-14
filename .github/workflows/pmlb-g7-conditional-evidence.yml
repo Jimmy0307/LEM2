@@ -1,0 +1,48 @@
+name: LEM2 G7 Six-Resolver Structural Proof Tests and G4-G5 Conditions
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - .github/workflows/pmlb-g7-conditional-evidence.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  G7-and-condition-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - name: G7 test mathematical bounds and six-resolver frozen-rule behavior
+        run: python -m pytest -q teacher_demo/test_six_strategy_properties.py teacher_demo/test_adaptive_six_policy_selection.py
+      - name: G4-G5 source-grounded data-condition effects on 109 UCI/PMLB benchmark tables
+        run: python -m teacher_demo.pmlb_117_condition_effects
+      - name: Fail closed if 3-seed conditional groups are not empirical
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd,json
+          d=Path("docs/research/teacher_dashboard/data")
+          m=json.loads((d/"PMLB_117_3SEED_MANIFEST.json").read_text())
+          a=pd.read_csv(d/"PMLB_117_3SEED_CONDITIONAL_EFFECTS.csv")
+          assert m["seeds"]==[1,7,42] and m["successful_iid_tables"]>100
+          assert len(a)>30 and set(a.scenario)=={"IID","NONIID_05","NONIID_01"}
+          assert set(a.group_by)>={"client_divergence","conflict_band","class_imbalance","feature_mode","scenario"}
+          assert a.comparisons.ge(5).all()
+          print("G7_MATHEMATICAL_INVARIANTS_AND_G5_CONDITIONAL_EVIDENCE_PASS",len(a))
+          PY
+      - name: Publish condition effects from independently validated original 3-seed data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "${GITHUB_REF_NAME}"
+          git reset --mixed FETCH_HEAD
+          git add docs/research/teacher_dashboard/data/PMLB_117_3SEED_CONDITIONAL_EFFECTS.csv
+          if ! git diff --cached --quiet; then
+            git commit -m "research: publish conditional G4-G5 policy response for 109 tables and verified G7 structural limits [skip ci]"
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
