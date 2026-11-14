@@ -54,7 +54,7 @@ def rule_buckets(frame,rules):
     return np.asarray(buckets),candidate,np.asarray(coverage),np.asarray(conflict)
 
 def measured(y,pred):
-    y=np.asarray(y,dtype=str);p=np.asarray(pred,dtype=str)
+    y=np.asarray(y,dtype=object);p=np.asarray(pred,dtype=object)
     assert len(y)==len(p) and len(y)>0
     return {"balanced_accuracy":float(balanced_accuracy(y,p)),
             "accuracy":float(np.mean(y==p)),"macro_f1":float(macro_f1_score(y,p))}
@@ -66,8 +66,8 @@ def select_router(y,validation_predictions,buckets,base):
     against Conflict; those are invariant for fixed rule sets.
     """
     assert set(validation_predictions)==set(POLICY_ORDER)
-    preds={k:np.asarray(v,dtype=str) for k,v in validation_predictions.items()}
-    labels=np.asarray(y,dtype=str)
+    preds={k:np.asarray(v,dtype=object) for k,v in validation_predictions.items()}
+    labels=np.asarray(y,dtype=object)
     original=preds[base].copy();current=original.copy()
     score=measured(labels,current)
     selection={};receipts=[]
@@ -108,11 +108,11 @@ def select_router(y,validation_predictions,buckets,base):
     return selection,receipts,current
 
 def apply_router(predictions,buckets,base,selection):
-    result=np.asarray(predictions[base],dtype=str).copy()
+    result=np.asarray(predictions[base],dtype=object).copy()
     for bucket,policy in selection.items():
         mask=np.asarray(buckets)==bucket
-        result[mask]=np.asarray(predictions[policy],dtype=str)[mask]
-    assert not np.any((result!=np.asarray(predictions[base],dtype=str))&
+        result[mask]=np.asarray(predictions[policy],dtype=object)[mask]
+    assert not np.any((result!=np.asarray(predictions[base],dtype=object))&
                       (np.asarray(buckets)=="NO_CONFLICT"))
     return result
 
@@ -132,7 +132,7 @@ def evaluate_one(name,seed,regime,output):
     art=fit["structural_artifact"];rules=art.global_rules
     base=DEFAULT_BASE[regime]
     vb,vcan,vcover,vconf=rule_buckets(art.test,rules)
-    val_preds={p:np.asarray(fit["policy_results"][p]["federated"]["predictions"],dtype=str)
+    val_preds={p:np.asarray(fit["policy_results"][p]["federated"]["predictions"],dtype=object)
                for p in POLICIES}
     yval=art.test[art.target].astype(str).to_numpy()
     assert all(len(p)==len(yval) for p in val_preds.values())
@@ -146,7 +146,7 @@ def evaluate_one(name,seed,regime,output):
         result=evaluate_rule_model(outer,rules,art.default_class,art.target,
             prediction_policy=policy,rule_weights=art.global_rule_weights,
             rule_support_sets=art.global_rule_support_sets,class_sizes=art.global_class_sizes)
-        test_preds[policy]=np.asarray(result["predictions"],dtype=str)
+        test_preds[policy]=np.asarray(result["predictions"],dtype=object)
     ytest=outer[art.target].astype(str).to_numpy()
     selected_pred=apply_router(test_preds,tb,base,selection)
     test_oracle=max(POLICY_ORDER,key=lambda p:measured(ytest,test_preds[p])["balanced_accuracy"])
