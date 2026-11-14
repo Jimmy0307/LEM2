@@ -1,0 +1,147 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>六種 LEM2 策略的資料型態與偏斜適用性｜教授研究報告</title><meta name="description" content="20 個公開 UCI 資料集 × 3 個原始資料集 42 Seeds 比較六種 LEM2 規則決策選擇策略：連續／離散、類別偏斜、Client Label Skew、Conflict 及 Balanced Accuracy。">
+<link rel="stylesheet" href="../site.css"><style>
+.hero{background:linear-gradient(125deg,#112d42,#1b5665);color:#fff;padding:36px max(18px,calc((100vw - 1160px)/2))}
+.hero h1{font-size:clamp(25px,4vw,42px);line-height:1.28}.hero p{max-width:930px;color:#e6f1f4}
+.summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.summary-grid>div{border:1px solid #dbe7e8;background:#f9fcfc;padding:16px;border-radius:11px}
+.summary-grid strong{display:block;font-size:24px;color:#12596a}.summary-grid small{color:#617784}
+.switches{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}
+.switches label{display:flex;flex-direction:column;gap:5px;flex:1 1 170px;font-size:13px}
+.control-note{border-left:3px solid #b58947;background:#fff7e9;padding:12px;font-size:13px;margin:14px 0}
+.hist{display:inline-block;background:#4d8798;min-height:8px;vertical-align:middle;border-radius:5px}
+.data-scroll{overflow:auto}.data-scroll table{font-variant-numeric:tabular-nums}.data-scroll th,.data-scroll td{white-space:nowrap}
+.mainvalue{font-weight:750;color:#17656b}.quiet{font-size:12px;color:#667a86}
+@media(max-width:790px){.hero{padding:28px 18px}.summary-grid{grid-template-columns:1fr}.data-scroll{max-width:100vw}}
+</style></head><body>
+<div class="site-top"><a href="../" class="brand">LEM2 Research · 教授報告</a><nav>
+<a href="../">研究首頁</a><a href="./">20 份資料</a><a href="./conflict_aware.html">衝突控制</a><a class="active" href="./policy_suitability.html" aria-current="page">六策略適用性</a><a href="../versions/">42 Seeds</a>
+</nav></div>
+<header class="hero"><div class="eyebrow">META-FEATURES × DECISION STRATEGIES</div>
+<h1>什麼樣的資料，適合哪一種 LEM2 決策策略？</h1>
+<p>這份報告分兩種證據：原三個資料集、真正完整 42 Seeds 的 IID／Non-IID 對照；以及 20 份不同類型公開資料的單 Seed 探索。六策略的選擇只改變**規則命中後的決策**，不會單獨提高原規則 Coverage。</p>
+<p><a href="./POLICY_SUITABILITY_FINDINGS.md" style="color:#d8fff4">閱讀完整研究報告</a> · <a href="../data/POLICY_SUITABILITY_MANIFEST.json" style="color:#d8fff4">來源與方法契約</a></p>
+</header><main class="wrap">
+<section class="panel"><span class="section-tag">01 · AUDITED EVIDENCE</span><h2>比較來源和可信程度</h2>
+<p id="status" aria-live="polite" role="status">讀取已驗證的實際結果中…</p>
+<div class="summary-grid">
+<div><small>原始資料集</small><strong>3 × 42 Seeds</strong><small>Federated C2–C5，IID 及兩種 Dirichlet α</small></div>
+<div><small>新增領域資料集</small><strong>20 × 1 Seed</strong><small>Classical 中央＋Federated C3，最多六特徵</small></div>
+<div><small>六策略的本質</small><strong>同一規則集合</strong><small>比較的是 Decision Resolution，不是規則歸納法</small></div>
+</div>
+</section>
+<section class="panel" id="skew"><span class="section-tag">02 · STRONGER EVIDENCE: PAIRED 42-SEED FEDERATED STUDIES</span><h2>同一個資料集，Client 分布偏斜後策略怎麼變？</h2>
+<p>三種資料分布都只計算 C2、C3、C4、C5：**各 504 組相同架構與 Seed 的六策略比較**。先固定規則集合再選決策，不把 IID 的集中式 C0 混入勝率分母。</p>
+<div class="switches">
+<label>評估目標<select id="mainObjective"><option value="balanced_accuracy">Balanced Accuracy（推薦先看）</option><option value="accuracy">Overall Accuracy</option><option value="macro_f1">Macro-F1</option></select></label>
+<label>數值形式<select id="mainFormat"><option value="metric_mean_pct">平均分數（%）</option><option value="fractional_win_share_pct">平手分攤的獲勝比例（%）</option></select></label>
+</div>
+<div class="data-scroll"><table><thead><tr><th>決策策略</th><th>IID</th><th>Non-IID α=0.5</th><th>Non-IID α=0.1</th><th>方法意涵</th></tr></thead><tbody id="regimeRows"><tr><td colspan="5">等待完整實驗檔案</td></tr></tbody></table></div>
+<p class="quiet">Non-IID α 越小，通常代表本研究的 Client 標籤比例更加不均。這不是「α=0.1 必然造成最佳 Simple Voting」的定律；目前只涵蓋三個原始資料集。平均分數與獲勝頻率可能選出不同的方法，因為評估目標和分組權重不同。</p>
+</section>
+<section class="panel" id="types"><span class="section-tag">03 · EXPLORATORY 20-DOMAIN DATASET MORPHOLOGY</span><h2>連續／離散、類別偏斜、類別數，能預示六策略表現嗎？</h2>
+<p>對 20 個不同領域資料，我們保留所有六策略平手。每份資料只有 Seed 42；即使表格顯示某方法勝出，也不能直接產生具一般性的策略推薦。</p>
+<div class="switches">
+<label>分析因素<select id="groupType">
+<option value="feature_mode">特徵型態</option>
+<option value="skew_band">類別不平衡／多數類別占比</option>
+<option value="class_band">決策類別數</option>
+<option value="conflict_band">Test Conflict（僅事後診斷）</option>
+<option value="architecture">集中式／Federated C3</option>
+</select></label>
+<label>條件分組<select id="groupValue"></select></label>
+<label>策略評分目標<select id="groupObjective"><option value="balanced_accuracy">Balanced Accuracy</option><option value="accuracy">Overall Accuracy</option><option value="macro_f1">Macro-F1</option></select></label>
+</div>
+<p id="groupStatus" class="quiet"></p>
+<div class="data-scroll"><table><thead><tr><th>規則決策策略</th><th>平手分攤勝出比例</th><th>單獨獲勝</th><th>包含平手獲勝</th><th>比較配置</th><th>不同資料集</th></tr></thead><tbody id="groupRows"><tr><td colspan="6">等待資料形態分析</td></tr></tbody></table></div>
+<div class="control-note">目前這裡的 Class Skew 使用「公開資料固定抽樣子集」的類別分布，Conflict 則是 **Test 的事後評估值**。它們只能拿來分析現象，<strong>不能拿來當作未見資料部署時策略選擇器的輸入</strong>；正式應改為 Train 或 Inner Validation 指標。</div>
+</section>
+<section class="panel" id="six"><span class="section-tag">04 · METHOD COMPETENCE HYPOTHESES</span><h2>六種策略各自適合先在哪些場景試驗？</h2>
+<div class="data-scroll"><table><thead><tr><th>策略</th><th>主要評分依據</th><th>優先研究的資料條件</th><th>重要限制</th></tr></thead><tbody>
+<tr><td>First Match</td><td>命中規則順序</td><td>無衝突或低衝突、需要簡單決策</td><td>規則順序敏感</td></tr>
+<tr><td>Simple Voting</td><td>每條命中規則 1 票</td><td>極端 Client label skew；α=0.1 實測領先</td><td>規則數／重複規則偏置</td></tr>
+<tr><td>Standard Voting</td><td>前件在 Train 命中的支持筆數加權</td><td>同質資料、支持量能公平比較</td><td>大型 Client／高頻類別權重偏大</td></tr>
+<tr><td>Global Strength</td><td>各類正確支持聯集／該類 Train 筆數</td><td>IID、中等偏斜、重視 Balanced Accuracy</td><td>極端 Client 分布下可能退化</td></tr>
+<tr><td>Population Standard</td><td>去重後正確支持物件數</td><td>規則支持高度重複、重視整體 Accuracy</td><td>沒有類別大小正規化</td></tr>
+<tr><td>Population Global</td><td>Global Strength × 去重比例</td><td>類別比例與規則重複同時重要</td><td>雙重校正可能過度懲罰</td></tr>
+</tbody></table></div>
+<p>每個適用場景都是「優先候選法」，不是可直接套用的硬分類規則。根據目前實驗，無衝突配置中六策略的分類結果一致；Coverage 很低時也應先改進規則歸納或補充規則，而不是只更換 Voting。</p>
+</section>
+<section class="panel" id="next"><span class="section-tag">05 · RESEARCH DESIGN</span><h2>如何驗證策略選擇真的具有泛化能力？</h2>
+<p>提出 Meta-Selector 的方式：先用 Train 資料計算特徵型態、Class Entropy、Minority Share、Client Label JS Divergence、Client Quantity CV 等，再透過 Inner Validation 測得規則 Coverage、Conflict、支持重複度及六策略的 Balanced Accuracy。選定後才到 Outer Test 報告成績。</p>
+<p>需要同時比較：固定 Simple Voting、固定 Global Strength、固定 Standard Voting，以及由訓練特徵判斷的自適應策略。採跨資料集留一驗證，測試新資料集是否能正確選法；**不能用 Test 的最佳策略當選擇器訓練標籤後又在同一份 Test 上宣稱成功**。</p>
+<p>參考研究：<a href="https://doi.org/10.1109/34.990132">Ho &amp; Basu（2002），分類問題複雜度</a>；<a href="https://doi.org/10.1016/j.eswa.2013.02.025">Cano（2013），資料複雜度與分類器行為</a>。本研究仍需驗證資料型態與策略表現的獨立關係，而不能直接由文獻延伸為既定結論。</p>
+<p><a href="./POLICY_SUITABILITY_FINDINGS.md">查看完整研究解釋、公式與實驗限制</a> · <a href="../data/POLICY_SUITABILITY_20_MATCHUPS.csv">720 筆逐策略資料</a> · <a href="../data/POLICY_SUITABILITY_20_GROUPS.csv">270 筆資料型態群組比較</a> · <a href="../data/POLICY_SUITABILITY_42_DISTRIBUTIONS.csv">54 筆 42-Seed 對照</a></p>
+</section>
+</main><footer class="footer"><a href="../">回到教授報告</a> · <a href="./">20 資料集</a> · <a href="./conflict_aware.html">Conflict-Aware</a></footer>
+<script>
+(()=>{"use strict";
+const $=id=>document.getElementById(id);
+const policies=["FIRST_MATCH","SIMPLE_VOTING","STANDARD_VOTING","GLOBAL_STRENGTH","POPULATION_STANDARD","POPULATION_GLOBAL"];
+const labels={FIRST_MATCH:"First Match",SIMPLE_VOTING:"Simple Voting",STANDARD_VOTING:"Standard Voting",GLOBAL_STRENGTH:"Global Strength",POPULATION_STANDARD:"Population Standard",POPULATION_GLOBAL:"Population Global"};
+const notes={FIRST_MATCH:"順序依賴",SIMPLE_VOTING:"規則數票選",STANDARD_VOTING:"支持權重",GLOBAL_STRENGTH:"類別正規化",POPULATION_STANDARD:"去重支持",POPULATION_GLOBAL:"去重＋正規化"};
+const groupLabels={
+ feature_mode:{ALL_CONTINUOUS:"連續數值",ALL_CATEGORICAL:"離散／類別",EXPLICIT_MIXED:"混合型"},
+ skew_band:{majority_under_75pct:"多數類別低於 75%",majority_75_to_90pct:"多數類別 75–90%",majority_ge_90pct:"多數類別至少 90%"},
+ class_band:{binary:"2 個類別",three_to_seven:"3–7 個類別",eight_plus:"8 個以上類別"},
+ conflict_band:{none:"沒有 Conflict",under_10pct:"0–10% Conflict", "10_to_40pct":"10–40% Conflict","40pct_plus":"至少 40% Conflict"},
+ architecture:{CENTRALIZED:"集中式",FEDERATED_C3:"Federated C3"}
+};
+let main=[],groups=[];
+function parseCSV(text){
+ const output=[];let record=[],value="",quoted=false;
+ for(let i=0;i<text.length;i++){
+  const ch=text[i];
+  if(ch==='"'){if(quoted&&text[i+1]==='"'){value+='"';i++}else quoted=!quoted}
+  else if(ch===','&&!quoted){record.push(value);value=""}
+  else if((ch==='\n'||ch==='\r')&&!quoted){if(ch==='\r'&&text[i+1]==='\n')i++;record.push(value);value="";if(record.some(x=>x.trim()))output.push(record);record=[]}
+  else value+=ch;
+ }
+ if(value||record.length){record.push(value);output.push(record)}
+ const head=output.shift();return output.map(c=>Object.fromEntries(head.map((h,i)=>[h,c[i]??""])));
+}
+function n(v){return v===""||v===undefined?NaN:Number(v)}
+function pct(v){return Number.isFinite(n(v))?Number(v).toFixed(2)+"%":"—"}
+function renderRegimes(){
+ const o=$("mainObjective").value,key=$("mainFormat").value;
+ const values=[["STRATIFIED_IID",null],["DIRICHLET_NON_IID",.5],["DIRICHLET_NON_IID",.1]];
+ const filtered=main.filter(x=>x.objective===o);
+ $("regimeRows").innerHTML=policies.map(policy=>{
+  const cells=values.map(([reg,alpha])=>{const x=filtered.find(x=>x.policy===policy&&x.distribution===reg&&(alpha===null||Math.abs(n(x.alpha)-alpha)<1e-8));return x?n(x[key]):NaN});
+  const strongest=Math.max(...cells);
+  return "<tr><td>"+labels[policy]+"</td>"+cells.map(v=>"<td"+(Math.abs(v-strongest)<1e-8?' class="mainvalue"':"")+">"+pct(v)+"</td>").join("")+"<td>"+notes[policy]+"</td></tr>";
+ }).join("");
+}
+function renderChoices(){
+ const type=$("groupType").value;
+ const opts=Object.entries(groupLabels[type]||{});
+ const sel=$("groupValue");const before=sel.value;sel.innerHTML="";
+ for(const [key,label] of opts){const opt=document.createElement("option");opt.value=key;opt.textContent=label;sel.add(opt)}
+ if(opts.some(x=>x[0]===before))sel.value=before;
+ renderGroup();
+}
+function renderGroup(){
+ const ty=$("groupType").value,val=$("groupValue").value,obj=$("groupObjective").value;
+ const rs=groups.filter(x=>x.group_type===ty&&x.group_value===val&&x.objective===obj);
+ rs.sort((a,b)=>n(b.win_share_pct)-n(a.win_share_pct));
+ $("groupRows").innerHTML=rs.map(x=>"<tr><td>"+labels[x.policy]+"</td><td><span class='hist' style='width:"+Math.max(2,n(x.win_share_pct)*1.5)+"px'></span> "+pct(x.win_share_pct)+"</td><td>"+x.sole_wins+"</td><td>"+x.co_wins+"</td><td>"+x.matchups+"</td><td>"+x.unique_datasets+"</td></tr>").join("")||"<tr><td colspan='6'>目前無可驗證的分組資料</td></tr>";
+ if(rs.length) $("groupStatus").textContent="此分組有 "+rs[0].unique_datasets+" 份不同資料集／"+rs[0].matchups+" 組策略比較。來源為單 Seed 42；有平手者會按得勝方法數平均分配，請勿解讀為適用性已獲確認。";
+}
+for(const x of ["mainObjective","mainFormat"])$(x).addEventListener("change",renderRegimes);
+$("groupType").addEventListener("change",renderChoices);
+for(const x of ["groupValue","groupObjective"])$(x).addEventListener("change",renderGroup);
+Promise.all([
+ fetch("../data/POLICY_SUITABILITY_MANIFEST.json",{cache:"no-store"}),
+ fetch("../data/POLICY_SUITABILITY_42_DISTRIBUTIONS.csv",{cache:"no-store"}),
+ fetch("../data/POLICY_SUITABILITY_20_GROUPS.csv",{cache:"no-store"})
+]).then(async ([a,b,c])=>{
+ if(!a.ok||!b.ok||!c.ok)throw Error("研究證據尚未完整發布");
+ const j=await a.json();if(j.status!=="PASS_GROUNDED_DESCRIPTIVE_ATLAS"||j.n_uci_20!==20)throw Error("證據 Manifest 未通過");
+ main=parseCSV(await b.text());groups=parseCSV(await c.text());
+ if(main.length!==54||groups.length!==270)throw Error("42 Seeds 或 20 資料集分組數量不符合");
+ if(!main.every(x=>Number(x.win_competitions)===504))throw Error("勝出比較分母不一致");
+ $("status").textContent="來源審核通過：20 份不同 UCI 資料的 720 筆策略紀錄、270 組事後形態比較；原三資料集完整 42 Seeds，三分布各 504 組公平對照。";
+ renderRegimes();renderChoices();
+}).catch(e=>{$("status").textContent="沒有可核驗的完整資料："+e.message});
+})();
+</script></body></html>
