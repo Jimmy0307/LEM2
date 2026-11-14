@@ -70,7 +70,7 @@ def download(spec):
         raise ValueError("SOURCE_NOT_GZIP_DATA_MAY_BE_GIT_LFS_POINTER")
     return blob,time.perf_counter()-t
 
-def prepare(name):
+def prepare(name,max_rows=MAX_ROWS,max_features=MAX_FEATURES):
     spec=specs()[name]
     blob,download_s=download(spec)
     # Inspect header without decompressing all features into memory.
@@ -78,7 +78,7 @@ def prepare(name):
     if "target" not in columns:raise ValueError("MISSING_TARGET_COLUMN")
     x=[c for c in columns if c!="target" and not str(c).lower().startswith(("unnamed:","__row_id__"))]
     if len(x)<2:raise ValueError("FEWER_THAN_TWO_PREDICTORS")
-    selected=x[:MAX_FEATURES]
+    selected=x[:max_features]
     df=pd.read_csv(io.BytesIO(blob),sep="\t",compression="gzip",usecols=[*selected,"target"])
     n_before=len(df)
     # Do not use test labels to choose features or tune the model:
@@ -93,15 +93,15 @@ def prepare(name):
     counts=df["target"].value_counts()
     if len(counts)<2 or len(counts)>12:raise ValueError("TARGET_CLASSES_OUTSIDE_2_TO_12")
     rng=np.random.default_rng(20261114)
-    if len(df)>MAX_ROWS:
+    if len(df)>max_rows:
         # Stable class-stratified CAP, independent of the prediction evaluation
         # seed; feasibility test, not whole-dataset scale evaluation.
-        quotas=(counts*MAX_ROWS/len(df)).round().astype(int)
+        quotas=(counts*max_rows/len(df)).round().astype(int)
         quotas=np.maximum(quotas,1)
-        while quotas.sum()>MAX_ROWS:
+        while quotas.sum()>max_rows:
             j=(quotas-1).idxmax()
             quotas[j]-=1
-        while quotas.sum()<MAX_ROWS:
+        while quotas.sum()<max_rows:
             j=(counts-quotas).idxmax()
             quotas[j]+=1
         indices=[]
