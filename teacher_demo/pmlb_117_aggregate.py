@@ -249,9 +249,12 @@ def main():
     parser=argparse.ArgumentParser()
     parser.add_argument("--input",default=str(IN))
     parser.add_argument("--min-dataset-count",type=int,default=101)
+    parser.add_argument("--prefix",default="PMLB_117")
     args=parser.parse_args()
     IN=Path(args.input)
     OUT.mkdir(parents=True,exist_ok=True)
+    prefix=args.prefix
+    require(prefix in ("PMLB_117","PMLB_117_3SEED"),"Invalid output namespace")
     registry,receipt,data=read_source()
     audit=pd.DataFrame([
       {
@@ -268,7 +271,7 @@ def main():
         "wall_seconds":x["wall_seconds"]
       } for name,x in sorted(receipt.items())
     ])
-    audit.to_csv(OUT/"PMLB_117_SOURCE_AUDIT.csv",index=False)
+    audit.to_csv(OUT/(prefix+"_SOURCE_AUDIT.csv"),index=False)
     counted=audit[audit.configs_passed>0]
     iid=audit[audit.dataset.isin(set(data[data.scenario.eq("IID")].dataset))]
     n_unique_source=int(counted.source_sha256.nunique())
@@ -286,14 +289,15 @@ def main():
       "source_github":"https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68",
       "source_paper":"https://academic.oup.com/bioinformatics/article/38/3/878/6408434",
       "source_license":"Original per-dataset licensing not presumed from PMLB code; raw rows not redistributed",
-      "seed_protocol":"seed 42 on PMLB; 64/16/20; 3 Client; IID and Dirichlet alpha .5/.1",
+      "seed_protocol":"seed(s) "+",".join(str(x) for x in sorted(data.seed.unique()))+" on PMLB; 64/16/20; 3 Client; IID and Dirichlet alpha .5/.1",
+      "seeds":sorted(int(x) for x in data.seed.unique()),
       "config_pass_counts":data.groupby("scenario").dataset.nunique().to_dict() if not data.empty else {},
       "raw_evaluation_rows":len(data),
       "model_configurations":len(data)//6,
       "thresholds":{"guard_client_js":.1,"guard_validation_conflict":.1,"guard_val_ba_gain":.02},
       "output_status":"Evidence only; preselected rules shared across six strategy results",
       "cautions":[
-       "One PMLB seed: G4-G6 need repeated holdout and per-origin licensing/duplication audit",
+       "Even three PMLB seeds cannot establish independence of related PMLB tasks: per-origin dedup/licensing review still needed",
        "PMLB has multiple related classification tasks and synthetic datasets; don't treat as independent source domains",
        "Model fits <=900 rows x <=6 features; original millions of rows / high-dimensional metadata not actually fit",
        "Unknown original per-dataset license: do not republish datasets themselves",
@@ -303,15 +307,15 @@ def main():
        "Meta source family grouping is heuristic, not final origin reconciliation"]
     }
     if len(data):
-        data.to_csv(OUT/"PMLB_117_SIX_POLICY_RAW.csv",index=False,float_format="%.10f")
+        data.to_csv(OUT/(prefix+"_SIX_POLICY_RAW.csv"),index=False,float_format="%.10f")
         selection=select(data)
-        selection.to_csv(OUT/"PMLB_117_POLICY_SELECTIONS.csv",index=False,float_format="%.10f")
-        summarize(data,selection).to_csv(OUT/"PMLB_117_METHOD_SUMMARY.csv",index=False,float_format="%.10f")
-        conditions(selection).to_csv(OUT/"PMLB_117_CONDITION_ATLAS.csv",index=False,float_format="%.10f")
-        family_bootstrap(selection).to_csv(OUT/"PMLB_117_FAMILY_BOOTSTRAP.csv",index=False,float_format="%.10f")
-        summarize_scaling(data).to_csv(OUT/"PMLB_117_FEASIBILITY_RUNTIME.csv",index=False,float_format="%.10f")
+        selection.to_csv(OUT/(prefix+"_POLICY_SELECTIONS.csv"),index=False,float_format="%.10f")
+        summarize(data,selection).to_csv(OUT/(prefix+"_METHOD_SUMMARY.csv"),index=False,float_format="%.10f")
+        conditions(selection).to_csv(OUT/(prefix+"_CONDITION_ATLAS.csv"),index=False,float_format="%.10f")
+        family_bootstrap(selection).to_csv(OUT/(prefix+"_FAMILY_BOOTSTRAP.csv"),index=False,float_format="%.10f")
+        summarize_scaling(data).to_csv(OUT/(prefix+"_FEASIBILITY_RUNTIME.csv"),index=False,float_format="%.10f")
         manifest["selector_evaluations"]=len(selection)
-    (OUT/"PMLB_117_MANIFEST.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2,allow_nan=False),encoding="utf-8")
+    (OUT/(prefix+"_MANIFEST.json")).write_text(json.dumps(manifest,ensure_ascii=False,indent=2,allow_nan=False),encoding="utf-8")
     print("PMLB_117_AUDIT",status,"sources",manifest["source_valid_count"],
           "IID",len(iid),"unique_prepared",n_unique_prepared,"configs",manifest["model_configurations"],flush=True)
     if status!="PASS_OVER_100_PUBLIC_BENCHMARK_TABLES":
