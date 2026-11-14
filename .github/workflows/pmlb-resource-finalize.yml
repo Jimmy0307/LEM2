@@ -1,0 +1,83 @@
+name: LEM2 G8 Source-Audited CPU Scaling Staircase Finalize
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - .github/workflows/pmlb-resource-finalize.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  source-audited-scale:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas numpy
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 43576654666
+          pattern: pmlb-scale-*
+          merge-multiple: true
+          path: incoming_scale
+      - name: Validate full 4 x 3 x 3 CPU staircase and emit GitHub-hosted evidence
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd,numpy as np,json
+          inp=Path("incoming_scale")
+          out=Path("docs/research/teacher_dashboard/data")
+          rows=[]
+          for ds in ["adult","magic","connect_4","spambase"]:
+              j=json.loads((inp/f"SCALING_RECEIPT_{ds}.json").read_text())
+              assert j["dataset"]==ds and j["source"] and len(j["source"]["source_gzip_sha256"])==64
+              df=pd.read_csv(inp/f"SCALING_{ds}.csv")
+              assert len(df)==9 and df[["rows","features"]].drop_duplicates().shape[0]==9
+              assert set(df.rows)=={600,1600,3200} and set(df.features)=={4,6,8}
+              assert df.fit_seconds.gt(0).all() and df.wall_seconds.ge(df.fit_seconds).all()
+              assert df.source_gzip_sha256.eq(j["source"]["source_gzip_sha256"]).all()
+              rows.append(df)
+          result=pd.concat(rows,ignore_index=True)
+          assert len(result)==36
+          result.to_csv(out/"PMLB_G8_REAL_CPU_STAIRCASE_36.csv",index=False,float_format="%.10f")
+          by=(result.groupby(["rows","features"]).agg(n=("dataset","size"),
+              median_fit_seconds=("fit_seconds","median"),
+              mean_fit_seconds=("fit_seconds","mean"),
+              median_peakrss_mb=("maxrss_mb","median"),
+              median_rules=("rules","median")).reset_index())
+          by.to_csv(out/"PMLB_G8_REAL_CPU_STAIRCASE_SUMMARY.csv",index=False,float_format="%.10f")
+          ratios={}
+          for ds,g in result.groupby("dataset"):
+              slow=g.loc[g.rows.eq(3200)&g.features.eq(8),"fit_seconds"].iloc[0]
+              fast=g.loc[g.rows.eq(600)&g.features.eq(4),"fit_seconds"].iloc[0]
+              ratios[ds]=float(slow/fast)
+          report={"status":"4_SOURCES_ALL_36_REAL_CPU_CONFIGS_PASS",
+             "actual_trials":36,"distinct_sources":4,"dataset_names":list(ratios),
+             "source_run_id":43576654666,
+             "dataset_slow_vs_fast_fit_ratios":ratios,
+             "scope":"Actual CPU Classical LEM2; 600/1600/3200 total source rows and 4/6/8 first features",
+             "limitations":["Not full PMLB data or 100+ sources, sample budgets are capped",
+                 "Do not extrapolate runtime to 700 GB, GPU, 20+ features or hundreds of clients",
+                 "Peak RSS is max process since start, and therefore monotonic within each process; not isolated incremental memory",
+                 "No confidence interval on runtimes: one run per configuration",
+                 "This is bounded G8 feasibility, not enterprise large-data scaling proof"]}
+          (out/"PMLB_G8_REAL_CPU_STAIRCASE_MANIFEST.json").write_text(json.dumps(report,ensure_ascii=False,indent=2,allow_nan=False))
+          print("G8_REAL_CPU_SCALE_36_CONFIGS_PASS",ratios,flush=True)
+          PY
+      - name: Commit G8 reproducible measured-only evidence
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "${GITHUB_REF_NAME}"
+          git reset --mixed FETCH_HEAD
+          git add docs/research/teacher_dashboard/data/PMLB_G8_REAL_CPU_STAIRCASE_*
+          if ! git diff --cached --quiet; then
+            git commit -m "research: publish four-source 36-run actual CPU and memory scaling evidence [skip ci]"
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
