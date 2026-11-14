@@ -15,6 +15,9 @@ on:
       - docs/research/teacher_dashboard/versions/**
       - docs/research/teacher_dashboard/public_data/**
       - docs/research/teacher_dashboard/public20/**
+      - docs/research/teacher_dashboard/data_catalog/**
+      - docs/research/teacher_dashboard/data/TEACHER_DATASET_*
+      - docs/research/teacher_dashboard/data/TEACHER_UCI20_*
       - docs/research/teacher_dashboard/atlas/**
       - docs/research/teacher_dashboard/three_tracks/**
       - docs/research/teacher_dashboard/next12/**
