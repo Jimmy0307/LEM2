@@ -1,0 +1,83 @@
+{
+  "status": "VALIDATED_20_DOMAINS_3_SEEDS_6_POLICIES",
+  "dataset_count": 20,
+  "seeds": [
+    1,
+    7,
+    42
+  ],
+  "architectures": [
+    "CENTRALIZED",
+    "FEDERATED_C3"
+  ],
+  "frozen_rulesets": 120,
+  "policy_eval_rows": 720,
+  "outer_selector_evaluations": 3600,
+  "objectives": [
+    "balanced_accuracy",
+    "macro_f1",
+    "accuracy"
+  ],
+  "strategy_count": 10,
+  "protocol": {
+    "train_fit": "64% induction",
+    "inner_select": "16% validation",
+    "untouched_outer_test": "20% held-out",
+    "no_outer_refit": true,
+    "cross_domain": "Leave one WHOLE dataset out, ALL seeds and architectures",
+    "meta_training_labels": "other 19 domains' validation scores ONLY",
+    "meta_features": [
+      "log_dev_rows",
+      "num_features",
+      "continuous_ratio",
+      "num_classes",
+      "majority_share",
+      "minority_share",
+      "normalized_class_entropy",
+      "mean_feature_cardinality_fraction",
+      "log_rule_count",
+      "mean_rule_condition_count",
+      "num_clients",
+      "client_row_cv",
+      "client_label_js_divergence",
+      "client_missing_class_fraction",
+      "inner_rule_coverage",
+      "inner_rule_conflict",
+      "inner_correct_candidate_coverage",
+      "inner_mean_matching_rules"
+    ],
+    "meta_model": "K=5 inverse Euclidean distance, reference-only z-score with 0.05 regularizer",
+    "meta_hyperparameters_tuned_on_test": false,
+    "local_policy": "best inner validation performance; deterministic tie order",
+    "cross_domain_fixed_baseline": "best 19-domain validation mean, no held-out domain",
+    "oracle": "Best outer test, DIAGNOSTIC ONLY, NEVER executable"
+  },
+  "limitations": [
+    "Three seeds only; dataset-level cluster n=20",
+    "Prepared capped UCI subsets <=1800 rows and <=6 features; no large full-data benchmarks",
+    "Only IID stratified clients C3, not nonIID nor C2/C4/C5 in this experiment",
+    "Original training split 64% not 80%; results not directly comparable to frozen 8,820",
+    "Meta training on 19 datasets; estimator hyperparameters fixed a priori but no dedicated meta-hyperparameter search",
+    "Validation used to pick six strategies, which is legitimate but itself can overfit with small minority classes",
+    "High exact rule coverage does not guarantee correct candidate or high Balanced Accuracy",
+    "Fixed six strategies are selection functions on Classical LEM2 rules, not six independent inductive learners"
+  ],
+  "mean_balanced_accuracy_by_strategy": {
+    "FIXED_FIRST_MATCH": 61.11001825203387,
+    "FIXED_GLOBAL_STRENGTH": 61.89221541609299,
+    "FIXED_POPULATION_GLOBAL": 61.73146209196614,
+    "FIXED_POPULATION_STANDARD": 61.3392297188827,
+    "FIXED_SIMPLE_VOTING": 61.13193700643335,
+    "FIXED_STANDARD_VOTING": 61.31803324158834,
+    "LOCAL_VALIDATION_BEST": 61.62686524296243,
+    "LODO_GLOBAL_VAL": 61.89221541609299,
+    "LODO_META_KNN_5": 61.74394273145795,
+    "TEST_ORACLE_DIAGNOSTIC": 62.14191429282441
+  },
+  "files": [
+    "ADAPTIVE_SIX_20_ALL_POLICIES.csv",
+    "ADAPTIVE_SIX_20_SELECTORS.csv",
+    "ADAPTIVE_SIX_20_SUMMARY.csv",
+    "ADAPTIVE_SIX_20_DATASET_BOOTSTRAP.csv"
+  ]
+}
