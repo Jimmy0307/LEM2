@@ -46,6 +46,67 @@ $("showing").textContent="目前顯示 "+filtered.length+"／"+data.length+" 筆
 $("records").innerHTML=filtered.map(x=>"<tr><td>"+plain(x.cohort)+"</td><td><a href='"+plain(x.source_url)+"' rel='noopener noreferrer' target='_blank'>"+plain(x.name)+"</a></td><td>"+counts(x.original_rows)+"</td><td>"+counts(x.used_rows)+"</td><td>"+counts(x.original_features)+"</td><td>"+counts(x.used_features)+"</td><td>"+counts(x.classes)+"</td><td class='task'>"+plain(x.target_meaning)+"</td><td class='"+(x.status.startsWith("PASS")?"success":"warn")+"'>"+(x.status.startsWith("PASS")?"完成":"未通過")+"</td><td><button type='button' class='detail-open' data-record-index='"+data.indexOf(x)+"'>查看詳情</button></td></tr>").join("")||"<tr><td colspan='10'>此篩選下沒有登錄資料</td></tr>";
 }
 for(const id of ["q","cohort","state","kind"])$(id).addEventListener(id==="q"?"input":"change",filter);
+
+const batchNames={PMLB_117:"PMLB 117（109 完成）",UCI_NEW20:"UCI 20 份（三 Seeds 自適應）",UCI_NEXT12:"UCI 新12份",UCI_EXTREME7:"UCI 極端7份",UCI_COMMERCE_TECH2:"電商／設備2份",UCI_BASE3:"原始基線3份"};
+const blank=v=>v===null||v===undefined||v===""?"未登錄":String(v);
+const preparedFile=x=>{
+ const found=String(x.storage||"").match(/docs\/research\/(?:public_datasets_20|public_datasets_next12|public_datasets)\/[\w.-]+\.csv/);
+ if(found)return found[0];
+ if(x.id==="online_shoppers")return "docs/research/public_datasets/online_shoppers_public_stratified_subset.csv";
+ if(x.id==="ai4i_maintenance")return "docs/research/public_datasets/ai4i_maintenance_public_stratified_subset.csv";
+ return null;
+};
+function renderUciResult(){
+ if(!selectedRecord||selectedRecord.cohort!=="UCI_NEW20")return;
+ const body=$("detailResultRows");
+ if(!uciSummary){body.innerHTML="<tr><td colspan='6'>完整三 Seeds 成績尚未載入；請查看原始實驗檔。</td></tr>";return;}
+ const rows=uciSummary.records.filter(r=>r.dataset===selectedRecord.id&&r.architecture===$("detailArch").value);
+ if(rows.length!==6){body.innerHTML="<tr><td colspan='6'>此來源缺少完整的六策略結果。</td></tr>";return;}
+ const max=Math.max(...rows.map(x=>x.mean_test_balanced_accuracy_pct));
+ const pc=v=>Number(v).toFixed(2)+"%";
+ body.innerHTML=rows.map(x=>"<tr><td>"+plain(x.policy)+"</td><td class='"+(Math.abs(x.mean_test_balanced_accuracy_pct-max)<1e-8?"result-good":"")+"'>"+pc(x.mean_test_balanced_accuracy_pct)+"</td><td>"+pc(x.mean_test_accuracy_pct)+"</td><td>"+pc(x.mean_test_macro_f1_pct)+"</td><td>"+pc(x.mean_test_exact_rule_coverage_pct)+"</td><td>"+Number(x.mean_rule_count).toFixed(1)+"</td></tr>").join("");
+ $("detailResultStatus").textContent="三 Seeds、兩架構、六策略均已核對；下表為 Test，非 Inner Validation。";
+}
+function showRecord(index){
+ const x=data[index];if(!x)return;
+ selectedRecord=x;$("detail").hidden=false;$("detailTitle").textContent=x.name;
+ $("detailIntro").textContent=(batchNames[x.cohort]||x.cohort)+"｜"+(x.status.startsWith("PASS")?"研究配置已通過":"實驗未通過，不計入完成數");
+ const fields=[
+ ["原始觀測筆數（Rows）",counts(x.original_rows)],["模型資料池筆數（Rows）",counts(x.used_rows)],
+ ["原始特徵欄數",counts(x.original_features)],["實際使用特徵欄數",counts(x.used_features)],
+ ["決策類別數",blank(x.classes)],["實驗預測／分類目標",blank(x.target_meaning)],
+ ["來源決策欄名稱",blank(x.predict_target)],["觀測單位",blank(x.observation_unit)],
+ ["研究特徵／欄位處理",blank(x.feature_description)],["特徵型態",blank(x.data_type)],
+ ["來源類型",blank(x.source_kind)],["資料領域／同源家族",blank(x.domain_family)],
+ ["已實際測試 Seeds",blank(x.seeds)],["資料切分／Client 分布",blank(x.distribution)],
+ ["研究分析問題",blank(x.study_question)],["完整性與實驗狀態",blank(x.status)],
+ ["原始下載檔 SHA-256",blank(x.source_sha256)],["實驗準備資料 SHA-256",blank(x.prepared_sha256)],
+ ["資料保存方式",blank(x.storage)],["來源授權與限制",blank(x.license_note)],
+ ["風險／註記",blank(x.notes)]
+ ];
+ $("detailGrid").innerHTML=fields.map(([k,v])=>"<div><dt>"+plain(k)+"</dt><dd>"+plain(v)+"</dd></div>").join("");
+ $("detailSource").href=x.source_url||"#";
+ const path=preparedFile(x);$("detailPrepared").hidden=!path;
+ if(path)$("detailPrepared").href="https://github.com/Jimmy0307/LEM2/blob/research/report-ready-dashboard-20261109/"+path;
+ $("detailEvidence").href=x.cohort==="PMLB_117"?"../pmlb_117/":x.cohort==="UCI_NEW20"?"../public20/adaptive_six.html":x.cohort==="UCI_BASE3"?"../versions/":"../";
+ $("uci20Study").hidden=x.cohort!=="UCI_NEW20";
+ if(x.cohort==="UCI_NEW20"){$("detailArch").value="FEDERATED";renderUciResult();}
+ $("detail").scrollIntoView({behavior:"smooth",block:"start"});
+}
+$("records").addEventListener("click",event=>{
+ const button=event.target.closest("button[data-record-index]");
+ if(button)showRecord(Number(button.getAttribute("data-record-index")));
+});
+$("detailArch").addEventListener("change",renderUciResult);
+fetch("../data/TEACHER_UCI20_3SEED_POLICY_SUMMARY_20261114.json",{cache:"no-store"})
+.then(async r=>{
+ if(!r.ok)throw Error("三 Seed 績效證據未發布");
+ const x=await r.json();
+ if(x.status!=="PASS_20_PUBLIC_UCI_X_3_SEEDS_X_2_SYSTEMS_X_6_POLICIES"||x.dataset_count!==20||x.aggregated_rows!==240||x.records.length!==240)throw Error("實驗配置資料不完整");
+ uciSummary=x;
+ if(selectedRecord?.cohort==="UCI_NEW20")renderUciResult();
+}).catch(e=>{$("detailResultStatus").textContent="未能載入績效："+e.message;});
+
 fetch("../data/TEACHER_DATASET_MASTER_20261114.json",{cache:"no-store"}).then(async r=>{if(!r.ok)throw Error("主表尚未發布");let j=await r.json();if(j.record_count!==161||j.pmlb_success!==109||j.data.length!==161)throw Error("來源完整性檢查失敗");data=j.data;const pass=data.filter(x=>x.cohort==="PMLB_117"&&x.status.startsWith("PASS")).length;
 $("all").textContent=data.length;$("pass").textContent=pass+"/117";$("fail").textContent=data.filter(x=>!x.status.startsWith("PASS")).length;$("uci").textContent=data.filter(x=>x.cohort!=="PMLB_117").length;
 Object.keys(j.cohort_counts).forEach(key=>$("cohort").add(new Option(key+" ("+j.cohort_counts[key]+")",key)));
