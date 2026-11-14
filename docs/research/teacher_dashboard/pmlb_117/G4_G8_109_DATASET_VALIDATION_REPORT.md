@@ -131,11 +131,19 @@ Adult 單一來源的 600筆×4特徵與 3200筆×8特徵分別為 1.039 秒與 
 
 **G8 僅能稱「有限規模 CPU 實測 PASS」**：沒有測到20+特徵、十萬筆實際訓練、700GB資料庫、企業 GPU/多裝置、Client 10–100 或完整大資料 I/O；不能憑此宣稱工程擴展性完成。Peak RSS 是各流程啟動後的最大記憶體，不是每配置的邊際記憶體，解讀時要保留限制。
 
+## 研究一致性補充：原始 G4 Stop Condition 不能因新實驗而重訂
+
+早期 `public20/ADAPTIVE_SIX_ALGORITHM_SPEC.md` 將 G4 的完整條件定義為：**跨資料集的 Meta Selector 在獨立未見資料集上不輸／優於最佳固定策略**。本輪 **LOFO Meta KNN7 在嚴重 Non-IID 並未打敗固定 Simple Voting**（α=.1，BA 47.604% 對 47.707%；家族層級配對平均差 −0.190 pp、Holm p=1.0）。因此 **原訂 G4 完整 Gate 仍是 NOT PASS**。把本輪 VALBEST（依每份目標資料集自身的16%內驗證標籤選策略）的正向效果稱為 **G4b：可驗證有標籤情境的條件式收益**，是另一個應用子軌，不能取代原 G4。
+
+**同理，G5 原訂包含 Feature／Quantity／Temporal shift、G6 原訂真正獨立資料領域、G7 原訂新穎性、G8 原訂全量大型資料。** 本輪在每一 Gate 均有真實實驗／稽核輸出，但未因此聲稱原訂完整標準已經通過。
+
+---
+
 ## 七、G4–G8 最終驗收看板
 
 | Gate | 本次真實完成內容 | 結論 |
 |---|---|---|
-| **G4 泛化績效** | 109份 ×3Seeds ×3分布；內驗證選法在 α=.5/.1 的BA優於任何固定單法 | **Non-IID 條件式 PASS**；IID 未勝 |
+| **G4 泛化績效** | 109份 ×3Seeds ×3分布；自身內驗證選法在 α=.5/.1 的BA優於任何固定單法，但跨家族 Meta KNN 未贏 | **原訂跨資料集 Meta 優越性 NOT PASS；有標籤 VALBEST 條件式 PASS** |
 | **G5 偏斜穩健性** | IID、Client Label α=.5/.1、Train JS 與規則 Conflict、不同類別比例/類型實際比較 | **Label Skew PASS**；Quantity/Feature/Temporal shift 尚未驗證 |
 | **G6 統計** | 88個初步家族、3 Seeds、五項事前指定 Wilcoxon/Holm、Friedman、Bootstrap | **Benchmark 內 PASS**；原始來源家族人工去重與跨基準外推未完成 |
 | **G7 新穎性** | 三條核心結構性質、程式回歸測試、2020–2026 先行研究對照 | **技術稽核完成，學術首創 NOT VERIFIED** |
