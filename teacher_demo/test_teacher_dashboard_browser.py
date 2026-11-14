@@ -285,6 +285,30 @@ def main():
             assert not errors, errors
             print("TEACHER_DATASET_161_ROWS_TASKS_SOURCE_AUDIT_BROWSER_PASS",flush=True)
 
+            # In-page drilldown is sourced from the actual 161-record master.
+            # 20 UCI domains also expose a real three-seed six-policy scorecard.
+            page.locator("#records .detail-open").click()
+            assert page.locator("#detailTitle").inner_text()=="Covertype"
+            assert page.locator("#detail").is_visible()
+            assert "581,012" in page.locator("#detailGrid").inner_text()
+            assert "1,800" in page.locator("#detailGrid").inner_text()
+            assert "森林地表" in page.locator("#detailGrid").inner_text()
+            assert page.locator("#detailPrepared").is_visible()
+            page.wait_for_function(
+                "document.querySelectorAll('#detailResultRows tr').length===6 && document.querySelector('#detailResultRows').textContent.includes('GLOBAL_STRENGTH')",
+                timeout=30000
+            )
+            assert "Balanced Accuracy" in page.locator("#uci20Study").inner_text()
+            page.locator("#detailArch").select_option("CENTRALIZED")
+            assert page.locator("#detailResultRows tr").count()==6
+            page.locator("#cohort").select_option("PMLB_117")
+            page.locator("#q").fill("adult")
+            page.locator("#records .detail-open").first.click()
+            assert page.locator("#uci20Study").is_hidden()
+            assert page.locator("#detailGrid").inner_text().find("來源授權")>=0
+            assert not errors, errors
+            print("TEACHER_DATASET_INPAGE_DEEPDIVE_SIX_POLICY_REAL_RESULTS_PASS",flush=True)
+
             # New total = 20 previous + 12 added public + two older commerce /
             # industrial domains. Only original 20 have C0 vs C3 pair evidence.
             page.goto(report,wait_until="domcontentloaded")
