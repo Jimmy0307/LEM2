@@ -1,0 +1,112 @@
+name: LEM2 G4 Coverage Train Validation Test + Prepared Missingness Audits
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - .github/workflows/lem2-g4-train-test-missingness-audit.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  source-split-audits:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        dataset: [adult_income,bank_marketing,banknote,breast_diagnostic,covertype,dry_bean,eeg_eye_state,german_credit,grid_stability,haberman,htru2,iris,letter,magic_gamma,mushroom,phishing,rice,sonar,spambase,wine]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Refit same G4 rules, audit 64/16/20 coverage across train-val-test and prepared missingness
+        run: python -m teacher_demo.g4_train_val_test_missingness_audit --dataset ${{ matrix.dataset }}
+      - name: Validate original G4 published parity and source SHA
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd,json
+          files=list(Path("outputs/g4_type_coverage").glob("COVERAGE_G4_*.csv"))
+          profiles=list(Path("outputs/g4_type_coverage").glob("PROFILE_G4_*.json"))
+          assert len(files)==len(profiles)==1
+          df=pd.read_csv(files[0])
+          m=json.loads(profiles[0].read_text())
+          assert len(df)==6
+          assert set(df.seed)=={11,23}
+          assert set(df.scenario)=={"IID","NONIID_05","NONIID_01"}
+          assert df.validation_test_matches_published_g4.eq(True).all()
+          assert df.dev_rows.add(df.validation_rows).add(df.test_rows).eq(m["used_rows"]).all()
+          assert df.source_sha256.eq(m["prepared_file_sha256"]).all()
+          print("G4_PREPARED_SOURCE_SAME_RULES_SPLIT_AUDIT_PASS",m["dataset"],flush=True)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: g4-split-source-${{ matrix.dataset }}
+          path: outputs/g4_type_coverage/*
+          if-no-files-found: error
+          retention-days: 90
+  summarize:
+    needs: source-split-audits
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: g4-split-source-*
+          path: g4_split_audit_incoming
+          merge-multiple: true
+      - name: Audit all 161 source census + 20 datasets paired train/validation/test missingness
+        run: python -m teacher_demo.g4_coverage_type_missingness_aggregate
+      - name: Gate result cardinality, missingness claims and same-rule G4 parity
+        run: |
+          python - <<'PY'
+          import json,pandas as pd
+          from pathlib import Path
+          d=Path("docs/research/teacher_dashboard/data")
+          m=json.loads((d/"G4_COVERAGE_TYPE_MISSINGNESS_MANIFEST.json").read_text())
+          assert m["status"]=="PASS_161_SOURCE_CENSUS_AND_20_UCI_G4_SPLIT_MISSINGNESS_AUDIT"
+          assert (m["actual_split_rule_fits"],m["dataset_scenario_rows"],m["total_registered_records"])==(120,60,161)
+          assert m["full_split_metric_parity_with_previous_G4"]
+          assert not m["original_raw_UCI_missingness_known"]
+          a=pd.read_csv(d/"G4_SELECTOR_BY_FEATURE_TYPE_9_GROUPS.csv")
+          assert len(a)==9 and a.groupby("scenario").sources.sum().eq(20).all()
+          assert a.groupby("scenario").size().eq(3).all()
+          print("G4_COVERAGE_ALL_161_AND_20_UCI_DATA_QUALITY_GATE_PASS",flush=True)
+          PY
+      - name: Publish source-verifiable audit to existing research branch only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "${GITHUB_REF_NAME}"
+          git reset --mixed FETCH_HEAD
+          git add docs/research/teacher_dashboard/data/G4_20_SOURCES_PREPARED_MISSINGNESS_PROFILE.csv
+          git add docs/research/teacher_dashboard/data/G4_TRAIN_VAL_TEST_COVERAGE_120_CONFIGS.csv
+          git add docs/research/teacher_dashboard/data/G4_TRAIN_TEST_TYPE_AND_SELECTOR_60_DATASET_SCENARIOS.csv
+          git add docs/research/teacher_dashboard/data/G4_SELECTOR_BY_FEATURE_TYPE_9_GROUPS.csv
+          git add docs/research/teacher_dashboard/data/G4_SELECTOR_EXPLORATORY_ASSOCIATIONS.csv
+          git add docs/research/teacher_dashboard/data/G4_COVERAGE_TYPE_MISSINGNESS_MANIFEST.json
+          git add docs/research/teacher_dashboard/data/ALL_161_SOURCE_DATA_QUALITY_CENSUS.csv
+          if ! git diff --cached --quiet; then
+            git commit -m "research(G4): preserve 161 source census and same-frozen-rule split coverage missingness audit [skip ci]"
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: g4-20-source-train-test-coverage-missingness-audited
+          path: |
+            docs/research/teacher_dashboard/data/G4_20_SOURCES_PREPARED_MISSINGNESS_PROFILE.csv
+            docs/research/teacher_dashboard/data/G4_TRAIN_VAL_TEST_COVERAGE_120_CONFIGS.csv
+            docs/research/teacher_dashboard/data/G4_TRAIN_TEST_TYPE_AND_SELECTOR_60_DATASET_SCENARIOS.csv
+            docs/research/teacher_dashboard/data/G4_SELECTOR_BY_FEATURE_TYPE_9_GROUPS.csv
+            docs/research/teacher_dashboard/data/G4_SELECTOR_EXPLORATORY_ASSOCIATIONS.csv
+            docs/research/teacher_dashboard/data/G4_COVERAGE_TYPE_MISSINGNESS_MANIFEST.json
+            docs/research/teacher_dashboard/data/ALL_161_SOURCE_DATA_QUALITY_CENSUS.csv
+          if-no-files-found: error
