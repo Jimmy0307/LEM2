@@ -1,0 +1,55 @@
+{
+  "generated_utc": "2026-11-15T22:54:24+00:00",
+  "git_commit": "e57e306ffd62244575514e596b0d724dd548e7fd",
+  "environment": {
+    "python": "3.14.2",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "scipy": "1.17.1",
+    "sklearn": "1.8.0"
+  },
+  "experiment": "REDESIGN_G2_DISCRETIZATION_MEMORY",
+  "tasks": 561,
+  "succeeded": 561,
+  "failed": 0,
+  "wall_seconds": 108.87805569998454,
+  "outputs": [
+    "REDESIGN_G2_DISCRETIZATION_MEMORY_CONFIG.csv",
+    "REDESIGN_G2_DISCRETIZATION_MEMORY_FAILURES.csv"
+  ],
+  "methods": [
+    "EQUAL_WIDTH_3",
+    "EQUAL_WIDTH_5",
+    "EQUAL_FREQUENCY_3",
+    "EQUAL_FREQUENCY_5",
+    "ROBUST_WIDTH_3",
+    "MDLP_CENTRAL",
+    "MDLP_HIST",
+    "CHIMERGE_CENTRAL",
+    "RS_DISCERNIBILITY_CENTRAL",
+    "EW_COUNT_MATCHED_MDLP_HIST",
+    "EF_COUNT_MATCHED_MDLP_HIST"
+  ],
+  "sources": [
+    "adult_income",
+    "bank_marketing",
+    "banknote",
+    "breast_diagnostic",
+    "covertype",
+    "dry_bean",
+    "eeg_eye_state",
+    "german_credit",
+    "grid_stability",
+    "haberman",
+    "htru2",
+    "iris",
+    "magic_gamma",
+    "rice",
+    "sonar",
+    "spambase",
+    "wine"
+  ],
+  "seed_status": "ALL EXPLORATORY",
+  "test_labels_used_for_cuts": false
+}

@@ -1,0 +1,93 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="聯邦 LEM2 規則退化重建研究：TRUE→d 診斷、控制實驗、離散化、雜訊、新切點原型與預註冊確認性驗證">
+<title>聯邦規則退化重建</title>
+<link rel="stylesheet" href="../site.css"><link rel="stylesheet" href="../report-v2.css">
+<style>
+.hero{background:linear-gradient(125deg,#1d2b44,#29506b);color:#fff;padding:34px max(18px,calc((100vw - 1170px)/2))}
+.hero h1{font-size:clamp(26px,4vw,40px);margin:.2em 0}.hero p{color:#dfeaf3;max-width:1000px}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.badge{font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;border:1px solid currentColor}
+.b-hist{color:#6b7280}.b-review{color:#2563eb}.b-diag{color:#b45309}.b-ctrl{color:#047857}.b-proto{color:#7c3aed}.b-conf{color:#be123c}
+.tag-status{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:6px;margin-left:6px}
+.s-expl{background:#fef3c7;color:#92400e}.s-pass{background:#dcfce7;color:#166534}.s-fail{background:#fee2e2;color:#991b1b}.s-info{background:#e0e7ff;color:#3730a3}
+table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:6px 8px;border-bottom:1px solid #e5e7eb;text-align:right}th:first-child,td:first-child{text-align:left}
+.tools{display:flex;flex-wrap:wrap;gap:12px;margin:10px 0}.tools label{display:flex;gap:6px;align-items:center;font-size:14px}
+.note{font-size:13px;color:#4b5563}.pos{color:#047857;font-weight:600}.neg{color:#b91c1c;font-weight:600}
+@media (max-width:640px){th,td{font-size:12px;padding:4px}}
+</style></head><body>
+<div class="site-top"><a class="brand" href="../">LEM2 Research · 教授報告</a><nav><a href="../">研究首頁</a><a href="../g4_g8/">G4–G8（歷史）</a><a class="active" href="./">規則退化重建 2026-11-16</a></nav></div>
+<header class="hero"><div class="eyebrow">FEDERATED RULE DEGENERACY REDESIGN · 2026-11-16</div>
+<h1>為什麼 Client 內確定的規則，<br>放到全域後不再確定？</h1>
+<p>本頁把研究分成六種證據等級，彼此不可混用。只有「Confirmatory Validation」來自預先註冊、未曾用來調整方法的新資料；其餘皆為探索性或診斷性證據。新方法在確認性驗證通過前，<b>不標示為正式最佳演算法</b>。</p>
+<div class="badges"><span class="badge b-hist">Historical Baseline</span><span class="badge b-review">Claude Independent Review</span><span class="badge b-diag">Degenerate Client Diagnostics</span><span class="badge b-ctrl">Controlled Experiments</span><span class="badge b-proto">New Algorithm Prototypes</span><span class="badge b-conf">Confirmatory Validation</span></div>
+</header>
+<main class="wrap">
+
+<section class="panel" id="historical"><span class="section-tag">HISTORICAL BASELINE</span><h2>原始流程（不修改，只重新定位）</h2>
+<p>Classical 最小基數正域約簡 + LEM2 → 3 Clients → UNION → 六種解析策略；連續特徵等寬三區間。歷史 Seeds 11／23 的 Test 已被反覆使用，<b>全部改列探索性</b>。原始頁面：<a href="../g4_g8/">G4–G8</a>、<a href="../g4_g8/controlled_ablation.html">A/B/C 控制消融</a>。</p></section>
+
+<section class="panel" id="review"><span class="section-tag">CLAUDE INDEPENDENT REVIEW · GATE 0</span><h2>重現檢核 <span class="tag-status s-pass">PARITY PASS</span></h2>
+<p>新分析引擎 <code>fedrs/</code> 沿用原始約簡與 LEM2 程式，只把規則比對向量化。測試 <code>tests/test_fedrs_parity.py</code> 在 Iris、Covertype、German Credit 上證明：離散化表、全域規則（含順序與 TRUE→d）、六策略 Validation／Test 預測、歷史 G4 Router 的 Test BA／Coverage／Conflict 與原版<b>完全一致</b>。</p>
+<p class="note">指定的審查文件 <code>claude/independent_review_20261116.md</code> 與審查腳本封包在儲存庫、git 歷史與本機皆不存在；所需診斷已重新實作，未宣稱「沿用審查腳本已驗證」。</p></section>
+
+<section class="panel" id="diagnostics"><span class="section-tag">DEGENERATE CLIENT DIAGNOSTICS · GATE 1</span><h2>單類別 Client → 空約簡 → TRUE→d <span class="tag-status s-expl">EXPLORATORY · UCI20 × 10 seeds</span></h2>
+<div class="scroll-table"><table><thead><tr><th>Client 分布</th><th>含 TRUE 規則的配置</th><th>平均單類別 Client（/3）</th><th>平均空約簡 Client</th><th>平均全域規則數</th><th>Label skew (TV)</th></tr></thead><tbody id="prevRows"></tbody></table></div>
+<div class="tools"><label>資料切分<select id="decSplit"><option value="test" selected>Outer Test</option><option value="val">Inner Validation</option><option value="dev">Development</option></select></label></div>
+<div class="scroll-table"><table><thead><tr><th>Client 分布</th><th>Exact Coverage</th><th>僅由 TRUE 規則命中</th><th>Conflict</th><th>排除 TRUE 後 Conflict</th><th>TRUE 造成的 Conflict</th></tr></thead><tbody id="decRows"></tbody></table></div>
+<p class="note">「僅由 TRUE 規則命中」= 有規則命中，但移除空前件規則後無任何規則命中的列比例。</p></section>
+
+<section class="panel" id="controlled"><span class="section-tag">CONTROLLED EXPERIMENTS · GATES 1–3</span><h2>同一組規則，只改變合併層 <span class="tag-status s-expl">EXPLORATORY</span></h2>
+<p><b>A</b>：保留全部規則；<b>B</b>：合併層排除 TRUE 規則；<b>B2</b>：TRUE 規則只在沒有任何非空規則命中時使用（視為該 Client 的類別先驗）。<b>Control C</b>（限制退化 Client）改變了資料分配，另列，不可視為規則處理效果。</p>
+<h3>六策略差異是否仍存在？（Friedman，資料集為單位）</h3>
+<div class="scroll-table"><table><thead><tr><th>分布</th><th>規則層</th><th>最佳策略</th><th>六策略最大差（pp）</th><th>Friedman p</th></tr></thead><tbody id="spreadRows"></tbody></table></div>
+<h3>連續特徵離散化（相對等寬三區間的 Test BA 差，pp）</h3>
+<div class="tools"><label>規則層<select id="dzVar"><option value="B2_TRUE_AS_FALLBACK" selected>B2</option><option value="A_ALL_RULES">A</option><option value="B_DROP_TRUE">B</option></select></label>
+<label>解析方法<select id="dzPol"><option value="VALIDATION_BEST" selected>Validation Best</option><option value="SIMPLE_VOTING">Simple Voting</option><option value="CONFLICT_BUCKET_ROUTER_V1">原 Router</option></select></label>
+<label>分布<select id="dzReg"><option value="NONIID_01" selected>α=0.1</option><option value="NONIID_05">α=0.5</option><option value="IID">IID</option></select></label></div>
+<div class="scroll-table"><table><thead><tr><th>方法</th><th>Δ BA（pp）</th><th>95% CI</th><th>勝/平/負</th><th>全族 Holm p</th></tr></thead><tbody id="dzRows"></tbody></table></div>
+<p class="note">標示 CENTRAL 的方法需要集中原始值，只作參考；HIST／FED 方法只用 Client 計數彙總，但<b>沒有</b>安全聚合或差分隱私保證。</p>
+<h3>標籤雜訊（Development 標籤翻轉；EW3；Validation Best + B2）</h3>
+<div class="tools"><label>資料<select id="nzSrc"><option value="REAL">UCI20 真實資料</option><option value="SYN">合成資料（已知門檻）</option></select></label><label>分布<select id="nzReg"><option value="IID">IID</option><option value="NONIID_05">α=0.5</option><option value="NONIID_01" selected>α=0.1</option></select></label></div>
+<div class="scroll-table"><table><thead><tr><th>雜訊率</th><th>Classical BA</th><th>VPRS β=.8 BA</th><th>VPRS β=.6 BA</th><th>Classical Conflict</th><th>VPRS β=.8 Conflict</th></tr></thead><tbody id="nzRows"></tbody></table></div></section>
+
+<section class="panel" id="prototypes"><span class="section-tag">NEW ALGORITHM PROTOTYPES · GATE 4</span><h2>衝突感知切點：三個候選設計 <span class="tag-status s-expl">EXPLORATORY · 非正式最佳</span></h2>
+<ul><li><b>FCP_HIST</b>：每特徵直方圖上以「條件熵 + 跨 Client 純但不一致的質量」貪婪選切點。結果：與 EW3 差異不顯著；去掉衝突項後表現相同 → <b>負面結果</b>。</li>
+<li><b>LOCO_SELECT</b>：每個候選切點集合讓 Client 用「其他 Client 的規則」評估自身資料（留一 Client），以 BA、衝突、規則數挑選。<b>去掉衝突懲罰反而更好</b> → 衝突項是負貢獻。</li>
+<li><b>FED_MD_HIST／FED_MD_XC</b>：把 Nguyen–Skowron 辨識切點法改成聯邦形式；目標「無法辨識的異類物件對」可分解為 Client 內 + 跨 Client，兩者都只需加總型計數。增益最大且接近集中式參考；強調跨 Client 對（XC）沒有額外好處。</li></ul>
+<p class="note">結論方向：有效的不是「懲罰衝突」，而是<b>保存全域可辨識性</b>的切點。這是既有 Rough Set 離散化思想的聯邦化，不宣稱新穎演算法；最接近的先行研究見報告（Wozniak et al. 2026；Flores et al. 2026）。</p></section>
+
+<section class="panel" id="confirmatory"><span class="section-tag">CONFIRMATORY VALIDATION · GATE 5</span><h2>預先註冊的新資料驗證 <span id="confBadge" class="tag-status s-info">載入中</span></h2>
+<p>51 份 OpenML 來源（37 個家族；過去 161 份來源家族全部排除），Seeds 1001–1010，3 種分布。主要假設 H1：FED_MD_HIST + B2 優於原始 EW3 + A（Validation Best，Test BA，Holm 校正）。<a href="https://github.com/Jimmy0307/LEM2/blob/research/federated-rule-degeneracy-redesign-20261116/docs/research/redesign_20261116/PREREGISTRATION_CONFIRMATORY_20261116.md">預註冊文件</a></p>
+<div class="scroll-table"><table><thead><tr><th>假設</th><th>分布</th><th>資料集數</th><th>基線 BA</th><th>候選 BA</th><th>Δ（pp）</th><th>95% CI</th><th>勝/平/負</th><th>Holm p</th><th>判定</th></tr></thead><tbody id="confRows"></tbody></table></div>
+<h3>各方法平均 Test BA（Validation Best；CART 以 Validation 選深度）</h3>
+<div class="scroll-table"><table><thead id="armHead"></thead><tbody id="armRows"></tbody></table></div>
+<p class="note">M0 原始基線；M1 只修規則層；M2 主要候選；M3 跨 Client 加權；R1 集中式辨識切點（參考）；R2 MDLP_HIST；R3 EW5；C1 集中式 CART；C2 聯邦 CART 投票。</p></section>
+
+<section class="panel"><span class="section-tag">DATA & CODE</span><h2>全部資料與程式</h2>
+<p class="links"><a href="https://github.com/Jimmy0307/LEM2/tree/research/federated-rule-degeneracy-redesign-20261116/docs/research/redesign_20261116">研究報告與原始 CSV／Manifest</a><a href="https://github.com/Jimmy0307/LEM2/tree/research/federated-rule-degeneracy-redesign-20261116/fedrs">fedrs 引擎</a><a href="https://github.com/Jimmy0307/LEM2/tree/research/federated-rule-degeneracy-redesign-20261116/experiments/redesign_20261116">實驗程式</a></p></section>
+</main>
+<footer class="footer"><a href="../">研究報告首頁</a></footer>
+<script>
+(()=>{"use strict";const $=id=>document.getElementById(id);const D="../data/redesign_20261116/";
+const f=(x,d=2)=>Number.isFinite(+x)&&x!==""?(+x).toFixed(d):"—";const pp=x=>Number.isFinite(+x)&&x!==""?(100*x).toFixed(2):"—";
+const R={IID:"IID",NONIID_05:"α=0.5",NONIID_01:"α=0.1"};const V={A_ALL_RULES:"A",B_DROP_TRUE:"B",B2_TRUE_AS_FALLBACK:"B2"};
+function csv(t){const o=[];let r=[],c="",q=false;for(let i=0;i<t.length;i++){const ch=t[i];if(ch=='"'){if(q&&t[i+1]=='"'){c+='"';i++}else q=!q}else if(ch==","&&!q){r.push(c);c=""}else if((ch=="\n"||ch=="\r")&&!q){if(ch=="\r"&&t[i+1]=="\n")i++;r.push(c);c="";if(r.length>1||r[0]!=="")o.push(r);r=[]}else c+=ch}if(c!==""||r.length){r.push(c);o.push(r)}const h=o.shift()||[];return o.map(x=>Object.fromEntries(h.map((k,i)=>[k,x[i]??""])))}
+const get=n=>fetch(D+n,{cache:"no-store"}).then(r=>{if(!r.ok)throw Error(n);return r.text()}).then(csv);
+const sig=(d,lo,hi)=>(+lo>0?"pos":+hi<0?"neg":"");
+get("G1_DEGENERACY_PREVALENCE.csv").then(x=>{$("prevRows").innerHTML=x.map(y=>`<tr><td>${R[y.regime]}</td><td>${pp(y.configs_with_true_rule)}%</td><td>${f(y.mean_single_class_clients)}</td><td>${f(y.mean_empty_reduct_clients)}</td><td>${f(y.mean_global_rules,1)}</td><td>${f(y.mean_label_skew_tv,3)}</td></tr>`).join("")}).catch(e=>$("prevRows").innerHTML=`<tr><td colspan=6>資料未發布：${e.message}</td></tr>`);
+let dec=[];const rDec=()=>{const s=$("decSplit").value;$("decRows").innerHTML=dec.filter(y=>y.split===s&&y.rule_variant==="A_ALL_RULES").map(y=>`<tr><td>${R[y.regime]}</td><td>${pp(y.coverage)}%</td><td>${pp(y.coverage_only_from_true_rules)}%</td><td>${pp(y.conflict_rate)}%</td><td>${pp(y.conflict_rate_without_true)}%</td><td>${pp(y.conflict_created_by_true)}%</td></tr>`).join("")};
+get("G1_STRUCTURE_DECOMPOSITION.csv").then(x=>{dec=x;rDec()});$("decSplit").addEventListener("change",rDec);
+get("G1_POLICY_SPREAD_FRIEDMAN.csv").then(x=>{$("spreadRows").innerHTML=x.map(y=>`<tr><td>${R[y.regime]}</td><td>${V[y.rule_variant]}</td><td>${y.best_policy}</td><td>${f(y.spread_pp)}</td><td>${f(y.friedman_p,4)}</td></tr>`).join("")});
+let dz=[];const rDz=()=>{const v=$("dzVar").value,p=$("dzPol").value,g=$("dzReg").value;const x=dz.filter(y=>y.rule_variant===v&&y.policy_method===p&&y.regime===g).sort((a,b)=>b.mean_diff-a.mean_diff);
+$("dzRows").innerHTML=x.map(y=>`<tr><td>${y.treatment}</td><td class="${sig(y.mean_diff,y.ci95_low,y.ci95_high)}">${pp(y.mean_diff)}</td><td>[${pp(y.ci95_low)}, ${pp(y.ci95_high)}]</td><td>${y.wins}/${y.ties}/${y.losses}</td><td>${f(y.holm_p_family,4)}</td></tr>`).join("")};
+get("G2G4_PAIRED_VS_EW3.csv").then(x=>{dz=x;rDz()});["dzVar","dzPol","dzReg"].forEach(i=>$(i).addEventListener("change",rDz));
+let nz={};const rNz=()=>{const s=$("nzSrc").value,g=$("nzReg").value,x=(nz[s]||[]).filter(y=>y.regime===g&&(s==="REAL"?y.discretizer==="EQUAL_WIDTH_3":y.discretizer==="MDLP_HIST"));
+const by={};x.forEach(y=>{(by[y.label_noise]??={})[y.induction_label]=(by[y.label_noise][y.induction_label]||[]).concat([y])});
+const m=(a,k)=>a&&a.length?a.reduce((s,y)=>s+ +y[k],0)/a.length:NaN;
+$("nzRows").innerHTML=Object.keys(by).sort((a,b)=>a-b).map(n=>{const b=by[n];return `<tr><td>${pp(n)}%</td><td>${pp(m(b.CLASSICAL,"test_ba"))}</td><td>${pp(m(b["VPRS_b0.8"],"test_ba"))}</td><td>${pp(m(b["VPRS_b0.6"],"test_ba"))}</td><td>${pp(m(b.CLASSICAL,"conflict_rate"))}%</td><td>${pp(m(b["VPRS_b0.8"],"conflict_rate"))}%</td></tr>`}).join("")};
+Promise.all([get("G3_REAL_NOISE_SUMMARY.csv"),get("G3_SYNTHETIC_NOISE_SUMMARY.csv")]).then(([a,b])=>{nz={REAL:a,SYN:b};rNz()});["nzSrc","nzReg"].forEach(i=>$(i).addEventListener("change",rNz));
+get("G5_PRIMARY_HYPOTHESES.csv").then(x=>{const all=x.length&&x.filter(y=>y.hypothesis==="H1"&&y.regime!=="IID").every(y=>y.passed==="True");
+$("confBadge").className="tag-status "+(all?"s-pass":"s-fail");$("confBadge").textContent=all?"H1（兩個 Non-IID）通過":"H1 未全部通過";
+$("confRows").innerHTML=x.map(y=>`<tr><td>${y.hypothesis}</td><td>${R[y.regime]}</td><td>${y.n_datasets}</td><td>${pp(y.mean_baseline)}</td><td>${pp(y.mean_treatment)}</td><td class="${sig(y.mean_diff,y.ci95_low,y.ci95_high)}">${pp(y.mean_diff)}</td><td>[${pp(y.ci95_low)}, ${pp(y.ci95_high)}]</td><td>${y.wins}/${y.ties}/${y.losses}</td><td>${f(y.holm_p,4)}</td><td>${y.passed==="True"?"PASS":"NOT PASS"}</td></tr>`).join("")}).catch(()=>{$("confBadge").className="tag-status s-fail";$("confBadge").textContent="尚未完成 / NOT PASS";$("confRows").innerHTML="<tr><td colspan=10>確認性結果尚未發布。</td></tr>"});
+get("G5_ARM_MEANS.csv").then(x=>{const arms=Object.keys(x[0]).filter(k=>k!=="regime");$("armHead").innerHTML="<tr><th>分布</th>"+arms.map(a=>`<th>${a}</th>`).join("")+"</tr>";$("armRows").innerHTML=x.map(y=>`<tr><td>${R[y.regime]}</td>`+arms.map(a=>`<td>${pp(y[a])}</td>`).join("")+"</tr>").join("")}).catch(()=>{});
+})();
+</script></body></html>
