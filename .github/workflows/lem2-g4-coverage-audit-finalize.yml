@@ -49,6 +49,10 @@ jobs:
           a=pd.read_csv(d/"G4_SELECTOR_BY_FEATURE_TYPE_9_GROUPS.csv")
           assert len(a)==9 and a.groupby("scenario").sources.sum().eq(20).all()
           assert a.groupby("scenario").size().eq(3).all()
+          assert a[a.feature_mode.eq("ALL_CONTINUOUS")].sources.eq(14).all(), "Count actual numeric selected features, not registry loader naming"
+          assert a[a.feature_mode.eq("EXPLICIT_MIXED")].sources.eq(3).all()
+          assert a[a.feature_mode.eq("ALL_CATEGORICAL")].sources.eq(3).all()
+          assert m["grouping_uses_ACTUAL_SELECTED_FEATURE_COUNTS_not_registry_loader_name"]
           x=pd.read_csv(d/"G4_TRAIN_VAL_TEST_COVERAGE_120_CONFIGS.csv")
           assert len(x)==120 and x.validation_test_matches_published_g4.eq(True).all()
           print("G4_SPLIT_COVERAGE_ALL_SOURCE_TYPE_MISSING_PARITY_PASS")
