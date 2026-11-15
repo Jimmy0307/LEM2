@@ -1,0 +1,18 @@
+{
+  "generated_utc": "2026-11-15T21:49:03+00:00",
+  "git_commit": "4b3574424881279db246e382f5f14d61b34333c6+UNCOMMITTED_FEDRS_CHANGES",
+  "environment": {
+    "python": "3.14.2",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "scipy": "1.17.1",
+    "sklearn": "1.8.0"
+  },
+  "status": "EXPLORATORY",
+  "unit": "dataset",
+  "inputs": [
+    "REDESIGN_G2_DISCRETIZATION_*",
+    "REDESIGN_G4_PROTOTYPES_*"
+  ]
+}
