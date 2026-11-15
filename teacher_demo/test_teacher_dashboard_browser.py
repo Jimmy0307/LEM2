@@ -334,6 +334,34 @@ def main():
             assert not errors, errors
             print("G4_G2_G8_EVIDENCE_GATED_NEW_SEEDS_RULE_RESCUE_FULL_LEM2_TEST_BROWSER_PASS",flush=True)
 
+            # G4 UCI20 cross-split Same-Rule coverage/missingness audit:
+            # 161 record census is not a claim of 161 same-design experiments.
+            page.goto(report+"g4_g8/coverage_split_missingness.html",wait_until="domcontentloaded")
+            page.wait_for_function(
+              "document.querySelector('#status').classList.contains('pass')",
+              timeout=40000
+            )
+            assert page.locator("#n161").inner_text()=="161"
+            assert page.locator("#n20").inner_text()=="20"
+            assert page.locator("#n120").inner_text()=="120"
+            assert page.locator("#groupRows tr").count()==9
+            assert page.locator("#detailRows tr").count()==20
+            assert "adult_income" in page.locator("#detailRows").inner_text()
+            assert "224" in page.locator("#detailRows").inner_text()
+            assert page.locator("#censusRows tr").count()==6
+            assert page.locator("#mechanismRows tr").count()==3
+            assert "31" in page.locator("#mechanismRows").inner_text()
+            page.locator("#type").select_option("ALL_CONTINUOUS")
+            assert page.locator("#detailRows tr").count()==14
+            assert "grid_stability" in page.locator("#detailRows").inner_text()
+            page.locator("#type").select_option("EXPLICIT_MIXED")
+            assert page.locator("#detailRows tr").count()==3
+            assert "grid_stability" not in page.locator("#detailRows").inner_text()
+            page.locator("#scenario").select_option("NONIID_05")
+            assert page.locator("#detailRows tr").count()==3
+            assert not errors, errors
+            print("G4_20_SOURCE_120_TRAIN_VAL_TEST_COVERAGE_161_CENSUS_MISSINGNESS_BROWSER_PASS",flush=True)
+
             # New total = 20 previous + 12 added public + two older commerce /
             # industrial domains. Only original 20 have C0 vs C3 pair evidence.
             page.goto(report,wait_until="domcontentloaded")
