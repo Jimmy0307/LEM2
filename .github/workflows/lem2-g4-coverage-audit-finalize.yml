@@ -1,0 +1,84 @@
+name: LEM2 G4 Source-Locked 120 Train Val Test Coverage Finalize
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - .github/workflows/lem2-g4-coverage-audit-finalize.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  aggregate-original-20-sources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 43677945472
+          pattern: g4-split-source-*
+          path: g4_split_audit_incoming
+          merge-multiple: true
+      - name: Verify all 20 sources originally fit 120 fixed models
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          d=Path("g4_split_audit_incoming")
+          assert len(list(d.glob("COVERAGE_G4_*.csv")))==20
+          assert len(list(d.glob("PROFILE_G4_*.json")))==20
+          print("REUSE_ORIGINAL_120_REAL_SPLIT_FITS_20_SOURCE_ARTIFACTS_PASS")
+          PY
+      - run: python -m teacher_demo.g4_coverage_type_missingness_aggregate
+      - name: Audit 161 total metadata and 20 genuine comparable source models
+        run: |
+          python - <<'PY'
+          import json,pandas as pd
+          from pathlib import Path
+          d=Path("docs/research/teacher_dashboard/data")
+          m=json.loads((d/"G4_COVERAGE_TYPE_MISSINGNESS_MANIFEST.json").read_text())
+          assert m["status"]=="PASS_161_SOURCE_CENSUS_AND_20_UCI_G4_SPLIT_MISSINGNESS_AUDIT"
+          assert m["actual_split_rule_fits"]==120 and m["dataset_scenario_rows"]==60
+          assert m["total_registered_records"]==161 and m["full_split_metric_parity_with_previous_G4"]
+          a=pd.read_csv(d/"G4_SELECTOR_BY_FEATURE_TYPE_9_GROUPS.csv")
+          assert len(a)==9 and a.groupby("scenario").sources.sum().eq(20).all()
+          assert a.groupby("scenario").size().eq(3).all()
+          x=pd.read_csv(d/"G4_TRAIN_VAL_TEST_COVERAGE_120_CONFIGS.csv")
+          assert len(x)==120 and x.validation_test_matches_published_g4.eq(True).all()
+          print("G4_SPLIT_COVERAGE_ALL_SOURCE_TYPE_MISSING_PARITY_PASS")
+          PY
+      - name: Publish audited evidence only on existing research branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "${GITHUB_REF_NAME}"
+          git reset --mixed FETCH_HEAD
+          git add docs/research/teacher_dashboard/data/G4_20_SOURCES_PREPARED_MISSINGNESS_PROFILE.csv
+          git add docs/research/teacher_dashboard/data/G4_TRAIN_VAL_TEST_COVERAGE_120_CONFIGS.csv
+          git add docs/research/teacher_dashboard/data/G4_TRAIN_TEST_TYPE_AND_SELECTOR_60_DATASET_SCENARIOS.csv
+          git add docs/research/teacher_dashboard/data/G4_SELECTOR_BY_FEATURE_TYPE_9_GROUPS.csv
+          git add docs/research/teacher_dashboard/data/G4_SELECTOR_EXPLORATORY_ASSOCIATIONS.csv
+          git add docs/research/teacher_dashboard/data/G4_COVERAGE_TYPE_MISSINGNESS_MANIFEST.json
+          git add docs/research/teacher_dashboard/data/ALL_161_SOURCE_DATA_QUALITY_CENSUS.csv
+          if ! git diff --cached --quiet; then
+            git commit -m "research(G4): publish 120 source-parity train-val-test coverage and missingness census [skip ci]"
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: g4-train-test-coverage-161-source-final-evidence
+          path: |
+            docs/research/teacher_dashboard/data/G4_20_SOURCES_PREPARED_MISSINGNESS_PROFILE.csv
+            docs/research/teacher_dashboard/data/G4_TRAIN_VAL_TEST_COVERAGE_120_CONFIGS.csv
+            docs/research/teacher_dashboard/data/G4_TRAIN_TEST_TYPE_AND_SELECTOR_60_DATASET_SCENARIOS.csv
+            docs/research/teacher_dashboard/data/G4_SELECTOR_BY_FEATURE_TYPE_9_GROUPS.csv
+            docs/research/teacher_dashboard/data/G4_SELECTOR_EXPLORATORY_ASSOCIATIONS.csv
+            docs/research/teacher_dashboard/data/G4_COVERAGE_TYPE_MISSINGNESS_MANIFEST.json
+            docs/research/teacher_dashboard/data/ALL_161_SOURCE_DATA_QUALITY_CENSUS.csv
+          if-no-files-found: error
