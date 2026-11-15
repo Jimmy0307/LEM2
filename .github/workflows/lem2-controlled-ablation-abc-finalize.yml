@@ -4,6 +4,7 @@ on:
     branches: [research/report-ready-dashboard-20261109]
     paths:
       - .github/workflows/lem2-controlled-ablation-abc-finalize.yml
+      - teacher_demo/continuous_controlled_aggregate.py
   workflow_dispatch:
 permissions:
   contents: write
