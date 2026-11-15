@@ -1,3 +1,14 @@
+## 2026-11-15｜G4 Train／Validation／Test Coverage 與 Missing Data 完整核對
+
+- [互動研究頁：20來源×三段Coverage／缺值標記／型態選法](./g4_g8/coverage_split_missingness.html) · [教授版學術方法說明與機制診斷](./g4_g8/COVERAGE_TRAIN_TEST_AND_MISSINGNESS_AUDIT_20261115.md)。
+- 20份公開UCI×Seeds11,23×IID／NonIID(.5/.1)＝**120組重新歸納的完全一致規則系統**，Validation/Test結構指標與先前G4的1080筆資料逐配置完全核對，所有來源雜湊一致；[核對工作流程 PASS](https://github.com/Jimmy0307/LEM2/actions/runs/43678358638)。
+- 同一套規則 Train/Validation/Test Exact Coverage（20來源等權）：IID **62.928/63.229/62.565%**；NonIID α=.5 **80.916/80.390/80.899%**；NonIID α=.1 **97.462/97.260/97.248%**。原始 Conflict Test 分別 **15.752/30.330/67.005%**，α越小不等於缺值越多。
+- 特徵型態**改依實際入模欄數**：連續14、類別3、混合3。Grid Stability的來源Registry為EXPLICIT_MIXED，但真正選入6個特徵全部為連續；原始標籤不可直接用於統計分組。新分群 α=.5 Router−ValidationBest =連續 **−0.711pp**／類別 **+0.058pp**／混合 **−0.589pp**；α=.1 =連續 **−0.369pp**／類別 **−0.092pp**／混合 **+1.849pp**。少樣本及共變異因素使此結果不具有因果保證。
+- **Prepared CSV的缺值標記掃描**：Adult224格、Bank Marketing88格、其餘18份0格；這**不是**UCI原始Raw Missingness，不能把「No Match」當Missing Data。α=.5 Router 31/40組完全沒切換、α=.1 27/40；這是比缺值更直接的兩方法決策機制差異。
+- [全部161筆來源完整性 Census](./data/ALL_161_SOURCE_DATA_QUALITY_CENSUS.csv) 顯示跨實驗批次與重複來源；只有20份G4於本輪做同條件Split重跑，其他來源的Raw Missingness未完成逐筆掃描。
+
+---
+
 ## 2026-11-15｜G4衝突類型路由、Coverage/Conflict聯合守門與G8約簡＋外測品質
 
 - [新研究互動頁](./g4_g8/) · [正式實驗結論、失敗條件與G4–G8門檻](./g4_g8/G4_G2_G8_VALIDATED_FINDINGS_20261115.md)。
