@@ -6,7 +6,7 @@
 </head><body><div class="site-top"><a class="brand" href="../">LEM2 教授報告 · 研究證據</a><nav><a href="../">研究首頁</a><a href="./">三研究線</a><a class="active" href="./coverage_split_missingness.html">Train／Test與Missing</a><a href="../data_catalog/">161份來源總目錄</a></nav></div>
 <header class="hero"><div class="eyebrow">EVIDENCE-CHECKED TRAIN / VALIDATION / TEST STRUCTURAL COVERAGE</div><h1>Coverage 不等於 Missing Data：<br>驗證 Train、Validation、Test 與資料型態的影響</h1>
 <p>同一批 Classical 正域約簡＋LEM2 規則必須分別測量三組資料。此頁對照20份公開 UCI、兩個新 Seeds、三種 Client 分布，拆解「規則沒有命中」「命中卻互相衝突」「缺失值」與「連續特徵離散化」。</p></header>
-<main class="wrap"><section class="panel"><span class="section-tag">01 · DEFINITIONS</span><h2>三個資料集不是三次重新訓練</h2>
+<main class="wrap"><section class="panel"><span class="section-tag">更新 · 連續型控制消融</span><p><a href="./controlled_ablation.html"><strong>已新增後續：等寬／等頻／穩健分箱、缺值處理及路由門檻的實際控制實驗。</strong></a> 本頁保留固定三分箱的原始Train／Test Coverage核對，可作為後續消融的基準。</p></section><section class="panel"><span class="section-tag">01 · DEFINITIONS</span><h2>三個資料集不是三次重新訓練</h2>
 <div class="formula">同一固定規則 R(Development)：Coverage(S) = #{x∈S：存在 r∈R 且前件全部命中 x} / |S|</div>
 <p><b>Development／Train（64%）</b>用於離散化參數與規則歸納；<b>Validation（16%）</b>用於選擇解析策略及補充規則門檻；<b>Test（20%）</b>在選法完成後一次評估。三段的 Coverage 均對<b>同一套只用 Development 擬合的規則</b>計算，不能將 Test 再訓練後的 Coverage 誤作一般化性能。</p>
 <p>各指標需區分：<b>Exact Coverage</b>＝原始規則命中、<b>No Match</b>＝沒有任何原始規則命中、<b>Conflict</b>＝同一筆被多個相異 Decision 命中、<b>Candidate Correct</b>＝真實 Decision 至少出現在某一條命中規則的候選內。No Match 最終以 Train 多數類 fallback，並非真正的拒絕回答。</p>
