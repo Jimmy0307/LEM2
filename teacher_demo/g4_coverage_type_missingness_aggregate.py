@@ -98,13 +98,22 @@ def main():
         lambda n:100*float(min(cls[n]))/int(sum(cls[n])))
     profile_df["class_count"]=profile_df["dataset"].map(lambda n:len(cls[n]))
     profile_df["original_source_rows"]=profile_df["dataset"].map(lambda n:names[n]["source_rows"])
+    profile_df["registry_feature_mode"]=profile_df["feature_mode"]
+    profile_df["actual_feature_shape"]=np.select(
+      [profile_df.n_numeric_continuous.eq(0),profile_df.n_declared_categorical.eq(0)],
+      ["ALL_CATEGORICAL","ALL_CONTINUOUS"],default="EXPLICIT_MIXED")
+    assert set(profile_df.actual_feature_shape).issubset(set(TYPES))
     profile_df["source_missingness_verified"]=False
     profile_df["prepared_marker_rate_pct"]=100*profile_df.prepared_null_sentinel_cells/profile_df.prepared_feature_cells
     profile_df["prepared_unknown_rate_pct"]=100*profile_df.prepared_unknown_literal_cells/profile_df.prepared_feature_cells
-    byseed=byseed.merge(profile_df[["dataset","n_numeric_continuous","n_declared_categorical",
+    byseed=byseed.merge(profile_df[["dataset","actual_feature_shape","n_numeric_continuous","n_declared_categorical",
             "class_count","minority_share_pct","prepared_null_sentinel_cells",
             "prepared_unknown_literal_cells","prepared_marker_rate_pct","prepared_unknown_rate_pct"]],
             on="dataset",validate="many_to_one")
+    # Registry EXPLICIT_MIXED is a loader setting, not proof selected source
+    # features are mixed: e.g. Grid Stability uses 6 numeric/0 categorical.
+    byseed["registry_feature_mode"]=byseed["feature_mode"]
+    byseed["feature_mode"]=byseed["actual_feature_shape"]
     # One row per source/scenario, seed-paired mean, never treat seeds as new domains.
     numeric=["delta_ba_pp","delta_accuracy_pp","delta_macro_f1_pp",
         "dev_coverage_pct","val_coverage_pct","test_coverage_pct",
@@ -116,7 +125,7 @@ def main():
         "split_gap_absolute_pp","n_rules"]
     dataset_summary=(byseed.groupby(["dataset","scenario","feature_mode"],sort=True)[numeric]
         .mean().reset_index().merge(profile_df[["dataset","n_features","n_numeric_continuous",
-        "n_declared_categorical","class_count","minority_share_pct","prepared_null_sentinel_cells",
+        "n_declared_categorical","registry_feature_mode","class_count","minority_share_pct","prepared_null_sentinel_cells",
         "prepared_unknown_literal_cells","prepared_marker_rate_pct",
         "prepared_unknown_rate_pct","research_trait","source_domain"]],
         on="dataset",validate="many_to_one"))
@@ -185,6 +194,8 @@ def main():
       "split_protocol":"64/16/20; same dev-fitted rules evaluated on train, val, unseen test",
       "full_split_metric_parity_with_previous_G4":True,
       "input_feature_type_prespecified":True,
+      "grouping_uses_ACTUAL_SELECTED_FEATURE_COUNTS_not_registry_loader_name":True,
+      "important_reclassification":"grid_stability registry EXPLICIT_MIXED but six selected features are all continuous",
       "original_raw_UCI_missingness_known":False,
       "prepared_sentinel_markers_are_not_proof_of_raw_missing":True,
       "unknown_literals_are_NOT_automatically_missing":True,
