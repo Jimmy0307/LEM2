@@ -128,6 +128,8 @@ def main():
           "inner_selected_test_ba_pct":chosen["test_ba_pct"],
           "baseline_test_ba_pct":baseline["test_ba_pct"],
           "difference_test_ba_pp":chosen["test_ba_pct"]-baseline["test_ba_pct"],
+          "difference_dev_coverage_pp":chosen["dev_coverage_pct"]-baseline["dev_coverage_pct"],
+          "difference_validation_coverage_pp":chosen["val_coverage_pct"]-baseline["val_coverage_pct"],
           "difference_test_coverage_pp":chosen["test_coverage_pct"]-baseline["test_coverage_pct"],
           "difference_test_conflict_pp":chosen["test_conflict_pct"]-baseline["test_conflict_pct"],
           "inner_selected_test_rule_count":chosen["n_rules"],
@@ -187,14 +189,19 @@ def main():
        source_count=("dataset","nunique"),configs=("dataset","size"),
        mean_test_ba_pct=("test_ba_pct","mean"),
        mean_test_accuracy_pct=("test_accuracy_pct","mean"),
+       mean_dev_coverage_pct=("dev_coverage_pct","mean"),
+       mean_validation_coverage_pct=("val_coverage_pct","mean"),
        mean_test_coverage_pct=("test_coverage_pct","mean"),
        mean_test_conflict_pct=("test_conflict_pct","mean"),
+       mean_test_correct_candidate_pct=("test_correct_candidate_pct","mean"),
        mean_rule_count=("n_rules","mean"),
        mean_fit_seconds=("structural_fit_seconds","mean")).reset_index()
     s.to_csv(OUT/"CONTROL_A_BINNING_OUTCOMES_GROUPED.csv",index=False,float_format="%.10f")
     selection_aggregate=prospective.groupby(["scenario","actual_modality"]).agg(
        sources=("dataset","nunique"),configs=("dataset","size"),
        mean_test_gain_ba_pp=("difference_test_ba_pp","mean"),
+       mean_dev_coverage_gain_pp=("difference_dev_coverage_pp","mean"),
+       mean_validation_coverage_gain_pp=("difference_validation_coverage_pp","mean"),
        mean_test_coverage_gain_pp=("difference_test_coverage_pp","mean"),
        mean_test_conflict_gain_pp=("difference_test_conflict_pp","mean"),
        selected_nonbaseline_rate=("inner_selected_discretizer",
@@ -211,6 +218,8 @@ def main():
        source_configs=("seed","size"),
        mean_test_ba_pct=("test_ba_pct","mean"),
        mean_test_accuracy_pct=("test_accuracy_pct","mean"),
+       mean_dev_coverage_pct=("dev_coverage_pct","mean"),
+       mean_validation_coverage_pct=("val_coverage_pct","mean"),
        mean_test_coverage_pct=("test_coverage_pct","mean"),
        mean_test_conflict_pct=("test_conflict_pct","mean"),
        mean_rule_count=("rule_count","mean")).reset_index()
