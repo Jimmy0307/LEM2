@@ -1,0 +1,183 @@
+dataset,seed,regime,partition_mode,discretizer,induction,beta,error,trace
+covertype,11,IID,CONTROL_C,EQUAL_WIDTH_3,CLASSICAL,1.0,RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED,"Traceback (most recent call last):
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\common.py"", line 54, in _safe
+    out = worker(task)
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\workers.py"", line 23, in uci20_model
+    raise RuntimeError(f""CONTROL_C_PARTITION_{status}"")
+RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED
+"
+covertype,101,IID,CONTROL_C,EQUAL_WIDTH_3,CLASSICAL,1.0,RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED,"Traceback (most recent call last):
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\common.py"", line 54, in _safe
+    out = worker(task)
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\workers.py"", line 23, in uci20_model
+    raise RuntimeError(f""CONTROL_C_PARTITION_{status}"")
+RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED
+"
+covertype,23,IID,CONTROL_C,EQUAL_WIDTH_3,CLASSICAL,1.0,RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED,"Traceback (most recent call last):
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\common.py"", line 54, in _safe
+    out = worker(task)
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\workers.py"", line 23, in uci20_model
+    raise RuntimeError(f""CONTROL_C_PARTITION_{status}"")
+RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED
+"
+covertype,102,IID,CONTROL_C,EQUAL_WIDTH_3,CLASSICAL,1.0,RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED,"Traceback (most recent call last):
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\common.py"", line 54, in _safe
+    out = worker(task)
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\workers.py"", line 23, in uci20_model
+    raise RuntimeError(f""CONTROL_C_PARTITION_{status}"")
+RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED
+"
+covertype,103,IID,CONTROL_C,EQUAL_WIDTH_3,CLASSICAL,1.0,RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED,"Traceback (most recent call last):
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\common.py"", line 54, in _safe
+    out = worker(task)
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\workers.py"", line 23, in uci20_model
+    raise RuntimeError(f""CONTROL_C_PARTITION_{status}"")
+RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED
+"
+covertype,104,IID,CONTROL_C,EQUAL_WIDTH_3,CLASSICAL,1.0,RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED,"Traceback (most recent call last):
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\common.py"", line 54, in _safe
+    out = worker(task)
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\workers.py"", line 23, in uci20_model
+    raise RuntimeError(f""CONTROL_C_PARTITION_{status}"")
+RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED
+"
+covertype,105,IID,CONTROL_C,EQUAL_WIDTH_3,CLASSICAL,1.0,RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED,"Traceback (most recent call last):
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\common.py"", line 54, in _safe
+    out = worker(task)
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\workers.py"", line 23, in uci20_model
+    raise RuntimeError(f""CONTROL_C_PARTITION_{status}"")
+RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED
+"
+covertype,106,IID,CONTROL_C,EQUAL_WIDTH_3,CLASSICAL,1.0,RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED,"Traceback (most recent call last):
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\common.py"", line 54, in _safe
+    out = worker(task)
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\workers.py"", line 23, in uci20_model
+    raise RuntimeError(f""CONTROL_C_PARTITION_{status}"")
+RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED
+"
+covertype,107,IID,CONTROL_C,EQUAL_WIDTH_3,CLASSICAL,1.0,RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED,"Traceback (most recent call last):
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\common.py"", line 54, in _safe
+    out = worker(task)
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\workers.py"", line 23, in uci20_model
+    raise RuntimeError(f""CONTROL_C_PARTITION_{status}"")
+RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED
+"
+covertype,108,IID,CONTROL_C,EQUAL_WIDTH_3,CLASSICAL,1.0,RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED,"Traceback (most recent call last):
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\common.py"", line 54, in _safe
+    out = worker(task)
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\workers.py"", line 23, in uci20_model
+    raise RuntimeError(f""CONTROL_C_PARTITION_{status}"")
+RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED
+"
+letter,102,NONIID_05,CONTROL_C,EQUAL_WIDTH_3,CLASSICAL,1.0,RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED,"Traceback (most recent call last):
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\common.py"", line 54, in _safe
+    out = worker(task)
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\workers.py"", line 23, in uci20_model
+    clients, attempts, status = constrained_partition(dev, bundle.target, 3, task[""seed""], task[""regime""])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED
+"
+letter,101,NONIID_05,CONTROL_C,EQUAL_WIDTH_3,CLASSICAL,1.0,RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED,"Traceback (most recent call last):
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\common.py"", line 54, in _safe
+    out = worker(task)
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\workers.py"", line 23, in uci20_model
+    clients, attempts, status = constrained_partition(dev, bundle.target, 3, task[""seed""], task[""regime""])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED
+"
+letter,102,NONIID_01,CONTROL_C,EQUAL_WIDTH_3,CLASSICAL,1.0,RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED,"Traceback (most recent call last):
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\common.py"", line 54, in _safe
+    out = worker(task)
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\workers.py"", line 23, in uci20_model
+    clients, attempts, status = constrained_partition(dev, bundle.target, 3, task[""seed""], task[""regime""])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED
+"
+letter,23,NONIID_05,CONTROL_C,EQUAL_WIDTH_3,CLASSICAL,1.0,RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED,"Traceback (most recent call last):
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\common.py"", line 54, in _safe
+    out = worker(task)
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\workers.py"", line 23, in uci20_model
+    clients, attempts, status = constrained_partition(dev, bundle.target, 3, task[""seed""], task[""regime""])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED
+"
+letter,11,NONIID_05,CONTROL_C,EQUAL_WIDTH_3,CLASSICAL,1.0,RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED,"Traceback (most recent call last):
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\common.py"", line 54, in _safe
+    out = worker(task)
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\workers.py"", line 23, in uci20_model
+    clients, attempts, status = constrained_partition(dev, bundle.target, 3, task[""seed""], task[""regime""])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED
+"
+letter,103,NONIID_05,CONTROL_C,EQUAL_WIDTH_3,CLASSICAL,1.0,RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED,"Traceback (most recent call last):
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\common.py"", line 54, in _safe
+    out = worker(task)
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\workers.py"", line 23, in uci20_model
+    clients, attempts, status = constrained_partition(dev, bundle.target, 3, task[""seed""], task[""regime""])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED
+"
+letter,104,NONIID_05,CONTROL_C,EQUAL_WIDTH_3,CLASSICAL,1.0,RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED,"Traceback (most recent call last):
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\common.py"", line 54, in _safe
+    out = worker(task)
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\workers.py"", line 23, in uci20_model
+    clients, attempts, status = constrained_partition(dev, bundle.target, 3, task[""seed""], task[""regime""])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED
+"
+letter,105,NONIID_05,CONTROL_C,EQUAL_WIDTH_3,CLASSICAL,1.0,RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED,"Traceback (most recent call last):
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\common.py"", line 54, in _safe
+    out = worker(task)
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\workers.py"", line 23, in uci20_model
+    clients, attempts, status = constrained_partition(dev, bundle.target, 3, task[""seed""], task[""regime""])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED
+"
+letter,105,NONIID_01,CONTROL_C,EQUAL_WIDTH_3,CLASSICAL,1.0,RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED,"Traceback (most recent call last):
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\common.py"", line 54, in _safe
+    out = worker(task)
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\workers.py"", line 23, in uci20_model
+    clients, attempts, status = constrained_partition(dev, bundle.target, 3, task[""seed""], task[""regime""])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED
+"
+letter,106,NONIID_01,CONTROL_C,EQUAL_WIDTH_3,CLASSICAL,1.0,RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED,"Traceback (most recent call last):
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\common.py"", line 54, in _safe
+    out = worker(task)
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\workers.py"", line 23, in uci20_model
+    clients, attempts, status = constrained_partition(dev, bundle.target, 3, task[""seed""], task[""regime""])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED
+"
+letter,106,NONIID_05,CONTROL_C,EQUAL_WIDTH_3,CLASSICAL,1.0,RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED,"Traceback (most recent call last):
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\common.py"", line 54, in _safe
+    out = worker(task)
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\workers.py"", line 23, in uci20_model
+    clients, attempts, status = constrained_partition(dev, bundle.target, 3, task[""seed""], task[""regime""])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED
+"
+letter,107,NONIID_05,CONTROL_C,EQUAL_WIDTH_3,CLASSICAL,1.0,RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED,"Traceback (most recent call last):
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\common.py"", line 54, in _safe
+    out = worker(task)
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\workers.py"", line 23, in uci20_model
+    clients, attempts, status = constrained_partition(dev, bundle.target, 3, task[""seed""], task[""regime""])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED
+"
+letter,108,NONIID_01,CONTROL_C,EQUAL_WIDTH_3,CLASSICAL,1.0,RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED,"Traceback (most recent call last):
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\common.py"", line 54, in _safe
+    out = worker(task)
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\workers.py"", line 23, in uci20_model
+    clients, attempts, status = constrained_partition(dev, bundle.target, 3, task[""seed""], task[""regime""])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED
+"
+letter,108,NONIID_05,CONTROL_C,EQUAL_WIDTH_3,CLASSICAL,1.0,RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED,"Traceback (most recent call last):
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\common.py"", line 54, in _safe
+    out = worker(task)
+  File ""D:\Desk\LEM2-worktrees\degeneracy-20261116\experiments\redesign_20261116\workers.py"", line 23, in uci20_model
+    clients, attempts, status = constrained_partition(dev, bundle.target, 3, task[""seed""], task[""regime""])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: CONTROL_C_PARTITION_MAX_ATTEMPTS_EXCEEDED
+"

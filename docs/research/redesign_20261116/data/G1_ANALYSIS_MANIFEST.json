@@ -1,0 +1,22 @@
+{
+  "generated_utc": "2026-11-15T19:23:11+00:00",
+  "git_commit": "87e31c41ebf8438d67ee54d49314199cd793b524+UNCOMMITTED_FEDRS_CHANGES",
+  "environment": {
+    "python": "3.14.2",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "scipy": "1.17.1",
+    "sklearn": "1.8.0"
+  },
+  "inputs": [
+    "REDESIGN_G1_DEGENERACY_CONFIG.csv",
+    "REDESIGN_G1_DEGENERACY_STRUCTURE.csv",
+    "REDESIGN_G1_DEGENERACY_POLICIES.csv",
+    "REDESIGN_G1_DEGENERACY_CLIENTS.csv"
+  ],
+  "unit": "dataset (seeds averaged within dataset)",
+  "test": "two-sided Wilcoxon signed-rank; Holm within table",
+  "bootstrap": "10000 dataset resamples, percentile 95% CI",
+  "status": "EXPLORATORY"
+}
