@@ -1,0 +1,89 @@
+name: LEM2 Controlled A B C All Source Audited Finalize
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - .github/workflows/lem2-controlled-ablation-abc-finalize.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  strict-source-and-split-aggregate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Retrieve all 20 finished true source datasets, six original resolvers
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 43718630891
+          pattern: a-c-controlled-*
+          path: a_c_ablation_incoming
+          merge-multiple: true
+      - name: Retrieve two source missing-token intervention artifacts
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 43718834462
+          pattern: b-missing-controlled-*
+          path: b_missing_incoming
+          merge-multiple: true
+      - name: Verify artifact completeness before trusting any metric
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          a=Path("a_c_ablation_incoming")
+          b=Path("b_missing_incoming")
+          assert len(list(a.glob("ABLATION_A_*.csv")))==20
+          assert len(list(a.glob("ABLATION_C_*.csv")))==20
+          assert len(list(a.glob("RECEIPT_A_C_*.json")))==20
+          assert len(list(b.glob("ABLATION_B_*.csv")))==2
+          assert len(list(b.glob("RECEIPT_B_*.json")))==2
+          print("ABC_ALL_ACTUAL_REAL_SOURCE_ARTIFACTS_PRESENT_PASS",flush=True)
+          PY
+      - run: python -m teacher_demo.continuous_controlled_aggregate
+      - name: Fail closed on missing or invalid source data, Test selection, manifest
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,pandas as pd
+          o=Path("docs/research/teacher_dashboard/data")
+          m=json.loads((o/"CONTROLLED_CONTINUOUS_MISSING_ROUTER_MANIFEST.json").read_text())
+          assert m["status"]=="PASS_CONTROLLED_A_B_C_SOURCE_LOCKED_20_UCI"
+          assert (m["new_models_track_A"],m["track_A_resolver_rows"],m["track_B_models"],m["track_B_resolver_rows"],m["track_C_fixed_base_guard_configs"])==(420,3360,24,192,320)
+          assert m["A_baseline_reproduced_original_G4"] and m["B_baseline_reproduced_original_G4"] and m["C_legacy_guard_reproduced_original_G4"]
+          assert m["selection_from_validation_only"] and not m["quantile_binning_is_federated_private"]
+          a=pd.read_csv(o/"CONTROL_A_VALIDATION_SELECTED_TREATMENT.csv")
+          assert len(a)==80 and a.not_test_oracle.eq(True).all()
+          assert len(pd.read_csv(o/"CONTROL_A_PROSPECTIVE_DATASET_BOOTSTRAP.csv"))==6
+          assert len(pd.read_csv(o/"CONTROL_A_VALIDATION_SELECTED_SUMMARY.csv"))==6
+          assert len(pd.read_csv(o/"CONTROL_C_ROUTER_GUARD_SUMMARY.csv"))==8
+          print("A_B_C_420_FITS_24_MISSING_320_GUARDS_VAL_SELECTED_TEST_UNSEEN_EVIDENCE_PASS")
+          PY
+      - name: Commit only complete verified research data, preserve main and frozen baseline
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "${GITHUB_REF_NAME}"
+          git reset --mixed FETCH_HEAD
+          git add docs/research/teacher_dashboard/data/CONTROL_*.csv
+          git add docs/research/teacher_dashboard/data/CONTROLLED_CONTINUOUS_MISSING_ROUTER_MANIFEST.json
+          if ! git diff --cached --quiet; then
+            git commit -m "research: publish validated continuous binning, missingness, and router ablations [skip ci]"
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: controlled-abc-20-uci-all-source-audited
+          path: |
+            docs/research/teacher_dashboard/data/CONTROL_*.csv
+            docs/research/teacher_dashboard/data/CONTROLLED_CONTINUOUS_MISSING_ROUTER_MANIFEST.json
+          if-no-files-found: error
