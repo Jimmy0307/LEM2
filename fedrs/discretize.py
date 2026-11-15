@@ -368,7 +368,8 @@ def fit_rs_discernibility(clients, continuous, target, categorical=(), max_inter
     cell = np.zeros(len(pooled), dtype=np.int64)
     for c in categorical:
         codes = pd.factorize(pooled[c].astype(str))[0]
-        cell = cell * (codes.max() + 1) + codes
+        # re-factorise after each attribute: product codes cannot overflow int64
+        cell = pd.factorize(cell * (codes.max() + 1) + codes)[0].astype(np.int64)
     X = {f: pd.to_numeric(pooled[f]).to_numpy(dtype=float) for f in continuous}
     cand = {}
     for f in continuous:

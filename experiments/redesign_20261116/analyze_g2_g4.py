@@ -11,7 +11,7 @@ from .common import OUT, bootstrap_path
 
 bootstrap_path()
 from fedrs.provenance import write_manifest  # noqa: E402
-from fedrs.stats import paired_compare  # noqa: E402
+from fedrs.stats import holm, paired_compare  # noqa: E402
 
 KEYS = ["dataset", "seed", "regime"]
 
@@ -34,6 +34,8 @@ def main():
                 t.insert(0, "rule_variant", variant); t.insert(1, "policy_method", method)
                 out.append(t)
     paired = pd.concat(out, ignore_index=True)
+    # Holm over the whole family of (treatment x regime) tests within each rule variant x policy
+    paired["holm_p_family"] = paired.groupby(["rule_variant", "policy_method"]).wilcoxon_p.transform(lambda x: holm(x.tolist()))
     paired.to_csv(OUT / "G2G4_PAIRED_VS_EW3.csv", index=False)
 
     # position vs count (same per-feature interval count as MDLP_HIST)
@@ -82,7 +84,7 @@ def main():
     view = paired[(paired.rule_variant == "B2_TRUE_AS_FALLBACK") & (paired.policy_method == "VALIDATION_BEST")]
     pd.set_option("display.width", 250)
     print(view.pivot_table(index="treatment", columns="regime", values="mean_diff").mul(100).round(2).sort_values("NONIID_01").to_string())
-    print(view.pivot_table(index="treatment", columns="regime", values="holm_p_within_table").round(3).to_string())
+    print(view.pivot_table(index="treatment", columns="regime", values="holm_p_family").round(3).to_string())
     print(dec[["effect", "regime", "mean_diff", "ci95_low", "ci95_high", "wilcoxon_p"]].round(4).to_string())
     print(loco.groupby(["discretizer", "chosen"]).size().to_string())
 

@@ -234,7 +234,8 @@ def fit_fed_md(clients, continuous, target, categorical=(), mu_within=1.0, grid=
     cell = np.zeros(len(pooled), dtype=np.int64)
     for c in categorical:
         codes = pd.factorize(pooled[c].astype(str))[0]
-        cell = cell * (codes.max() + 1) + codes
+        # re-factorise after each attribute: product codes cannot overflow int64
+        cell = pd.factorize(cell * (codes.max() + 1) + codes)[0].astype(np.int64)
     X, inner, ranges = {}, {}, {}
     for f in continuous:
         lo, hi = dz._global_range(clients, f)

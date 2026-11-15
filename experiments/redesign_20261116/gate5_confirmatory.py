@@ -20,7 +20,8 @@ CACHE = ROOT / "data_cache" / "openml"
 def openml_source(did: int) -> Source:
     folder = CACHE / str(did)
     meta = json.loads((folder / "prepared_meta.json").read_text(encoding="utf-8"))
-    df = pd.read_csv(folder / "prepared.csv", dtype={c: str for c in meta["categorical"] + ["class"]})
+    df = pd.read_csv(folder / "prepared.csv", dtype={c: str for c in meta["categorical"] + ["class"]},
+                     float_precision="round_trip", keep_default_na=False, na_values=[""])
     for c in meta["categorical"]:
         df[c] = df[c].fillna("__MISSING__").astype(str)
     sha = hashlib.sha256(df.to_csv(index=False).encode()).hexdigest()

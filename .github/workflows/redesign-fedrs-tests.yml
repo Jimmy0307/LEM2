@@ -1,0 +1,26 @@
+name: redesign-fedrs-tests
+
+on:
+  push:
+    branches: [research/federated-rule-degeneracy-redesign-20261116]
+    paths: ["fedrs/**", "tests/test_fedrs_*.py", "experiments/redesign_20261116/**", ".github/workflows/redesign-fedrs-tests.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: pip install "numpy>=2" "pandas>=2.2" "scipy>=1.13" "scikit-learn>=1.5" pytest
+      - name: Unit tests
+        run: python -m pytest tests/test_fedrs_units.py -q -p no:warnings
+      - name: Parity with original roughset pipeline
+        run: python -m pytest tests/test_fedrs_parity.py -q -p no:warnings

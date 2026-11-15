@@ -6,7 +6,13 @@ is written to CONFIRMATORY_SOURCE_REGISTRY.csv with a status and reason.
 E1  not the same source family as any of the 161 sources already used by this
     research (PMLB-117, UCI base3/commerce2/extreme7/new20/next12) - curated alias map;
 E2  2 <= classes <= 12;   E3  rows >= 300;   E4  features <= 2000 (parse feasibility);
-E5  download succeeds and the MD5 published by OpenML matches;
+E5  download succeeds.  NOTE (corrected after code review, 2026-11-16): OpenML's published
+    md5_checksum refers to the ARFF file, while this builder downloads the parquet file, so the
+    MD5 is STORED but NOT compared; integrity is instead fixed by the recorded parquet SHA-256 and
+    prepared-table SHA-256.  Any download/HTTP error is also labelled EXCLUDED_E5_E6 (e.g. albert,
+    HTTP 500) - it is a transient failure, not a rule exclusion, and is kept as a failure (not
+    retried or replaced) because the registry was frozen with it;
+    candidates come from OpenML data/list (active datasets): all 112 suite ids were returned;
 E6  prepared table: first 6 non-target, non-id, non-ignored features in OpenML order;
     identifier-like columns (integer-valued numeric with >= 95% distinct values) are
     skipped BEFORE taking the first 6 (rule E6b, fixed before any confirmatory run);

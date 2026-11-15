@@ -51,10 +51,15 @@ def paired_compare(df: pd.DataFrame, unit: str, treatment_col: str, a: str, b: s
     groups = df.groupby(list(strata)) if strata else [((), df)]
     for key, g in groups:
         key = key if isinstance(key, tuple) else (key,)
-        per = g[g[treatment_col].isin([a, b])].groupby([unit, treatment_col])[metric].mean().unstack()
-        if a not in per or b not in per:
+        # Pair on the finest replicate keys first (dataset, seed) so both arms average over
+        # exactly the same seeds; only then aggregate to the statistical unit.
+        pair_keys = [k for k in ("dataset", "seed") if k in g.columns and k != unit]
+        cell = g[g[treatment_col].isin([a, b])].groupby([unit, *pair_keys, treatment_col])[metric].mean().unstack()
+        if a not in cell or b not in cell:
             continue
-        per = per.dropna()
+        cell = cell[[a, b]].dropna()
+        n_pairs = cell.groupby(level=0).size()
+        per = cell.groupby(level=0).mean()
         diff = (per[b] - per[a]).to_numpy(dtype=float)
         if diff.size == 0:
             continue
@@ -64,7 +69,8 @@ def paired_compare(df: pd.DataFrame, unit: str, treatment_col: str, a: str, b: s
             p = np.nan
         lo, hi = bootstrap_ci(diff)
         rows.append({**dict(zip(strata, key)), "metric": metric, "baseline": a, "treatment": b,
-                     "n_datasets": int(diff.size), "mean_baseline": float(per[a].mean()),
+                     "n_datasets": int(diff.size), "n_paired_replicates": int(n_pairs.sum()),
+                     "min_replicates_per_unit": int(n_pairs.min()), "mean_baseline": float(per[a].mean()),
                      "mean_treatment": float(per[b].mean()), "mean_diff": float(diff.mean()),
                      "median_diff": float(np.median(diff)), "ci95_low": lo, "ci95_high": hi,
                      "wins": int((diff > 1e-12).sum()), "ties": int((np.abs(diff) <= 1e-12).sum()),
