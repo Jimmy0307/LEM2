@@ -16,6 +16,8 @@
   "split_protocol": "64/16/20; same dev-fitted rules evaluated on train, val, unseen test",
   "full_split_metric_parity_with_previous_G4": true,
   "input_feature_type_prespecified": true,
+  "grouping_uses_ACTUAL_SELECTED_FEATURE_COUNTS_not_registry_loader_name": true,
+  "important_reclassification": "grid_stability registry EXPLICIT_MIXED but six selected features are all continuous",
   "original_raw_UCI_missingness_known": false,
   "prepared_sentinel_markers_are_not_proof_of_raw_missing": true,
   "unknown_literals_are_NOT_automatically_missing": true,
