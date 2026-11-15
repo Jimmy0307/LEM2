@@ -362,6 +362,36 @@ def main():
             assert not errors, errors
             print("G4_20_SOURCE_120_TRAIN_VAL_TEST_COVERAGE_161_CENSUS_MISSINGNESS_BROWSER_PASS",flush=True)
 
+            # A/B/C end-to-end actual evidence gate and interaction checks.
+            page.goto(report+"g4_g8/controlled_ablation.html",wait_until="domcontentloaded")
+            page.wait_for_function(
+              "document.querySelector('#status').classList.contains('good')",
+              timeout=40000
+            )
+            assert page.locator("#cntA").inner_text()=="420"
+            assert page.locator("#cntB").inner_text()=="24"
+            assert page.locator("#cntC").inner_text()=="320"
+            assert page.locator("#cntSource").inner_text()=="20"
+            assert page.locator("#aTable tr").count()==6
+            assert "66.17%" in page.locator("#aTable").inner_text()
+            assert page.locator("#aSelection tr").count()==6
+            page.locator("#aScenario").select_option("NONIID_01")
+            assert "59.18%" in page.locator("#aTable").inner_text()
+            page.locator("#aType").select_option("ALL_CATEGORICAL")
+            assert page.locator("#aTable tr").count()==1
+            page.locator("#aType").select_option("EXPLICIT_MIXED")
+            assert page.locator("#aTable tr").count()==6
+            assert page.locator("#bTable tr").count()==3
+            assert "67.04%" in page.locator("#bTable").inner_text()
+            page.locator("#bSource").select_option("bank_marketing")
+            assert page.locator("#bTable tr").count()==3
+            assert "50.30%" in page.locator("#bTable").inner_text()
+            page.locator("#cScenario").select_option("NONIID_01")
+            assert page.locator("#cTable tr").count()==4
+            assert "56.44%" in page.locator("#cTable").inner_text()
+            assert not errors, errors
+            print("A_B_C_420_BINNING_24_MISSING_320_GUARD_EVIDENCE_BROWSER_PASS",flush=True)
+
             # New total = 20 previous + 12 added public + two older commerce /
             # industrial domains. Only original 20 have C0 vs C3 pair evidence.
             page.goto(report,wait_until="domcontentloaded")
