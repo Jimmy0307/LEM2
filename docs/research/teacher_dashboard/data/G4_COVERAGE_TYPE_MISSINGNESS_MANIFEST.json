@@ -1,0 +1,38 @@
+{
+  "status": "PASS_161_SOURCE_CENSUS_AND_20_UCI_G4_SPLIT_MISSINGNESS_AUDIT",
+  "original_g4_result_rows": 1080,
+  "actual_split_rule_fits": 120,
+  "datasets": 20,
+  "seeds": [
+    11,
+    23
+  ],
+  "scenario_count": 3,
+  "dataset_scenario_rows": 60,
+  "subgroups": 9,
+  "total_registered_records": 161,
+  "not_independent_domains": true,
+  "accuracy_paired_by_dataset_and_seed": true,
+  "split_protocol": "64/16/20; same dev-fitted rules evaluated on train, val, unseen test",
+  "full_split_metric_parity_with_previous_G4": true,
+  "input_feature_type_prespecified": true,
+  "original_raw_UCI_missingness_known": false,
+  "prepared_sentinel_markers_are_not_proof_of_raw_missing": true,
+  "unknown_literals_are_NOT_automatically_missing": true,
+  "warning": [
+    "N=20 domains; categorical N=3 and mixed N=4 are small",
+    "PMLB117+UCI20+other cohorts have overlap; 161 are NOT independent",
+    "Association between input format and selector delta cannot establish causation",
+    "Only G4 UCI20 has within-source 3-split re-fitted structural coverage in this audit",
+    "No individual full 161-source raw missingness audit was executed",
+    "Dataset seed profiles use test labels for observation only, never selection or induction"
+  ],
+  "files": [
+    "G4_20_SOURCES_PREPARED_MISSINGNESS_PROFILE.csv",
+    "G4_TRAIN_VAL_TEST_COVERAGE_120_CONFIGS.csv",
+    "G4_TRAIN_TEST_TYPE_AND_SELECTOR_60_DATASET_SCENARIOS.csv",
+    "G4_SELECTOR_BY_FEATURE_TYPE_9_GROUPS.csv",
+    "G4_SELECTOR_EXPLORATORY_ASSOCIATIONS.csv",
+    "ALL_161_SOURCE_DATA_QUALITY_CENSUS.csv"
+  ]
+}

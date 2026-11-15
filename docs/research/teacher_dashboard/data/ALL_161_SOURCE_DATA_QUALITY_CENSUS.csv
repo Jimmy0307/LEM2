@@ -1,0 +1,7 @@
+cohort,registered_records,passed_records,original_rows_known,used_rows_known,original_features_known,raw_file_sha_known,prepared_sha_known,raw_source_missingness_verified,comparable_in_this_G4_study
+PMLB_117,117,109,117,109,117,109,109,False,False
+UCI_BASE3,3,3,3,3,3,0,0,False,False
+UCI_COMMERCE_TECH2,2,2,2,2,2,0,2,False,False
+UCI_EXTREME7,7,7,7,7,7,0,7,False,False
+UCI_NEW20,20,20,20,20,0,0,20,False,True
+UCI_NEXT12,12,12,12,12,12,0,12,False,False
