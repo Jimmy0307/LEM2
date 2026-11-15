@@ -200,7 +200,7 @@ def main():
       "prepared_sentinel_markers_are_not_proof_of_raw_missing":True,
       "unknown_literals_are_NOT_automatically_missing":True,
       "warning":[
-        "N=20 domains; categorical N=3 and mixed N=4 are small",
+        "N=20 sources; selected features are continuous N=14, categorical N=3, mixed N=3; small non-numeric groups",
         "PMLB117+UCI20+other cohorts have overlap; 161 are NOT independent",
         "Association between input format and selector delta cannot establish causation",
         "Only G4 UCI20 has within-source 3-split re-fitted structural coverage in this audit",
