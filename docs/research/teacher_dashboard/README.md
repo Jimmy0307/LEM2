@@ -1,3 +1,14 @@
+## 2026-11-15｜連續型資料專用處理：三條控制實驗全部完成
+
+- [互動資料頁：A分箱＋B缺失標記＋C路由門檻](./g4_g8/controlled_ablation.html)；[教授版完整實證與學術限制](./g4_g8/CONTROLLED_DISCRETIZATION_MISSING_ROUTER_FINDINGS_20261115.md)。
+- **A連續型**：20份UCI來源、14全連續＋3混合共17數值特徵來源，2 Seeds×2 Non-IID分布×6分箱方法，外加3份類別控制，共420個實際規則模型、3360筆8解析法記錄。與原始Equal Width 3完全數值核對。14全連續來源依Validation選分箱，α=.5 Test BA **+6.310pp**（Bootstrap來源CI [+2.794,+10.415]），α=.1 **+6.374pp**（[+2.301,+10.984]），同時Test Conflict分別**+11.439/+12.873pp**，不可只憑BA宣稱全方位更優。
+- **B缺值**：Adult prepared 224格、Bank Marketing 88格，24個模型。保留缺值類別和增加缺值Indicator在本資料上得到完全一樣結果；Development眾數補值對這兩來源的Router Test BA均無穩定改善，不能推論所有原始UCI來源無缺值。
+- **C路由守門**：固定原等寬3規則進行320個門檻對照；放寬Guard在α=.1 Test BA較原G4 **+0.804pp**、對ValidationBest **+0.809pp**，但α=.5對ValidationBest仍**−0.536pp**。
+- 嚴格資料來源SHA、完整配對、所有Raw失敗保留；[A/C原始20來源實驗PASS](https://github.com/Jimmy0307/LEM2/actions/runs/43718630891)、[B原始2來源PASS](https://github.com/Jimmy0307/LEM2/actions/runs/43718834462)、[完整核對及發布PASS](https://github.com/Jimmy0307/LEM2/actions/runs/43719970031)。只改研究分支，不修改Main的42 Seeds封存。
+- **重要方法限制**：等頻在本輪模擬訓練中需要跨Client pooled Development數值，並非隱私安全分位數聯邦協定；本輪仍為最多6個實驗特徵、數百至1800列抽樣來源及2 Seeds，尚未證明全量高維資料或學術原創新算法。
+
+---
+
 ## 2026-11-15｜G4 Train／Validation／Test Coverage 與 Missing Data 完整核對
 
 - [互動研究頁：20來源×三段Coverage／缺值標記／型態選法](./g4_g8/coverage_split_missingness.html) · [教授版學術方法說明與機制診斷](./g4_g8/COVERAGE_TRAIN_TEST_AND_MISSINGNESS_AUDIT_20261115.md)。
