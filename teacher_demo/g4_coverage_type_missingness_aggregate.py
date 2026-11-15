@@ -12,7 +12,6 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from scipy.stats import spearmanr
 
 IN=Path("g4_split_audit_incoming")
 OUT=Path("docs/research/teacher_dashboard/data")
@@ -22,6 +21,24 @@ VALIDATION="VALIDATION_BEST"
 TYPES=("ALL_CONTINUOUS","ALL_CATEGORICAL","EXPLICIT_MIXED")
 
 def fail(x,msg):assert bool(x),msg
+
+def permutation_spearman(x,y,seed=20261115,n_permutations=1999):
+    """Average-rank Spearman plus unadjusted Monte Carlo permutation p.
+
+    Used ONLY as exploratory diagnostic; repeated/source-related domains and
+    27 predictor scans prevent confirmatory claims.
+    """
+    a=pd.Series(x).rank(method="average").to_numpy(dtype=float)
+    b=pd.Series(y).rank(method="average").to_numpy(dtype=float)
+    if np.std(a)<1e-12 or np.std(b)<1e-12:
+        return float("nan"),float("nan")
+    rho=float(np.corrcoef(a,b)[0,1])
+    rng=np.random.default_rng(seed)
+    count=0
+    for _ in range(n_permutations):
+        perm=float(np.corrcoef(a,rng.permutation(b))[0,1])
+        count+=int(abs(perm)+1e-12>=abs(rho))
+    return rho,float((1+count)/(n_permutations+1))
 
 def main():
     source=json.loads((OUT/"PUBLIC20_MANIFEST.json").read_text(encoding="utf-8"))
@@ -129,11 +146,11 @@ def main():
             if src[field].nunique()<2:
                 rho,p=float("nan"),float("nan")
             else:
-                rho,p=spearmanr(src[field],src["delta_ba_pp"])
+                rho,p=permutation_spearman(src[field],src["delta_ba_pp"])
             cors.append({"scenario":scenario,"predictor":field,"sources":20,
-                "spearman_rho":float(rho),"unadjusted_p_value":float(p),
+                "spearman_rho":float(rho),"unadjusted_permutation_p_value":float(p),
                 "causal_evidence":False,
-                "warnings":"Exploratory association, correlated predictors, small subgroups, NO multiple-comparison adjustment"})
+                "warnings":"Monte Carlo 1999 permutation p, unadjusted; exploratory association, correlated predictors, small subgroups, NO multiple-comparison adjustment"})
     inventory=[]
     for cohort,group in pd.DataFrame(master["data"]).groupby("cohort"):
         inventory.append({
