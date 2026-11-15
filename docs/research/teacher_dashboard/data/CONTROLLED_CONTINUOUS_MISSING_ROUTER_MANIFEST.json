@@ -1,0 +1,70 @@
+{
+  "status": "PASS_CONTROLLED_A_B_C_SOURCE_LOCKED_20_UCI",
+  "source_count": 20,
+  "source_hash_policy": "UCI20_PREPARED_PUBLISHED_SHA256",
+  "new_models_track_A": 420,
+  "track_A_resolver_rows": 3360,
+  "track_B_models": 24,
+  "track_B_resolver_rows": 192,
+  "track_C_fixed_base_guard_configs": 320,
+  "comparison_protocol": "G4_64_16_20_NEW_SEEDS_11_23_2_NONIID_REGIMES",
+  "A_methods": [
+    "EQUAL_WIDTH_2",
+    "EQUAL_WIDTH_3",
+    "EQUAL_WIDTH_5",
+    "EQUAL_FREQUENCY_3",
+    "EQUAL_FREQUENCY_5",
+    "ROBUST_WIDTH_3"
+  ],
+  "B_methods": [
+    "PRESERVE",
+    "TRAIN_MODE",
+    "INDICATOR"
+  ],
+  "C_guards": [
+    "ORIGINAL_G4",
+    "GUARD_RELAXED",
+    "GUARD_STRICT",
+    "GUARD_NOSWITCH"
+  ],
+  "A_baseline_reproduced_original_G4": true,
+  "B_baseline_reproduced_original_G4": true,
+  "C_legacy_guard_reproduced_original_G4": true,
+  "frozen_baselines_unchanged": true,
+  "all_resolver_methods": [
+    "FIRST_MATCH",
+    "SIMPLE_VOTING",
+    "STANDARD_VOTING",
+    "GLOBAL_STRENGTH",
+    "POPULATION_STANDARD",
+    "POPULATION_GLOBAL",
+    "VALIDATION_BEST",
+    "CONFLICT_BUCKET_ROUTER_V1"
+  ],
+  "selection_from_validation_only": true,
+  "original_raw_UCI_missingness_known": false,
+  "quantile_binning_is_federated_private": false,
+  "caveats": [
+    "The pooled development client values for quantile/robust bins are simulated, no privacy-preserving federated protocol",
+    "Only 17 of 20 sampled feature sets contain continuous columns; 3 categorical controls run baseline only",
+    "The G4 held-out source domains have already been explored; findings exploratory",
+    "Validation-selected bin modes can overfit small Validation, no Test tuning",
+    "Source feature cap six and sample cap 1800, not evidence for full high dimensional deployment",
+    "B indicators add new feature columns and change model capacity; not pure imputation effect",
+    "No raw missingness measured for other 159 registered source records",
+    "Multiple candidate interventions, source-level bootstrap descriptive not preregistered confirmation"
+  ],
+  "files": [
+    "CONTROL_A_ALL_DISCRETIZATIONS.csv",
+    "CONTROL_A_PAIRED_TO_EQUAL_WIDTH_3.csv",
+    "CONTROL_A_VALIDATION_SELECTED_TREATMENT.csv",
+    "CONTROL_B_MISSING_TREATMENTS.csv",
+    "CONTROL_B_PAIRED_TO_PRESERVE.csv",
+    "CONTROL_C_ROUTER_GUARDS.csv",
+    "CONTROL_A_BINNING_OUTCOMES_GROUPED.csv",
+    "CONTROL_A_VALIDATION_SELECTED_SUMMARY.csv",
+    "CONTROL_A_PROSPECTIVE_DATASET_BOOTSTRAP.csv",
+    "CONTROL_B_MISSING_SUMMARY.csv",
+    "CONTROL_C_ROUTER_GUARD_SUMMARY.csv"
+  ]
+}
