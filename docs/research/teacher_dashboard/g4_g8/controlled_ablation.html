@@ -35,10 +35,10 @@ const files=["CONTROLLED_CONTINUOUS_MISSING_ROUTER_MANIFEST.json","CONTROL_A_BIN
 Promise.all(files.map(x=>fetch("../data/"+x,{cache:"no-store"}).then(async r=>{if(!r.ok)throw Error("未取得經稽核資料："+x);return x.endsWith(".json")?r.json():r.text()})))
 .then(([m,at,as,bt,ct])=>{if(m.status!=="PASS_CONTROLLED_A_B_C_SOURCE_LOCKED_20_UCI"||m.source_count!==20||m.new_models_track_A!==420||m.track_A_resolver_rows!==3360||m.track_B_models!==24||m.track_B_resolver_rows!==192||m.track_C_fixed_base_guard_configs!==320||!m.selection_from_validation_only)throw Error("來源/訓練切分/配對筆數不符");
 a=parse(at);aSelection=parse(as);b=parse(bt);c=parse(ct);
-if(a.length<120||aSelection.length!==6||b.length!==48||c.length!==8)throw Error("分組資料不完整："+[a.length,aSelection.length,b.length,c.length].join(","));
+if(a.length<120||aSelection.length!==6||b.length!==96||c.length!==8)throw Error("分組資料不完整："+[a.length,aSelection.length,b.length,c.length].join(","));
 $("status").className="status good";$("status").textContent="已核驗：UCI20來源SHA、420組離散化規則模型、24組缺值處理模型、320組固定規則守門策略；外部Test未參與處理方式選擇。";
 $("cntA").textContent="420";$("cntB").textContent="24";$("cntC").textContent="320";$("cntSource").textContent="20";
-$("aSelection").innerHTML=aSelection.map(x=>"<tr><td>"+x.scenario.replace("NONIID_","α=0.")+"</td><td>"+(x.actual_modality==="ALL_CONTINUOUS"?"全連續":x.actual_modality==="ALL_CATEGORICAL"?"全類別":"混合")+"</td><td>"+x.sources+"</td><td>"+pct(100*x.selected_nonbaseline_rate)+"</td><td class='"+cls(x.mean_test_gain_ba_pp)+"'>"+pp(x.mean_test_gain_ba_pp)+"</td><td>"+pp(x.mean_test_coverage_gain_pp)+"</td><td>"+pp(x.mean_test_conflict_gain_pp)+"</td></tr>").join("");
+$("aSelection").innerHTML=aSelection.map(x=>"<tr><td>"+(x.scenario==="NONIID_05"?"α=0.5":"α=0.1")+"</td><td>"+(x.actual_modality==="ALL_CONTINUOUS"?"全連續":x.actual_modality==="ALL_CATEGORICAL"?"全類別":"混合")+"</td><td>"+x.sources+"</td><td>"+pct(100*x.selected_nonbaseline_rate)+"</td><td class='"+cls(x.mean_test_gain_ba_pp)+"'>"+pp(x.mean_test_gain_ba_pp)+"</td><td>"+pp(x.mean_test_coverage_gain_pp)+"</td><td>"+pp(x.mean_test_conflict_gain_pp)+"</td></tr>").join("");
 drawA();drawB();drawC();
 }).catch(e=>{$("status").textContent="無法顯示未核實的實驗："+e.message;});
 })();
