@@ -24,7 +24,12 @@
 <div id="detailText" class="foot"></div>
 <div class="scroll"><table><thead><tr><th>資料來源</th><th>特徵型態</th><th>已用 Rows</th><th>最低類別%</th><th>Train Coverage</th><th>Validation Coverage</th><th>Test Coverage</th><th>Train−Test Gap</th><th>Test Conflict</th><th>真實類別候選率</th><th>Prepared 缺值標記格數</th><th>Unknown 字面格數</th><th>Router − Validation BA</th></tr></thead><tbody id="detailRows"><tr><td colspan="13">等待完整資料</td></tr></tbody></table></div>
 <p class="foot">缺值／Unknown標記數是**模型實際讀取的已處理抽樣 CSV** 的文字形態檢查，不是原始上游資料缺失比例。每筆特徵可先經 Train-only 離散化成三個區間，故本表的「連續」指入模原始特徵的設計型態，非規則最終直接使用浮點數相等。</p></section>
-<section class="panel"><span class="section-tag">05 · 161-ENTRY SOURCE CENSUS</span><h2>所有既有資料有沒有真的完成同層級的檢查？</h2>
+<section class="panel"><span class="section-tag">05 · SELECTOR DECISION MECHANISM</span><h2>α=0.5 為什麼輸給 Validation Best？</h2>
+<p>Validator 可選擇六策略中全域最佳的Validation策略；新路由器則只在**至少10個內部驗證衝突案例、淨正確改善≥2、BA增益≥0.2pp且符合Accuracy限制**時替局部衝突規則換策略，其餘維持預設SimpleVoting。此機制完全不靠資料原始Missingness。</p>
+<div class="scroll"><table><thead><tr><th>分布</th><th>配對配置</th><th>Router未切換</th><th>Router有切換</th><th>ValidationBest選非預設</th><th>Router沒換但ValidationBest改選</th><th>Router−ValidationBest BA</th></tr></thead><tbody id="mechanismRows"><tr><td colspan="7">等待原始配置驗證</td></tr></tbody></table></div>
+<p class="foot">α=.5 大多數配置不觸發衝突守門，且不少配置的ValidationBest會挑不同的策略。α=.1 的平均≈0並非所有資料打平，而是少數大幅進步與退步互相抵銷。原始Test Coverage和原始Conflict在兩方法間共享同一規則，完全不會因為改決策解析器而變。</p>
+<p class="links"><a href="../data/G4_ROUTER_VS_VALIDATION_SWITCH_MECHANISM_20261115.csv">下載40配置／分布的路由切換證據</a><a href="./COVERAGE_TRAIN_TEST_AND_MISSINGNESS_AUDIT_20261115.md">完整方法與限制報告</a></p></section>
+<section class="panel"><span class="section-tag">06 · 161-ENTRY SOURCE CENSUS</span><h2>所有既有資料有沒有真的完成同層級的檢查？</h2>
 <p>下表列的是是否存在可追溯的來源欄位，而不是聲稱整個161筆都完成原始缺值掃描。只有20份UCI經這輪120個固定規則模型逐一重跑 Train／Val／Test 對照。</p>
 <div class="scroll"><table><thead><tr><th>研究批次</th><th>登錄數</th><th>通過數</th><th>原始Rows有值</th><th>實驗Rows有值</th><th>原特徵數有值</th><th>Raw SHA有值</th><th>Prepared SHA有值</th><th>本輪可比</th></tr></thead><tbody id="censusRows"><tr><td colspan="9">等待原始來源稽核表</td></tr></tbody></table></div>
 <p class="links"><a href="../data_catalog/">161筆來源各別說明與官方網址</a><a href="../data/ALL_161_SOURCE_DATA_QUALITY_CENSUS.csv">逐研究批次證據覆蓋稽核</a></p></section>
@@ -33,7 +38,7 @@
 <p class="foot">注意：如未通過 manifest 的120個配置、20個SHA、G4舊資料Parity，這個網站不會自動填入看似合理的數字。</p>
 </section></main><footer class="footer"><a href="../">教授研究首頁</a> · <a href="./">G4／G2／G8三項研究</a></footer>
 <script>
-(()=>{"use strict";const $=id=>document.getElementById(id);let bydata=[],groups=[],inventory=[],usedRows={};
+(()=>{"use strict";const $=id=>document.getElementById(id);let bydata=[],groups=[],inventory=[],usedRows={},mechanism=[];
 const escape=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function csv(s){let table=[],row=[],cell="",quoted=false;for(let i=0;i<s.length;i++){let c=s[i];if(c==='"'){if(quoted&&s[i+1]==='"'){cell+='"';i++}else quoted=!quoted}else if(c===','&&!quoted){row.push(cell);cell=""}else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&s[i+1]==='\n')i++;row.push(cell);cell="";if(row.some(z=>z.trim()))table.push(row);row=[]}else cell+=c}if(cell||row.length){row.push(cell);table.push(row)}const head=table.shift();return table.map(r=>Object.fromEntries(head.map((h,i)=>[h,r[i]??""])));}
 const n=x=>x===""||x==null?"—":Number(x).toLocaleString("en-US"),pct=x=>x===""||x==null?"—":Number(x).toFixed(2)+"%",pp=x=>x===""||x==null?"—":Number(x).toFixed(3)+" pp",mode=x=>x==="ALL_CONTINUOUS"?"連續":x==="EXPLICIT_MIXED"?"混合":"類別",reg=x=>x==="IID"?"IID":x==="NONIID_05"?"α=0.5":"α=0.1",delta=x=>Number(x)>0.0001?"delta-pos":Number(x)<-0.0001?"delta-neg":"";
@@ -41,16 +46,16 @@ function drawGroup(){const sorted=[...groups].sort((a,b)=>["IID","NONIID_05","NO
 $("groupRows").innerHTML=sorted.map(x=>"<tr><td>"+reg(x.scenario)+"</td><td>"+mode(x.feature_mode)+"</td><td>"+n(x.sources)+"</td><td class='"+delta(x.mean_router_minus_validation_ba_pp)+"'>"+pp(x.mean_router_minus_validation_ba_pp)+"</td><td>"+pct(x.mean_train_coverage_pct)+"</td><td>"+pct(x.mean_validation_coverage_pct)+"</td><td>"+pct(x.mean_test_coverage_pct)+"</td><td>"+pp(x.mean_train_test_gap_pp)+"</td><td>"+pct(x.mean_test_conflict_pct)+"</td><td>"+n(x.datasets_with_null_marker)+"</td></tr>").join("")}
 function drawDetails(){let rows=bydata.filter(x=>x.scenario===$("scenario").value&&($("type").value==="ALL"||x.feature_mode===$("type").value)).sort((a,b)=>Number(a.delta_ba_pp)-Number(b.delta_ba_pp));$("detailText").textContent="顯示 "+rows.length+" 個來源；每來源平均兩個 Seeds 的同一規則三段覆蓋率及Test策略差分。";
 $("detailRows").innerHTML=rows.map(x=>"<tr><td>"+escape(x.dataset)+"</td><td>"+mode(x.feature_mode)+"</td><td>"+n(usedRows[x.dataset])+"</td><td>"+pct(x.minority_share_pct)+"</td><td>"+pct(x.dev_coverage_pct)+"</td><td>"+pct(x.val_coverage_pct)+"</td><td>"+pct(x.test_coverage_pct)+"</td><td>"+pp(x.train_minus_test_cov_pp)+"</td><td>"+pct(x.test_conflict_pct)+"</td><td>"+pct(x.test_candidate_correct_pct)+"</td><td>"+n(x.prepared_null_sentinel_cells)+"</td><td>"+n(x.prepared_unknown_literal_cells)+"</td><td class='"+delta(x.delta_ba_pp)+"'>"+pp(x.delta_ba_pp)+"</td></tr>").join("")||"<tr><td colspan='13'>無此組態資料</td></tr>";}
-function drawCensus(){$("censusRows").innerHTML=inventory.map(x=>"<tr><td>"+escape(x.cohort)+"</td><td>"+n(x.registered_records)+"</td><td>"+n(x.passed_records)+"</td><td>"+n(x.original_rows_known)+"</td><td>"+n(x.used_rows_known)+"</td><td>"+n(x.original_features_known)+"</td><td>"+n(x.raw_file_sha_known)+"</td><td>"+n(x.prepared_sha_known)+"</td><td>"+(x.comparable_in_this_G4_study==="True"?"是":"否")+"</td></tr>").join("")}
+function drawMechanism(){$("mechanismRows").innerHTML=mechanism.map(x=>"<tr><td>"+reg(x.scenario)+"</td><td>"+n(x.configs)+"</td><td>"+n(x.router_no_bucket_switch)+"</td><td>"+n(x.router_any_switch)+"</td><td>"+n(x.validation_chose_non_default)+"</td><td>"+n(x.router_no_switch_validation_differs)+"</td><td class=\'"+delta(x.mean_router_minus_validation_ba_pp)+"\'>"+pp(x.mean_router_minus_validation_ba_pp)+"</td></tr>").join("");}\nfunction drawCensus(){$("censusRows").innerHTML=inventory.map(x=>"<tr><td>"+escape(x.cohort)+"</td><td>"+n(x.registered_records)+"</td><td>"+n(x.passed_records)+"</td><td>"+n(x.original_rows_known)+"</td><td>"+n(x.used_rows_known)+"</td><td>"+n(x.original_features_known)+"</td><td>"+n(x.raw_file_sha_known)+"</td><td>"+n(x.prepared_sha_known)+"</td><td>"+(x.comparable_in_this_G4_study==="True"?"是":"否")+"</td></tr>").join("")}
 $("scenario").addEventListener("change",drawDetails);$("type").addEventListener("change",drawDetails);
-const names=["G4_COVERAGE_TYPE_MISSINGNESS_MANIFEST.json","G4_SELECTOR_BY_FEATURE_TYPE_9_GROUPS.csv","G4_TRAIN_TEST_TYPE_AND_SELECTOR_60_DATASET_SCENARIOS.csv","ALL_161_SOURCE_DATA_QUALITY_CENSUS.csv","PUBLIC20_MANIFEST.json"];
+const names=["G4_COVERAGE_TYPE_MISSINGNESS_MANIFEST.json","G4_SELECTOR_BY_FEATURE_TYPE_9_GROUPS.csv","G4_TRAIN_TEST_TYPE_AND_SELECTOR_60_DATASET_SCENARIOS.csv","ALL_161_SOURCE_DATA_QUALITY_CENSUS.csv","PUBLIC20_MANIFEST.json","G4_ROUTER_VS_VALIDATION_SWITCH_MECHANISM_20261115.csv"];
 Promise.all(names.map(x=>fetch("../data/"+x,{cache:"no-store"}).then(async r=>{if(!r.ok)throw Error(x+" 尚未完成來源驗證");return x.endsWith(".json")?r.json():r.text()})))
-.then(([m,gr,by,all,registry])=>{if(m.status!=="PASS_161_SOURCE_CENSUS_AND_20_UCI_G4_SPLIT_MISSINGNESS_AUDIT"||m.actual_split_rule_fits!==120||m.dataset_scenario_rows!==60||m.total_registered_records!==161||!m.full_split_metric_parity_with_previous_G4)throw Error("G4來源與Split比對不成立");
- groups=csv(gr);bydata=csv(by);inventory=csv(all);usedRows=Object.fromEntries(registry.datasets.map(x=>[x.key,x.used_rows]));if(registry.datasets.length!==20||Object.keys(usedRows).length!==20)throw Error("20來源Rows清單不完整");
- if(groups.length!==9||bydata.length!==60||inventory.length!==6)throw Error("來源分組或資料數量錯誤");
+.then(([m,gr,by,all,registry,mech])=>{if(m.status!=="PASS_161_SOURCE_CENSUS_AND_20_UCI_G4_SPLIT_MISSINGNESS_AUDIT"||m.actual_split_rule_fits!==120||m.dataset_scenario_rows!==60||m.total_registered_records!==161||!m.full_split_metric_parity_with_previous_G4)throw Error("G4來源與Split比對不成立");
+ groups=csv(gr);bydata=csv(by);inventory=csv(all);mechanism=csv(mech);usedRows=Object.fromEntries(registry.datasets.map(x=>[x.key,x.used_rows]));if(registry.datasets.length!==20||Object.keys(usedRows).length!==20)throw Error("20來源Rows清單不完整");
+ if(groups.length!==9||bydata.length!==60||inventory.length!==6||mechanism.length!==3)throw Error("來源分組、161稽核或策略配對數量錯誤");
  $("n161").textContent="161";$("n20").textContent="20";$("n120").textContent="120";$("n9").textContent="9";
  $("status").className="status pass";$("status").textContent="來源與同一規則 Train／Validation／Test 稽核 PASS：20個SHA、120次重建模型的 Validation/Test coverage 和舊G4原始數值完全一致；161筆來源欄位清冊獨立盤點。";
- drawGroup();drawDetails();drawCensus();
+ drawGroup();drawDetails();drawCensus();drawMechanism();
 }).catch(e=>{$("status").textContent="尚未取得來源已核驗結果："+e.message});
 })();
 </script></body></html>
