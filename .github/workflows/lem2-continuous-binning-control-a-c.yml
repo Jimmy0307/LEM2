@@ -1,0 +1,65 @@
+name: LEM2 A Continuous Bins and C Guard Sensitivity - Real UCI20
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - .github/workflows/lem2-continuous-binning-control-a-c.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ablation-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m pytest -q teacher_demo/test_continuous_controlled_ablation.py
+  continuous-and-guard:
+    needs: ablation-contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        dataset: [adult_income,bank_marketing,banknote,breast_diagnostic,covertype,dry_bean,eeg_eye_state,german_credit,grid_stability,haberman,htru2,iris,letter,magic_gamma,mushroom,phishing,rice,sonar,spambase,wine]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Same G4 source split and client seed - change numerical binning only
+        run: python -m teacher_demo.continuous_controlled_runner --dataset ${{ matrix.dataset }}
+      - name: Verify controlled feature fit and original G4 EW3 complete
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,pandas as pd
+          d=Path("outputs/controlled_ablation")
+          j=list(d.glob("RECEIPT_A_C_*.json"))
+          assert len(j)==1
+          meta=json.loads(j[0].read_text())
+          a=pd.read_csv(d/f"ABLATION_A_{meta['dataset']}.csv")
+          c=pd.read_csv(d/f"ABLATION_C_{meta['dataset']}.csv")
+          assert a.groupby(["seed","scenario","discretizer"]).size().eq(8).all()
+          assert c.groupby(["seed","scenario"]).size().eq(4).all()
+          assert c.guard.nunique()==4
+          assert set(a.seed)=={11,23} and set(a.scenario)=={"NONIID_05","NONIID_01"}
+          assert c.source_sha256.eq(meta["source_sha256"]).all()
+          assert a.source_sha256.eq(meta["source_sha256"]).all()
+          assert meta["successful_models"]>0
+          print("A_C_REAL_SOURCE_EW3_G4_EXACT_PARITY_SAME_SPLITS_PASS",meta["dataset"],
+                meta["successful_models"],"of",meta["expected_models"],"failures",len(meta["failures"]))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: a-c-controlled-${{ matrix.dataset }}
+          path: outputs/controlled_ablation/*
+          if-no-files-found: warn
+          retention-days: 90
