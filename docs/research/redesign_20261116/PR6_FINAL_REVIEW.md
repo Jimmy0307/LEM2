@@ -58,7 +58,17 @@
 Python 3.14 上有 3 個 `tests/test_environment.py` 失敗，這是原始軟體**刻意**拒絕 3.14（pandas 2.2.3 沒有 3.14 wheel），不是缺陷；在鎖定的 3.12 環境中全部通過。
 
 ## 4. CI
-（推送後補上，見下一個 commit。）
+Workflow `redesign-fedrs-tests`，commit `f42afd4`（ubuntu-latest，Python 3.12）：
+
+| Run | 觸發 | Job | 結果 | 內容 |
+|---|---|---|---|---|
+| [43820904331](https://github.com/Jimmy0307/LEM2/actions/runs/43820904331) | push | `test` | success | 單元 15 passed；一致性 3 passed；發布完整性 10 passed；資料品質 33 passed／2 skipped；SHA 索引 PASS；獨立重算 PASS（1 個 p 值漂移警告，見 B11）；預註冊提交順序 PASS |
+| 同上 | push | `legacy-suite` | success | 鎖定版本全套測試 185 passed、2 skipped |
+| [43820911581](https://github.com/Jimmy0307/LEM2/actions/runs/43820911581) | pull_request | `test`、`legacy-suite` | success | 同上 |
+
+前一個 commit `6c43d60` 的 `test` job 失敗（run 43819276508）：獨立重算的 p 值比對太嚴格，抓到跨平台浮點平手差異。依 B11 修正驗證程式後通過。**已發布的數據沒有改。**
+
+這個 commit 之後還有一個只改文件的 commit，它的 CI 結果請看 PR 頁面上的 checks。
 
 ## 5. 方法學限制（合併後仍然存在）
 - 受限設定（前 6 特徵、≤1,800 列、3 Client）；絕對 BA 約 44–50%。

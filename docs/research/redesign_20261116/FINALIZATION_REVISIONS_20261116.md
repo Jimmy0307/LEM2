@@ -27,8 +27,8 @@
 | B7 | P2 | 跨平台 | Windows autocrlf checkout 為 CRLF，Linux 為 LF，檔案 SHA 不同 | 新增 `.gitattributes`，研究資料一律 LF |
 | B8 | P2 | CI 範圍 | CI 沒有跑原始 Rough Set／LEM2 測試，也沒有資料 Schema 檢查 | 新增 `legacy-suite` job（鎖定版本、全套測試）、`test_fedrs_data_quality.py`、獨立重算與 SHA 索引步驟 |
 | B9 | P3 | 網站 | 缺可重現性與限制分區；320 px 寬時長路徑溢出 | 新增分區、頁內導覽、`code` 斷行；首頁加上新舊證據等級說明 |
-| B11 | P2 | p 值的跨平台穩定性 | CI（Linux）重算時，M2−C2 α=0.1 的未校正 Wilcoxon p 是 0.0990，已發布值（Windows）是 0.0980。原因：兩份資料集的 \|差異\| 在 Windows 上完全相等（套用平手校正），在 Linux 上因浮點加總順序差了約 1e-16（不算平手）。所有平均差與 CI 都一致 | 已發布值不改。驗證程式改為：p 值的判定（α=0.05）必須一致且差距 ≤0.005，較小的漂移列為警告；另外輸出四捨五入到 1e-12 後的 `wilcoxon_p_tie_rounded`。結論：未校正 p 值在第 3–4 位小數會受平台影響，**沒有任何判定改變** |
 | B10 | P3 | 本機 Git 設定 | fetch refspec 只含原始分支，追蹤分支 `origin/research/federated-...` 不存在 | `git remote set-branches --add`，非破壞性 |
+| B11 | P2 | p 值的跨平台穩定性 | CI（Linux）重算時，M2−C2 α=0.1 的未校正 Wilcoxon p 是 0.0990，已發布值（Windows）是 0.0980。原因：兩份資料集的 \|差異\| 在 Windows 上完全相等（套用平手校正），在 Linux 上因浮點加總順序差了約 1e-16（不算平手）。所有平均差與 CI 都一致 | 已發布值不改。驗證程式改為：p 值的判定（α=0.05）必須一致且差距 ≤0.005，較小的漂移列為警告；另外輸出四捨五入到 1e-12 後的 `wilcoxon_p_tie_rounded`。結論：未校正 p 值在第 3–4 位小數會受平台影響，**沒有任何判定改變** |
 
 ## C. 確認未變更
 
