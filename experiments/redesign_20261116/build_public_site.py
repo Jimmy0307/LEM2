@@ -61,7 +61,10 @@ def select() -> list[Path]:
     keep = tracked()
     chosen: set[Path] = set()
     for pattern in WHITELIST:
-        for path in DOCS.glob(pattern):
+        # "dir/**" means every file below dir. Path.glob("**") matches only directories before
+        # Python 3.13, so expand it explicitly to behave the same on every supported version.
+        matches = (DOCS / pattern[:-3]).rglob("*") if pattern.endswith("/**") else DOCS.glob(pattern)
+        for path in matches:
             rel = path.relative_to(ROOT).as_posix()
             if path.is_file() and rel in keep:  # only committed files; never local scratch
                 chosen.add(path)
