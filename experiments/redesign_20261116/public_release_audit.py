@@ -49,7 +49,7 @@ RANK = {"CRITICAL": 3, "HIGH": 2, "MEDIUM": 1, "LOW": 0}
 
 def files_to_scan(root: Path | None) -> list[Path]:
     if root is not None:
-        return [p for p in sorted(root.rglob("*")) if p.is_file()]
+        return [p for p in sorted(root.resolve().rglob("*")) if p.is_file()]
     out = subprocess.run(["git", "ls-files", "-z"], cwd=ROOT, capture_output=True, check=True).stdout
     return [ROOT / p for p in out.decode("utf-8").split("\0") if p]
 

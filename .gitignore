@@ -18,3 +18,4 @@ venv/
 .vscode/
 *.log
 data_cache/
+_site/
