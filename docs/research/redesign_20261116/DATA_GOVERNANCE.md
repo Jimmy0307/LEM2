@@ -32,6 +32,12 @@
 3. 寫入保護：實驗程式不能再默默覆寫已發布的 Manifest、CSV 或來源登錄（`common.guard_published`）。
 4. 本機 `D:\Desk\LEM2` 的 fetch refspec 加入研究分支，讓追蹤分支存在（`git remote set-branches --add`）。
 
+## 3.1 2026-11-16 整合決定
+- 228 MB 研究 CSV **暫時保留在 Git**；不刪除、不改寫歷史、不搬到 Release。
+- GitHub Release 與 Zenodo 只列為**未來的備援保存方案**。
+- 涉及第三方資料（OpenML、UCI）時，在授權逐份確認並由擁有者核准之前，**不建立任何新的公開永久鏡像**（見 `PUBLICATION_AND_PRIVACY_AUDIT.md` §4）。
+- 網站改由白名單產物發布，研究原始 CSV 不放上網站（只留在 Git）。
+
 ## 4. 未來遷移方案（本輪不執行）
 若要把 A／B 類大型 CSV 移出 Git 的工作樹，必須同時滿足以下條件：
 
@@ -46,5 +52,7 @@
 | Workflow | 觸發 | 權限 | 狀態 |
 |---|---|---|---|
 | `redesign-fedrs-tests.yml` | push 到研究分支（限相關路徑）、對原始分支的 PR、手動 | `contents: read` | 兩個 job：`test`（重建研究的單元、一致性、發布完整性、資料品質、SHA 索引、獨立重算、提交順序）與 `legacy-suite`（鎖定版本的全套測試） |
-| `redesign-manifest-reconcile.yml` | 只在這個 workflow 檔本身被修改時觸發，或手動 | **`contents: write`**（會自動 commit 並 push） | 已完成一次性任務（`647b5e9`）。**建議合併前由人類決定是否刪除**，避免日後誤觸發自動推送 |
-| 原始分支的 40+ 個舊 workflow | 各自設定 | — | 不屬於本研究，不處理 |
+| `redesign-manifest-reconcile.yml` | — | — | **2026-11-16 已刪除**：一次性雜湊修復已完成（run 43812533165 → `647b5e9`；25 個網站檔案與 Git blob 逐一相符）。修復工具 `reconcile_publication_manifest.py` 與 Git 歷史保留 |
+| `redesign-site-publish.yml` | push 到研究分支與整合分支（限網站相關路徑）、PR 到整合分支、手動 | 預設 `contents: read`；只有 deploy job 有 `pages: write`／`id-token: write` | 白名單建置、隱私稽核、Chromium 驗收；擁有者設定 `LEM2_PAGES_DEPLOY_REF` 之前不會部署 |
+| `teacher-dashboard-pages.yml` | 手動 | `pages: write` | 改成只上傳白名單產物（原本上傳整個 `docs/`） |
+| 原始分支的 48 個有 `contents: write` 的舊 workflow | 都限定在其他分支，或只在修改自身檔案時觸發 | `contents: write`（會把結果 commit 回去，這是它們的功能） | 已檢查：沒有任何一個會在研究分支或整合分支上觸發。屬於原始研究，不修改 |

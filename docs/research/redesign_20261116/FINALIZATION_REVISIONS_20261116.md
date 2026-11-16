@@ -35,3 +35,15 @@
 - `PREREGISTRATION_CONFIRMATORY_20261116.md`：未改（Git 歷史只有 `89fd52b` 一個版本）。
 - `data/` 內既有 CSV 與 Manifest：未改；新增檔都使用新檔名（`*_20261116.csv`）。
 - 原始研究分支 `research/report-ready-dashboard-20261109`：仍為 `87e31c4`。
+
+## D. 整合階段（2026-11-16，Final Integration）
+
+| # | 項目 | 處置 |
+|---|---|---|
+| D1 | 合併目標 | 由 `87e31c4` 建立 `research/finalized-20261116`；PR #6 base 改成它，原始分支不動 |
+| D2 | CI 觸發 | PR 觸發納入新的 base |
+| D3 | 一次性 workflow | 刪除 `redesign-manifest-reconcile.yml`（任務已完成且已驗證）；工具保留 |
+| D4 | 網站發布 | 新增白名單建置器、value-free 隱私稽核、Chromium 驗收、受變數控制的 deploy job；`teacher-dashboard-pages.yml` 改成只上傳白名單產物 |
+| D5 | 隱私稽核 | 沒有憑證；揭露 commit metadata 中的公司信箱與歷史 `outputs/` 中的個人使用者名稱（`PUBLICATION_AND_PRIVACY_AUDIT.md`）。更正先前回覆：`outputs/` 的命中是本機路徑中的使用者名稱，不是 e-mail |
+| D6 | 對外說法 | 報告、封版狀態、網站都明確寫出：「完全新來源」排除條件並未完全滿足；49／48 份結果是事後分析，不能取代 51 份的預註冊分析 |
+| D7 | 資料治理 | CSV 暫時保留在 Git；Release／Zenodo 列為未來備援；授權確認前不建立第三方資料的公開永久鏡像 |

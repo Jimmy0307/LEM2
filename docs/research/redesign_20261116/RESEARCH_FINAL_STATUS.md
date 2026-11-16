@@ -1,6 +1,6 @@
 # 研究封版狀態（Research Final Status，2026-11-16）
 
-**分支**：`research/federated-rule-degeneracy-redesign-20261116`　**PR**：https://github.com/Jimmy0307/LEM2/pull/6（base：`research/report-ready-dashboard-20261109`，**未合併**）
+**分支**：`research/federated-rule-degeneracy-redesign-20261116`　**PR**：https://github.com/Jimmy0307/LEM2/pull/6（base 已於 2026-11-16 改為整合分支 `research/finalized-20261116`，該分支建立於原始基準 `87e31c4`；**未合併**）
 **原始研究基準**：`research/report-ready-dashboard-20261109` @ `87e31c4`（未修改）
 
 ## 1. 完成度
@@ -32,6 +32,8 @@
 | C1 集中式 CART | −4.55 | −4.91 | −7.22 |
 | C2 聯邦 CART 投票 | −3.27 | −2.08 | +0.84（不顯著） |
 
+**來源獨立性揭露**：預註冊寫的是「過去 161 份來源家族全部排除」，但 `ada` 很可能源自 UCI Adult、`gina` 很可能源自 MNIST，兩者的歷史對應來源都在清單內，因此**原本宣稱的「完全新來源」排除條件並未完全滿足**。排除後的 49 份與 48 份結果是**事後（post-hoc）敏感度分析**：它們支持主要結論的穩健性，但**不能取代**原始 51 份的預註冊分析，也不能被稱為確認性結果。
+
 ## 3. 學術狀態
 - **確認的**：在本預註冊協定與這 51 份來源上，FED_MD_HIST＋B2 比原始 EW3＋UNION 好；只改規則層（B2）也有小幅但可檢出的改善。
 - **沒有確認的**：新演算法、一般最佳、優於 CART、優於先行研究、任何隱私保證、在完整特徵或更多 Client 上的效果。
@@ -46,11 +48,13 @@
 | L3 | FED_MD 只是模擬：沒有通訊協定、沒有安全聚合、沒有 DP；樸素通訊約 7.7×10⁶ 數字／Client | 已揭露 |
 | L4 | Gate 1–4 Manifest 的 `git_commit` 不能精確指出程式版本 | 已揭露 |
 | L5 | 「獨立」重算與審查都由同一位作者（AI 協助）完成，沒有外部團隊重現 | NOT VERIFIED |
-| L6 | 研究頁尚未公開部署（GitHub Pages 來源是原始分支） | BLOCKED（需要人類決定） |
+| L6 | 研究頁尚未公開部署：白名單網站產物與部署 workflow 已就緒並通過瀏覽器驗收，但 Pages 來源仍是原始分支 | **OWNER ACTION REQUIRED**（`PUBLICATION_AND_PRIVACY_AUDIT.md` §6） |
+| L7 | 1 個歷史 commit 的作者 metadata 含公司信箱（公開、無法在不改寫歷史下移除）；37 個歷史 `outputs/` 檔案的本機路徑含個人使用者名稱 | 已揭露；不是憑證；由擁有者決定 |
 
 ## 5. 入口
 - 主報告：`RESEARCH_REPORT_20261116.md`
 - 證據索引：`RESEARCH_EVIDENCE_INDEX.md`　｜　架構：`ALGORITHM_ARCHITECTURE.md`　｜　重現：`REPRODUCIBILITY_GUIDE.md`
+- 公開發布與隱私：`PUBLICATION_AND_PRIVACY_AUDIT.md`
 - PR 審查：`PR6_FINAL_REVIEW.md`　｜　修訂日誌：`FINALIZATION_REVISIONS_20261116.md`　｜　資料治理：`DATA_GOVERNANCE.md`
 - 下一步：`NEXT_RESEARCH_ROADMAP.md`
 - 預註冊（凍結）：`PREREGISTRATION_CONFIRMATORY_20261116.md`；實作修訂：`PREREGISTRATION_AMENDMENTS_20261116.md`

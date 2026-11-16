@@ -13,7 +13,8 @@ on:
       - ".github/workflows/redesign-fedrs-tests.yml"
       - ".gitattributes"
   pull_request:
-    branches: [research/report-ready-dashboard-20261109]
+    # PR #6 base moved to the integration branch on 2026-11-16; keep the old base for safety.
+    branches: [research/finalized-20261116, research/report-ready-dashboard-20261109]
   workflow_dispatch:
 
 permissions:

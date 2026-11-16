@@ -1,0 +1,74 @@
+name: redesign-site-publish
+# Builds the public site from an explicit whitelist, audits it, verifies it in a real browser and
+# (only when the repository owner has switched GitHub Pages to "GitHub Actions" and opted in via the
+# repository variable LEM2_PAGES_DEPLOY_REF = <branch>) deploys it. Without that opt-in the deploy job
+# is skipped, so this workflow can never change the live site on its own.
+
+on:
+  push:
+    branches: [research/federated-rule-degeneracy-redesign-20261116, research/finalized-20261116]
+    paths:
+      - "docs/**"
+      - "experiments/redesign_20261116/build_public_site.py"
+      - "experiments/redesign_20261116/public_release_audit.py"
+      - "experiments/redesign_20261116/site_browser_check.py"
+      - ".github/workflows/redesign-site-publish.yml"
+  pull_request:
+    branches: [research/finalized-20261116]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: redesign-site-publish-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build whitelisted site and run data / link / privacy checks
+        run: python -m experiments.redesign_20261116.build_public_site --out _site
+      - name: Value-free privacy audit of the artifact
+        run: python -m experiments.redesign_20261116.public_release_audit --root _site
+      - name: Real-browser acceptance (Chromium; 320 / 390 / 1366 px)
+        run: |
+          pip install playwright
+          python -m playwright install --with-deps chromium
+          (cd _site && python -m http.server 8000 --bind 127.0.0.1 >/dev/null 2>&1 &)
+          sleep 2
+          python -m experiments.redesign_20261116.site_browser_check --base http://127.0.0.1:8000/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    if: github.event_name != 'pull_request' && vars.LEM2_PAGES_DEPLOY_REF != '' && vars.LEM2_PAGES_DEPLOY_REF == github.ref_name
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Acceptance against the live URL
+        run: |
+          pip install playwright
+          python -m playwright install --with-deps chromium
+          sleep 30
+          python -m experiments.redesign_20261116.site_browser_check --base "${{ steps.deployment.outputs.page_url }}"

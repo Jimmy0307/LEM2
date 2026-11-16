@@ -1,6 +1,6 @@
 # PR #6 最終審查（Research Finalization，2026-11-16）
 
-**PR**：https://github.com/Jimmy0307/LEM2/pull/6　**Head**：`research/federated-rule-degeneracy-redesign-20261116`　**Base**：`research/report-ready-dashboard-20261109`（`87e31c4`，未修改）
+**PR**：https://github.com/Jimmy0307/LEM2/pull/6　**Head**：`research/federated-rule-degeneracy-redesign-20261116`　**Base**：`research/finalized-20261116`（2026-11-16 由 `87e31c4` 建立的整合分支；原 base `research/report-ready-dashboard-20261109` 仍為 `87e31c4`，未修改）
 **前一份審查**：`PR6_MERGE_READINESS_AUDIT_20261116.md`（保留）。本檔是封版後的完整驗收。
 
 ## 1. 驗收清單
@@ -77,12 +77,20 @@ Workflow `redesign-fedrs-tests`，commit `f42afd4`（ubuntu-latest，Python 3.12
 - 外部對照是描述性比較，沒有非劣性檢定。
 - 沒有外部團隊重現。
 
+## 5.1 整合階段（2026-11-16）
+| 項目 | 結果 |
+|---|---|
+| 整合分支 `research/finalized-20261116` | 由 `87e31c4` 建立並推送；PR #6 的 base 已改成它 |
+| CI 的 PR 觸發 | `redesign-fedrs-tests` 與 `redesign-site-publish` 都納入新的 base |
+| 一次性 `redesign-manifest-reconcile.yml` | 已刪除：25 個網站檔案與 Git blob 逐一相符；工具與歷史保留 |
+| 其他 workflow 的 `contents: write` | 48 個歷史 workflow 有寫入權限（用途是把結果 commit 回去），都不會在研究分支或整合分支上觸發；新 workflow 預設唯讀 |
+| 公開資料與隱私稽核 | 沒有憑證；1 個 commit 的作者 metadata 含公司信箱（無法不改寫歷史就移除）；詳見 `PUBLICATION_AND_PRIVACY_AUDIT.md` |
+| 網站 | 白名單產物與瀏覽器驗收通過；**正式部署 = OWNER ACTION REQUIRED**（需要改 Pages 設定） |
+
 ## 6. 是否建議合併
-**工程面：可以進入正式審閱（Ready for Review）。** 全部可自動驗證的條件都通過，也沒有已知的 P0／P1 缺陷尚未處理。
+**工程面：建議可以合併到整合分支 `research/finalized-20261116`。** Base 已不是原始研究分支，所以合併**不會**改動 `research/report-ready-dashboard-20261109`，也不會改動目前的公開網站。
 
-**合併本身需要人類決定**，原因有三：
-1. **Base 是原始研究分支。** 合併會改變 `research/report-ready-dashboard-20261109`，而這個分支是被要求「不可覆寫」的原始基準，也是 GitHub Pages 的發布來源。替代做法：合併到新的整合分支（例如 `research/finalized-20261116`），讓原始分支保持凍結。
-2. **公開網站。** 研究頁目前只在研究分支中（公開網址 `/research/teacher_dashboard/redesign/` 回傳 404）。上線方式有兩種，都需要人類決定：(a) 合併 PR #6，Pages 自動重建（同時改變原始分支）；(b) 把 Pages 來源改成研究分支或整合分支的 `/docs`。研究分支包含原始網站的全部頁面，加上新頁面與首頁的一個連結和一段說明。
-3. **大型資料。** 合併會把約 228 MB（壓縮後約 30 MB）的 CSV 帶進基準分支。可以接受，也可以先依 `DATA_GOVERNANCE.md` 改用 Release 存放。
-
-另外建議在合併前決定是否刪除 `.github/workflows/redesign-manifest-reconcile.yml`。這個 workflow 有 `contents: write` 權限並會自動推送，它的一次性任務已經完成。
+合併仍需人類核准，原因：
+1. **研究結論需要指導教授審閱**，特別是 §5 的限制與來源獨立性揭露（`ada`、`gina`）。
+2. **網站上線**需要改 Pages 設定（`PUBLICATION_AND_PRIVACY_AUDIT.md` §6）。合併本身不會讓網站上線。
+3. **資料存放**：合併會把約 228 MB 的 CSV 帶進整合分支（依決定暫時保留在 Git）。
