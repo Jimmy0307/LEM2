@@ -1,3 +1,9 @@
+## 聯邦 LEM2 規則退化重建研究（2026-11-16，PR #6 審查中）
+
+分支 `research/federated-rule-degeneracy-redesign-20261116`：預先註冊的確認性驗證、獨立重算與限制。入口：[研究封版狀態](docs/research/redesign_20261116/RESEARCH_FINAL_STATUS.md)、[重現指南](docs/research/redesign_20261116/REPRODUCIBILITY_GUIDE.md)、[下一步 Roadmap](docs/research/redesign_20261116/NEXT_RESEARCH_ROADMAP.md)。下方內容屬於原始研究，未修改。
+
+---
+
 ## 教授報告統一入口｜42 Seeds × 8,820 組實驗（2026-11-10）
 
 **[開啟 GitHub Pages 正式研究報告](https://jimmy0307.github.io/LEM2/)**  

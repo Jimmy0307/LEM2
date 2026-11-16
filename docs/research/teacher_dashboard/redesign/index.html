@@ -12,7 +12,11 @@
 table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:6px 8px;border-bottom:1px solid #e5e7eb;text-align:right}th:first-child,td:first-child{text-align:left}
 .tools{display:flex;flex-wrap:wrap;gap:12px;margin:10px 0}.tools label{display:flex;gap:6px;align-items:center;font-size:14px}
 .note{font-size:13px;color:#4b5563}.pos{color:#047857;font-weight:600}.neg{color:#b91c1c;font-weight:600}
-@media (max-width:640px){th,td{font-size:12px;padding:4px}}
+.toc{position:sticky;top:0;z-index:5;display:flex;gap:6px;overflow-x:auto;padding:8px max(16px,calc((100vw - 1170px)/2));background:#f8fafc;border-bottom:1px solid #e5e7eb;-webkit-overflow-scrolling:touch}
+.toc a{flex:0 0 auto;font-size:13px;padding:4px 10px;border-radius:999px;background:#fff;border:1px solid #d1d5db;color:#1f2937;text-decoration:none;white-space:nowrap}
+.toc a:hover{border-color:#29506b;color:#29506b}
+section.panel{scroll-margin-top:52px}.scroll-table{overflow-x:auto}code{overflow-wrap:anywhere}
+@media (max-width:640px){th,td{font-size:12px;padding:4px}.hero{padding:24px 16px}}
 </style></head><body>
 <div class="site-top"><a class="brand" href="../">LEM2 Research · 教授報告</a><nav><a href="../">研究首頁</a><a href="../g4_g8/">G4–G8（歷史）</a><a class="active" href="./">規則退化重建 2026-11-16</a></nav></div>
 <header class="hero"><div class="eyebrow">FEDERATED RULE DEGENERACY REDESIGN · 2026-11-16</div>
@@ -20,6 +24,7 @@ table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:6px 8px;b
 <p>本頁把研究分成六種證據等級，彼此不可混用。只有「Confirmatory Validation」來自預先註冊、未曾用來調整方法的新資料；其餘皆為探索性或診斷性證據。新方法在確認性驗證通過前，<b>不標示為正式最佳演算法</b>。</p>
 <div class="badges"><span class="badge b-hist">Historical Baseline</span><span class="badge b-review">Claude Independent Review</span><span class="badge b-diag">Degenerate Client Diagnostics</span><span class="badge b-ctrl">Controlled Experiments</span><span class="badge b-proto">New Algorithm Prototypes</span><span class="badge b-conf">Confirmatory Validation</span></div>
 </header>
+<nav class="toc" aria-label="本頁導覽"><a href="#historical">1 原始研究</a><a href="#review">2 獨立審查</a><a href="#diagnostics">3 退化診斷</a><a href="#controlled">4 控制實驗</a><a href="#prototypes">5 新切點原型</a><a href="#confirmatory">6 確認性驗證</a><a href="#reproducibility">7 可重現性</a><a href="#limitations">8 限制與下一步</a></nav>
 <main class="wrap">
 
 <section class="panel" id="historical"><span class="section-tag">HISTORICAL BASELINE</span><h2>原始流程（不修改，只重新定位）</h2>
@@ -56,7 +61,7 @@ table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:6px 8px;b
 <p class="note">結論方向：有效的不是「懲罰衝突」，而是<b>保存全域可辨識性</b>的切點。這是既有 Rough Set 離散化思想的聯邦化，不宣稱新穎演算法；最接近的先行研究見報告（Wozniak et al. 2026；Flores et al. 2026）。</p></section>
 
 <section class="panel" id="confirmatory"><span class="section-tag">CONFIRMATORY VALIDATION · GATE 5</span><h2>預先註冊的新資料驗證 <span id="confBadge" class="tag-status s-info">載入中</span></h2>
-<p>51 份 OpenML 來源（37 個已標記家族；經預先固定的名稱／人工家族別名規則排除歷史清單，尚未完成跨來源原始列級去重），Seeds 1001–1010，3 種分布。主要假設 H1：FED_MD_HIST + B2 優於原始 EW3 + A（Validation Best，Test BA，Holm 校正）。<a href="https://github.com/Jimmy0307/LEM2/blob/research/federated-rule-degeneracy-redesign-20261116/docs/research/redesign_20261116/PREREGISTRATION_CONFIRMATORY_20261116.md">預註冊文件</a></p>
+<p>51 份 OpenML 來源（37 個已標記家族；經預先固定的名稱／人工家族別名規則排除歷史清單，尚未完成跨來源原始列級去重。終版稽核發現 <code>ada</code>、<code>gina</code> 很可能分別源自 Adult 與 MNIST；排除後 H1／H2 仍全部通過，屬 post-hoc 敏感度分析），Seeds 1001–1010，3 種分布。主要假設 H1：FED_MD_HIST + B2 優於原始 EW3 + A（Validation Best，Test BA，Holm 校正）。<a href="https://github.com/Jimmy0307/LEM2/blob/research/federated-rule-degeneracy-redesign-20261116/docs/research/redesign_20261116/PREREGISTRATION_CONFIRMATORY_20261116.md">預註冊文件</a></p>
 <div class="scroll-table"><table><thead><tr><th>假設</th><th>分布</th><th>資料集數</th><th>基線 BA</th><th>候選 BA</th><th>Δ（pp）</th><th>95% CI</th><th>勝/平/負</th><th>Holm p</th><th>判定</th></tr></thead><tbody id="confRows"></tbody></table></div>
 <h3>各方法平均 Test BA（Validation Best；CART 以 Validation 選深度）</h3>
 <div class="scroll-table"><table><thead id="armHead"></thead><tbody id="armRows"></tbody></table></div>
@@ -65,6 +70,25 @@ table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:6px 8px;b
 <p class="note">正數表示 M2 平均較高，負數表示對照模型較高；此處只計算已發布的各方法平均 Test BA，<b>不是</b>確認性 H1/H2 檢定。顯著性請查看原始配對結果，不可把「不顯著」說成非劣或等效。</p>
 <div class="scroll-table"><table><thead><tr><th>分布</th><th>M2 − R1（集中式 RS）</th><th>M2 − C1（集中式 CART）</th><th>M2 − C2（聯邦 CART）</th></tr></thead><tbody id="secondaryDirectionRows"><tr><td colspan="4">正在核對 G5_ARM_MEANS.csv</td></tr></tbody></table></div>
 <p class="note">來源獨立性稽核：<a href="https://github.com/Jimmy0307/LEM2/blob/research/federated-rule-degeneracy-redesign-20261116/docs/research/redesign_20261116/SOURCE_INDEPENDENCE_REVIEW_20261116.md">51份對歷史161筆的名稱與家族核對（非原始列級去重）</a>。審查修正僅涉及報告的對照方向，不更動預註冊、原始CSV或主要假設。</p></section>
+
+<section class="panel" id="reproducibility"><span class="section-tag">REPRODUCIBILITY · FINALIZATION AUDIT</span><h2>獨立重算與資料完整性 <span id="recBadge" class="tag-status s-info">載入中</span></h2>
+<p>從原始逐任務檔 <code>REDESIGN_G5_CONFIRMATORY_POLICIES.csv</code> 重新配對、平均與檢定，<b>不使用</b>原分析程式的統計模組，再與已發布表格逐值比對。比較方向固定為「前者 − 後者」。外部對照只是描述性比較，p 值未校正，也沒有做非劣性檢定。</p>
+<div class="scroll-table"><table><thead><tr><th>比較</th><th>分布</th><th>資料集</th><th>差異（pp）</th><th>95% CI</th><th>Wilcoxon p</th></tr></thead><tbody id="recRows"><tr><td colspan="6">載入中</td></tr></tbody></table></div>
+<p class="note">全部研究資料檔的 SHA-256 索引：<a href="https://github.com/Jimmy0307/LEM2/blob/research/federated-rule-degeneracy-redesign-20261116/docs/research/redesign_20261116/RESEARCH_DATA_SHA256_INDEX_20261116.json">RESEARCH_DATA_SHA256_INDEX</a>。重現步驟：<a href="https://github.com/Jimmy0307/LEM2/blob/research/federated-rule-degeneracy-redesign-20261116/docs/research/redesign_20261116/REPRODUCIBILITY_GUIDE.md">REPRODUCIBILITY_GUIDE</a>；實驗與檔案對照：<a href="https://github.com/Jimmy0307/LEM2/blob/research/federated-rule-degeneracy-redesign-20261116/docs/research/redesign_20261116/RESEARCH_EVIDENCE_INDEX.md">RESEARCH_EVIDENCE_INDEX</a>。</p></section>
+
+<section class="panel" id="limitations"><span class="section-tag">LIMITATIONS & ROADMAP</span><h2>限制與下一步</h2>
+<h3>來源獨立性（post-hoc 敏感度分析，非預註冊）</h3>
+<p>終版稽核發現，51 份確認性資料中 <code>ada</code> 很可能源自 UCI Adult，<code>gina</code> 很可能源自 MNIST，兩者的歷史對應來源都在過去 161 份清單內。<code>sylvine</code> 是否源自森林覆蓋資料尚未驗證。預註冊結果不改；下表只回答「排除後結論是否改變」。</p>
+<div class="scroll-table"><table><thead><tr><th>情境</th><th>假設</th><th>分布</th><th>資料集</th><th>差異（pp）</th><th>95% CI</th><th>Holm p</th><th>預註冊規則</th></tr></thead><tbody id="phRows"><tr><td colspan="8">載入中</td></tr></tbody></table></div>
+<h3>這個研究沒有證明的事</h3>
+<ul>
+<li>不是新演算法：有效的是「全域可辨識性」切點，屬於既有 Rough Set 離散化的聯邦化。衝突懲罰設計（FCP、LOCO 衝突項、FED_MD_XC）在探索性與確認性資料上都沒有增益。</li>
+<li>不優於 CART：集中式 CART 高 4.6–7.2 pp；聯邦 CART 在 IID／α=0.5 也較高。</li>
+<li>沒有隱私或安全聚合保證；FED_MD 的樸素通訊量約每個 Client 7.7×10⁶ 個數字。</li>
+<li>規模受限：只用前 6 個特徵、最多 1,800 列、3 個 Client；絕對 BA 約 44–50%。</li>
+<li>來源獨立性只做到 metadata 與文獻層級，沒有逐列比對樣本（PARTIALLY VERIFIED）。</li>
+</ul>
+<p class="links"><a href="https://github.com/Jimmy0307/LEM2/blob/research/federated-rule-degeneracy-redesign-20261116/docs/research/redesign_20261116/RESEARCH_FINAL_STATUS.md">研究封版狀態</a><a href="https://github.com/Jimmy0307/LEM2/blob/research/federated-rule-degeneracy-redesign-20261116/docs/research/redesign_20261116/NEXT_RESEARCH_ROADMAP.md">下一階段研究 Roadmap</a><a href="https://github.com/Jimmy0307/LEM2/blob/research/federated-rule-degeneracy-redesign-20261116/docs/research/redesign_20261116/SOURCE_INDEPENDENCE_REVIEW_20261116.md">來源獨立性稽核</a></p></section>
 
 <section class="panel"><span class="section-tag">DATA & CODE</span><h2>全部資料與程式</h2>
 <p class="links"><a href="https://github.com/Jimmy0307/LEM2/tree/research/federated-rule-degeneracy-redesign-20261116/docs/research/redesign_20261116">研究報告與原始 CSV／Manifest</a><a href="https://github.com/Jimmy0307/LEM2/tree/research/federated-rule-degeneracy-redesign-20261116/fedrs">fedrs 引擎</a><a href="https://github.com/Jimmy0307/LEM2/tree/research/federated-rule-degeneracy-redesign-20261116/experiments/redesign_20261116">實驗程式</a></p></section>
@@ -93,5 +117,13 @@ get("G5_PRIMARY_HYPOTHESES.csv").then(x=>{const all=x.length&&x.filter(y=>y.hypo
 $("confBadge").className="tag-status "+(all?"s-pass":"s-fail");$("confBadge").textContent=all?"H1（兩個 Non-IID）通過":"H1 未全部通過";
 $("confRows").innerHTML=x.map(y=>`<tr><td>${y.hypothesis}</td><td>${R[y.regime]}</td><td>${y.n_datasets}</td><td>${pp(y.mean_baseline)}</td><td>${pp(y.mean_treatment)}</td><td class="${sig(y.mean_diff,y.ci95_low,y.ci95_high)}">${pp(y.mean_diff)}</td><td>[${pp(y.ci95_low)}, ${pp(y.ci95_high)}]</td><td>${y.wins}/${y.ties}/${y.losses}</td><td>${f(y.holm_p,4)}</td><td>${y.passed==="True"?"PASS":"NOT PASS"}</td></tr>`).join("")}).catch(()=>{$("confBadge").className="tag-status s-fail";$("confBadge").textContent="尚未完成 / NOT PASS";$("confRows").innerHTML="<tr><td colspan=10>確認性結果尚未發布。</td></tr>"});
 get("G5_ARM_MEANS.csv").then(x=>{const arms=Object.keys(x[0]).filter(k=>k!=="regime");$("armHead").innerHTML="<tr><th>分布</th>"+arms.map(a=>`<th>${a}</th>`).join("")+"</tr>";$("armRows").innerHTML=x.map(y=>`<tr><td>${R[y.regime]}</td>`+arms.map(a=>`<td>${pp(y[a])}</td>`).join("")+"</tr>").join(""); const diff=(y,other)=>{const v=100*(+y.M2-(+y[other]));return `<td class="${v>1e-9?"pos":v< -1e-9?"neg":""}">${v>0?"+":""}${v.toFixed(2)} pp</td>`}; const expected={IID:[-1,-1,-1],NONIID_05:[-1,-1,-1],NONIID_01:[-1,-1,1]}; if(x.length!==3||x.some(y=>!expected[y.regime]||["R1","C1","C2"].some((other,i)=>Math.sign(+y.M2-(+y[other]))!==expected[y.regime][i])))throw Error("對照方向與已核對數據不一致"); $("secondaryDirectionRows").innerHTML=x.map(y=>`<tr><td>${R[y.regime]}</td>${diff(y,"R1")}${diff(y,"C1")}${diff(y,"C2")}</tr>`).join("") }).catch(e=>{$("secondaryDirectionRows").innerHTML="<tr><td colspan=4>對照表資料未通過："+e.message+"</td></tr>"});
+const LBL={H1:"H1：M2 − M0",H2:"H2：M1 − M0",SEC_M2_minus_R1:"M2 − R1（集中式 RS）",SEC_M2_minus_C1:"M2 − C1（集中式 CART）",SEC_M2_minus_C2:"M2 − C2（聯邦 CART）"};
+const pval=p=>+p<1e-4?"<0.0001":f(p,4);
+get("G5_INDEPENDENT_RECOMPUTATION_20261116.csv").then(x=>{if(x.length!==13)throw Error("expected 13 rows");
+$("recRows").innerHTML=x.map(y=>`<tr><td>${LBL[y.comparison]||y.comparison}</td><td>${R[y.regime]}</td><td>${y.n_datasets}</td><td class="${sig(y.mean_diff,y.ci95_low,y.ci95_high)}">${+y.mean_diff>0?"+":""}${pp(y.mean_diff)}</td><td>[${pp(y.ci95_low)}, ${pp(y.ci95_high)}]</td><td>${pval(y.wilcoxon_p_two_sided)}</td></tr>`).join("");
+return fetch(D+"G5_INDEPENDENT_RECOMPUTATION_20261116.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw Error("manifest");return r.json()})}).then(m=>{$("recBadge").className="tag-status "+(m.crosscheck_pass?"s-pass":"s-fail");$("recBadge").textContent=m.crosscheck_pass?"重算與發布表一致":"重算不一致"}).catch(e=>{$("recBadge").className="tag-status s-fail";$("recBadge").textContent="未載入";$("recRows").innerHTML=`<tr><td colspan=6>資料未發布：${e.message}</td></tr>`});
+const SC={EXCLUDE_ADA_GINA:"排除 ada、gina（49 份）",EXCLUDE_ADA_GINA_SYLVINE:"再排除 sylvine（48 份）"};
+get("G5_POSTHOC_SOURCE_SENSITIVITY_20261116.csv").then(x=>{const y0=x.filter(y=>y.holm_family);if(!y0.length)throw Error("empty");
+$("phRows").innerHTML=y0.map(y=>`<tr><td>${SC[y.posthoc_scenario]||y.posthoc_scenario}</td><td>${y.comparison}</td><td>${R[y.regime]}</td><td>${y.n_datasets}</td><td class="${sig(y.mean_diff,y.ci95_low,y.ci95_high)}">+${pp(y.mean_diff)}</td><td>[${pp(y.ci95_low)}, ${pp(y.ci95_high)}]</td><td>${pval(y.holm_p)}</td><td>${y.passed_prereg_rule==="True"?"通過":"未通過"}</td></tr>`).join("")}).catch(e=>$("phRows").innerHTML=`<tr><td colspan=8>資料未發布：${e.message}</td></tr>`);
 })();
 </script></body></html>

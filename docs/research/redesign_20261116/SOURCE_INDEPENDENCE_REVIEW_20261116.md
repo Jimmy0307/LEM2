@@ -37,3 +37,31 @@ Gate 5 預註冊採 OpenML-CC18（study 99）及 OpenML AutoML benchmark（study
 ## 品質閘門
 
 新增 `tests/test_fedrs_publication_integrity.py` 驗證：(a) 161與51來源名稱精確無交疊、(b) 已標記37家族、(c) 51筆Hash與OpenML DID齊全、(d) 主要對照方向與原始CSV相同，且次要比較不能寫反。這個檢查**不取代人工原始來源核對**。
+
+---
+
+## 終版補充稽核（2026-11-16，Research Finalization）：Metadata 與文獻層級
+
+**狀態：PARTIALLY VERIFIED**。本節是事後（post-hoc）稽核，不更動預註冊 51 份樣本或任何已發布的確認性結果。
+
+做法（`experiments/redesign_20261116/source_metadata_audit.py` → `data/G5_SOURCE_METADATA_AUDIT_20261116.csv`）：從 OpenML API 取回 51 份資料的 `original_data_url`、citation、creator 與收集日期（51/51 取得，0 失敗），再對歷史 161 筆做三種篩查：上游 URL 字詞、形狀簽章（列數×特徵數×類別數）、名稱包含。篩出的線索全部經人工判定，判定依據寫在 CSV 的 `manual_evidence` 欄。
+
+| OpenML | 判定 | 證據 |
+|---|---|---|
+| 41156 `ada` | **很可能與 UCI Adult 同源** | ALvsPK 挑戰賽（Guyon 2007）說明 ADA 是 UCI Adult 的 agnostic 版本；41156 的 48 個特徵表示法與 `ada_agnostic`（OpenML 1043）相同（列數 4,147 對 4,562）。歷史清單中有 PMLB `adult` 與 UCI Adult Income。 |
+| 41158 `gina` | **很可能與 MNIST 同源** | ALvsPK 說明 GINA 是 MNIST 子集（判斷兩位數字的奇偶）；970 個特徵表示法與 `gina_agnostic`（OpenML 1038）相同。歷史清單中有 PMLB `mnist`。 |
+| 41146 `sylvine` | **未驗證的線索** | ALvsPK 的 SYLVA 是森林覆蓋分類；sylvine 是否衍生自 SYLVA 或 UCI Covertype 無法確認，因為 Guyon et al. 2019 的資料表無法存取。 |
+| 40996 Fashion-MNIST | 不同來源，形狀相同 | 刻意設計成與 MNIST 同形狀（70000×784×10），但影像內容不同。 |
+| 1478 `har`、41027、4538 | 不同來源 | 只是名稱字串巧合或共用一般詞。 |
+
+**結論**：預註冊第 1 節寫的是「過去 161 份來源家族全部排除」，但 E1 規則以名稱與人工別名比對，**沒有攔下兩份換了名字的衍生資料（ada、gina）**。這是預註冊排除規則的實作缺口，須明確揭露。依本文件第 4 點，預註冊分析維持原樣，另做標示為 post-hoc 的排除敏感度分析（`data/G5_POSTHOC_SOURCE_SENSITIVITY_20261116.csv`）：
+
+| 情境 | 資料數 | H1 IID | H1 α=0.5 | H1 α=0.1 | H2 α=0.1 |
+|---|---:|---:|---:|---:|---:|
+| 預註冊（原始） | 51 | +6.09 | +5.60 | +4.33 | +0.53 |
+| 排除 ada、gina | 49 | +6.36 | +5.79 | +4.49 | +0.54 |
+| 排除 ada、gina、sylvine | 48 | +6.51 | +5.94 | +4.61 | +0.54 |
+
+單位為百分點（pp），M2−M0 或 M1−M0。所有情境四項假設都符合預註冊通過規則（Holm p<0.05、平均差>0、bootstrap CI 下界>0）。因此這個缺口**不改變**主要結論，但對外說法必須改成：「51 份中有 2 份很可能與歷史來源同源；排除後結論相同」。
+
+仍然沒有做的事：沒有逐列比對樣本指紋，沒有取得 AutoML 挑戰賽其他資料（christine、jasmine、madeline、philippine、fabert、volkert、jannis）的上游來源，也沒有檢查 NASA MDP 六份資料之間是否共享模組。
