@@ -18,6 +18,17 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "docs" / "research" / "redesign_20261116" / "data"
+# Raw experiment outputs go to RUN_OUT. Default = the published evidence folder, but a run
+# refuses to overwrite an existing published manifest unless explicitly allowed, so smoke
+# tests and re-runs cannot silently replace frozen evidence (finalization hardening).
+RUN_OUT = Path(os.environ.get("LEM2_REDESIGN_RUN_OUT", str(OUT)))
+ALLOW_OVERWRITE_ENV = "LEM2_ALLOW_OVERWRITE_PUBLISHED"
+
+
+def guard_published(path: Path) -> None:
+    if path.resolve().parent == OUT.resolve() and path.exists() and os.environ.get(ALLOW_OVERWRITE_ENV) != "1":
+        raise RuntimeError(f"Refusing to overwrite published evidence {path.name}; set LEM2_REDESIGN_RUN_OUT "
+                           f"to a scratch folder, or {ALLOW_OVERWRITE_ENV}=1 for an intentional, documented re-run.")
 
 UCI20 = ("adult_income", "bank_marketing", "banknote", "breast_diagnostic", "covertype", "dry_bean",
          "eeg_eye_state", "german_credit", "grid_stability", "haberman", "htru2", "iris", "letter",
@@ -63,7 +74,8 @@ def run_grid(name: str, tasks: List[dict], worker: Callable, n_jobs: int = 24,
              extra_manifest: dict | None = None) -> Dict[str, pd.DataFrame]:
     bootstrap_path()
     from fedrs.provenance import write_manifest
-    OUT.mkdir(parents=True, exist_ok=True)
+    guard_published(RUN_OUT / f"{name}_MANIFEST.json")
+    RUN_OUT.mkdir(parents=True, exist_ok=True)
     collected: Dict[str, List[dict]] = {t: [] for t in tables}
     failures: List[dict] = []
     started = perf_counter()
@@ -88,10 +100,10 @@ def run_grid(name: str, tasks: List[dict], worker: Callable, n_jobs: int = 24,
         sort_cols = [c for c in ("dataset", "seed", "regime", "partition_mode", "discretizer", "induction") if c in df]
         if len(df) and sort_cols:
             df = df.sort_values(sort_cols, kind="stable").reset_index(drop=True)
-        df.to_csv(OUT / f"{name}_{table.upper()}.csv", index=False)
+        df.to_csv(RUN_OUT / f"{name}_{table.upper()}.csv", index=False)
         frames[table] = df
-    pd.DataFrame(failures).to_csv(OUT / f"{name}_FAILURES.csv", index=False)
-    write_manifest(OUT / f"{name}_MANIFEST.json", {
+    pd.DataFrame(failures).to_csv(RUN_OUT / f"{name}_FAILURES.csv", index=False)
+    write_manifest(RUN_OUT / f"{name}_MANIFEST.json", {
         "experiment": name, "tasks": len(tasks), "succeeded": len(tasks) - len(failures),
         "failed": len(failures), "wall_seconds": perf_counter() - started,
         "outputs": [f"{name}_{t.upper()}.csv" for t in tables] + [f"{name}_FAILURES.csv"],

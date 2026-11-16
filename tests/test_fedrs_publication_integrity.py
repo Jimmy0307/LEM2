@@ -34,16 +34,16 @@ def near(a, b, tol=1e-10):
 
 
 def test_confirmation_manifest_and_preregistration():
-    m = json.loads((D / "REDESIGN_G5_CONFIRMATORY_MANIFEST.json").read_text())
-    a = json.loads((D / "G5_ANALYSIS_MANIFEST.json").read_text())
+    m = json.loads((D / "REDESIGN_G5_CONFIRMATORY_MANIFEST.json").read_text(encoding="utf-8"))
+    a = json.loads((D / "G5_ANALYSIS_MANIFEST.json").read_text(encoding="utf-8"))
     assert (m["tasks"], m["succeeded"], m["failed"], m["sources"]) == (10710, 10710, 0, 51)
     assert (a["tasks_total"], a["tasks_failed"], a["datasets"]) == (10710, 0, 51)
     assert m["git_commit"] == a["git_commit"]
     assert m["preregistration"] == "docs/research/redesign_20261116/PREREGISTRATION_CONFIRMATORY_20261116.md"
-    prereg = (ROOT / m["preregistration"]).read_text()
+    prereg = (ROOT / m["preregistration"]).read_text(encoding="utf-8")
     assert "M2" in prereg and "M0" in prereg and "1001" in prereg and "1010" in prereg
     # Documented commit ordering is not an independent proof of no earlier peeking.
-    amendments = (ROOT / "docs/research/redesign_20261116/PREREGISTRATION_AMENDMENTS_20261116.md").read_text()
+    amendments = (ROOT / "docs/research/redesign_20261116/PREREGISTRATION_AMENDMENTS_20261116.md").read_text(encoding="utf-8")
     assert "2,200" in amendments and "float_precision" in amendments
 
 
@@ -146,5 +146,38 @@ def test_website_published_csv_manifest_preserved():
     for name, expected in site["published_sha256"].items():
         path = manifest_path.parent / name
         assert path.exists(), f"Missing published site evidence {name}"
-        actual = hashlib.sha256(path.read_bytes()).hexdigest()
+        # Canonical = Git blob bytes (LF). Windows autocrlf checkouts hold CRLF; normalise line endings only.
+        actual = hashlib.sha256(path.read_bytes().replace(bytes([13, 10]), bytes([10]))).hexdigest()
         assert actual == expected, (name, actual, expected)
+
+
+def test_evidence_sha256_index_matches_every_research_file():
+    from experiments.redesign_20261116.evidence_index import INDEX, verify
+    index = json.loads(INDEX.read_text(encoding="utf-8"))
+    assert index["n_files"] == len(index["files"]) >= 90
+    assert verify(index) == []
+
+
+def test_independent_recomputation_reproduces_published_g5_tables():
+    meta = json.loads((D / "G5_INDEPENDENT_RECOMPUTATION_20261116.json").read_text(encoding="utf-8"))
+    assert meta["crosscheck_pass"] is True and meta["uses_fedrs_stats"] is False
+    rows = read_csv(D / "G5_INDEPENDENT_RECOMPUTATION_20261116.csv")
+    signed = {(x["comparison"], x["regime"]): round(100 * float(x["mean_diff"]), 2) for x in rows}
+    assert signed[("H1", "IID")] == 6.09 and signed[("H1", "NONIID_05")] == 5.60
+    assert signed[("H1", "NONIID_01")] == 4.33 and signed[("H2", "NONIID_01")] == 0.53
+    assert signed[("SEC_M2_minus_R1", "IID")] == -1.77 and signed[("SEC_M2_minus_C2", "NONIID_01")] == 0.84
+    assert signed[("SEC_M2_minus_C1", "NONIID_01")] == -7.22 and signed[("SEC_M2_minus_C2", "IID")] == -3.27
+
+
+def test_posthoc_source_sensitivity_is_labelled_and_does_not_replace_primary():
+    rows = read_csv(D / "G5_POSTHOC_SOURCE_SENSITIVITY_20261116.csv")
+    assert {x["evidence_level"] for x in rows} == {"POST_HOC_SENSITIVITY_NOT_PREREGISTERED"}
+    assert {x["posthoc_scenario"] for x in rows} == {"EXCLUDE_ADA_GINA", "EXCLUDE_ADA_GINA_SYLVINE"}
+    primary = [x for x in rows if x["holm_family"]]
+    assert all(x["passed_prereg_rule"] == "True" for x in primary)
+    # preregistered table keeps all 51 sources
+    assert all(int(x["n_datasets"]) == 51 for x in read_csv(D / "G5_PRIMARY_HYPOTHESES.csv"))
+    audit = read_csv(D / "G5_SOURCE_METADATA_AUDIT_20261116.csv")
+    verdict = {x["did"]: x["manual_verdict"] for x in audit}
+    assert len(audit) == 51 and all(x["row_level_verified"] == "False" for x in audit)
+    assert verdict["41156"].startswith("LIKELY_SHARED_UPSTREAM") and verdict["41158"].startswith("LIKELY_SHARED_UPSTREAM")

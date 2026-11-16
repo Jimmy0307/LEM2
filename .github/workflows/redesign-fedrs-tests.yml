@@ -11,6 +11,7 @@ on:
       - "docs/research/teacher_dashboard/redesign/**"
       - "docs/research/teacher_dashboard/data/redesign_20261116/**"
       - ".github/workflows/redesign-fedrs-tests.yml"
+      - ".gitattributes"
   pull_request:
     branches: [research/report-ready-dashboard-20261109]
   workflow_dispatch:
@@ -37,6 +38,12 @@ jobs:
         run: python -m pytest tests/test_fedrs_parity.py -q -p no:warnings
       - name: Public confirmatory evidence, signed comparator and historical-source integrity
         run: python -m pytest tests/test_fedrs_publication_integrity.py -q -p no:warnings
+      - name: Raw experiment table schema, duplicate keys and manifest counts
+        run: python -m pytest tests/test_fedrs_data_quality.py -q -p no:warnings
+      - name: SHA-256 index of all redesign evidence files
+        run: python -m experiments.redesign_20261116.evidence_index
+      - name: Independent recomputation of Gate 5 statistics from raw per-task CSV
+        run: python -m experiments.redesign_20261116.verify_g5_independent --check
       - name: Verify Gate 5 prerequisite commits predate published confirmatory results
         shell: bash
         run: |
@@ -47,3 +54,17 @@ jobs:
           git merge-base --is-ancestor e57e306ffd62 54f028214931
           git merge-base --is-ancestor 54f028214931 HEAD
           echo "G5_PREREGISTRATION_IMPLEMENTATION_RESULTS_COMMIT_ORDER_PASS"
+
+  legacy-suite:
+    # Whole repository test suite (original Rough Set / LEM2 tests included) on the locked runtime.
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install locked pins plus test-only extras
+        run: pip install -r requirements-lock.txt "scipy>=1.13" "scikit-learn>=1.5" pytest
+      - name: Full test suite
+        run: python -m pytest tests -q -p no:warnings

@@ -1,0 +1,4 @@
+table,rows_rerun,rows_unmatched,columns_compared,columns_with_differences,identical,sample_dids,seeds,tasks
+POLICIES,2628,0,9,,True,1169;1486;42769,1005;1010,126
+STRUCTURE,972,0,15,,True,1169;1486;42769,1005;1010,126
+CONFIG,126,0,42,,True,1169;1486;42769,1005;1010,126

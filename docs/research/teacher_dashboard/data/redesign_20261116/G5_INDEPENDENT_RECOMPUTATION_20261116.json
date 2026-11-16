@@ -1,0 +1,23 @@
+{
+  "purpose": "Independent recomputation of preregistered Gate 5 H1/H2 and signed external comparators",
+  "raw_input": "docs/research/redesign_20261116/data/REDESIGN_G5_CONFIRMATORY_POLICIES.csv",
+  "raw_input_sha256": "b70ddd45f4b22a1223a3195a02b308e6da69b60c53c400785bf9ab4be630e7a9",
+  "n_datasets": 51,
+  "seeds": [
+    1001,
+    1002,
+    1003,
+    1004,
+    1005,
+    1006,
+    1007,
+    1008,
+    1009,
+    1010
+  ],
+  "direction": "minuend - subtrahend (M2 - comparator)",
+  "uses_fedrs_stats": false,
+  "crosscheck_errors": [],
+  "crosscheck_pass": true,
+  "secondary_note": "Secondary comparisons are descriptive; p-values are uncorrected; no non-inferiority test was preregistered."
+}

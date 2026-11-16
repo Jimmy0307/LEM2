@@ -32,7 +32,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from .common import OUT, ROOT
+from .common import ROOT, guard_published
 
 CACHE = ROOT / "data_cache" / "openml"
 SUITES = (99, 271)
@@ -195,6 +195,8 @@ def prepare(did: int):
 
 
 def build():
+    from . import common
+    guard_published(common.RUN_OUT / "CONFIRMATORY_SOURCE_REGISTRY.csv")  # fail fast, before any download
     reg = screen(candidates())
     metas = []
     for i, r in reg.iterrows():
@@ -214,7 +216,11 @@ def build():
             reg.loc[i, "reason"] = f"{type(exc).__name__}: {exc}"[:300]
             print("EXCLUDED", r.did, r["name"], exc, flush=True)
     reg = reg.merge(pd.DataFrame(metas), on="did", how="left") if metas else reg
-    reg.to_csv(OUT / "CONFIRMATORY_SOURCE_REGISTRY.csv", index=False)
+    from . import common
+    target = common.RUN_OUT / "CONFIRMATORY_SOURCE_REGISTRY.csv"
+    guard_published(target)
+    common.RUN_OUT.mkdir(parents=True, exist_ok=True)
+    reg.to_csv(target, index=False)
     return reg
 
 
