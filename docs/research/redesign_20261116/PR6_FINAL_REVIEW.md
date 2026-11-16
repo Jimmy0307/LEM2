@@ -68,7 +68,19 @@ Workflow `redesign-fedrs-tests`，commit `f42afd4`（ubuntu-latest，Python 3.12
 
 前一個 commit `6c43d60` 的 `test` job 失敗（run 43819276508）：獨立重算的 p 值比對太嚴格，抓到跨平台浮點平手差異。依 B11 修正驗證程式後通過。**已發布的數據沒有改。**
 
-這個 commit 之後還有一個只改文件的 commit，它的 CI 結果請看 PR 頁面上的 checks。
+### 整合階段 CI（commit `13f85ce`，PR base = `research/finalized-20261116`）
+| Run | Workflow | 觸發 | Job | 結果 |
+|---|---|---|---|---|
+| [43830662244](https://github.com/Jimmy0307/LEM2/actions/runs/43830662244) | redesign-fedrs-tests | push | `test`、`legacy-suite` | success |
+| [43830674210](https://github.com/Jimmy0307/LEM2/actions/runs/43830674210) | redesign-fedrs-tests | pull_request | `test`、`legacy-suite` | success |
+| [43830662381](https://github.com/Jimmy0307/LEM2/actions/runs/43830662381) | redesign-site-publish | push | `build` success；`deploy` 依設計 skipped（擁有者尚未開啟） | success |
+| [43830671395](https://github.com/Jimmy0307/LEM2/actions/runs/43830671395) | redesign-site-publish | pull_request | `build` | success |
+
+`build` 的內容：白名單 298 檔／65.2 MB；網站 CSV 與研究表 SHA 一致；入口頁與研究頁沒有斷連結；隱私稽核沒有 MEDIUM 以上的發現；Linux Chromium 在 320／390／1366 px 下 10 張表都載入、兩個狀態徽章為 PASS、無水平溢出、伺服器回傳資料的 SHA 一致。Pages 產物 `github-pages`（壓縮後 7.1 MB）已上傳，等擁有者開啟部署。
+
+整合期間有兩次 CI 失敗，都已修正：
+- `0b3ed27`：Python 3.12 的 `glob("x/**")` 只匹配目錄，產物缺檔。
+- `ceb49ed`：隱私稽核沒有處理相對路徑。
 
 ## 5. 方法學限制（合併後仍然存在）
 - 受限設定（前 6 特徵、≤1,800 列、3 Client）；絕對 BA 約 44–50%。
