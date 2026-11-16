@@ -19,5 +19,14 @@
   "uses_fedrs_stats": false,
   "crosscheck_errors": [],
   "crosscheck_pass": true,
+  "p_value_warnings": [],
+  "p_value_tolerance": 0.005,
+  "environment": {
+    "python": "3.14.2",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "scipy": "1.17.1"
+  },
   "secondary_note": "Secondary comparisons are descriptive; p-values are uncorrected; no non-inferiority test was preregistered."
 }

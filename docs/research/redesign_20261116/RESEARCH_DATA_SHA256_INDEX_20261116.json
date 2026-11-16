@@ -5,7 +5,7 @@
   "docs/research/teacher_dashboard/data/redesign_20261116"
  ],
  "n_files": 105,
- "total_bytes_lf": 228166404,
+ "total_bytes_lf": 228169196,
  "files": {
   "docs/research/redesign_20261116/data/CONFIRMATORY_SOURCE_REGISTRY.csv": {
    "sha256_lf": "fc26f6630335357d2f31420929142f64bdf0f68bcdc1b8ff390a45bfbdc2dd42",
@@ -128,20 +128,20 @@
    "bytes_lf": 963
   },
   "docs/research/redesign_20261116/data/G5_INDEPENDENT_RECOMPUTATION_20261116.csv": {
-   "sha256_lf": "ba1500a62465dd576208902437aa13053e61bda1483ae2ec7fc1bff61c1d50e2",
-   "bytes_lf": 3969
+   "sha256_lf": "90b243a0e829375acc4124be74119b783560d8684ab9b4cd5cf34960e52d9430",
+   "bytes_lf": 4272
   },
   "docs/research/redesign_20261116/data/G5_INDEPENDENT_RECOMPUTATION_20261116.json": {
-   "sha256_lf": "58a52dda0238319eb7f5498cb4e7bd63b31e7f68d70e4a2d0fa60a31098dc39e",
-   "bytes_lf": 697
+   "sha256_lf": "21e96dea07a6c7a67e2e0e2c37d4db1c94fb52b8c71a675bde01d84711173208",
+   "bytes_lf": 913
   },
   "docs/research/redesign_20261116/data/G5_POLICY_FRIEDMAN.csv": {
    "sha256_lf": "27fe9411aeca4862a44c2e9c197cd2dfb8c8fb3d93bb348d60db135646cd0f00",
    "bytes_lf": 1935
   },
   "docs/research/redesign_20261116/data/G5_POSTHOC_SOURCE_SENSITIVITY_20261116.csv": {
-   "sha256_lf": "8d0e055c102212fd33a4e092102949834b6be517d0da23af3414684c2a755f6c",
-   "bytes_lf": 10089
+   "sha256_lf": "a1a23785121b2668b5c1e6c7a99d682cacccdc4cb8656022a1caad8248cfd03c",
+   "bytes_lf": 10665
   },
   "docs/research/redesign_20261116/data/G5_PRIMARY_HYPOTHESES.csv": {
    "sha256_lf": "6f3e559c68244dd53d0c67c3585a9a7b0ed0ae7270468c66b1f85237406fbebd",
@@ -396,20 +396,20 @@
    "bytes_lf": 963
   },
   "docs/research/teacher_dashboard/data/redesign_20261116/G5_INDEPENDENT_RECOMPUTATION_20261116.csv": {
-   "sha256_lf": "ba1500a62465dd576208902437aa13053e61bda1483ae2ec7fc1bff61c1d50e2",
-   "bytes_lf": 3969
+   "sha256_lf": "90b243a0e829375acc4124be74119b783560d8684ab9b4cd5cf34960e52d9430",
+   "bytes_lf": 4272
   },
   "docs/research/teacher_dashboard/data/redesign_20261116/G5_INDEPENDENT_RECOMPUTATION_20261116.json": {
-   "sha256_lf": "58a52dda0238319eb7f5498cb4e7bd63b31e7f68d70e4a2d0fa60a31098dc39e",
-   "bytes_lf": 697
+   "sha256_lf": "21e96dea07a6c7a67e2e0e2c37d4db1c94fb52b8c71a675bde01d84711173208",
+   "bytes_lf": 913
   },
   "docs/research/teacher_dashboard/data/redesign_20261116/G5_POLICY_FRIEDMAN.csv": {
    "sha256_lf": "27fe9411aeca4862a44c2e9c197cd2dfb8c8fb3d93bb348d60db135646cd0f00",
    "bytes_lf": 1935
   },
   "docs/research/teacher_dashboard/data/redesign_20261116/G5_POSTHOC_SOURCE_SENSITIVITY_20261116.csv": {
-   "sha256_lf": "8d0e055c102212fd33a4e092102949834b6be517d0da23af3414684c2a755f6c",
-   "bytes_lf": 10089
+   "sha256_lf": "a1a23785121b2668b5c1e6c7a99d682cacccdc4cb8656022a1caad8248cfd03c",
+   "bytes_lf": 10665
   },
   "docs/research/teacher_dashboard/data/redesign_20261116/G5_PRIMARY_HYPOTHESES.csv": {
    "sha256_lf": "6f3e559c68244dd53d0c67c3585a9a7b0ed0ae7270468c66b1f85237406fbebd",
@@ -424,8 +424,8 @@
    "bytes_lf": 6857
   },
   "docs/research/teacher_dashboard/data/redesign_20261116/REDESIGN_SITE_MANIFEST.json": {
-   "sha256_lf": "11d8e52e87f03cf501b732734358fef24835a2d38958bd05d2746e679cd77445",
-   "bytes_lf": 3798
+   "sha256_lf": "096376d162d7c77e572c20002c91ceb53f34fbaf7b7cd70bb8d69268c4f43724",
+   "bytes_lf": 4400
   }
  }
 }

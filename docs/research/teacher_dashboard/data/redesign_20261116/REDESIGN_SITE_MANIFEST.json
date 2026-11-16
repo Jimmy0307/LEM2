@@ -32,9 +32,9 @@
     "G5_POLICY_FRIEDMAN.csv": "27fe9411aeca4862a44c2e9c197cd2dfb8c8fb3d93bb348d60db135646cd0f00",
     "G5_STRUCTURE.csv": "56142d4e09a619ed616a4757b8083e2c9fe41635cf209e8f61fd98b48ceca666",
     "CONFIRMATORY_SOURCE_REGISTRY.csv": "fc26f6630335357d2f31420929142f64bdf0f68bcdc1b8ff390a45bfbdc2dd42",
-    "G5_INDEPENDENT_RECOMPUTATION_20261116.csv": "ba1500a62465dd576208902437aa13053e61bda1483ae2ec7fc1bff61c1d50e2",
-    "G5_INDEPENDENT_RECOMPUTATION_20261116.json": "58a52dda0238319eb7f5498cb4e7bd63b31e7f68d70e4a2d0fa60a31098dc39e",
-    "G5_POSTHOC_SOURCE_SENSITIVITY_20261116.csv": "8d0e055c102212fd33a4e092102949834b6be517d0da23af3414684c2a755f6c"
+    "G5_INDEPENDENT_RECOMPUTATION_20261116.csv": "90b243a0e829375acc4124be74119b783560d8684ab9b4cd5cf34960e52d9430",
+    "G5_INDEPENDENT_RECOMPUTATION_20261116.json": "21e96dea07a6c7a67e2e0e2c37d4db1c94fb52b8c71a675bde01d84711173208",
+    "G5_POSTHOC_SOURCE_SENSITIVITY_20261116.csv": "a1a23785121b2668b5c1e6c7a99d682cacccdc4cb8656022a1caad8248cfd03c"
   },
   "missing": [],
   "source_folder": "docs/research/redesign_20261116/data",
@@ -53,6 +53,20 @@
       "G5_POSTHOC_SOURCE_SENSITIVITY_20261116.csv"
     ],
     "hash": "sha256 of LF-normalised bytes (Git blob content)",
-    "note": "Additive; earlier entries unchanged."
-  }
+    "note": "Additive; pre-finalization entries unchanged. Regenerated finalization files keep prior hashes in finalization_superseded_sha256."
+  },
+  "finalization_superseded_sha256": [
+    {
+      "file": "G5_INDEPENDENT_RECOMPUTATION_20261116.csv",
+      "sha256": "ba1500a62465dd576208902437aa13053e61bda1483ae2ec7fc1bff61c1d50e2"
+    },
+    {
+      "file": "G5_INDEPENDENT_RECOMPUTATION_20261116.json",
+      "sha256": "58a52dda0238319eb7f5498cb4e7bd63b31e7f68d70e4a2d0fa60a31098dc39e"
+    },
+    {
+      "file": "G5_POSTHOC_SOURCE_SENSITIVITY_20261116.csv",
+      "sha256": "8d0e055c102212fd33a4e092102949834b6be517d0da23af3414684c2a755f6c"
+    }
+  ]
 }
