@@ -14,8 +14,8 @@ OUT = ROOT / "docs/research/server_rule_cost_20261118"
 ARMS = {"M1": "EQUAL_WIDTH_3", "R3": "EQUAL_WIDTH_5",
         "R2": "MDLP_HIST", "M2": "FED_MD_HIST", "M3": "FED_MD_XC"}
 REGIMES = ("IID", "NONIID_05", "NONIID_01")
-BUDGETS = (("L0_16", 16), ("L1_512", 512), ("L2_10000", 10000),
-           ("L3_1000000", 1000000), ("L4_10000000", 10000000))
+BUDGETS = (("L0_16", 16), ("L1_512", 512), ("L2_2048", 2048),
+           ("L3_10000000", 10000000), ("L4_40000000", 40000000))
 KEYS = ["dataset", "seed", "regime", "discretizer"]
 
 def read(name, root=G5):
@@ -80,13 +80,19 @@ def main():
         comm_numbers=("comm_numbers", "mean"),
         sources=("dataset", "nunique"), families=("family", "nunique"))
     assert summary.sources.eq(51).all()
+    # A cap is not hard unless it bounds EVERY observed source and seed task.
+    extremes = m.groupby(["regime", "discretizer"], as_index=False).agg(
+        max_comm_per_task=("comm_numbers", "max"),
+        p90_comm_per_task=("comm_numbers", lambda x: x.quantile(0.90)))
+    summary = summary.merge(extremes, on=["regime", "discretizer"],
+                            validate="one_to_one")
     summary.to_csv(OUT / "G5_ALL_ARMS_AGGREGATED.csv", index=False)
 
     frontier = []
     for regime in REGIMES:
         x = summary[summary.regime == regime]
         for label, cap in BUDGETS:
-            available = x[x.comm_numbers <= cap]
+            available = x[x.max_comm_per_task <= cap]
             if len(available) == 0:
                 frontier.append(dict(regime=regime, budget=label, cap=cap, arm="NONE"))
                 continue
@@ -136,8 +142,13 @@ def main():
     historical = master.merge(a, on="id", how="left", validate="many_to_one")
     historical["cpu_scope"] = "9_CONFIG_TOTAL_NOT_SERVER_COST"
     historical.to_csv(OUT / "HISTORICAL_161_SOURCE_INVENTORY.csv", index=False)
+    historical["pmlb_passed_with_cpu"] = (
+        historical.pmlb_status.eq("PASS") &
+        historical.pmlb_9config_wall_seconds.notna())
     hsummary = historical.groupby("cohort", dropna=False).agg(
-        sources=("id", "size"), pmlb_cpu_available=("pmlb_9config_wall_seconds", "count"),
+        sources=("id", "size"),
+        pmlb_cpu_recorded=("pmlb_9config_wall_seconds", "count"),
+        pmlb_passed_with_cpu=("pmlb_passed_with_cpu", "sum"),
         median_used_rows=("used_rows", "median"),
         median_used_features=("used_features", "median")).reset_index()
     hsummary.to_csv(OUT / "HISTORICAL_COHORT_SUMMARY.csv", index=False)
@@ -167,12 +178,15 @@ def main():
         "Historical PMLB experiments use at most 900 rows and the first 6 features.",
         "G5 uses first 6 features, at most 1,800 rows, and 3 Clients.", "",
         "## Budget frontier (one FIXED arm selected by retrospective aggregate TEST BA)",
-        "Budget caps count numbers per Client, not bytes. The selected fixed arm is",
-        "a retrospective research ranking and is NOT deployable without new validation.",
-        "No intermediate method exists in the published evidence between roughly 413",
-        "and 7.7 million numbers per Client. A knee in that gap has not been measured.", "",
-        "| Regime | Tier | Arm | Test BA | Non-TRUE coverage proxy | Conflict | Rules | Numbers/Client |",
-        "|---|---|---|---:|---:|---:|---:|---:|",
+        "Caps are HARD per-task maximum numbers per Client across all 51 sources",
+        "and 10 seeds in the given regime, not averages. Displayed numbers are means.",
+        "The selected fixed arm is a retrospective TEST-based ranking and is",
+        "NOT a deployable selection policy. The 512 tier does NOT permit MDLP",
+        "on every source; the 10M tier does NOT permit FED_MD on every source.",
+        "Intermediate accuracy and communication between roughly 413 and",
+        "7.7M mean numbers per Client remain unobserved.", "",
+        "| Regime | Hard tier | Arm | Test BA | Non-TRUE coverage | Conflict | Rules | Mean numbers/Client | Max numbers/Client |",
+        "|---|---|---|---:|---:|---:|---:|---:|---:|",
     ]
     for r in frontier:
         if r["arm"] == "NONE":
@@ -180,7 +194,8 @@ def main():
         report.append(f"| {r['regime']} | {r['budget']} | {r['arm']} | "
                       f"{100*r['ba']:.2f}% | {100*r['effective_coverage']:.2f}% | "
                       f"{100*r['conflict']:.2f}% | {r['rules']:.1f} | "
-                      f"{r['comm_numbers']:,.1f} |")
+                      f"{r['comm_numbers']:,.1f} | "
+                      f"{r['max_comm_per_task']:,.1f} |")
     report += ["", "## Actual CPU time (whole Classical LEM2 fit; NOT Server rule integration)",
                "| Rows | Features | Sources | Median fit seconds | Median 6-policy test seconds | Median rules |",
                "|---:|---:|---:|---:|---:|---:|"]
@@ -189,16 +204,18 @@ def main():
                       f"{int(r['n_sources'])} | {r['median_fit_seconds']:.3f} | "
                       f"{r['median_policy_test_seconds']:.3f} | {r['median_rules']:.1f} |")
     report += ["", "## Interpretation / guardrails",
-               "1. Communication numbers are simulated accounting, not network latency",
+               "1. Hard budget levels constrain the maximum recorded per-task communication",
+        "   over all 51 sources and 10 seeds; observed maxima are not population bounds.",
+        "2. Communication numbers are simulated accounting, not network latency",
                "   or actual secure-protocol byte payload. Multiplying by 8 only models float64.",
-               "2. Fit time is preprocessing + reduct + induction, NOT Server merge CPU.",
-               "3. Non-TRUE coverage subtracts A-only TRUE matches from B2 coverage;",
+               "3. Fit time is preprocessing + reduct + induction, NOT Server merge CPU."
+               "4. Non-TRUE coverage subtracts A-only TRUE matches from B2 coverage;
                "   it is not predictive precision nor a global rule certificate.",
-               "4. Per-dataset Pareto uses TEST outcomes: diagnostic only; choosing by it",
+               "5. Per-dataset Pareto uses TEST outcomes: diagnostic only; choosing by it
                "   for a deployed selector would leak Test labels.",
-               "5. Ada/Gina potentially overlap historical upstream sources; 51 and 161",
+               "6. Ada/Gina potentially overlap historical upstream sources; 51 and 161
                "   must never be added into an independence claim.",
-               "6. No result here identifies the optimal budget for a new server-side",
+               "7. No result here identifies the optimal budget for a new server-side
                "   coverage/conflict rule subset optimizer: rule antecedents and",
                "   independent validation evidence are absent from stored G5 CSVs.", "",
                "## Next gate: Server-only cost-knee experiment",
