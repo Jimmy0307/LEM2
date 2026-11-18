@@ -119,8 +119,10 @@ def rule_trace(
     assert not result["abstained"].any()
     if variant == "B2_TRUE_AS_FALLBACK":
         assert (result["raw_no_match"] == result["effective_no_match"]).all()
-        assert (result["nonempty_rule_match_count"] > 0).equals(
-            result["effective_rule_match_count"] > 0 if not true_hit.any()
-            else (result["nonempty_rule_match_count"] > 0)
+        # B2 suppresses TRUE evidence whenever nonempty rules matched.
+        expected_true_count = np.where(specific_hit, 0, true.sum(axis=1))
+        assert np.array_equal(
+            effective[:, ctx.is_empty].sum(axis=1), expected_true_count
         )
+        assert not (result["active_conflict"] & ~result["raw_conflict"]).any()
     return result
