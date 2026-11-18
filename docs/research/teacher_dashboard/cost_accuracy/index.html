@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LEM2｜全部資料集準確度 × 成本級距｜教授報告</title>
+<meta name="description" content="聯邦 LEM2：109份PMLB歷史實驗、51份OpenML確認性研究、161份歷史資料目錄，逐資料集 Accuracy、Balanced Accuracy、F1、Coverage、Conflict 與可得成本紀錄。">
+<link rel="stylesheet" href="../site.css">
+<style>
+:root{color-scheme:light}body{margin:0;font-family:system-ui,"Noto Sans TC",Arial,sans-serif;color:#193148;background:#f5f8fc}
+main{max-width:1260px;padding:24px 16px 70px;margin:auto}.header{background:#16344c;color:white;padding:30px max(16px,calc((100vw - 1260px)/2))}
+.header h1{margin:5px 0 10px;font-size:clamp(24px,4vw,37px)}.header p{color:#dbe7f2;line-height:1.75}
+.top{background:#fff;border-bottom:1px solid #dae3eb;padding:10px 15px;display:flex;flex-wrap:wrap;gap:16px}
+.top a{color:#1e557b;text-decoration:none;font-size:14px;font-weight:600}.top a:hover{text-decoration:underline}
+.panel{background:#fff;border:1px solid #d9e4ed;border-radius:12px;padding:18px;margin:16px 0;box-shadow:0 1px 3px #14344b10}
+.panel h2{margin:0 0 10px;font-size:20px}.panel p{line-height:1.65}.note{font-size:13px;color:#526273}
+.status{font-weight:700;color:#aa4818}.ok{color:#0b714b}.failed{color:#a12e39}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.card{border:1px solid #dce5ed;border-radius:9px;background:#f8fafc;padding:14px}
+.card strong{display:block;font-size:22px;margin:5px 0}.card small{color:#536679}
+.filters{display:grid;grid-template-columns:repeat(5,minmax(130px,1fr));gap:10px}
+label{display:flex;flex-direction:column;gap:5px;font-size:13px;font-weight:600}
+select,input,button{font:inherit;padding:9px;border:1px solid #b5c6d3;border-radius:7px;background:#fff;max-width:100%}
+button{cursor:pointer;background:#1c4b68;color:#fff;border:0;padding:10px 14px}.links{display:flex;gap:12px;flex-wrap:wrap}
+.links a{font-size:13px}.scroll{max-height:65vh;overflow:auto;border:1px solid #e5edf3;border-radius:8px}
+table{border-collapse:collapse;width:100%;min-width:1120px;font-size:13px}
+th,td{padding:8px 10px;border-bottom:1px solid #e2e9ef;white-space:nowrap;text-align:right}
+th:first-child,td:first-child{text-align:left;min-width:175px;max-width:255px;white-space:normal;overflow-wrap:anywhere}
+thead th{position:sticky;top:0;background:#e9f1f7;z-index:2;color:#284761;cursor:pointer}
+tbody tr:nth-child(even){background:#f8fafc}tbody tr:hover{background:#f0f7fb}
+.badge{display:inline-block;border-radius:4px;background:#e6f4ea;color:#17663c;padding:2px 6px;font-size:11px}
+.badge.warn{background:#fff3df;color:#925311}.right{text-align:right}.muted{color:#697d8a}
+svg{max-width:100%;overflow:visible}.legend{font-size:12px;color:#526879}
+details summary{cursor:pointer;font-weight:600} .footer{font-size:13px;color:#536479}
+@media(max-width:850px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.filters{grid-template-columns:repeat(2,minmax(0,1fr))}main{padding:15px 10px 70px}.panel{padding:13px}}
+@media(max-width:440px){.cards{grid-template-columns:1fr 1fr}.filters{grid-template-columns:1fr 1fr}.card strong{font-size:18px}.header{padding:20px 14px}}
+</style>
+</head>
+<body>
+<nav class="top">
+<a href="../">研究首頁</a><a href="../redesign/">11/16確認性研究</a>
+<a href="../data_catalog/">161份資料來源目錄</a><a href="../pmlb_117/">109份PMLB歷史報告</a>
+<a href="https://github.com/Jimmy0307/LEM2/tree/research/server-rule-cost-frontier-20261118/docs/research/server_rule_cost_20261118">GitHub來源與成本報告</a>
+</nav>
+<header class="header">
+<div>TEACHER DASHBOARD · SOURCE-LEVEL ACCURACY &amp; COST · 2026-11-18</div>
+<h1>所有資料集：準確度 × 成本級距</h1>
+<p>同時查看<strong>109份PMLB歷史成功資料</strong>、<strong>51份OpenML確認性資料</strong>與<strong>161筆歷史來源清冊</strong>。兩種實驗使用不同Seed、資料分割、方法與度量，不合併平均、不宣稱160份完全獨立驗證。</p>
+</header>
+<main>
+<div class="cards">
+<div class="card"><small>PMLB已完成歷史來源</small><strong>109 / 117</strong><small>3 Seeds × 3資料分布 × 六策略</small></div>
+<div class="card"><small>OpenML確認性來源</small><strong>51</strong><small>10 Seeds × 3資料分布 × 5方法</small></div>
+<div class="card"><small>歷史研究來源清冊</small><strong>161</strong><small>包含PMLB、UCI；不是相同實驗</small></div>
+<div class="card"><small>本頁資料驗證</small><strong id="dataStatus">正在載入</strong><small id="dataDetail">來源CSV與Manifest核對中</small></div>
+</div>
+<section class="panel">
+<h2>選擇研究批次與比較指標</h2>
+<div class="filters">
+<label for="cohort">研究批次<select id="cohort"><option value="PMLB">PMLB 109份（歷史）</option><option value="OPENML">OpenML 51份（確認性）</option><option value="INVENTORY">161份歷史來源清冊</option></select></label>
+<label for="regime">資料分布<select id="regime"><option value="IID">IID</option><option value="NONIID_05">Non-IID α=0.5</option><option value="NONIID_01">Non-IID α=0.1</option></select></label>
+<label for="method">六策略或候選方法<select id="method"></select></label>
+<label for="metric">排序與比較指標<select id="metric"><option value="accuracy">Accuracy</option><option value="balanced_accuracy" selected>Balanced Accuracy</option><option value="macro_f1">Macro-F1</option><option value="coverage">Test Coverage</option><option value="conflict">Conflict（依批次標註）</option><option value="rules">規則數</option><option value="fit_seconds">模型擬合時間</option><option value="communication_max_numbers">每Client傳輸數值上限</option></select></label>
+<label for="search">資料集名稱或家族搜尋<input id="search" type="search" placeholder="例如 adult、pc4、iris"></label>
+</div>
+<p class="note" id="metricScope">PMLB的Conflict僅有內層Validation；OpenML提供外層Test Conflict。PMLB沒有可比較的通訊量測，不可當成0。</p>
+<div class="links">
+<a id="download" href="#" download>下載目前批次的完整CSV</a>
+<a href="../redesign/">回確認性主報告</a>
+<a href="../data_catalog/">回161份資料目錄</a>
+</div>
+</section>
+<section class="panel">
+<h2>全體資料集準確度分布（每個資料集等權）</h2>
+<div class="cards">
+<div class="card"><small id="numLabel">目前符合條件資料集</small><strong id="nDatasets">—</strong><small>各資料集先平均該批次Seeds</small></div>
+<div class="card"><small>平均選取指標</small><strong id="meanMetric">—</strong><small>僅目前批次及方法</small></div>
+<div class="card"><small>中位數選取指標</small><strong id="medianMetric">—</strong><small>避免少數來源拉高平均</small></div>
+<div class="card"><small>通訊成本說明</small><strong id="costRange">—</strong><small id="costNote">PMLB通訊未量測</small></div>
+</div>
+<div id="barChart" role="img" aria-label="不同方法的平均測試指標比較"></div>
+<p class="note">圖示為同一批次、同一資料分布下，各方法在資料集等權平均的歷史實測結果；不是用測試資料部署自適應方法。切換資料集查詢不改寫原始資料。</p>
+</section>
+<section class="panel">
+<h2 id="tableTitle">逐資料集結果</h2>
+<p class="note" id="rowNotice">載入中</p>
+<div class="scroll">
+<table><thead id="tableHead"></thead><tbody id="tableRows"><tr><td>正在載入…</td></tr></tbody></table>
+</div>
+</section>
+<section class="panel">
+<h2>研究口徑與不可混用的限制</h2>
+<details open><summary>為什麼是109+51，而不是161份全部重新測試？</summary>
+<p>原始歷史清冊是161筆來源，其中PMLB候選117份、成功109份。51份OpenML是新的10 Seeds確認性研究，與歷史來源可能同源（包括ada、gina），因此不能宣稱已對160個獨立資料集完成同協定驗證。其餘歷史來源仍可在清冊查找，但不冒填不存在的成本或準確度。</p></details>
+<details><summary>Accuracy、Balanced Accuracy、Macro-F1各自回答什麼？</summary>
+<p>Accuracy是Test正確筆數除以Test總筆數；Balanced Accuracy為各類別Recall平均；Macro-F1為各類別F1平均。類別不平衡時應同時檢視三者。所有百分比顯示時才乘100，原始CSV保留0–1比例。</p></details>
+<details><summary>成本如何測量？</summary>
+<p>OpenML的通訊量是離散化階段估算的傳輸「數值個數／Client」，不是實際網路封包、加密成本或Server合併CPU。G5最大值是此來源10 Seeds內的觀測上限；非普適保證。PMLB只有模型擬合秒數，沒有相同口徑的通訊成本。兩批的秒數也不能直接跨環境比較。</p></details>
+<details><summary>Coverage / Conflict能否當作模型精確度？</summary>
+<p>不能。Coverage代表命中規則的比例；Conflict代表候選類別衝突。OpenML顯示Test Conflict與排除TRUE退化命中的Coverage代理值；PMLB的Conflict是Validation，Coverage是Test。較低Conflict可能伴隨較低有效Coverage；不能據此宣稱整體泛化比較好。</p></details>
+<details><summary>是否已找到最佳Server-side規則整合成本級距？</summary>
+<p>還沒有。本頁評估既有離散化與規則決策方法的成本—品質關係，沒有實測新的Server-only規則選擇器。新的規則數25%/50%/75%/100%成本掃描及真實通訊協定仍屬下一階段，不能寫成已完成。</p></details>
+</section>
+<p class="footer">資料主權：GitHub研究CSV及證據索引。此頁為既有實驗的探索性比較展示；預註冊主假設見11/16確認性報告。未測量的值顯示為「—／未量測」，不作0處理。</p>
+</main>
+<script>
+(function(){
+"use strict";
+const BASE="../data/cost_accuracy_20261118/";
+const FILES={PMLB:"PMLB_109_ACCURACY_BY_DATASET.csv",OPENML:"OPENML_51_ACCURACY_COST_BY_DATASET.csv",INVENTORY:"HISTORICAL_161_SOURCE_INVENTORY.csv"};
+const METHODS={PMLB:["VALIDATION_BEST","FIRST_MATCH","SIMPLE_VOTING","STANDARD_VOTING","GLOBAL_STRENGTH","POPULATION_STANDARD","POPULATION_GLOBAL"],OPENML:["M2","R3","R2","M1","M3"]};
+const METRIC_LABELS={accuracy:"Accuracy",balanced_accuracy:"Balanced Accuracy",macro_f1:"Macro-F1",coverage:"Test Coverage",conflict:"Conflict",rules:"規則數",fit_seconds:"Fit seconds",communication_max_numbers:"Communication max numbers"};
+const PCT=["accuracy","balanced_accuracy","macro_f1","coverage","conflict","effective_coverage","validation_conflict"];
+let state={PMLB:[],OPENML:[],INVENTORY:[]},manifest=null;
+const el=id=>document.getElementById(id);
+const text=(id,value)=>{el(id).textContent=value};
+const esc=s=>String(s===undefined||s===null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function parseCSV(s){
+  let out=[],row=[],field="",quote=false;
+  for(let i=0;i<s.length;i++){let c=s[i];if(quote){if(c==='"'&&s[i+1]==='"'){field+='"';i++;}else if(c==='"'){quote=false;}else field+=c;}
+  else if(c==='"'){quote=true;}else if(c===","){row.push(field);field="";}else if(c==="\n"){row.push(field.replace(/\r$/,""));field="";if(row.some(x=>x!==""))out.push(row);row=[];}else field+=c;}
+  if(field!==""||row.length){row.push(field);out.push(row)}
+  const head=out.shift();return out.map(r=>Object.fromEntries(head.map((h,i)=>[h,r[i]===undefined?"":r[i]])))
+}
+function num(v){if(v===null||v===undefined||v==="")return NaN;let x=Number(v);return Number.isFinite(x)?x:NaN}
+function f(v,unit){let n=num(v);if(!Number.isFinite(n))return "—";if(unit==="pct")return (n*100).toFixed(2)+"%";if(unit==="count")return Math.round(n).toLocaleString("en-US");return n.toFixed(2)}
+function med(a){if(!a.length)return NaN;const t=[...a].sort((x,y)=>x-y);return(t[Math.floor((t.length-1)/2)]+t[Math.floor(t.length/2)])/2}
+function av(a){return a.length?a.reduce((x,y)=>x+y,0)/a.length:NaN}
+function observed(arr,key){return arr.map(x=>num(x[key])).filter(Number.isFinite)}
+function setMethod(){let cohort=el("cohort").value,m=el("method");m.innerHTML="";
+  (METHODS[cohort]||[]).forEach(code=>{let x=document.createElement("option");x.value=code;x.textContent=code;m.append(x)});
+  el("regime").disabled=cohort==="INVENTORY";m.disabled=cohort==="INVENTORY";el("metric").disabled=cohort==="INVENTORY";
+  if(cohort==="OPENML")m.value="M2";if(cohort==="PMLB")m.value="VALIDATION_BEST";
+  el("download").href=BASE+FILES[cohort];el("download").download=FILES[cohort]
+}
+function display(rows){const cohort=el("cohort").value,regime=el("regime").value,method=el("method").value,q=el("search").value.trim().toLowerCase(),metric=el("metric").value;
+ const inventory=cohort==="INVENTORY";
+ let subset=rows.filter(r=>{
+   let t=((r.dataset||r.id||"")+" "+(r.dataset_name||r.name||"")+" "+(r.family||r.domain_family||"")).toLowerCase();
+   return t.includes(q)&&(inventory||r.regime===regime&&r.method===method)
+ });
+ if(!inventory){subset.sort((a,b)=>{let x=num(a[metric==="conflict"&&cohort==="PMLB"?"validation_conflict":metric]),y=num(b[metric==="conflict"&&cohort==="PMLB"?"validation_conflict":metric]);return(Number.isFinite(y)?y:-Infinity)-(Number.isFinite(x)?x:-Infinity)||(a.dataset||"").localeCompare(b.dataset||"")})}
+ else subset.sort((a,b)=>(a.cohort||"").localeCompare(b.cohort||"")||(a.name||"").localeCompare(b.name||""));
+ text("nDatasets",subset.length);
+ let vals=inventory?[]:observed(subset,metric==="conflict"&&cohort==="PMLB"?"validation_conflict":metric);
+ text("numLabel",inventory?"符合條件來源":"目前符合條件資料集");
+ const isPct=PCT.includes(metric);
+ text("meanMetric",inventory?"不適用":f(av(vals),isPct?"pct":null));
+ text("medianMetric",inventory?"不適用":f(med(vals),isPct?"pct":null));
+ let costs=inventory?[]:cohort==="OPENML"?observed(subset,"communication_max_numbers"):[];
+ text("costRange",inventory?"未量測":cohort==="PMLB"?"未量測":costs.length?Math.round(Math.max(...costs)).toLocaleString("en-US"):"—");
+ text("costNote",inventory?"來源清冊無共同成本":cohort==="PMLB"?"本批只有Fit CPU時間":"本來源/方法Seed最大數值量上限");
+ text("rowNotice",inventory?"161筆歷史來源清冊；不代表全部完成同協定實驗":cohort==="PMLB"?"109份PMLB；3 Seeds平均；Conflict為Validation，通訊未量測":"51份OpenML；10 Seeds平均；Test Conflict；成本為模擬傳輸數值量");
+ text("metricScope",inventory?"來源目錄，不補入缺失實驗數值":cohort==="PMLB"?"PMLB外層Test Accuracy/BA/F1/Coverage；Conflict僅內層Validation。通訊成本未量測。":"OpenML外層Test Accuracy/BA/F1/Coverage/Conflict，另有B2非TRUE Coverage代理；成本為離散化模擬數值量/Client。");
+ const columns=inventory?
+  [["cohort","批次"],["name","資料集"],["status","狀態"],["original_rows","原始Rows"],["used_rows","使用Rows"],["original_features","原始Factors"],["used_features","使用Factors"],["classes","Classes"],["domain_family","來源家族"]]:
+  [["dataset","資料集ID"],["dataset_name","來源名稱"],["family","家族"],["accuracy","Accuracy"],["balanced_accuracy","Balanced Accuracy"],["macro_f1","Macro-F1"],["coverage","Test Coverage"],["effective_coverage","非TRUE Coverage代理"],["conflict","Test Conflict"],["validation_conflict","Validation Conflict"],["rules","規則數"],["fit_seconds","Fit CPU秒"],["communication_mean_numbers","均值傳輸數值/Client"],["communication_max_numbers","最大傳輸數值/Client"],["seeds","Seeds"]];
+ const shown=columns.filter(x=>inventory||cohort==="OPENML"?!["validation_conflict"].includes(x[0]):!["effective_coverage","conflict","communication_mean_numbers","communication_max_numbers"].includes(x[0]));
+ el("tableHead").innerHTML="<tr>"+shown.map(c=>"<th>"+esc(c[1])+"</th>").join("")+"</tr>";
+ el("tableRows").innerHTML=subset.map(row=>"<tr>"+shown.map(([key])=>{let v=row[key];if(key==="dataset_name"&&cohort==="PMLB")v=row.dataset;
+ let str=PCT.includes(key)?f(v,"pct"):(["fit_seconds"].includes(key)?f(v):(key==="seeds"||key==="rules"||key.includes("numbers")||key.endsWith("_rows")||key.endsWith("_features")?f(v,"count"):(v||"—")));
+ return"<td title='"+esc(v)+"'>"+esc(str)+"</td>"}).join("")+"</tr>").join("")||"<tr><td colspan='"+shown.length+"'>沒有符合條件的資料集</td></tr>";
+ text("tableTitle",inventory?"161份歷史來源清冊":"逐資料集 · "+(cohort==="PMLB"?"PMLB歷史實驗":"OpenML確認性研究")+" · "+regime+" · "+method);
+ chart(cohort,regime,metric,q);
+}
+function chart(cohort,regime,metric,q){if(cohort==="INVENTORY"){el("barChart").textContent="來源清冊不具可比較的準確度結果";return;}
+ let key=metric==="conflict"&&cohort==="PMLB"?"validation_conflict":metric;
+ const groups=(METHODS[cohort]||[]).map(method=>{
+ let x=state[cohort].filter(r=>r.regime===regime&&r.method===method&&((r.dataset+" "+(r.dataset_name||"")+" "+r.family).toLowerCase().includes(q)));
+ let vals=observed(x,key);return{method,mean:av(vals),n:vals.length}});
+ const clean=groups.filter(x=>Number.isFinite(x.mean));if(!clean.length){el("barChart").textContent="目前無可繪製的數值";return;}
+ const allPct=PCT.includes(metric),max=Math.max(...clean.map(x=>x.mean),allPct?1:0.01),h=clean.length*42+25;
+ let graphic='<svg viewBox="0 0 1050 '+h+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="每個方法平均'+esc(METRIC_LABELS[metric])+'">';
+ clean.forEach((r,i)=>{const y=i*42+8,x=252,w=Math.max(0,Math.round(r.mean/max*640)),color=r.method===el("method").value?"#18836b":"#557b96";
+ graphic+='<text x="6" y="'+(y+17)+'" font-size="14" fill="#24455f">'+esc(r.method)+'</text>';
+ graphic+='<rect x="'+x+'" y="'+y+'" width="'+w+'" height="24" rx="4" fill="'+color+'"></rect>';
+ graphic+='<text x="'+(x+w+10)+'" y="'+(y+17)+'" font-size="13" fill="#1d3549">'+esc(f(r.mean,allPct?"pct":null))+' (n='+r.n+')</text>'});
+ graphic+="</svg>";el("barChart").innerHTML=graphic;
+}
+function refresh(){const cohort=el("cohort").value;display(state[cohort])}
+async function start(){
+ const names=["PMLB","OPENML","INVENTORY"];
+ try{const resp=await Promise.all([fetch(BASE+"MANIFEST.json",{cache:"no-store"}),...names.map(k=>fetch(BASE+FILES[k],{cache:"no-store"}))]);
+ if(resp.some(x=>!x.ok))throw Error("資料來源無法載入："+resp.map(x=>x.status).join(","));
+ manifest=await resp[0].json();const txt=await Promise.all(resp.slice(1).map(x=>x.text()));
+ names.forEach((key,i)=>state[key]=parseCSV(txt[i]));
+ if(state.PMLB.length!==109*3*7||state.OPENML.length!==51*3*5||state.INVENTORY.length!==161)throw Error("來源筆數與Manifest不一致");
+ if(manifest.pmlb_source_count!==109||manifest.openml_source_count!==51||manifest.historical_registry_count!==161)throw Error("Manifest總數不符");
+ const hash=async str=>{const buf=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(str));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("")};
+ for(let i=0;i<names.length;i++){let name=FILES[names[i]],actual=await hash(txt[i]);if(actual!==manifest.sha256[name])throw Error("資料檔SHA-256不一致："+name)}
+ text("dataStatus","PASS");el("dataStatus").className="ok";text("dataDetail","109 + 51 + 161 筆來源範圍／SHA核對通過");
+ setMethod();refresh();
+ }catch(e){text("dataStatus","FAIL");el("dataStatus").className="failed";text("dataDetail",e.message);el("tableRows").innerHTML="<tr><td>資料驗證未通過："+esc(e.message)+"</td></tr>";}
+}
+el("cohort").addEventListener("change",()=>{setMethod();refresh()});
+["regime","method","metric","search"].forEach(id=>el(id).addEventListener(id==="search"?"input":"change",refresh));
+start();
+})();
+</script>
+</body></html>
