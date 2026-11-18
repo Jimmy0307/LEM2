@@ -1,0 +1,7 @@
+cohort,sources,pmlb_cpu_available,median_used_rows,median_used_features
+PMLB_117,117,117,900.0,6.0
+UCI_BASE3,3,3,625.0,4.0
+UCI_COMMERCE_TECH2,2,0,2000.0,6.0
+UCI_EXTREME7,7,1,699.0,9.0
+UCI_NEW20,20,5,1600.0,6.0
+UCI_NEXT12,12,1,698.5,6.0

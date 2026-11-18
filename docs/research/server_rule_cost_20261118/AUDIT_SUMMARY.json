@@ -1,0 +1,10 @@
+{
+  "g5_sources": 51,
+  "g5_source_regime_arm_records": 765,
+  "g5_models_analyzed": 7650,
+  "historical_inventory": 161,
+  "pmlb_candidates": 117,
+  "pmlb_successful": 109,
+  "measured_cpu_trials": 36,
+  "measured_cpu_sources": 4
+}
