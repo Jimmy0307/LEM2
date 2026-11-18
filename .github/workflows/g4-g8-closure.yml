@@ -1,0 +1,48 @@
+name: g4-g8-closure-20261118
+on:
+  push:
+    branches: [research/g4-g8-closure-20261118]
+    paths:
+      - "fedrs/closure_diagnostics.py"
+      - "fedrs/theory_bounds.py"
+      - "fedrs/supplement_exploratory.py"
+      - "tests/test_g4_g8_*.py"
+      - "experiments/g4_g8_closure_20261118/**"
+      - "docs/research/g4_g8_closure_20261118/**"
+      - ".github/workflows/g4-g8-closure.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  closure-tests-and-retrospective:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: python -m pip install "numpy>=2" "pandas>=2.2" "scipy>=1.13" "scikit-learn>=1.5" "tabulate>=0.9" pytest
+      - name: G4–G8 rule coverage / policy / theoretical-bound tests
+        run: python -m pytest tests/test_g4_g8_closure_20261118.py tests/test_g4_g8_theory_20261118.py tests/test_g4_g8_supplement_20261118.py -q
+      - name: Read-only exploratory audit of 51-source frozen Gate 5 CSVs
+        run: |
+          mkdir -p "$RUNNER_TEMP/g4g8_closure"
+          python -m experiments.g4_g8_closure_20261118.analyze_retrospective --output "$RUNNER_TEMP/g4g8_closure"
+      - name: Bounded synthetic G8 dimensionality feasibility smoke
+        run: python -m experiments.g4_g8_closure_20261118.scaling_smoke --output "$RUNNER_TEMP/g4g8_closure"
+      - name: New synthetic 3/5/10 Client train-only supplemental-rule experiment
+        run: python -m experiments.g4_g8_closure_20261118.supplement_synthetic_sweep --output "$RUNNER_TEMP/g4g8_closure"
+      - name: UCI20 real-source exploratory B2 vs train-only supplement (20 sources × 2 seeds × 3 regimes; 120 tasks)
+        run: python -m experiments.g4_g8_closure_20261118.uci_supplement_controlled --datasets adult_income,bank_marketing,banknote,breast_diagnostic,covertype,dry_bean,eeg_eye_state,german_credit,grid_stability,haberman,htru2,iris,letter,magic_gamma,mushroom,phishing,rice,sonar,spambase,wine --regimes IID,NONIID_05,NONIID_01 --seeds 11,23 --clients 3 --output "$RUNNER_TEMP/g4g8_closure"
+      - name: Verify frozen research data untouched by workflow
+        run: |
+          test -z "$(git status --porcelain -- docs/research/redesign_20261116/data)"
+          git diff --exit-code -- docs/research/redesign_20261116
+      - name: Publish reproducible exploratory CSV / Markdown as CI artifact, NOT confirmatory evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: g4-g8-exploratory-audit-${{ github.sha }}
+          path: ${{ runner.temp }}/g4g8_closure/
+          retention-days: 30
