@@ -1,0 +1,74 @@
+name: G4-G8 Evidence Closure
+on:
+  push:
+    branches:
+      - research/g4-g8-evidence-closure-20261118
+    paths:
+      - "experiments/g4_g8_closure_20261118/**"
+      - "docs/research/g4_g8_closure_20261118/**"
+      - ".github/workflows/g4-g8-evidence-closure.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  evidence-guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install minimal test dependencies
+        run: python -m pip install "numpy>=2" "pandas>=2.2" "scipy>=1.13" "scikit-learn>=1.5" pytest
+      - name: Test per-row TRUE-only and No-Match semantics
+        run: python -m pytest tests/test_g4_g8_rule_trace.py tests/test_g4_g8_bounds.py -q
+      - name: Recalculate published G4-G8 diagnostic evidence
+        run: python -m experiments.g4_g8_closure_20261118.evidence_guard --json
+      - name: Post-hoc policy conditions from frozen 51-source Gate 5 raw CSV
+        run: python -m experiments.g4_g8_closure_20261118.posthoc_policy_conditions --out "$RUNNER_TEMP/g4g8-posthoc"
+      - name: Upload derived post-hoc audit outputs (not the frozen source CSV)
+        uses: actions/upload-artifact@v4
+        with:
+          name: g4g8-policy-posthoc-${{ github.sha }}
+          path: ${{ runner.temp }}/g4g8-posthoc/
+          retention-days: 14
+          if-no-files-found: error
+      - name: Exploratory B2 x supplement pilot on UCI Iris alpha 0.1
+        run: python -m experiments.g4_g8_closure_20261118.coverage_b2_factorial_pilot --dataset iris --seed 203 --regime NONIID_01 --discretizer EQUAL_WIDTH_3 --out "$RUNNER_TEMP/g4g8-coverage"
+      - name: Exploratory B2 x supplement pilot on UCI Adult alpha 0.1
+        run: python -m experiments.g4_g8_closure_20261118.coverage_b2_factorial_pilot --dataset adult_income --seed 203 --regime NONIID_01 --discretizer EQUAL_WIDTH_3 --out "$RUNNER_TEMP/g4g8-coverage-adult"
+      - name: Upload Adult exploratory coverage evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: g4g8-coverage-adult-${{ github.sha }}
+          path: ${{ runner.temp }}/g4g8-coverage-adult/
+          retention-days: 14
+          if-no-files-found: error
+      - name: Adult alpha 0.1 with Train-only single-literal supplements (exploratory)
+        run: python -m experiments.g4_g8_closure_20261118.coverage_b2_factorial_pilot --dataset adult_income --seed 203 --regime NONIID_01 --discretizer EQUAL_WIDTH_3 --supp-generator SINGLE_LITERAL --min-purity 0.8 --out "$RUNNER_TEMP/g4g8-adult-literal"
+      - name: Upload Adult single-literal controlled pilot
+        uses: actions/upload-artifact@v4
+        with:
+          name: g4g8-adult-singleliteral-${{ github.sha }}
+          path: ${{ runner.temp }}/g4g8-adult-literal/
+          retention-days: 14
+          if-no-files-found: error
+      - name: Upload exploratory coverage-vs-BA and validation gate evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: g4g8-coverage-pilot-${{ github.sha }}
+          path: ${{ runner.temp }}/g4g8-coverage/
+          retention-days: 14
+          if-no-files-found: error
+      - name: Verify no published data changed in this audit branch
+        shell: bash
+        run: |
+          git diff --quiet origin/research/federated-rule-degeneracy-redesign-20261116...HEAD -- docs/research/redesign_20261116/data docs/research/teacher_dashboard/data || {
+            echo "Published research data mutated by G4-G8 closure branch"; exit 1;
+          }
