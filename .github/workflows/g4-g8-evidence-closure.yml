@@ -41,6 +41,15 @@ jobs:
           if-no-files-found: error
       - name: Exploratory B2 x supplement pilot on UCI Iris alpha 0.1
         run: python -m experiments.g4_g8_closure_20261118.coverage_b2_factorial_pilot --dataset iris --seed 203 --regime NONIID_01 --discretizer EQUAL_WIDTH_3 --out "$RUNNER_TEMP/g4g8-coverage"
+      - name: Exploratory B2 x supplement pilot on UCI Adult alpha 0.1
+        run: python -m experiments.g4_g8_closure_20261118.coverage_b2_factorial_pilot --dataset adult_income --seed 203 --regime NONIID_01 --discretizer EQUAL_WIDTH_3 --out "$RUNNER_TEMP/g4g8-coverage-adult"
+      - name: Upload Adult exploratory coverage evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: g4g8-coverage-adult-${{ github.sha }}
+          path: ${{ runner.temp }}/g4g8-coverage-adult/
+          retention-days: 14
+          if-no-files-found: error
       - name: Upload exploratory coverage-vs-BA and validation gate evidence
         uses: actions/upload-artifact@v4
         with:
