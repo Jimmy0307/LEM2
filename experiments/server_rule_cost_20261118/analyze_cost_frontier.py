@@ -93,7 +93,7 @@ def main():
             winner = available.sort_values(
                 ["ba", "comm_numbers", "rules"],
                 ascending=[False, True, True]).iloc[0].to_dict()
-            frontier.append(dict(regime=regime, budget=label, cap=cap, **winner))
+            frontier.append({**winner, "budget": label, "cap": cap})
     result = pd.DataFrame(frontier)
     result.to_csv(OUT / "G5_BUDGET_FRONTIER_POSTHOC.csv", index=False)
 
