@@ -125,7 +125,7 @@ def openml() -> pd.DataFrame:
                             how="left", validate="one_to_one")
     keys = ["dataset", "regime", "discretizer"]
     assert not costs.duplicated(keys).any()
-    merged = costs.merge(grouped, on=keys, how="inner", validate="one_to_one")
+    merged = costs.drop(columns=["seeds"]).merge(grouped, on=keys, how="inner", validate="one_to_one")
     assert len(merged) == 765
     assert set(merged.dataset) == set(costs.dataset)
     assert merged.seeds.eq(10).all()
