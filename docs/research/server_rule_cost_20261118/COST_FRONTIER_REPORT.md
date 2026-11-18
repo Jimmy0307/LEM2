@@ -41,6 +41,37 @@ Intermediate accuracy and communication between roughly 413 and
 | NONIID_01 | L3_10000000 | R2 | 45.76% | 38.60% | 30.86% | 64.8 | 412.8 | 1,610.0 |
 | NONIID_01 | L4_40000000 | M2 | 47.55% | 63.03% | 39.22% | 145.9 | 7,673,759.9 | 39,431,584.0 |
 
+## Per-source paired cost/quality trade-offs
+Source-level differences are descriptive (post-hoc); no new
+hypothesis testing, independent source deduplication, or
+prospective budget selection is claimed.
+| Regime | Arm minus reference | Mean BA pp | Median BA pp | Win/Tie/Loss sources | Delta Conflict pp | Delta non-TRUE coverage pp |
+|---|---|---:|---:|---|---:|---:|
+| IID | M2 - R3 | +4.65 | +0.69 | 33/8/10 | +9.11 | +19.52 |
+| IID | M2 - R2 | +4.92 | +1.38 | 35/9/7 | +20.05 | +36.01 |
+| IID | R2 - R3 | -0.27 | -0.06 | 16/9/26 | -10.95 | -16.49 |
+| NONIID_05 | M2 - R3 | +4.00 | +0.72 | 36/7/8 | +9.83 | +16.59 |
+| NONIID_05 | M2 - R2 | +3.11 | +0.90 | 32/8/11 | +22.63 | +29.13 |
+| NONIID_05 | R2 - R3 | +0.89 | +0.00 | 24/7/20 | -12.81 | -12.54 |
+| NONIID_01 | M2 - R3 | +2.50 | +0.23 | 32/6/13 | +5.27 | +13.91 |
+| NONIID_01 | M2 - R2 | +1.78 | +0.38 | 34/7/10 | +8.36 | +24.43 |
+| NONIID_01 | R2 - R3 | +0.72 | +0.00 | 21/8/22 | -3.09 | -10.52 |
+
+## Practical cost interpretation
+- At the low fixed budget (<=16 numbers per Client), EW5 is the
+  highest mean BA among tested fixed arms, but it adds Conflict
+  and rules relative to EW3, whose communication count is identical.
+- At the mid hard budget (<=2,048 numbers per Client), MDLP_HIST
+  improves mean BA and reduces Conflict over EW5 under Non-IID;
+  however its non-TRUE coverage declines: this is NOT a universal
+  coverage-quality sweet spot.
+- FED_MD needs up to about 39.4 million numbers per Client
+  across observed tasks. It improves BA and non-TRUE coverage,
+  but significantly raises communication and often Conflict.
+- A general optimum for Server-side integration is NOT observed
+  because no budgeted Server-only rule selection was run.
+
+
 ## Actual CPU time (whole Classical LEM2 fit; NOT Server rule integration)
 | Rows | Features | Sources | Median fit seconds | Median 6-policy test seconds | Median rules |
 |---:|---:|---:|---:|---:|---:|
