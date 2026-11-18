@@ -189,6 +189,7 @@ def main():
             results.append({"dataset":a.dataset,"source_sha256":src.sha256,
                             "seed":a.seed,"regime":a.regime,"discretizer":a.discretizer,
                             "rule_variant":variant,"supplement_arm":arm,
+                            "supplement_source":"POOLED_DEVELOPMENT_CENTRALIZED_DIAGNOSTIC",
                             "original_rules":len(fm.rules),"true_rules":int(fm.ctx.is_empty.sum()),
                             "candidate_supplements":len(supp),"selected_supplements":len(selected),
                             "minority_class":minority,**result})
@@ -210,6 +211,8 @@ def main():
               "source_sha256":src.sha256,
               "design":"EW3/FED_MD and A/B2 and NoSupp/AllSupp/ValidationGated",
               "gate_uses":"INNER_VALIDATION_ONLY","outer_test_used_for_selection":False,
+              "supplement_provenance":"POOLED_DEV_CENTRALIZED_DIAGNOSTIC_ONLY_NOT_PRIVACY_PRESERVING",
+              "federated_deployability_claim":False,
               "comparison_note":"TRUE-only is not nonempty evidence; default majority prediction is not Abstention",
               "result_rows":len(results),"candidate_supplements":len(supp),
               "sha256":{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in (output,events_path)}}
