@@ -163,7 +163,8 @@ def aggregate(artifacts, output, seeds, smoke=False, run_url="", smoke_url=""):
                                                             status="MISSING_ARTIFACT_OR_EVENT", error="No model result or failure artifact")
                                                      for d, s, sc in missing])], ignore_index=True)
     prior = ROOT / "experiments/full_scale_20261118/FAILURES.csv"
-    previous_logs = ([prior] if prior.exists() else []) + sorted(output.glob("g5_stop_*/FAILURES.csv")) + sorted(output.glob("conflict_stop_*/FAILURES.csv"))
+    previous_logs = (([prior] if prior.exists() else []) + sorted(output.glob("g5_stop_*/FAILURES.csv"))
+                     + sorted(output.glob("conflict_stop_*/FAILURES.csv")) + sorted(output.glob("dispatch_attempt_*/FAILURES.csv")))
     for log in previous_logs:
         old = pd.read_csv(log)
         old["phase"] = "PRELIMINARY_" + old["phase"].fillna("").astype(str)

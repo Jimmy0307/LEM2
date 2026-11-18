@@ -18,7 +18,10 @@
 - GitHub Actions 工作流程檔已通過 `actionlint`。但 GitHub 規定
   `workflow_dispatch` 的工作流程檔必須存在於預設分支；本 repo 的預設
   分支是 `main`，指定的新檔案不在該分支。原始任務禁止修改 `main`，
-  因此遠端 smoke 與全量執行尚未啟動，也沒有 run URL 或最終數據。
+  將新分支推送後，已對指定 workflow 直接嘗試 `workflow_dispatch`；GitHub
+  回傳 HTTP 404，未建立 workflow run。錯誤紀錄在
+  `dispatch_attempt_20261119T014702+0800/FAILURES.csv`。因此遠端 smoke
+  與全量執行尚未啟動，也沒有 run URL 或最終數據。
 
 GitHub 規則：
 https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_dispatch

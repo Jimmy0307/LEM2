@@ -73,3 +73,15 @@ def test_aggregation_preserves_excluded_source_status(tmp_path):
     registry = pd.read_csv(tmp_path / "report" / "REGISTRY.csv").set_index("dataset")
     assert registry.loc["UCI20:iris", "status"] == "EXCLUDED_TOO_FEW_CLASSES"
     assert registry.loc["UCI20:iris", "dropped_classes"] == '{"rare": 9}'
+
+
+def test_aggregation_preserves_prior_dispatch_failure(tmp_path):
+    artifacts = tmp_path / "artifacts"
+    artifacts.mkdir()
+    report = tmp_path / "report"
+    previous = report / "dispatch_attempt_1"
+    previous.mkdir(parents=True)
+    pd.DataFrame([dict(phase="DISPATCH", status="HTTP_404", error="workflow unavailable")]).to_csv(previous / "FAILURES.csv", index=False)
+    aggregate(artifacts, report, [1001], smoke=True)
+    failures = pd.read_csv(report / "FAILURES.csv")
+    assert ((failures.phase == "PRELIMINARY_DISPATCH") & (failures.status == "HTTP_404")).any()
