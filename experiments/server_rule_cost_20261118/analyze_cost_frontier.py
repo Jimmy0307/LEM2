@@ -205,17 +205,17 @@ def main():
                       f"{r['median_policy_test_seconds']:.3f} | {r['median_rules']:.1f} |")
     report += ["", "## Interpretation / guardrails",
                "1. Hard budget levels constrain the maximum recorded per-task communication",
-        "   over all 51 sources and 10 seeds; observed maxima are not population bounds.",
-        "2. Communication numbers are simulated accounting, not network latency",
+               "   over all 51 sources and 10 seeds; observed maxima are not population bounds.",
+               "2. Communication numbers are simulated accounting, not network latency",
                "   or actual secure-protocol byte payload. Multiplying by 8 only models float64.",
-               "3. Fit time is preprocessing + reduct + induction, NOT Server merge CPU."
-               "4. Non-TRUE coverage subtracts A-only TRUE matches from B2 coverage;
+               "3. Fit time is preprocessing + reduct + induction, NOT Server merge CPU.",
+               "4. Non-TRUE coverage subtracts A-only TRUE matches from B2 coverage;",
                "   it is not predictive precision nor a global rule certificate.",
-               "5. Per-dataset Pareto uses TEST outcomes: diagnostic only; choosing by it
+               "5. Per-dataset Pareto uses TEST outcomes: diagnostic only; choosing by it",
                "   for a deployed selector would leak Test labels.",
-               "6. Ada/Gina potentially overlap historical upstream sources; 51 and 161
+               "6. Ada/Gina potentially overlap historical upstream sources; 51 and 161",
                "   must never be added into an independence claim.",
-               "7. No result here identifies the optimal budget for a new server-side
+               "7. No result here identifies the optimal budget for a new server-side",
                "   coverage/conflict rule subset optimizer: rule antecedents and",
                "   independent validation evidence are absent from stored G5 CSVs.", "",
                "## Next gate: Server-only cost-knee experiment",
