@@ -1,0 +1,42 @@
+{
+  "generated_utc": "2026-11-15T22:51:37+00:00",
+  "git_commit": "e57e306ffd62244575514e596b0d724dd548e7fd",
+  "environment": {
+    "python": "3.14.2",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "scipy": "1.17.1",
+    "sklearn": "1.8.0"
+  },
+  "experiment": "REDESIGN_G5_CONFIRMATORY",
+  "tasks": 10710,
+  "succeeded": 10710,
+  "failed": 0,
+  "wall_seconds": 2991.053457000002,
+  "outputs": [
+    "REDESIGN_G5_CONFIRMATORY_CONFIG.csv",
+    "REDESIGN_G5_CONFIRMATORY_STRUCTURE.csv",
+    "REDESIGN_G5_CONFIRMATORY_POLICIES.csv",
+    "REDESIGN_G5_CONFIRMATORY_FAILURES.csv"
+  ],
+  "preregistration": "docs/research/redesign_20261116/PREREGISTRATION_CONFIRMATORY_20261116.md",
+  "sources": 51,
+  "seeds": [
+    1001,
+    1002,
+    1003,
+    1004,
+    1005,
+    1006,
+    1007,
+    1008,
+    1009,
+    1010
+  ],
+  "regimes": [
+    "IID",
+    "NONIID_05",
+    "NONIID_01"
+  ]
+}

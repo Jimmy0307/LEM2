@@ -1,0 +1,32 @@
+{
+  "generated_utc": "2026-11-15T21:48:18+00:00",
+  "git_commit": "4b3574424881279db246e382f5f14d61b34333c6",
+  "environment": {
+    "python": "3.14.2",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "scipy": "1.17.1",
+    "sklearn": "1.8.0"
+  },
+  "experiment": "REDESIGN_G3_NOISE_REAL",
+  "tasks": 4320,
+  "succeeded": 4320,
+  "failed": 0,
+  "wall_seconds": 402.6174445999786,
+  "outputs": [
+    "REDESIGN_G3_NOISE_REAL_CONFIG.csv",
+    "REDESIGN_G3_NOISE_REAL_STRUCTURE.csv",
+    "REDESIGN_G3_NOISE_REAL_POLICIES.csv",
+    "REDESIGN_G3_NOISE_REAL_FAILURES.csv"
+  ],
+  "noise_rates": [
+    0.0,
+    0.01,
+    0.03,
+    0.05,
+    0.1,
+    0.15
+  ],
+  "noise_scope": "development labels only"
+}

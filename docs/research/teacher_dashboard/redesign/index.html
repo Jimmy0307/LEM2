@@ -1,0 +1,129 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="聯邦 LEM2 規則退化重建研究：TRUE→d 診斷、控制實驗、離散化、雜訊、新切點原型與預註冊確認性驗證">
+<title>聯邦規則退化重建</title>
+<link rel="stylesheet" href="../site.css"><link rel="stylesheet" href="../report-v2.css">
+<style>
+.hero{background:linear-gradient(125deg,#1d2b44,#29506b);color:#fff;padding:34px max(18px,calc((100vw - 1170px)/2))}
+.hero h1{font-size:clamp(26px,4vw,40px);margin:.2em 0}.hero p{color:#dfeaf3;max-width:1000px}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.badge{font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;border:1px solid currentColor}
+.b-hist{color:#6b7280}.b-review{color:#2563eb}.b-diag{color:#b45309}.b-ctrl{color:#047857}.b-proto{color:#7c3aed}.b-conf{color:#be123c}
+.tag-status{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:6px;margin-left:6px}
+.s-expl{background:#fef3c7;color:#92400e}.s-pass{background:#dcfce7;color:#166534}.s-fail{background:#fee2e2;color:#991b1b}.s-info{background:#e0e7ff;color:#3730a3}
+table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:6px 8px;border-bottom:1px solid #e5e7eb;text-align:right}th:first-child,td:first-child{text-align:left}
+.tools{display:flex;flex-wrap:wrap;gap:12px;margin:10px 0}.tools label{display:flex;gap:6px;align-items:center;font-size:14px}
+.note{font-size:13px;color:#4b5563}.pos{color:#047857;font-weight:600}.neg{color:#b91c1c;font-weight:600}
+.toc{position:sticky;top:0;z-index:5;display:flex;gap:6px;overflow-x:auto;padding:8px max(16px,calc((100vw - 1170px)/2));background:#f8fafc;border-bottom:1px solid #e5e7eb;-webkit-overflow-scrolling:touch}
+.toc a{flex:0 0 auto;font-size:13px;padding:4px 10px;border-radius:999px;background:#fff;border:1px solid #d1d5db;color:#1f2937;text-decoration:none;white-space:nowrap}
+.toc a:hover{border-color:#29506b;color:#29506b}
+section.panel{scroll-margin-top:52px}.scroll-table{overflow-x:auto}code{overflow-wrap:anywhere}
+@media (max-width:640px){th,td{font-size:12px;padding:4px}.hero{padding:24px 16px}}
+</style></head><body>
+<div class="site-top"><a class="brand" href="../">LEM2 Research · 教授報告</a><nav><a href="../">研究首頁</a><a href="../g4_g8/">G4–G8（歷史）</a><a class="active" href="./">規則退化重建 2026-11-16</a></nav></div>
+<header class="hero"><div class="eyebrow">FEDERATED RULE DEGENERACY REDESIGN · 2026-11-16</div>
+<h1>為什麼 Client 內確定的規則，<br>放到全域後不再確定？</h1>
+<p>本頁把研究分成六種證據等級，彼此不可混用。只有「Confirmatory Validation」來自預先註冊、未曾用來調整方法的新資料；其餘皆為探索性或診斷性證據。新方法在確認性驗證通過前，<b>不標示為正式最佳演算法</b>。</p>
+<div class="badges"><span class="badge b-hist">Historical Baseline</span><span class="badge b-review">Claude Independent Review</span><span class="badge b-diag">Degenerate Client Diagnostics</span><span class="badge b-ctrl">Controlled Experiments</span><span class="badge b-proto">New Algorithm Prototypes</span><span class="badge b-conf">Confirmatory Validation</span></div>
+</header>
+<nav class="toc" aria-label="本頁導覽"><a href="#historical">1 原始研究</a><a href="#review">2 獨立審查</a><a href="#diagnostics">3 退化診斷</a><a href="#controlled">4 控制實驗</a><a href="#prototypes">5 新切點原型</a><a href="#confirmatory">6 確認性驗證</a><a href="#reproducibility">7 可重現性</a><a href="#limitations">8 限制與下一步</a></nav>
+<main class="wrap">
+
+<section class="panel" id="historical"><span class="section-tag">HISTORICAL BASELINE</span><h2>原始流程（不修改，只重新定位）</h2>
+<p>Classical 最小基數正域約簡 + LEM2 → 3 Clients → UNION → 六種解析策略；連續特徵等寬三區間。歷史 Seeds 11／23 的 Test 已被反覆使用，<b>全部改列探索性</b>。原始頁面：<a href="../g4_g8/">G4–G8</a>、<a href="../g4_g8/controlled_ablation.html">A/B/C 控制消融</a>。</p></section>
+
+<section class="panel" id="review"><span class="section-tag">CLAUDE INDEPENDENT REVIEW · GATE 0</span><h2>重現檢核 <span class="tag-status s-pass">PARITY PASS</span></h2>
+<p>新分析引擎 <code>fedrs/</code> 沿用原始約簡與 LEM2 程式，只把規則比對向量化。測試 <code>tests/test_fedrs_parity.py</code> 在 Iris、Covertype、German Credit 上證明：離散化表、全域規則（含順序與 TRUE→d）、六策略 Validation／Test 預測、歷史 G4 Router 的 Test BA／Coverage／Conflict 與原版<b>完全一致</b>。</p>
+<p class="note">指定的審查文件 <code>claude/independent_review_20261116.md</code> 與審查腳本封包在儲存庫、git 歷史與本機皆不存在；所需診斷已重新實作，未宣稱「沿用審查腳本已驗證」。</p></section>
+
+<section class="panel" id="diagnostics"><span class="section-tag">DEGENERATE CLIENT DIAGNOSTICS · GATE 1</span><h2>單類別 Client → 空約簡 → TRUE→d <span class="tag-status s-expl">EXPLORATORY · UCI20 × 10 seeds</span></h2>
+<div class="scroll-table"><table><thead><tr><th>Client 分布</th><th>含 TRUE 規則的配置</th><th>平均單類別 Client（/3）</th><th>平均空約簡 Client</th><th>平均全域規則數</th><th>Label skew (TV)</th></tr></thead><tbody id="prevRows"></tbody></table></div>
+<div class="tools"><label>資料切分<select id="decSplit"><option value="test" selected>Outer Test</option><option value="val">Inner Validation</option><option value="dev">Development</option></select></label></div>
+<div class="scroll-table"><table><thead><tr><th>Client 分布</th><th>Exact Coverage</th><th>僅由 TRUE 規則命中</th><th>Conflict</th><th>排除 TRUE 後 Conflict</th><th>TRUE 造成的 Conflict</th></tr></thead><tbody id="decRows"></tbody></table></div>
+<p class="note">「僅由 TRUE 規則命中」= 有規則命中，但移除空前件規則後無任何規則命中的列比例。</p></section>
+
+<section class="panel" id="controlled"><span class="section-tag">CONTROLLED EXPERIMENTS · GATES 1–3</span><h2>同一組規則，只改變合併層 <span class="tag-status s-expl">EXPLORATORY</span></h2>
+<p><b>A</b>：保留全部規則；<b>B</b>：合併層排除 TRUE 規則；<b>B2</b>：TRUE 規則只在沒有任何非空規則命中時使用（視為該 Client 的類別先驗）。<b>Control C</b>（限制退化 Client）改變了資料分配，另列，不可視為規則處理效果。</p>
+<h3>六策略差異是否仍存在？（Friedman，資料集為單位）</h3>
+<div class="scroll-table"><table><thead><tr><th>分布</th><th>規則層</th><th>最佳策略</th><th>六策略最大差（pp）</th><th>Friedman p</th></tr></thead><tbody id="spreadRows"></tbody></table></div>
+<h3>連續特徵離散化（相對等寬三區間的 Test BA 差，pp）</h3>
+<div class="tools"><label>規則層<select id="dzVar"><option value="B2_TRUE_AS_FALLBACK" selected>B2</option><option value="A_ALL_RULES">A</option><option value="B_DROP_TRUE">B</option></select></label>
+<label>解析方法<select id="dzPol"><option value="VALIDATION_BEST" selected>Validation Best</option><option value="SIMPLE_VOTING">Simple Voting</option><option value="CONFLICT_BUCKET_ROUTER_V1">原 Router</option></select></label>
+<label>分布<select id="dzReg"><option value="NONIID_01" selected>α=0.1</option><option value="NONIID_05">α=0.5</option><option value="IID">IID</option></select></label></div>
+<div class="scroll-table"><table><thead><tr><th>方法</th><th>Δ BA（pp）</th><th>95% CI</th><th>勝/平/負</th><th>全族 Holm p</th></tr></thead><tbody id="dzRows"></tbody></table></div>
+<p class="note">標示 CENTRAL 的方法需要集中原始值，只作參考；HIST／FED 方法只用 Client 計數彙總，但<b>沒有</b>安全聚合或差分隱私保證。</p>
+<h3>標籤雜訊（Development 標籤翻轉；EW3；Validation Best + B2）</h3>
+<div class="tools"><label>資料<select id="nzSrc"><option value="REAL">UCI20 真實資料</option><option value="SYN">合成資料（已知門檻）</option></select></label><label>分布<select id="nzReg"><option value="IID">IID</option><option value="NONIID_05">α=0.5</option><option value="NONIID_01" selected>α=0.1</option></select></label></div>
+<div class="scroll-table"><table><thead><tr><th>雜訊率</th><th>Classical BA</th><th>VPRS β=.8 BA</th><th>VPRS β=.6 BA</th><th>Classical Conflict</th><th>VPRS β=.8 Conflict</th></tr></thead><tbody id="nzRows"></tbody></table></div></section>
+
+<section class="panel" id="prototypes"><span class="section-tag">NEW ALGORITHM PROTOTYPES · GATE 4</span><h2>衝突感知切點：三個候選設計 <span class="tag-status s-expl">EXPLORATORY · 非正式最佳</span></h2>
+<ul><li><b>FCP_HIST</b>：每特徵直方圖上以「條件熵 + 跨 Client 純但不一致的質量」貪婪選切點。結果：與 EW3 差異不顯著；去掉衝突項後表現相同 → <b>負面結果</b>。</li>
+<li><b>LOCO_SELECT</b>：每個候選切點集合讓 Client 用「其他 Client 的規則」評估自身資料（留一 Client），以 BA、衝突、規則數挑選。<b>去掉衝突懲罰反而更好</b> → 衝突項是負貢獻。</li>
+<li><b>FED_MD_HIST／FED_MD_XC</b>：把 Nguyen–Skowron 辨識切點法改成聯邦形式；目標「無法辨識的異類物件對」可分解為 Client 內 + 跨 Client，兩者都只需加總型計數。增益最大且接近集中式參考；強調跨 Client 對（XC）沒有額外好處。</li></ul>
+<p class="note">結論方向：有效的不是「懲罰衝突」，而是<b>保存全域可辨識性</b>的切點。這是既有 Rough Set 離散化思想的聯邦化，不宣稱新穎演算法；最接近的先行研究見報告（Wozniak et al. 2026；Flores et al. 2026）。</p></section>
+
+<section class="panel" id="confirmatory"><span class="section-tag">CONFIRMATORY VALIDATION · GATE 5</span><h2>預先註冊的新資料驗證 <span id="confBadge" class="tag-status s-info">載入中</span></h2>
+<p>51 份 OpenML 來源（37 個已標記家族；經預先固定的名稱／人工家族別名規則排除歷史清單，尚未完成跨來源原始列級去重。終版稽核發現 <code>ada</code>、<code>gina</code> 很可能分別源自 Adult 與 MNIST；排除後 H1／H2 仍全部通過，屬 post-hoc 敏感度分析），Seeds 1001–1010，3 種分布。主要假設 H1：FED_MD_HIST + B2 優於原始 EW3 + A（Validation Best，Test BA，Holm 校正）。<a href="https://github.com/Jimmy0307/LEM2/blob/research/federated-rule-degeneracy-redesign-20261116/docs/research/redesign_20261116/PREREGISTRATION_CONFIRMATORY_20261116.md">預註冊文件</a></p>
+<div class="scroll-table"><table><thead><tr><th>假設</th><th>分布</th><th>資料集數</th><th>基線 BA</th><th>候選 BA</th><th>Δ（pp）</th><th>95% CI</th><th>勝/平/負</th><th>Holm p</th><th>判定</th></tr></thead><tbody id="confRows"></tbody></table></div>
+<h3>各方法平均 Test BA（Validation Best；CART 以 Validation 選深度）</h3>
+<div class="scroll-table"><table><thead id="armHead"></thead><tbody id="armRows"></tbody></table></div>
+<p class="note">M0 原始基線；M1 只修規則層；M2 主要候選；M3 跨 Client 加權；R1 集中式辨識切點（參考）；R2 MDLP_HIST；R3 EW5；C1 集中式 CART；C2 聯邦 CART 投票。</p>
+<h3>次要對照｜一律以 M2 − 對照模型顯示（pp）</h3>
+<p class="note">正數表示 M2 平均較高，負數表示對照模型較高；此處只計算已發布的各方法平均 Test BA，<b>不是</b>確認性 H1/H2 檢定。顯著性請查看原始配對結果，不可把「不顯著」說成非劣或等效。</p>
+<div class="scroll-table"><table><thead><tr><th>分布</th><th>M2 − R1（集中式 RS）</th><th>M2 − C1（集中式 CART）</th><th>M2 − C2（聯邦 CART）</th></tr></thead><tbody id="secondaryDirectionRows"><tr><td colspan="4">正在核對 G5_ARM_MEANS.csv</td></tr></tbody></table></div>
+<p class="note">來源獨立性稽核：<a href="https://github.com/Jimmy0307/LEM2/blob/research/federated-rule-degeneracy-redesign-20261116/docs/research/redesign_20261116/SOURCE_INDEPENDENCE_REVIEW_20261116.md">51份對歷史161筆的名稱與家族核對（非原始列級去重）</a>。審查修正僅涉及報告的對照方向，不更動預註冊、原始CSV或主要假設。</p></section>
+
+<section class="panel" id="reproducibility"><span class="section-tag">REPRODUCIBILITY · FINALIZATION AUDIT</span><h2>獨立重算與資料完整性 <span id="recBadge" class="tag-status s-info">載入中</span></h2>
+<p>從原始逐任務檔 <code>REDESIGN_G5_CONFIRMATORY_POLICIES.csv</code> 重新配對、平均與檢定，<b>不使用</b>原分析程式的統計模組，再與已發布表格逐值比對。比較方向固定為「前者 − 後者」。外部對照只是描述性比較，p 值未校正，也沒有做非劣性檢定。</p>
+<div class="scroll-table"><table><thead><tr><th>比較</th><th>分布</th><th>資料集</th><th>差異（pp）</th><th>95% CI</th><th>Wilcoxon p</th></tr></thead><tbody id="recRows"><tr><td colspan="6">載入中</td></tr></tbody></table></div>
+<p class="note">全部研究資料檔的 SHA-256 索引：<a href="https://github.com/Jimmy0307/LEM2/blob/research/federated-rule-degeneracy-redesign-20261116/docs/research/redesign_20261116/RESEARCH_DATA_SHA256_INDEX_20261116.json">RESEARCH_DATA_SHA256_INDEX</a>。重現步驟：<a href="https://github.com/Jimmy0307/LEM2/blob/research/federated-rule-degeneracy-redesign-20261116/docs/research/redesign_20261116/REPRODUCIBILITY_GUIDE.md">REPRODUCIBILITY_GUIDE</a>；實驗與檔案對照：<a href="https://github.com/Jimmy0307/LEM2/blob/research/federated-rule-degeneracy-redesign-20261116/docs/research/redesign_20261116/RESEARCH_EVIDENCE_INDEX.md">RESEARCH_EVIDENCE_INDEX</a>。</p></section>
+
+<section class="panel" id="limitations"><span class="section-tag">LIMITATIONS & ROADMAP</span><h2>限制與下一步</h2>
+<h3>來源獨立性（post-hoc 敏感度分析，非預註冊）</h3>
+<p>終版稽核發現，51 份確認性資料中 <code>ada</code> 很可能源自 UCI Adult，<code>gina</code> 很可能源自 MNIST，兩者的歷史對應來源都在過去 161 份清單內。<code>sylvine</code> 是否源自森林覆蓋資料尚未驗證。因此原本宣稱的「完全新來源」排除條件<b>並未完全滿足</b>。預註冊結果不改；下表是事後分析，只回答「排除後結論是否改變」，<b>不能取代</b> 51 份的預註冊分析。</p>
+<div class="scroll-table"><table><thead><tr><th>情境</th><th>假設</th><th>分布</th><th>資料集</th><th>差異（pp）</th><th>95% CI</th><th>Holm p</th><th>預註冊規則</th></tr></thead><tbody id="phRows"><tr><td colspan="8">載入中</td></tr></tbody></table></div>
+<h3>這個研究沒有證明的事</h3>
+<ul>
+<li>不是新演算法：有效的是「全域可辨識性」切點，屬於既有 Rough Set 離散化的聯邦化。衝突懲罰設計（FCP、LOCO 衝突項、FED_MD_XC）在探索性與確認性資料上都沒有增益。</li>
+<li>不優於 CART：集中式 CART 高 4.6–7.2 pp；聯邦 CART 在 IID／α=0.5 也較高。</li>
+<li>沒有隱私或安全聚合保證；FED_MD 的樸素通訊量約每個 Client 7.7×10⁶ 個數字。</li>
+<li>規模受限：只用前 6 個特徵、最多 1,800 列、3 個 Client；絕對 BA 約 44–50%。</li>
+<li>來源獨立性只做到 metadata 與文獻層級，沒有逐列比對樣本（PARTIALLY VERIFIED）。</li>
+</ul>
+<p class="links"><a href="https://github.com/Jimmy0307/LEM2/blob/research/federated-rule-degeneracy-redesign-20261116/docs/research/redesign_20261116/RESEARCH_FINAL_STATUS.md">研究封版狀態</a><a href="https://github.com/Jimmy0307/LEM2/blob/research/federated-rule-degeneracy-redesign-20261116/docs/research/redesign_20261116/NEXT_RESEARCH_ROADMAP.md">下一階段研究 Roadmap</a><a href="https://github.com/Jimmy0307/LEM2/blob/research/federated-rule-degeneracy-redesign-20261116/docs/research/redesign_20261116/SOURCE_INDEPENDENCE_REVIEW_20261116.md">來源獨立性稽核</a></p></section>
+
+<section class="panel"><span class="section-tag">DATA & CODE</span><h2>全部資料與程式</h2>
+<p class="links"><a href="https://github.com/Jimmy0307/LEM2/tree/research/federated-rule-degeneracy-redesign-20261116/docs/research/redesign_20261116">研究報告與原始 CSV／Manifest</a><a href="https://github.com/Jimmy0307/LEM2/tree/research/federated-rule-degeneracy-redesign-20261116/fedrs">fedrs 引擎</a><a href="https://github.com/Jimmy0307/LEM2/tree/research/federated-rule-degeneracy-redesign-20261116/experiments/redesign_20261116">實驗程式</a></p></section>
+</main>
+<footer class="footer"><a href="../">研究報告首頁</a></footer>
+<script>
+(()=>{"use strict";const $=id=>document.getElementById(id);const D="../data/redesign_20261116/";
+const f=(x,d=2)=>Number.isFinite(+x)&&x!==""?(+x).toFixed(d):"—";const pp=x=>Number.isFinite(+x)&&x!==""?(100*x).toFixed(2):"—";
+const R={IID:"IID",NONIID_05:"α=0.5",NONIID_01:"α=0.1"};const V={A_ALL_RULES:"A",B_DROP_TRUE:"B",B2_TRUE_AS_FALLBACK:"B2"};
+function csv(t){const o=[];let r=[],c="",q=false;for(let i=0;i<t.length;i++){const ch=t[i];if(ch=='"'){if(q&&t[i+1]=='"'){c+='"';i++}else q=!q}else if(ch==","&&!q){r.push(c);c=""}else if((ch=="\n"||ch=="\r")&&!q){if(ch=="\r"&&t[i+1]=="\n")i++;r.push(c);c="";if(r.length>1||r[0]!=="")o.push(r);r=[]}else c+=ch}if(c!==""||r.length){r.push(c);o.push(r)}const h=o.shift()||[];return o.map(x=>Object.fromEntries(h.map((k,i)=>[k,x[i]??""])))}
+const get=n=>fetch(D+n,{cache:"no-store"}).then(r=>{if(!r.ok)throw Error(n);return r.text()}).then(csv);
+const sig=(d,lo,hi)=>(+lo>0?"pos":+hi<0?"neg":"");
+get("G1_DEGENERACY_PREVALENCE.csv").then(x=>{$("prevRows").innerHTML=x.map(y=>`<tr><td>${R[y.regime]}</td><td>${pp(y.configs_with_true_rule)}%</td><td>${f(y.mean_single_class_clients)}</td><td>${f(y.mean_empty_reduct_clients)}</td><td>${f(y.mean_global_rules,1)}</td><td>${f(y.mean_label_skew_tv,3)}</td></tr>`).join("")}).catch(e=>$("prevRows").innerHTML=`<tr><td colspan=6>資料未發布：${e.message}</td></tr>`);
+let dec=[];const rDec=()=>{const s=$("decSplit").value;$("decRows").innerHTML=dec.filter(y=>y.split===s&&y.rule_variant==="A_ALL_RULES").map(y=>`<tr><td>${R[y.regime]}</td><td>${pp(y.coverage)}%</td><td>${pp(y.coverage_only_from_true_rules)}%</td><td>${pp(y.conflict_rate)}%</td><td>${pp(y.conflict_rate_without_true)}%</td><td>${pp(y.conflict_created_by_true)}%</td></tr>`).join("")};
+get("G1_STRUCTURE_DECOMPOSITION.csv").then(x=>{dec=x;rDec()});$("decSplit").addEventListener("change",rDec);
+get("G1_POLICY_SPREAD_FRIEDMAN.csv").then(x=>{$("spreadRows").innerHTML=x.map(y=>`<tr><td>${R[y.regime]}</td><td>${V[y.rule_variant]}</td><td>${y.best_policy}</td><td>${f(y.spread_pp)}</td><td>${f(y.friedman_p,4)}</td></tr>`).join("")});
+let dz=[];const rDz=()=>{const v=$("dzVar").value,p=$("dzPol").value,g=$("dzReg").value;const x=dz.filter(y=>y.rule_variant===v&&y.policy_method===p&&y.regime===g).sort((a,b)=>b.mean_diff-a.mean_diff);
+$("dzRows").innerHTML=x.map(y=>`<tr><td>${y.treatment}</td><td class="${sig(y.mean_diff,y.ci95_low,y.ci95_high)}">${pp(y.mean_diff)}</td><td>[${pp(y.ci95_low)}, ${pp(y.ci95_high)}]</td><td>${y.wins}/${y.ties}/${y.losses}</td><td>${f(y.holm_p_family,4)}</td></tr>`).join("")};
+get("G2G4_PAIRED_VS_EW3.csv").then(x=>{dz=x;rDz()});["dzVar","dzPol","dzReg"].forEach(i=>$(i).addEventListener("change",rDz));
+let nz={};const rNz=()=>{const s=$("nzSrc").value,g=$("nzReg").value,x=(nz[s]||[]).filter(y=>y.regime===g&&(s==="REAL"?y.discretizer==="EQUAL_WIDTH_3":y.discretizer==="MDLP_HIST"));
+const by={};x.forEach(y=>{(by[y.label_noise]??={})[y.induction_label]=(by[y.label_noise][y.induction_label]||[]).concat([y])});
+const m=(a,k)=>a&&a.length?a.reduce((s,y)=>s+ +y[k],0)/a.length:NaN;
+$("nzRows").innerHTML=Object.keys(by).sort((a,b)=>a-b).map(n=>{const b=by[n];return `<tr><td>${pp(n)}%</td><td>${pp(m(b.CLASSICAL,"test_ba"))}</td><td>${pp(m(b["VPRS_b0.8"],"test_ba"))}</td><td>${pp(m(b["VPRS_b0.6"],"test_ba"))}</td><td>${pp(m(b.CLASSICAL,"conflict_rate"))}%</td><td>${pp(m(b["VPRS_b0.8"],"conflict_rate"))}%</td></tr>`}).join("")};
+Promise.all([get("G3_REAL_NOISE_SUMMARY.csv"),get("G3_SYNTHETIC_NOISE_SUMMARY.csv")]).then(([a,b])=>{nz={REAL:a,SYN:b};rNz()});["nzSrc","nzReg"].forEach(i=>$(i).addEventListener("change",rNz));
+get("G5_PRIMARY_HYPOTHESES.csv").then(x=>{const all=x.length&&x.filter(y=>y.hypothesis==="H1"&&y.regime!=="IID").every(y=>y.passed==="True");
+$("confBadge").className="tag-status "+(all?"s-pass":"s-fail");$("confBadge").textContent=all?"H1（兩個 Non-IID）通過":"H1 未全部通過";
+$("confRows").innerHTML=x.map(y=>`<tr><td>${y.hypothesis}</td><td>${R[y.regime]}</td><td>${y.n_datasets}</td><td>${pp(y.mean_baseline)}</td><td>${pp(y.mean_treatment)}</td><td class="${sig(y.mean_diff,y.ci95_low,y.ci95_high)}">${pp(y.mean_diff)}</td><td>[${pp(y.ci95_low)}, ${pp(y.ci95_high)}]</td><td>${y.wins}/${y.ties}/${y.losses}</td><td>${f(y.holm_p,4)}</td><td>${y.passed==="True"?"PASS":"NOT PASS"}</td></tr>`).join("")}).catch(()=>{$("confBadge").className="tag-status s-fail";$("confBadge").textContent="尚未完成 / NOT PASS";$("confRows").innerHTML="<tr><td colspan=10>確認性結果尚未發布。</td></tr>"});
+get("G5_ARM_MEANS.csv").then(x=>{const arms=Object.keys(x[0]).filter(k=>k!=="regime");$("armHead").innerHTML="<tr><th>分布</th>"+arms.map(a=>`<th>${a}</th>`).join("")+"</tr>";$("armRows").innerHTML=x.map(y=>`<tr><td>${R[y.regime]}</td>`+arms.map(a=>`<td>${pp(y[a])}</td>`).join("")+"</tr>").join(""); const diff=(y,other)=>{const v=100*(+y.M2-(+y[other]));return `<td class="${v>1e-9?"pos":v< -1e-9?"neg":""}">${v>0?"+":""}${v.toFixed(2)} pp</td>`}; const expected={IID:[-1,-1,-1],NONIID_05:[-1,-1,-1],NONIID_01:[-1,-1,1]}; if(x.length!==3||x.some(y=>!expected[y.regime]||["R1","C1","C2"].some((other,i)=>Math.sign(+y.M2-(+y[other]))!==expected[y.regime][i])))throw Error("對照方向與已核對數據不一致"); $("secondaryDirectionRows").innerHTML=x.map(y=>`<tr><td>${R[y.regime]}</td>${diff(y,"R1")}${diff(y,"C1")}${diff(y,"C2")}</tr>`).join("") }).catch(e=>{$("secondaryDirectionRows").innerHTML="<tr><td colspan=4>對照表資料未通過："+e.message+"</td></tr>"});
+const LBL={H1:"H1：M2 − M0",H2:"H2：M1 − M0",SEC_M2_minus_R1:"M2 − R1（集中式 RS）",SEC_M2_minus_C1:"M2 − C1（集中式 CART）",SEC_M2_minus_C2:"M2 − C2（聯邦 CART）"};
+const pval=p=>+p<1e-4?"<0.0001":f(p,4);
+get("G5_INDEPENDENT_RECOMPUTATION_20261116.csv").then(x=>{if(x.length!==13)throw Error("expected 13 rows");
+$("recRows").innerHTML=x.map(y=>`<tr><td>${LBL[y.comparison]||y.comparison}</td><td>${R[y.regime]}</td><td>${y.n_datasets}</td><td class="${sig(y.mean_diff,y.ci95_low,y.ci95_high)}">${+y.mean_diff>0?"+":""}${pp(y.mean_diff)}</td><td>[${pp(y.ci95_low)}, ${pp(y.ci95_high)}]</td><td>${pval(y.wilcoxon_p_two_sided)}</td></tr>`).join("");
+return fetch(D+"G5_INDEPENDENT_RECOMPUTATION_20261116.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw Error("manifest");return r.json()})}).then(m=>{$("recBadge").className="tag-status "+(m.crosscheck_pass?"s-pass":"s-fail");$("recBadge").textContent=m.crosscheck_pass?"重算與發布表一致":"重算不一致"}).catch(e=>{$("recBadge").className="tag-status s-fail";$("recBadge").textContent="未載入";$("recRows").innerHTML=`<tr><td colspan=6>資料未發布：${e.message}</td></tr>`});
+const SC={EXCLUDE_ADA_GINA:"排除 ada、gina（49 份）",EXCLUDE_ADA_GINA_SYLVINE:"再排除 sylvine（48 份）"};
+get("G5_POSTHOC_SOURCE_SENSITIVITY_20261116.csv").then(x=>{const y0=x.filter(y=>y.holm_family);if(!y0.length)throw Error("empty");
+$("phRows").innerHTML=y0.map(y=>`<tr><td>${SC[y.posthoc_scenario]||y.posthoc_scenario}</td><td>${y.comparison}</td><td>${R[y.regime]}</td><td>${y.n_datasets}</td><td class="${sig(y.mean_diff,y.ci95_low,y.ci95_high)}">+${pp(y.mean_diff)}</td><td>[${pp(y.ci95_low)}, ${pp(y.ci95_high)}]</td><td>${pval(y.holm_p)}</td><td>${y.passed_prereg_rule==="True"?"通過":"未通過"}</td></tr>`).join("")}).catch(e=>$("phRows").innerHTML=`<tr><td colspan=8>資料未發布：${e.message}</td></tr>`);
+})();
+</script></body></html>

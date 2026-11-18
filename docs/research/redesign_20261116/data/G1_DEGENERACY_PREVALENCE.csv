@@ -1,0 +1,4 @@
+regime,configs,configs_with_true_rule,mean_true_rules,mean_single_class_clients,mean_empty_reduct_clients,mean_tiny_clients,mean_global_rules,mean_label_skew_tv,mean_exact_antecedent_conflicts,mean_pairwise_antecedent_jaccard
+IID,200,0.0,0.0,0.0,0.04,0.0,88.665,0.001963140156475521,2.425,0.1299354160282432
+NONIID_01,200,0.8,1.07,1.33,1.335,0.51,51.485,0.4226463693651445,1.675,0.23861512192648562
+NONIID_05,200,0.21,0.22,0.23,0.27,0.225,72.855,0.28028619278606276,2.185,0.09535199292883423

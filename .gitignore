@@ -17,3 +17,5 @@ venv/
 .idea/
 .vscode/
 *.log
+data_cache/
+_site/

@@ -1,0 +1,27 @@
+{
+  "generated_utc": "2026-11-15T19:21:31+00:00",
+  "git_commit": "87e31c41ebf8438d67ee54d49314199cd793b524+UNCOMMITTED_FEDRS_CHANGES",
+  "environment": {
+    "python": "3.14.2",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "scipy": "1.17.1",
+    "sklearn": "1.8.0"
+  },
+  "experiment": "REDESIGN_G1_DEGENERACY",
+  "tasks": 1200,
+  "succeeded": 1176,
+  "failed": 24,
+  "wall_seconds": 176.07747540000128,
+  "outputs": [
+    "REDESIGN_G1_DEGENERACY_CONFIG.csv",
+    "REDESIGN_G1_DEGENERACY_CLIENTS.csv",
+    "REDESIGN_G1_DEGENERACY_STRUCTURE.csv",
+    "REDESIGN_G1_DEGENERACY_POLICIES.csv",
+    "REDESIGN_G1_DEGENERACY_FAILURES.csv"
+  ],
+  "protocol": "nested 64/16/20; EW3; CLASSICAL reduct+LEM2; 3 clients",
+  "control_c_constraint": "min_rows=20, min_classes=2, min_rows_per_present_class=3, max_attempts=500",
+  "seed_status": "ALL EXPLORATORY (11/23 historically reused)"
+}

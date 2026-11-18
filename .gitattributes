@@ -1,0 +1,7 @@
+# Research evidence is hashed as stored in Git (LF). Keep it LF on every checkout so
+# file-level SHA-256 matches on Windows and Linux. Added 2026-11-16 (finalization).
+docs/research/redesign_20261116/** text=auto eol=lf
+docs/research/teacher_dashboard/data/redesign_20261116/** text=auto eol=lf
+docs/research/teacher_dashboard/redesign/** text=auto eol=lf
+*.parquet binary
+*.gz binary

@@ -1,0 +1,32 @@
+{
+  "generated_utc": "2026-11-15T21:50:24+00:00",
+  "git_commit": "4b3574424881279db246e382f5f14d61b34333c6+UNCOMMITTED_FEDRS_CHANGES",
+  "environment": {
+    "python": "3.14.2",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "scipy": "1.17.1",
+    "sklearn": "1.8.0"
+  },
+  "experiment": "REDESIGN_G3_NOISE_SYNTHETIC",
+  "tasks": 1620,
+  "succeeded": 1620,
+  "failed": 0,
+  "wall_seconds": 123.00373559998116,
+  "outputs": [
+    "REDESIGN_G3_NOISE_SYNTHETIC_CONFIG.csv",
+    "REDESIGN_G3_NOISE_SYNTHETIC_STRUCTURE.csv",
+    "REDESIGN_G3_NOISE_SYNTHETIC_POLICIES.csv",
+    "REDESIGN_G3_NOISE_SYNTHETIC_FAILURES.csv"
+  ],
+  "noise_rates": [
+    0.0,
+    0.01,
+    0.03,
+    0.05,
+    0.1,
+    0.15
+  ],
+  "generator": "fedrs.noise.synthetic_table"
+}

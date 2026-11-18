@@ -1,0 +1,431 @@
+{
+ "hash": "sha256 of file bytes with CRLF->LF (equals Git blob content for text files)",
+ "scopes": [
+  "docs/research/redesign_20261116/data",
+  "docs/research/teacher_dashboard/data/redesign_20261116"
+ ],
+ "n_files": 105,
+ "total_bytes_lf": 228169196,
+ "files": {
+  "docs/research/redesign_20261116/data/CONFIRMATORY_SOURCE_REGISTRY.csv": {
+   "sha256_lf": "fc26f6630335357d2f31420929142f64bdf0f68bcdc1b8ff390a45bfbdc2dd42",
+   "bytes_lf": 33059
+  },
+  "docs/research/redesign_20261116/data/G1_ALPHA_GAP.csv": {
+   "sha256_lf": "ce59066e785c43b1d0f7a77f5134e5ad6510dfc6032c8b6b4056b217eadbfd37",
+   "bytes_lf": 12318
+  },
+  "docs/research/redesign_20261116/data/G1_ANALYSIS_MANIFEST.json": {
+   "sha256_lf": "eb081c44973df31ed77e71de674cac4583ba25c1c96cf7eeedd41012689940ee",
+   "bytes_lf": 686
+  },
+  "docs/research/redesign_20261116/data/G1_CONTROL_C_STRUCTURE.csv": {
+   "sha256_lf": "51a0f91006d77b63417f37ad575973b5e3b6390b5637233b0a4649ad20ce989f",
+   "bytes_lf": 597
+  },
+  "docs/research/redesign_20261116/data/G1_CONTROL_C_VS_ORIGINAL.csv": {
+   "sha256_lf": "bc0cc90fd5445e1a21b43a431a8f24246321013fd4d8f945cd8fff6f5d81db6d",
+   "bytes_lf": 5193
+  },
+  "docs/research/redesign_20261116/data/G1_DEGENERACY_BY_DATASET.csv": {
+   "sha256_lf": "267be836c37dabb14ca820a45fdf44f647e617af58b06d2ab1ff02a32ca250cd",
+   "bytes_lf": 3223
+  },
+  "docs/research/redesign_20261116/data/G1_DEGENERACY_PREVALENCE.csv": {
+   "sha256_lf": "0cacc042f284a5d5028df6290a2c19ceb1c79e7e48ca47eba27f58336040a607",
+   "bytes_lf": 492
+  },
+  "docs/research/redesign_20261116/data/G1_PAIRED_VARIANT_VS_A.csv": {
+   "sha256_lf": "b153462a7e232eadec8cd66d8c4f2a37183c97c3132d1684624184b1ca635d3f",
+   "bytes_lf": 31909
+  },
+  "docs/research/redesign_20261116/data/G1_POLICY_SPREAD_FRIEDMAN.csv": {
+   "sha256_lf": "8b9d948c4fc4e20206b342981b8d248651cd7577c0016769d16485500609cc54",
+   "bytes_lf": 2609
+  },
+  "docs/research/redesign_20261116/data/G1_STRUCTURE_DECOMPOSITION.csv": {
+   "sha256_lf": "9152a03806d31a49462b2460d460dbf16c01bb3f3d71c9a227afddc04609fa09",
+   "bytes_lf": 5498
+  },
+  "docs/research/redesign_20261116/data/G2_COUNTEREXAMPLES_FINER_VS_CONFLICT.csv": {
+   "sha256_lf": "ee0cf5a9c436d33c9ec4abcd0b5aaca910239bfb822fb88a74b8cacbd952c7d3",
+   "bytes_lf": 1325
+  },
+  "docs/research/redesign_20261116/data/G2_PEAK_MEMORY_SEED11.csv": {
+   "sha256_lf": "d3a84c73fa3a109782d46f4e7b610585744b7237095732ab8d00741f5c2198d8",
+   "bytes_lf": 308
+  },
+  "docs/research/redesign_20261116/data/G2_POSITION_VS_COUNT.csv": {
+   "sha256_lf": "30f7175b9672d38fd6645ca76d5165e33c91ea7d0f232824f71322258d35ea7f",
+   "bytes_lf": 4403
+  },
+  "docs/research/redesign_20261116/data/G2G4_ANALYSIS_MANIFEST.json": {
+   "sha256_lf": "f95de9e772be6181214b1e2951684946dd0a3ea8ac6214a4fae1c292f9463dcc",
+   "bytes_lf": 428
+  },
+  "docs/research/redesign_20261116/data/G2G4_FEATURE_TYPE_STRATA.csv": {
+   "sha256_lf": "4c03a707d4a6338020e9914e8ce414bfe8dcdd894cc175fc1659fccba99c7667",
+   "bytes_lf": 27535
+  },
+  "docs/research/redesign_20261116/data/G2G4_METHOD_SUMMARY.csv": {
+   "sha256_lf": "9b874f118b2cada9bb3c32a991e6dfb80c24d80052db75f3ec89e1bef734b9ea",
+   "bytes_lf": 43429
+  },
+  "docs/research/redesign_20261116/data/G2G4_PAIRED_VS_EW3.csv": {
+   "sha256_lf": "45c02aec53c3f011861713eb8c095ab1c2d071ba55b41ce0d95809ab1a567ab0",
+   "bytes_lf": 151932
+  },
+  "docs/research/redesign_20261116/data/G3_ANALYSIS_MANIFEST.json": {
+   "sha256_lf": "cb7098e6336a3a26819f10a934c502f7078e10d572c571bdcc794149bbccc5eb",
+   "bytes_lf": 342
+  },
+  "docs/research/redesign_20261116/data/G3_POLICY_FIVE_WAY_DECOMPOSITION.csv": {
+   "sha256_lf": "5f2bda7148d93f792c95f289df11a58c3b3384b058b203892e3d00352739ce5b",
+   "bytes_lf": 15740
+  },
+  "docs/research/redesign_20261116/data/G3_REAL_ASSOCIATIONS.csv": {
+   "sha256_lf": "22d8c5df6123fe619a2f04dc76703030ef49d14887e9a9ed270fe2295ec1f665",
+   "bytes_lf": 4966
+  },
+  "docs/research/redesign_20261116/data/G3_REAL_NOISE_SUMMARY.csv": {
+   "sha256_lf": "9f01959106232db8df49bb61e413a6717209f845460d93d1b95e88ba297b0919",
+   "bytes_lf": 24487
+  },
+  "docs/research/redesign_20261116/data/G3_REAL_VPRS_VS_CLASSICAL.csv": {
+   "sha256_lf": "3eb808216c2456ff763e6084c16f7f100b23e7abbb915e642a7cd85ba38d062c",
+   "bytes_lf": 16999
+  },
+  "docs/research/redesign_20261116/data/G3_SYNTHETIC_ASSOCIATIONS.csv": {
+   "sha256_lf": "e510a1516919285fe329ff184df60392027168b0e53d19ce2703ff09ad536a30",
+   "bytes_lf": 5001
+  },
+  "docs/research/redesign_20261116/data/G3_SYNTHETIC_NOISE_SUMMARY.csv": {
+   "sha256_lf": "884ac52065f3179493f696bd4d8680013ba67dd2df4503e1edd85f6412327ea7",
+   "bytes_lf": 67719
+  },
+  "docs/research/redesign_20261116/data/G3_SYNTHETIC_VPRS_VS_CLASSICAL.csv": {
+   "sha256_lf": "245564d37f359fd55c1835ce1186261f5e1effc648e3527fbe2e4cb93782ebc5",
+   "bytes_lf": 23205
+  },
+  "docs/research/redesign_20261116/data/G4_LOCO_CHOICES.csv": {
+   "sha256_lf": "39811bc4f0ec79f19ab51493c0e46bef156cd3204957e9fba74a475b5129f026",
+   "bytes_lf": 3512
+  },
+  "docs/research/redesign_20261116/data/G5_ANALYSIS_MANIFEST.json": {
+   "sha256_lf": "b39ef4a23418694f82a5b91de557a0f4365b4e9291c3dc8f828659a9d5058da6",
+   "bytes_lf": 451
+  },
+  "docs/research/redesign_20261116/data/G5_ARM_MEANS.csv": {
+   "sha256_lf": "a0782cb464bbee62baadb9e022786ba5d4e5ab9b8711b5b7880471273e7af225",
+   "bytes_lf": 573
+  },
+  "docs/research/redesign_20261116/data/G5_COST_AND_RULES.csv": {
+   "sha256_lf": "356bb26ef1de6ec9e1703ee338b49bca078c417ae442ac002bd8bf885ca660bc",
+   "bytes_lf": 3411
+  },
+  "docs/research/redesign_20261116/data/G5_H1_FAMILY_SENSITIVITY.csv": {
+   "sha256_lf": "5df0cd8b1174d324fff731738fc94ee63b2584a129af590b25b80fd0b6e6bddf",
+   "bytes_lf": 963
+  },
+  "docs/research/redesign_20261116/data/G5_INDEPENDENT_RECOMPUTATION_20261116.csv": {
+   "sha256_lf": "90b243a0e829375acc4124be74119b783560d8684ab9b4cd5cf34960e52d9430",
+   "bytes_lf": 4272
+  },
+  "docs/research/redesign_20261116/data/G5_INDEPENDENT_RECOMPUTATION_20261116.json": {
+   "sha256_lf": "21e96dea07a6c7a67e2e0e2c37d4db1c94fb52b8c71a675bde01d84711173208",
+   "bytes_lf": 913
+  },
+  "docs/research/redesign_20261116/data/G5_POLICY_FRIEDMAN.csv": {
+   "sha256_lf": "27fe9411aeca4862a44c2e9c197cd2dfb8c8fb3d93bb348d60db135646cd0f00",
+   "bytes_lf": 1935
+  },
+  "docs/research/redesign_20261116/data/G5_POSTHOC_SOURCE_SENSITIVITY_20261116.csv": {
+   "sha256_lf": "a1a23785121b2668b5c1e6c7a99d682cacccdc4cb8656022a1caad8248cfd03c",
+   "bytes_lf": 10665
+  },
+  "docs/research/redesign_20261116/data/G5_PRIMARY_HYPOTHESES.csv": {
+   "sha256_lf": "6f3e559c68244dd53d0c67c3585a9a7b0ed0ae7270468c66b1f85237406fbebd",
+   "bytes_lf": 1253
+  },
+  "docs/research/redesign_20261116/data/G5_RERUN_SPOTCHECK_20261116.csv": {
+   "sha256_lf": "488ee23b3454ebf771e1d8f3ca417d628ecf63cf08eee0e29da756fa8021855d",
+   "bytes_lf": 269
+  },
+  "docs/research/redesign_20261116/data/G5_SECONDARY_DESCRIPTIVE.csv": {
+   "sha256_lf": "12cbc3a265ebadcaa95ce60272af3dda79e6f5eff7ab0a98e25f5a7eb330c130",
+   "bytes_lf": 19276
+  },
+  "docs/research/redesign_20261116/data/G5_SOURCE_METADATA_AUDIT_20261116.csv": {
+   "sha256_lf": "7e19ada26f5d94fbbf7ccca19cd569d37fbb3a4ac78e2351c317d9323e9ecde5",
+   "bytes_lf": 12456
+  },
+  "docs/research/redesign_20261116/data/G5_SOURCE_METADATA_AUDIT_20261116_FAILURES.csv": {
+   "sha256_lf": "3374d18ed39158295505a7c97c6645a33afbc357589e582015182eb0ce29c8c1",
+   "bytes_lf": 15
+  },
+  "docs/research/redesign_20261116/data/G5_STRUCTURE.csv": {
+   "sha256_lf": "56142d4e09a619ed616a4757b8083e2c9fe41635cf209e8f61fd98b48ceca666",
+   "bytes_lf": 6857
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G1_DEGENERACY_CLIENTS.csv": {
+   "sha256_lf": "fadebba2bac74f7be3ea8eb565a58c11e8de475b33715b6017db77a05f11cb53",
+   "bytes_lf": 1230790
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G1_DEGENERACY_CONFIG.csv": {
+   "sha256_lf": "c9b603ad91c635a7f80775f39fb9007017328385710970be066bd250c9b30c24",
+   "bytes_lf": 757541
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G1_DEGENERACY_FAILURES.csv": {
+   "sha256_lf": "5278c243c3121210339a526b49882b3834f5d2719ee8814bf4284fdb751b7bc8",
+   "bytes_lf": 14174
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G1_DEGENERACY_MANIFEST.json": {
+   "sha256_lf": "1e7a29b4ec3407dd5ed3304785f6199cb48cb6b1fdb5315edc914135389e3dbe",
+   "bytes_lf": 926
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G1_DEGENERACY_POLICIES.csv": {
+   "sha256_lf": "9b2ec24d2e966639c8764e7f04c8bfebff54dc91339bb225b9cbac96e43cdd7a",
+   "bytes_lf": 6221350
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G1_DEGENERACY_STRUCTURE.csv": {
+   "sha256_lf": "b603ec6d290170f11d4dcd2cd68736caf860d1ac1f2c307904cf8ce499fc9492",
+   "bytes_lf": 2202113
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G2_DISCRETIZATION_CONFIG.csv": {
+   "sha256_lf": "a3809b1956cfca2239f26fa8097c1dd7dc835dd74ec43594c2a7e44d1de05bfc",
+   "bytes_lf": 3811291
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G2_DISCRETIZATION_FAILURES.csv": {
+   "sha256_lf": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+   "bytes_lf": 1
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G2_DISCRETIZATION_MANIFEST.json": {
+   "sha256_lf": "83d9f6fe11eb022c008bc0183b5acfe698b573dad1d3374eba23834229da45a6",
+   "bytes_lf": 1343
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G2_DISCRETIZATION_MEMORY_CONFIG.csv": {
+   "sha256_lf": "c01e54e8103c229e4aba277db1f9413b22e757e66215973561d286b8defb1ac7",
+   "bytes_lf": 388980
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G2_DISCRETIZATION_MEMORY_FAILURES.csv": {
+   "sha256_lf": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+   "bytes_lf": 1
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G2_DISCRETIZATION_MEMORY_MANIFEST.json": {
+   "sha256_lf": "b965c0f7f92e146b252201e38dc11ee40270f2c0ac0d063dd09265cd63b09526",
+   "bytes_lf": 1242
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G2_DISCRETIZATION_POLICIES.csv": {
+   "sha256_lf": "738d43ae9e70482992462f1832e8d024debbad5c9b57fa1d8e8df166e5fa1ab7",
+   "bytes_lf": 31031254
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G2_DISCRETIZATION_STRUCTURE.csv": {
+   "sha256_lf": "45c85b2b4644f8093801acb7fbcbd3a6374b345adc1f3de2ef3092ebe868e3f9",
+   "bytes_lf": 10784575
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G3_NOISE_REAL_CONFIG.csv": {
+   "sha256_lf": "93a37d505d8743c459062a0b73d8ed6ac4acb3ed88b7c346d701146f8ae13229",
+   "bytes_lf": 2870024
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G3_NOISE_REAL_FAILURES.csv": {
+   "sha256_lf": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+   "bytes_lf": 1
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G3_NOISE_REAL_MANIFEST.json": {
+   "sha256_lf": "b6bd10f0ee8a16dd70dc28e9d9584d77267314157d6569d35b0ef2e240671440",
+   "bytes_lf": 741
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G3_NOISE_REAL_POLICIES.csv": {
+   "sha256_lf": "50d8dd5d3570d7c285820ebc91ac808aadc0427429473628f51c0c3a326ee2ae",
+   "bytes_lf": 22966148
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G3_NOISE_REAL_STRUCTURE.csv": {
+   "sha256_lf": "f458e71becad766cf6bf6dcbd685919e73a63fe3f65882168a44bcc1df5111a7",
+   "bytes_lf": 7840075
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G3_NOISE_SYNTHETIC_CONFIG.csv": {
+   "sha256_lf": "fcf85a96476db51e324c9ebea81558c9019ef1c0a83903ede49a90a6cc465fef",
+   "bytes_lf": 1026830
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G3_NOISE_SYNTHETIC_FAILURES.csv": {
+   "sha256_lf": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+   "bytes_lf": 1
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G3_NOISE_SYNTHETIC_MANIFEST.json": {
+   "sha256_lf": "02db86515199aa1f15f4abdf7eaa34b47ad703ca464bf698fbb15222d3910951",
+   "bytes_lf": 795
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G3_NOISE_SYNTHETIC_POLICIES.csv": {
+   "sha256_lf": "e4a451c7fe2dd9b00dac6eae4b4314b136895feebba7110aa4640fa1f1c51535",
+   "bytes_lf": 9599205
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G3_NOISE_SYNTHETIC_STRUCTURE.csv": {
+   "sha256_lf": "f47839b52768eed29c17b04e2d9f3cfdfcbfd89b4833808e5b89c711512cd443",
+   "bytes_lf": 3239218
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G4_PROTOTYPES_CONFIG.csv": {
+   "sha256_lf": "00c8cc11fffa3c7a4facd21b2ae53592143f45a89059b237f6dc13bc518cd16f",
+   "bytes_lf": 7134813
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G4_PROTOTYPES_FAILURES.csv": {
+   "sha256_lf": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+   "bytes_lf": 1
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G4_PROTOTYPES_MANIFEST.json": {
+   "sha256_lf": "e25eaa0b756a5c42edd8c7d581cf5297a900b9864493ec5115a96d91fd6653d0",
+   "bytes_lf": 1239
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G4_PROTOTYPES_POLICIES.csv": {
+   "sha256_lf": "869dda36faea043eb95ac5b767b88871e91f3d8809f94c17f14e9c9371bfb1cf",
+   "bytes_lf": 28262769
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G4_PROTOTYPES_STRUCTURE.csv": {
+   "sha256_lf": "5931cdc826946d71904148db40d95b9785d1e99cb365ecaa68d60a93a845030b",
+   "bytes_lf": 9750290
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G5_CONFIRMATORY_CONFIG.csv": {
+   "sha256_lf": "2a2bb948dabe2f2bca948b6ff4d08808fa64eb903bc5beb7d41a800ced6a3de8",
+   "bytes_lf": 7603858
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G5_CONFIRMATORY_FAILURES.csv": {
+   "sha256_lf": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+   "bytes_lf": 1
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G5_CONFIRMATORY_MANIFEST.json": {
+   "sha256_lf": "0a0d386886c43b5c5b329ec2bafc865d3b06fe84d8ec44b4b8650e7fcea58efd",
+   "bytes_lf": 923
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G5_CONFIRMATORY_POLICIES.csv": {
+   "sha256_lf": "b70ddd45f4b22a1223a3195a02b308e6da69b60c53c400785bf9ab4be630e7a9",
+   "bytes_lf": 51870846
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G5_CONFIRMATORY_SMOKE_CONFIG.csv": {
+   "sha256_lf": "d5d09ef76b4cc43f676dba651793b72728bd2b8767428c6eb686b7b0944b8da1",
+   "bytes_lf": 11531
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G5_CONFIRMATORY_SMOKE_FAILURES.csv": {
+   "sha256_lf": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+   "bytes_lf": 1
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G5_CONFIRMATORY_SMOKE_MANIFEST.json": {
+   "sha256_lf": "599c7c0e91d558c81811742730cc0ac1c6d25b56d6e5185a76bfa27d64a95871",
+   "bytes_lf": 974
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G5_CONFIRMATORY_SMOKE_POLICIES.csv": {
+   "sha256_lf": "9229c716d52cae72965f737206fd6c943b12545850770f6133948383488d5b6c",
+   "bytes_lf": 70268
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G5_CONFIRMATORY_SMOKE_STRUCTURE.csv": {
+   "sha256_lf": "daeeff5cbacca11f21bf53cfb1d2143fbc32cadce73acc73532d811c7c3e178c",
+   "bytes_lf": 24565
+  },
+  "docs/research/redesign_20261116/data/REDESIGN_G5_CONFIRMATORY_STRUCTURE.csv": {
+   "sha256_lf": "a60bdd845724c84942e6a4168a1780f577475e0fdbdda5b0af0b435e40db985f",
+   "bytes_lf": 18442945
+  },
+  "docs/research/teacher_dashboard/data/redesign_20261116/CONFIRMATORY_SOURCE_REGISTRY.csv": {
+   "sha256_lf": "fc26f6630335357d2f31420929142f64bdf0f68bcdc1b8ff390a45bfbdc2dd42",
+   "bytes_lf": 33059
+  },
+  "docs/research/teacher_dashboard/data/redesign_20261116/G1_ALPHA_GAP.csv": {
+   "sha256_lf": "ce59066e785c43b1d0f7a77f5134e5ad6510dfc6032c8b6b4056b217eadbfd37",
+   "bytes_lf": 12318
+  },
+  "docs/research/teacher_dashboard/data/redesign_20261116/G1_CONTROL_C_STRUCTURE.csv": {
+   "sha256_lf": "51a0f91006d77b63417f37ad575973b5e3b6390b5637233b0a4649ad20ce989f",
+   "bytes_lf": 597
+  },
+  "docs/research/teacher_dashboard/data/redesign_20261116/G1_CONTROL_C_VS_ORIGINAL.csv": {
+   "sha256_lf": "bc0cc90fd5445e1a21b43a431a8f24246321013fd4d8f945cd8fff6f5d81db6d",
+   "bytes_lf": 5193
+  },
+  "docs/research/teacher_dashboard/data/redesign_20261116/G1_DEGENERACY_PREVALENCE.csv": {
+   "sha256_lf": "0cacc042f284a5d5028df6290a2c19ceb1c79e7e48ca47eba27f58336040a607",
+   "bytes_lf": 492
+  },
+  "docs/research/teacher_dashboard/data/redesign_20261116/G1_PAIRED_VARIANT_VS_A.csv": {
+   "sha256_lf": "b153462a7e232eadec8cd66d8c4f2a37183c97c3132d1684624184b1ca635d3f",
+   "bytes_lf": 31909
+  },
+  "docs/research/teacher_dashboard/data/redesign_20261116/G1_POLICY_SPREAD_FRIEDMAN.csv": {
+   "sha256_lf": "8b9d948c4fc4e20206b342981b8d248651cd7577c0016769d16485500609cc54",
+   "bytes_lf": 2609
+  },
+  "docs/research/teacher_dashboard/data/redesign_20261116/G1_STRUCTURE_DECOMPOSITION.csv": {
+   "sha256_lf": "9152a03806d31a49462b2460d460dbf16c01bb3f3d71c9a227afddc04609fa09",
+   "bytes_lf": 5498
+  },
+  "docs/research/teacher_dashboard/data/redesign_20261116/G2_COUNTEREXAMPLES_FINER_VS_CONFLICT.csv": {
+   "sha256_lf": "ee0cf5a9c436d33c9ec4abcd0b5aaca910239bfb822fb88a74b8cacbd952c7d3",
+   "bytes_lf": 1325
+  },
+  "docs/research/teacher_dashboard/data/redesign_20261116/G2_POSITION_VS_COUNT.csv": {
+   "sha256_lf": "30f7175b9672d38fd6645ca76d5165e33c91ea7d0f232824f71322258d35ea7f",
+   "bytes_lf": 4403
+  },
+  "docs/research/teacher_dashboard/data/redesign_20261116/G2G4_METHOD_SUMMARY.csv": {
+   "sha256_lf": "9b874f118b2cada9bb3c32a991e6dfb80c24d80052db75f3ec89e1bef734b9ea",
+   "bytes_lf": 43429
+  },
+  "docs/research/teacher_dashboard/data/redesign_20261116/G2G4_PAIRED_VS_EW3.csv": {
+   "sha256_lf": "45c02aec53c3f011861713eb8c095ab1c2d071ba55b41ce0d95809ab1a567ab0",
+   "bytes_lf": 151932
+  },
+  "docs/research/teacher_dashboard/data/redesign_20261116/G3_POLICY_FIVE_WAY_DECOMPOSITION.csv": {
+   "sha256_lf": "5f2bda7148d93f792c95f289df11a58c3b3384b058b203892e3d00352739ce5b",
+   "bytes_lf": 15740
+  },
+  "docs/research/teacher_dashboard/data/redesign_20261116/G3_REAL_NOISE_SUMMARY.csv": {
+   "sha256_lf": "9f01959106232db8df49bb61e413a6717209f845460d93d1b95e88ba297b0919",
+   "bytes_lf": 24487
+  },
+  "docs/research/teacher_dashboard/data/redesign_20261116/G3_SYNTHETIC_NOISE_SUMMARY.csv": {
+   "sha256_lf": "884ac52065f3179493f696bd4d8680013ba67dd2df4503e1edd85f6412327ea7",
+   "bytes_lf": 67719
+  },
+  "docs/research/teacher_dashboard/data/redesign_20261116/G4_LOCO_CHOICES.csv": {
+   "sha256_lf": "39811bc4f0ec79f19ab51493c0e46bef156cd3204957e9fba74a475b5129f026",
+   "bytes_lf": 3512
+  },
+  "docs/research/teacher_dashboard/data/redesign_20261116/G5_ARM_MEANS.csv": {
+   "sha256_lf": "a0782cb464bbee62baadb9e022786ba5d4e5ab9b8711b5b7880471273e7af225",
+   "bytes_lf": 573
+  },
+  "docs/research/teacher_dashboard/data/redesign_20261116/G5_H1_FAMILY_SENSITIVITY.csv": {
+   "sha256_lf": "5df0cd8b1174d324fff731738fc94ee63b2584a129af590b25b80fd0b6e6bddf",
+   "bytes_lf": 963
+  },
+  "docs/research/teacher_dashboard/data/redesign_20261116/G5_INDEPENDENT_RECOMPUTATION_20261116.csv": {
+   "sha256_lf": "90b243a0e829375acc4124be74119b783560d8684ab9b4cd5cf34960e52d9430",
+   "bytes_lf": 4272
+  },
+  "docs/research/teacher_dashboard/data/redesign_20261116/G5_INDEPENDENT_RECOMPUTATION_20261116.json": {
+   "sha256_lf": "21e96dea07a6c7a67e2e0e2c37d4db1c94fb52b8c71a675bde01d84711173208",
+   "bytes_lf": 913
+  },
+  "docs/research/teacher_dashboard/data/redesign_20261116/G5_POLICY_FRIEDMAN.csv": {
+   "sha256_lf": "27fe9411aeca4862a44c2e9c197cd2dfb8c8fb3d93bb348d60db135646cd0f00",
+   "bytes_lf": 1935
+  },
+  "docs/research/teacher_dashboard/data/redesign_20261116/G5_POSTHOC_SOURCE_SENSITIVITY_20261116.csv": {
+   "sha256_lf": "a1a23785121b2668b5c1e6c7a99d682cacccdc4cb8656022a1caad8248cfd03c",
+   "bytes_lf": 10665
+  },
+  "docs/research/teacher_dashboard/data/redesign_20261116/G5_PRIMARY_HYPOTHESES.csv": {
+   "sha256_lf": "6f3e559c68244dd53d0c67c3585a9a7b0ed0ae7270468c66b1f85237406fbebd",
+   "bytes_lf": 1253
+  },
+  "docs/research/teacher_dashboard/data/redesign_20261116/G5_SECONDARY_DESCRIPTIVE.csv": {
+   "sha256_lf": "12cbc3a265ebadcaa95ce60272af3dda79e6f5eff7ab0a98e25f5a7eb330c130",
+   "bytes_lf": 19276
+  },
+  "docs/research/teacher_dashboard/data/redesign_20261116/G5_STRUCTURE.csv": {
+   "sha256_lf": "56142d4e09a619ed616a4757b8083e2c9fe41635cf209e8f61fd98b48ceca666",
+   "bytes_lf": 6857
+  },
+  "docs/research/teacher_dashboard/data/redesign_20261116/REDESIGN_SITE_MANIFEST.json": {
+   "sha256_lf": "096376d162d7c77e572c20002c91ceb53f34fbaf7b7cd70bb8d69268c4f43724",
+   "bytes_lf": 4400
+  }
+ }
+}

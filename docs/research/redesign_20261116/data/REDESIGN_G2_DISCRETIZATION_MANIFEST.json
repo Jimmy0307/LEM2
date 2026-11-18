@@ -1,0 +1,57 @@
+{
+  "generated_utc": "2026-11-15T19:34:48+00:00",
+  "git_commit": "87e31c41ebf8438d67ee54d49314199cd793b524+UNCOMMITTED_FEDRS_CHANGES",
+  "environment": {
+    "python": "3.14.2",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "scipy": "1.17.1",
+    "sklearn": "1.8.0"
+  },
+  "experiment": "REDESIGN_G2_DISCRETIZATION",
+  "tasks": 5610,
+  "succeeded": 5610,
+  "failed": 0,
+  "wall_seconds": 774.6257920999778,
+  "outputs": [
+    "REDESIGN_G2_DISCRETIZATION_CONFIG.csv",
+    "REDESIGN_G2_DISCRETIZATION_STRUCTURE.csv",
+    "REDESIGN_G2_DISCRETIZATION_POLICIES.csv",
+    "REDESIGN_G2_DISCRETIZATION_FAILURES.csv"
+  ],
+  "methods": [
+    "EQUAL_WIDTH_3",
+    "EQUAL_WIDTH_5",
+    "EQUAL_FREQUENCY_3",
+    "EQUAL_FREQUENCY_5",
+    "ROBUST_WIDTH_3",
+    "MDLP_CENTRAL",
+    "MDLP_HIST",
+    "CHIMERGE_CENTRAL",
+    "RS_DISCERNIBILITY_CENTRAL",
+    "EW_COUNT_MATCHED_MDLP_HIST",
+    "EF_COUNT_MATCHED_MDLP_HIST"
+  ],
+  "sources": [
+    "adult_income",
+    "bank_marketing",
+    "banknote",
+    "breast_diagnostic",
+    "covertype",
+    "dry_bean",
+    "eeg_eye_state",
+    "german_credit",
+    "grid_stability",
+    "haberman",
+    "htru2",
+    "iris",
+    "magic_gamma",
+    "rice",
+    "sonar",
+    "spambase",
+    "wine"
+  ],
+  "seed_status": "ALL EXPLORATORY",
+  "test_labels_used_for_cuts": false
+}

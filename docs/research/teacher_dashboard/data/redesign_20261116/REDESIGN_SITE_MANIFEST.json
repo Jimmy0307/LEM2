@@ -1,0 +1,72 @@
+{
+  "generated_utc": "2026-11-15T22:53:41+00:00",
+  "git_commit": "e57e306ffd62244575514e596b0d724dd548e7fd",
+  "environment": {
+    "python": "3.14.2",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "scipy": "1.17.1",
+    "sklearn": "1.8.0"
+  },
+  "published_sha256": {
+    "G1_DEGENERACY_PREVALENCE.csv": "0cacc042f284a5d5028df6290a2c19ceb1c79e7e48ca47eba27f58336040a607",
+    "G1_STRUCTURE_DECOMPOSITION.csv": "9152a03806d31a49462b2460d460dbf16c01bb3f3d71c9a227afddc04609fa09",
+    "G1_POLICY_SPREAD_FRIEDMAN.csv": "8b9d948c4fc4e20206b342981b8d248651cd7577c0016769d16485500609cc54",
+    "G1_PAIRED_VARIANT_VS_A.csv": "b153462a7e232eadec8cd66d8c4f2a37183c97c3132d1684624184b1ca635d3f",
+    "G1_ALPHA_GAP.csv": "ce59066e785c43b1d0f7a77f5134e5ad6510dfc6032c8b6b4056b217eadbfd37",
+    "G1_CONTROL_C_VS_ORIGINAL.csv": "bc0cc90fd5445e1a21b43a431a8f24246321013fd4d8f945cd8fff6f5d81db6d",
+    "G1_CONTROL_C_STRUCTURE.csv": "51a0f91006d77b63417f37ad575973b5e3b6390b5637233b0a4649ad20ce989f",
+    "G2G4_PAIRED_VS_EW3.csv": "45c02aec53c3f011861713eb8c095ab1c2d071ba55b41ce0d95809ab1a567ab0",
+    "G2G4_METHOD_SUMMARY.csv": "9b874f118b2cada9bb3c32a991e6dfb80c24d80052db75f3ec89e1bef734b9ea",
+    "G2_POSITION_VS_COUNT.csv": "30f7175b9672d38fd6645ca76d5165e33c91ea7d0f232824f71322258d35ea7f",
+    "G2_COUNTEREXAMPLES_FINER_VS_CONFLICT.csv": "ee0cf5a9c436d33c9ec4abcd0b5aaca910239bfb822fb88a74b8cacbd952c7d3",
+    "G4_LOCO_CHOICES.csv": "39811bc4f0ec79f19ab51493c0e46bef156cd3204957e9fba74a475b5129f026",
+    "G3_REAL_NOISE_SUMMARY.csv": "9f01959106232db8df49bb61e413a6717209f845460d93d1b95e88ba297b0919",
+    "G3_SYNTHETIC_NOISE_SUMMARY.csv": "884ac52065f3179493f696bd4d8680013ba67dd2df4503e1edd85f6412327ea7",
+    "G3_POLICY_FIVE_WAY_DECOMPOSITION.csv": "5f2bda7148d93f792c95f289df11a58c3b3384b058b203892e3d00352739ce5b",
+    "G5_PRIMARY_HYPOTHESES.csv": "6f3e559c68244dd53d0c67c3585a9a7b0ed0ae7270468c66b1f85237406fbebd",
+    "G5_ARM_MEANS.csv": "a0782cb464bbee62baadb9e022786ba5d4e5ab9b8711b5b7880471273e7af225",
+    "G5_SECONDARY_DESCRIPTIVE.csv": "12cbc3a265ebadcaa95ce60272af3dda79e6f5eff7ab0a98e25f5a7eb330c130",
+    "G5_H1_FAMILY_SENSITIVITY.csv": "5df0cd8b1174d324fff731738fc94ee63b2584a129af590b25b80fd0b6e6bddf",
+    "G5_POLICY_FRIEDMAN.csv": "27fe9411aeca4862a44c2e9c197cd2dfb8c8fb3d93bb348d60db135646cd0f00",
+    "G5_STRUCTURE.csv": "56142d4e09a619ed616a4757b8083e2c9fe41635cf209e8f61fd98b48ceca666",
+    "CONFIRMATORY_SOURCE_REGISTRY.csv": "fc26f6630335357d2f31420929142f64bdf0f68bcdc1b8ff390a45bfbdc2dd42",
+    "G5_INDEPENDENT_RECOMPUTATION_20261116.csv": "90b243a0e829375acc4124be74119b783560d8684ab9b4cd5cf34960e52d9430",
+    "G5_INDEPENDENT_RECOMPUTATION_20261116.json": "21e96dea07a6c7a67e2e0e2c37d4db1c94fb52b8c71a675bde01d84711173208",
+    "G5_POSTHOC_SOURCE_SENSITIVITY_20261116.csv": "a1a23785121b2668b5c1e6c7a99d682cacccdc4cb8656022a1caad8248cfd03c"
+  },
+  "missing": [],
+  "source_folder": "docs/research/redesign_20261116/data",
+  "integrity_reconciliation": {
+    "reason": "Windows pre-commit CRLF hashes differ from Git-hosted LF blob bytes",
+    "audit_utc": "2026-11-16T05:47:57+00:00",
+    "git_head_when_reconciled": "e5a794e1fb995d6f13c2d0bdd44dd14a16210bfc",
+    "files_rehashed_after_git_line_ending_normalization": 22,
+    "policy": "Published SHA256 is hash of actual Git blob/site CSV bytes, not precommit Windows bytes",
+    "research_csv_and_primary_experiments_modified": false
+  },
+  "finalization_additions_20261116": {
+    "files": [
+      "G5_INDEPENDENT_RECOMPUTATION_20261116.csv",
+      "G5_INDEPENDENT_RECOMPUTATION_20261116.json",
+      "G5_POSTHOC_SOURCE_SENSITIVITY_20261116.csv"
+    ],
+    "hash": "sha256 of LF-normalised bytes (Git blob content)",
+    "note": "Additive; pre-finalization entries unchanged. Regenerated finalization files keep prior hashes in finalization_superseded_sha256."
+  },
+  "finalization_superseded_sha256": [
+    {
+      "file": "G5_INDEPENDENT_RECOMPUTATION_20261116.csv",
+      "sha256": "ba1500a62465dd576208902437aa13053e61bda1483ae2ec7fc1bff61c1d50e2"
+    },
+    {
+      "file": "G5_INDEPENDENT_RECOMPUTATION_20261116.json",
+      "sha256": "58a52dda0238319eb7f5498cb4e7bd63b31e7f68d70e4a2d0fa60a31098dc39e"
+    },
+    {
+      "file": "G5_POSTHOC_SOURCE_SENSITIVITY_20261116.csv",
+      "sha256": "8d0e055c102212fd33a4e092102949834b6be517d0da23af3414684c2a755f6c"
+    }
+  ]
+}
