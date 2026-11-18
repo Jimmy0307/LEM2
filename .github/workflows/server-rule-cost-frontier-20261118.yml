@@ -7,6 +7,10 @@ on:
     paths:
       - .github/workflows/server-rule-cost-frontier-20261118.yml
       - experiments/server_rule_cost_20261118/**
+      - docs/research/teacher_dashboard/cost_accuracy/**
+      - docs/research/teacher_dashboard/index.html
+      - docs/research/teacher_dashboard/redesign/index.html
+      - experiments/redesign_20261116/build_public_site.py
   workflow_dispatch:
 
 permissions:
@@ -29,6 +33,18 @@ jobs:
         run: python -m pip install pandas==2.2.3 numpy==2.3.5
       - name: Reaggregate frozen G5 and historical catalogs (no Client retraining)
         run: python -m experiments.server_rule_cost_20261118.analyze_cost_frontier
+      - name: Build professor-level accuracy and cost tables for all evaluated sources
+        run: python -m experiments.server_rule_cost_20261118.build_teacher_accuracy
+      - name: Verify public Teacher Dashboard whitelist and privacy
+        run: python -m experiments.redesign_20261116.build_public_site --out _site
+      - name: Real-browser source-level accuracy acceptance (320 / 390 / 1366)
+        shell: bash
+        run: |
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+          (cd _site && python -m http.server 8000 --bind 127.0.0.1 >/dev/null 2>&1 &)
+          sleep 3
+          python -m experiments.server_rule_cost_20261118.check_teacher_accuracy_web --base http://127.0.0.1:8000/
       - name: Verify output scope and evidence snapshots
         shell: bash
         run: |
@@ -36,12 +52,18 @@ jobs:
           test -s docs/research/server_rule_cost_20261118/HISTORICAL_161_SOURCE_INVENTORY.csv
           test -s docs/research/server_rule_cost_20261118/G5_BUDGET_FRONTIER_POSTHOC.csv
           test -s docs/research/server_rule_cost_20261118/COST_FRONTIER_REPORT.md
+          test -s docs/research/teacher_dashboard/data/cost_accuracy_20261118/PMLB_109_ACCURACY_BY_DATASET.csv
+          test -s docs/research/teacher_dashboard/data/cost_accuracy_20261118/OPENML_51_ACCURACY_COST_BY_DATASET.csv
+          test -s docs/research/teacher_dashboard/data/cost_accuracy_20261118/HISTORICAL_161_SOURCE_INVENTORY.csv
+          test -s docs/research/teacher_dashboard/data/cost_accuracy_20261118/MANIFEST.json
           git diff --exit-code -- docs/research/redesign_20261116
       - name: Upload analysis files for independent inspection
         uses: actions/upload-artifact@v4
         with:
           name: lem2-cross-dataset-cost-frontier
-          path: docs/research/server_rule_cost_20261118/
+          path: |
+            docs/research/server_rule_cost_20261118/
+            docs/research/teacher_dashboard/data/cost_accuracy_20261118/
           retention-days: 90
       - name: Commit descriptive output only to isolated research branch
         shell: bash
@@ -50,7 +72,7 @@ jobs:
           test "$(git branch --show-current)" = "research/server-rule-cost-frontier-20261118"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/research/server_rule_cost_20261118/
+          git add docs/research/server_rule_cost_20261118/ docs/research/teacher_dashboard/data/cost_accuracy_20261118/
           if ! git diff --cached --quiet; then
             git commit -m "data(cost): publish reproducible source-level cost frontier [skip ci]"
             git push origin HEAD:research/server-rule-cost-frontier-20261118
