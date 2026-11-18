@@ -15,28 +15,31 @@ Historical PMLB experiments use at most 900 rows and the first 6 features.
 G5 uses first 6 features, at most 1,800 rows, and 3 Clients.
 
 ## Budget frontier (one FIXED arm selected by retrospective aggregate TEST BA)
-Budget caps count numbers per Client, not bytes. The selected fixed arm is
-a retrospective research ranking and is NOT deployable without new validation.
-No intermediate method exists in the published evidence between roughly 413
-and 7.7 million numbers per Client. A knee in that gap has not been measured.
+Caps are HARD per-task maximum numbers per Client across all 51 sources
+and 10 seeds in the given regime, not averages. Displayed numbers are means.
+The selected fixed arm is a retrospective TEST-based ranking and is
+NOT a deployable selection policy. The 512 tier does NOT permit MDLP
+on every source; the 10M tier does NOT permit FED_MD on every source.
+Intermediate accuracy and communication between roughly 413 and
+7.7M mean numbers per Client remain unobserved.
 
-| Regime | Tier | Arm | Test BA | Non-TRUE coverage proxy | Conflict | Rules | Numbers/Client |
-|---|---|---|---:|---:|---:|---:|---:|
-| IID | L0_16 | R3 | 45.55% | 49.17% | 18.34% | 206.2 | 8.1 |
-| IID | L1_512 | R3 | 45.55% | 49.17% | 18.34% | 206.2 | 8.1 |
-| IID | L2_10000 | R3 | 45.55% | 49.17% | 18.34% | 206.2 | 8.1 |
-| IID | L3_1000000 | R3 | 45.55% | 49.17% | 18.34% | 206.2 | 8.1 |
-| IID | L4_10000000 | M2 | 50.21% | 68.69% | 27.44% | 291.5 | 7,673,759.9 |
-| NONIID_05 | L0_16 | R3 | 45.85% | 58.19% | 26.44% | 169.8 | 8.1 |
-| NONIID_05 | L1_512 | R2 | 46.74% | 45.65% | 13.63% | 112.0 | 412.8 |
-| NONIID_05 | L2_10000 | R2 | 46.74% | 45.65% | 13.63% | 112.0 | 412.8 |
-| NONIID_05 | L3_1000000 | R2 | 46.74% | 45.65% | 13.63% | 112.0 | 412.8 |
-| NONIID_05 | L4_10000000 | M2 | 49.85% | 74.78% | 36.26% | 238.5 | 7,673,759.9 |
-| NONIID_01 | L0_16 | R3 | 45.04% | 49.12% | 33.95% | 99.0 | 8.1 |
-| NONIID_01 | L1_512 | R2 | 45.76% | 38.60% | 30.86% | 64.8 | 412.8 |
-| NONIID_01 | L2_10000 | R2 | 45.76% | 38.60% | 30.86% | 64.8 | 412.8 |
-| NONIID_01 | L3_1000000 | R2 | 45.76% | 38.60% | 30.86% | 64.8 | 412.8 |
-| NONIID_01 | L4_10000000 | M2 | 47.55% | 63.03% | 39.22% | 145.9 | 7,673,759.9 |
+| Regime | Hard tier | Arm | Test BA | Non-TRUE coverage | Conflict | Rules | Mean numbers/Client | Max numbers/Client |
+|---|---|---|---:|---:|---:|---:|---:|---:|
+| IID | L0_16 | R3 | 45.55% | 49.17% | 18.34% | 206.2 | 8.1 | 12.0 |
+| IID | L1_512 | R3 | 45.55% | 49.17% | 18.34% | 206.2 | 8.1 | 12.0 |
+| IID | L2_2048 | R3 | 45.55% | 49.17% | 18.34% | 206.2 | 8.1 | 12.0 |
+| IID | L3_10000000 | R3 | 45.55% | 49.17% | 18.34% | 206.2 | 8.1 | 12.0 |
+| IID | L4_40000000 | M2 | 50.21% | 68.69% | 27.44% | 291.5 | 7,673,759.9 | 39,431,584.0 |
+| NONIID_05 | L0_16 | R3 | 45.85% | 58.19% | 26.44% | 169.8 | 8.1 | 12.0 |
+| NONIID_05 | L1_512 | R3 | 45.85% | 58.19% | 26.44% | 169.8 | 8.1 | 12.0 |
+| NONIID_05 | L2_2048 | R2 | 46.74% | 45.65% | 13.63% | 112.0 | 412.8 | 1,610.0 |
+| NONIID_05 | L3_10000000 | R2 | 46.74% | 45.65% | 13.63% | 112.0 | 412.8 | 1,610.0 |
+| NONIID_05 | L4_40000000 | M2 | 49.85% | 74.78% | 36.26% | 238.5 | 7,673,759.9 | 39,431,584.0 |
+| NONIID_01 | L0_16 | R3 | 45.04% | 49.12% | 33.95% | 99.0 | 8.1 | 12.0 |
+| NONIID_01 | L1_512 | R3 | 45.04% | 49.12% | 33.95% | 99.0 | 8.1 | 12.0 |
+| NONIID_01 | L2_2048 | R2 | 45.76% | 38.60% | 30.86% | 64.8 | 412.8 | 1,610.0 |
+| NONIID_01 | L3_10000000 | R2 | 45.76% | 38.60% | 30.86% | 64.8 | 412.8 | 1,610.0 |
+| NONIID_01 | L4_40000000 | M2 | 47.55% | 63.03% | 39.22% | 145.9 | 7,673,759.9 | 39,431,584.0 |
 
 ## Actual CPU time (whole Classical LEM2 fit; NOT Server rule integration)
 | Rows | Features | Sources | Median fit seconds | Median 6-policy test seconds | Median rules |
@@ -52,16 +55,18 @@ and 7.7 million numbers per Client. A knee in that gap has not been measured.
 | 3200 | 8 | 4 | 7.003 | 0.531 | 68.0 |
 
 ## Interpretation / guardrails
-1. Communication numbers are simulated accounting, not network latency
+1. Hard budget levels constrain the maximum recorded per-task communication
+   over all 51 sources and 10 seeds; observed maxima are not population bounds.
+2. Communication numbers are simulated accounting, not network latency
    or actual secure-protocol byte payload. Multiplying by 8 only models float64.
-2. Fit time is preprocessing + reduct + induction, NOT Server merge CPU.
-3. Non-TRUE coverage subtracts A-only TRUE matches from B2 coverage;
+3. Fit time is preprocessing + reduct + induction, NOT Server merge CPU.
+4. Non-TRUE coverage subtracts A-only TRUE matches from B2 coverage;
    it is not predictive precision nor a global rule certificate.
-4. Per-dataset Pareto uses TEST outcomes: diagnostic only; choosing by it
+5. Per-dataset Pareto uses TEST outcomes: diagnostic only; choosing by it
    for a deployed selector would leak Test labels.
-5. Ada/Gina potentially overlap historical upstream sources; 51 and 161
+6. Ada/Gina potentially overlap historical upstream sources; 51 and 161
    must never be added into an independence claim.
-6. No result here identifies the optimal budget for a new server-side
+7. No result here identifies the optimal budget for a new server-side
    coverage/conflict rule subset optimizer: rule antecedents and
    independent validation evidence are absent from stored G5 CSVs.
 
