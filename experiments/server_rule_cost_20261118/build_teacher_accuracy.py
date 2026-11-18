@@ -173,7 +173,7 @@ def main() -> None:
     assert ph.dataset.nunique() == 109 and gh.dataset.nunique() == 51
     assert ph.groupby(["dataset", "regime"]).size().eq(7).all()
     assert gh.groupby(["dataset", "regime"]).size().eq(5).all()
-    assert inv.id.nunique() == 161
+    assert len(inv) == 161 and len(inv[["cohort", "id"]].drop_duplicates()) == 161, "161 are registered cohort-source rows; plain IDs can overlap"
 
     filenames = ("PMLB_109_ACCURACY_BY_DATASET.csv",
                  "OPENML_51_ACCURACY_COST_BY_DATASET.csv",
