@@ -1,0 +1,57 @@
+name: LEM2 server-rule cost frontier (historical evidence only)
+
+on:
+  push:
+    branches:
+      - research/server-rule-cost-frontier-20261118
+    paths:
+      - .github/workflows/server-rule-cost-frontier-20261118.yml
+      - experiments/server_rule_cost_20261118/**
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  cost-frontier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - name: Install analysis dependencies
+        run: python -m pip install pandas==2.2.3 numpy==2.3.5
+      - name: Reaggregate frozen G5 and historical catalogs (no Client retraining)
+        run: python -m experiments.server_rule_cost_20261118.analyze_cost_frontier
+      - name: Verify output scope and evidence snapshots
+        shell: bash
+        run: |
+          test -s docs/research/server_rule_cost_20261118/G5_51_SOURCES_PER_DATASET_COST.csv
+          test -s docs/research/server_rule_cost_20261118/HISTORICAL_161_SOURCE_INVENTORY.csv
+          test -s docs/research/server_rule_cost_20261118/G5_BUDGET_FRONTIER_POSTHOC.csv
+          test -s docs/research/server_rule_cost_20261118/COST_FRONTIER_REPORT.md
+          git diff --exit-code -- docs/research/redesign_20261116
+      - name: Upload analysis files for independent inspection
+        uses: actions/upload-artifact@v4
+        with:
+          name: lem2-cross-dataset-cost-frontier
+          path: docs/research/server_rule_cost_20261118/
+          retention-days: 90
+      - name: Commit descriptive output only to isolated research branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git branch --show-current)" = "research/server-rule-cost-frontier-20261118"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/research/server_rule_cost_20261118/
+          if ! git diff --cached --quiet; then
+            git commit -m "data(cost): publish reproducible source-level cost frontier [skip ci]"
+            git push origin HEAD:research/server-rule-cost-frontier-20261118
+          fi
