@@ -34,6 +34,8 @@ jobs:
         run: python -m experiments.g4_g8_closure_20261118.scaling_smoke --output "$RUNNER_TEMP/g4g8_closure"
       - name: New synthetic 3/5/10 Client train-only supplemental-rule experiment
         run: python -m experiments.g4_g8_closure_20261118.supplement_synthetic_sweep --output "$RUNNER_TEMP/g4g8_closure"
+      - name: UCI20 real-source exploratory B2 vs train-only supplement (5 sources / 2 seeds / IID and alpha .1)
+        run: python -m experiments.g4_g8_closure_20261118.uci_supplement_controlled --datasets adult_income,magic_gamma,mushroom,bank_marketing,wine --regimes IID,NONIID_01 --seeds 11,23 --clients 3 --output "$RUNNER_TEMP/g4g8_closure"
       - name: Verify frozen research data untouched by workflow
         run: |
           test -z "$(git status --porcelain -- docs/research/redesign_20261116/data)"
