@@ -90,11 +90,34 @@
 
 [最新24測試PASS及18組Supplement實驗CI](https://github.com/Jimmy0307/LEM2/actions/runs/44258932143)；[全部10個輸出檔Artifact（30日保留）](https://github.com/Jimmy0307/LEM2/actions/runs/44258932143/artifacts/14407805826)。
 
+## 3.2 新增20份真實UCI來源的同切分補充規則控制：120／120成功（探索性）
+
+> **此處是新的程式實驗，但來源20份及Seeds11/23已在歷史G4研究中用過。不是新的獨立確認性驗證。**
+
+使用 GitHub 已提交的20份準備後UCI資料、原本64/16/20切分、固定C3、IID／Non-IID α=.5／.1、Seeds11/23。每個配置先固定Development Client分配、EW3離散化、Reduct、LEM2、UNION規則，再比較同一模型的 B2＋歷史固定投票與 **只使用Development來源類別計數**篩選的補充規則（單前件放寬、Train support≥5、Train purity≥.90）。只在**沒有非空原規則命中**的資料使用補充；原有非空規則命中的預測保持不變。Test標籤只用於評估、不參與生成、篩選或路由。
+
+**研究結果：20來源 ×2 Seeds ×3分布 = 120組，120成功／0失敗。**
+
+| 分布 | 配對配置 | 原始嚴格非空Coverage | 補充後嚴格Coverage | Coverage增益 | Δ Test BA（pp） | BA改善／下降／不變 |
+|---|---:|---:|---:|---:|---:|---:|
+| IID | 40 | 62.565% | 65.843% | **+3.278pp** | **+0.26457** | 3／0／37 |
+| Non-IID α=.5 | 40 | 74.892% | 75.490% | **+0.598pp** | **+0.00962** | 1／0／39 |
+| Non-IID α=.1 | 40 | 60.522% | 65.995% | **+5.473pp** | **+0.59670** | 4／0／36 |
+| 合計 | **120** | — | — | — | — | **8／0／112** |
+
+**研究意義**：補充規則確實提高了嚴格的「非空前件規則」命中率，但多數配置的Test BA不變；增加可被規則處理的樣本不等同增加正確決策。先前在α=.1純 `TRUE→d` 規則造成的表面高Coverage與本次 `strict_nonempty_coverage`不同，不能直接混用。即使某個資料分布平均ΔBA>0，也不等於實務上必然受益或統計顯著；本輪沒有對120組相依配置做資料集級Wilcoxon、Holm或新預註冊檢定，不能稱為確證。
+
+**重要方法限制**：補充規則會查看**各Client的Development標籤**及相關計數，用於模擬跨Client聚合；**未實作secure aggregation、DP或可部署的消息協定**。高Coverage來源可能形成天然天花板；2 Seeds與歷史20來源有來源與實驗重複使用限制。缺少正確Candidate的部分需要額外比較，而不只是提高命中。
+
+**產物**：[雲端工作流程（120/120 PASS；24測試PASS）](https://github.com/Jimmy0307/LEM2/actions/runs/44260272861)；[13檔實驗、錯誤紀錄與Manifest（30日Artifact）](https://github.com/Jimmy0307/LEM2/actions/runs/44260272861/artifacts/14407083738)。執行來源 `experiments/g4_g8_closure_20261118/uci_supplement_controlled.py`；重要原始已發表G5 CSV與預註冊**沒有改動**。
+
+**尚待驗證才能稱老師要求「全部完成」**：真正未見、非同源來源；事前固定主要統計端點與多重檢定；增加Client數、持有完整高維特徵的LEM2 Train／Test配對；Selective Prediction在拒答與分類品質間的完整Selective-risk/coverage曲線；對少數類Recall以及原始Correct Candidate的因果分解；理論與隱私保證。
+
 ## 4. 現階段研究判斷與下一步
 
 **G4：PARTIAL** — 六策略與自適應的「表現差異能否區分TRUE效應」現在有完整重算表；資料仍舊是已探索過的51份來源，尚不能做新確認性結論。
 
-**G5–G6：PARTIAL** — 錯誤分類工具與非空規則/TRUE規則量化已建立；正式新的補充規則干預未執行，聯邦BA是否能提升仍未知。
+**G5–G6：PARTIAL** — 錯誤分類工具與非空／TRUE規則量化已建立；已完成20份真實UCI ×2 Seeds×3分布的120組 Train-only補充規則干預，Coverage上升、平均BA改善小但非零。此批來源已被使用過，缺新獨立確認、更多Client與少數類的正式外測、拒答風險分析及隱私協定。
 
 **G7：PARTIAL** — 可檢驗的數學界與B2反例已寫入測試；新定理、先行研究排除及教授審閱未完成。
 
