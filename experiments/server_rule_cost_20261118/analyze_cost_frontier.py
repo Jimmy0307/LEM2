@@ -103,6 +103,30 @@ def main():
     result = pd.DataFrame(frontier)
     result.to_csv(OUT / "G5_BUDGET_FRONTIER_POSTHOC.csv", index=False)
 
+    # Same-source paired DELTAS, descriptive; means can hide outlier dominance.
+    comps = []
+    for regime in REGIMES:
+        here = by[by.regime == regime]
+        by_arm = {a: here[here.arm == a].set_index("dataset")
+                  for a in ARMS}
+        for a, b in (("M2", "R3"), ("M2", "R2"), ("R2", "R3")):
+            aa, bb = by_arm[a].sort_index(), by_arm[b].sort_index()
+            assert aa.index.equals(bb.index) and len(aa) == 51
+            delta = aa.ba - bb.ba
+            conflict_delta = aa.conflict - bb.conflict
+            coverage_delta = aa.effective_coverage - bb.effective_coverage
+            comps.append(dict(
+                regime=regime, higher_cost_arm=a, reference_arm=b,
+                sources=51, mean_ba_delta_pp=100 * delta.mean(),
+                median_ba_delta_pp=100 * delta.median(),
+                wins=int((delta > 1e-5).sum()),
+                ties=int((delta.abs() <= 1e-5).sum()),
+                losses=int((delta < -1e-5).sum()),
+                mean_conflict_delta_pp=100 * conflict_delta.mean(),
+                mean_nontrue_coverage_delta_pp=100 * coverage_delta.mean()))
+    comparisons = pd.DataFrame(comps)
+    comparisons.to_csv(OUT / "G5_PAIRED_COST_QUALITY_TRADEOFF.csv", index=False)
+
     # Dataset-level Pareto: a retrospective diagnostic, NEVER test-set policy selection.
     pareto = []
     for (dataset, regime), g in by.groupby(["dataset", "regime"]):
@@ -196,6 +220,34 @@ def main():
                       f"{100*r['conflict']:.2f}% | {r['rules']:.1f} | "
                       f"{r['comm_numbers']:,.1f} | "
                       f"{r['max_comm_per_task']:,.1f} |")
+    report += ["", "## Per-source paired cost/quality trade-offs",
+               "Source-level differences are descriptive (post-hoc); no new",
+               "hypothesis testing, independent source deduplication, or",
+               "prospective budget selection is claimed.",
+               "| Regime | Arm minus reference | Mean BA pp | Median BA pp | Win/Tie/Loss sources | Delta Conflict pp | Delta non-TRUE coverage pp |",
+               "|---|---|---:|---:|---|---:|---:|"]
+    for r in comps:
+        report.append(
+            f"| {r['regime']} | {r['higher_cost_arm']} - {r['reference_arm']} | "
+            f"{r['mean_ba_delta_pp']:+.2f} | {r['median_ba_delta_pp']:+.2f} | "
+            f"{r['wins']}/{r['ties']}/{r['losses']} | "
+            f"{r['mean_conflict_delta_pp']:+.2f} | "
+            f"{r['mean_nontrue_coverage_delta_pp']:+.2f} |")
+    report += ["",
+               "## Practical cost interpretation",
+               "- At the low fixed budget (<=16 numbers per Client), EW5 is the",
+               "  highest mean BA among tested fixed arms, but it adds Conflict",
+               "  and rules relative to EW3, whose communication count is identical.",
+               "- At the mid hard budget (<=2,048 numbers per Client), MDLP_HIST",
+               "  improves mean BA and reduces Conflict over EW5 under Non-IID;",
+               "  however its non-TRUE coverage declines: this is NOT a universal",
+               "  coverage-quality sweet spot.",
+               "- FED_MD needs up to about 39.4 million numbers per Client",
+               "  across observed tasks. It improves BA and non-TRUE coverage,",
+               "  but significantly raises communication and often Conflict.",
+               "- A general optimum for Server-side integration is NOT observed",
+               "  because no budgeted Server-only rule selection was run.", ""]
+
     report += ["", "## Actual CPU time (whole Classical LEM2 fit; NOT Server rule integration)",
                "| Rows | Features | Sources | Median fit seconds | Median 6-policy test seconds | Median rules |",
                "|---:|---:|---:|---:|---:|---:|"]
