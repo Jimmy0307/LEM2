@@ -4,7 +4,7 @@
 
 - 研究來源：`research/federated-rule-degeneracy-redesign-20261116` @ `006dbe8`（PR #6，未合併）
 - 本輪分支：`research/g4-g8-closure-20261118`
-- [GitHub Actions 雲端執行（21測試通過，原始G5回溯及高維工程Smoke PASS）](https://github.com/Jimmy0307/LEM2/actions/runs/44258223134)
+- [GitHub Actions 首輪（21測試通過，原始G5回溯及高維工程Smoke PASS）](https://github.com/Jimmy0307/LEM2/actions/runs/44258223134)
 - [7個回溯表與Manifest的Artifact](https://github.com/Jimmy0307/LEM2/actions/runs/44258223134/artifacts/14407325610)，有30日保留期限；原數據不因此變更。
 - 執行協定：[EXECUTION_PROTOCOL.md](./EXECUTION_PROTOCOL.md)
 
@@ -68,13 +68,26 @@
 
 | 項目 | 實際 |
 |---|---|
-| 新單元／命題反例測試 | **21 passed** |
+| 新單元／命題反例與補充規則測試 | **24 passed** |
 | G5源資料51×10回溯對照 | **PASS** |
 | B2/A六策略與Coverage分析 | **PASS** |
-| 合成5/8/12/24約簡Smoke | **PASS** |
+| 合成5/8/12/24約簡Smoke | **PASS**\n| 合成3/5/10 Client補充規則干預 | **18/18 PASS，但ΔBA全部0pp（負面結果）** |
 | 原G5數據／預註冊未改寫 | **PASS** |
 | 真實高維全LEM2模型與更多Clients | **尚未執行** |
 | 真正新的確認性試驗與投稿新穎性 | **尚未通過** |
+
+## 3.1 新增 Client × 補充規則控制實驗：18組合成測試（負面結果）
+
+另以固定新合成資料生成器跑 **2 Seeds×3 分布×3／5／10 Client＝18個設定**；每個設定使用完全一致的 Development／Validation／Test與EW3規則，受控比較原B2與「只用Development Client類別計數篩選的單前件放寬Supplement」。預設最低Train support=5、purity≥0.90，補充規則不覆蓋原有非空規則的預測。此處統計是新合成資料的**探索性實驗**，不是新增真實外部來源的確認性證據。
+
+- **18／18任務成功，0失敗；沒有出現Test BA改善，全部平均 ΔBA=0pp。** 
+- 本次合成資料的原始嚴格非空規則 Coverage 已經很高（IID全部100%、多數Non-IID 100%、α=.1且3 Client為95.24%），所以可救的未命中空間有限。
+- α=.1、10 Clients的兩個 Seeds 平均已有 **7個單類別Client**；α=.1、3 Clients平均1個；再次顯示純類別Client與分割規模有關，但兩個Seeds不能推論一般機率。
+- 這個負面結果只能證明實作在指定合成環境沒有觀察到Supplement效益，**不能**推論在真實來源必然無效，更不能宣稱規則補充已完成學術驗證。
+- 聚合Client類別計數只是模擬交換資訊，仍**沒有Secure Aggregation或DP**；「Client-local計數」不代表隱私安全。
+- 此次生成器的來源分布、任務難度與NoMatch比例過於簡單。下一輪應改在有明顯Original NoMatch的**真實來源**做固定的同分割干預，並將高Coverage來源作negative control。
+
+[最新24測試PASS及18組Supplement實驗CI](https://github.com/Jimmy0307/LEM2/actions/runs/44258932143)；[全部10個輸出檔Artifact（30日保留）](https://github.com/Jimmy0307/LEM2/actions/runs/44258932143/artifacts/14407805826)。
 
 ## 4. 現階段研究判斷與下一步
 
