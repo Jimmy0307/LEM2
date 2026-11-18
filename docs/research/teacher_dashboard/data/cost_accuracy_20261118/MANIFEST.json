@@ -1,0 +1,31 @@
+{
+  "version": "2026-11-18",
+  "status": "MIXED_EVIDENCE_LEVELS_DO_NOT_POOL",
+  "pmlb_source_count": 109,
+  "pmlb_policy_source_regime_rows": 2289,
+  "pmlb_original_policy_seed_rows": 5886,
+  "openml_source_count": 51,
+  "openml_source_regime_arm_rows": 765,
+  "historical_registry_count": 161,
+  "non_independent_cohort_warning": "Historical and OpenML sources can overlap",
+  "pmlb_conflict_is_validation_not_test": true,
+  "openml_communication_is_simulated_not_network_bytes": true,
+  "pmlb_communication_is_unmeasured": true,
+  "pmlb_seeds": [
+    1,
+    7,
+    42
+  ],
+  "openml_seeds": 10,
+  "source_files": {
+    "PMLB": "docs/research/teacher_dashboard/data/PMLB_117_3SEED_SIX_POLICY_RAW.csv",
+    "OPENML": "docs/research/redesign_20261116/data/REDESIGN_G5_CONFIRMATORY_POLICIES.csv",
+    "COST": "docs/research/server_rule_cost_20261118/G5_51_SOURCES_PER_DATASET_COST.csv",
+    "HISTORICAL_REGISTRY": "docs/research/teacher_dashboard/data/TEACHER_DATASET_MASTER_20261114.csv"
+  },
+  "sha256": {
+    "PMLB_109_ACCURACY_BY_DATASET.csv": "c31d3c0c74effd8b663d39130db154eb0fef7a554b6c930e9ce7d7834fde52fb",
+    "OPENML_51_ACCURACY_COST_BY_DATASET.csv": "bc8b535d7d1f53d0e1d7feaab15d3ea2d72a7e5df05dafe3edb0a74aa3bd3a10",
+    "HISTORICAL_161_SOURCE_INVENTORY.csv": "4552d623e6021bce576cc7fce72952be4dbb2068468d8856189c39721d548d99"
+  }
+}
