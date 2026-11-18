@@ -36,7 +36,9 @@ jobs:
       - name: Build professor-level accuracy and cost tables for all evaluated sources
         run: python -m experiments.server_rule_cost_20261118.build_teacher_accuracy
       - name: Verify public Teacher Dashboard whitelist and privacy
-        run: python -m experiments.redesign_20261116.build_public_site --out _site
+        run: |
+          git add -N docs/research/teacher_dashboard/data/cost_accuracy_20261118/
+          python -m experiments.redesign_20261116.build_public_site --out _site
       - name: Real-browser source-level accuracy acceptance (320 / 390 / 1366)
         shell: bash
         run: |
