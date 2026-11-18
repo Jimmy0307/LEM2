@@ -45,7 +45,7 @@ WHITELIST = (
     "research/public_datasets/*_public_stratified_subset.csv",
     "research/public_datasets_20/**",
 )
-STRICT_PAGES = ("index.html", "research/teacher_dashboard/index.html", "research/teacher_dashboard/redesign/index.html")
+STRICT_PAGES = ("index.html", "research/teacher_dashboard/index.html", "research/teacher_dashboard/redesign/index.html", "research/teacher_dashboard/cost_accuracy/index.html")
 SITE_DATA = "research/teacher_dashboard/data/redesign_20261116"
 RESEARCH_DATA = DOCS / "research" / "redesign_20261116" / "data"
 MAX_BYTES = 300_000_000
