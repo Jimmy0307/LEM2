@@ -1,0 +1,32 @@
+name: G4-G8 Evidence Closure
+on:
+  push:
+    branches:
+      - research/g4-g8-evidence-closure-20261118
+    paths:
+      - "experiments/g4_g8_closure_20261118/**"
+      - "docs/research/g4_g8_closure_20261118/**"
+      - ".github/workflows/g4-g8-evidence-closure.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  evidence-guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Recalculate published G4-G8 diagnostic evidence
+        run: python -m experiments.g4_g8_closure_20261118.evidence_guard --json
+      - name: Verify no published data changed in this audit branch
+        shell: bash
+        run: |
+          git diff --quiet origin/research/federated-rule-degeneracy-redesign-20261116...HEAD -- docs/research/redesign_20261116/data docs/research/teacher_dashboard/data || {
+            echo "Published research data mutated by G4-G8 closure branch"; exit 1;
+          }
