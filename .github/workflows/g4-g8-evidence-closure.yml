@@ -25,7 +25,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install minimal test dependencies
-        run: python -m pip install "numpy>=2" "pandas>=2.2" pytest
+        run: python -m pip install "numpy>=2" "pandas>=2.2" "scipy>=1.13" "scikit-learn>=1.5" pytest
       - name: Test per-row TRUE-only and No-Match semantics
         run: python -m pytest tests/test_g4_g8_rule_trace.py tests/test_g4_g8_bounds.py -q
       - name: Recalculate published G4-G8 diagnostic evidence
@@ -37,6 +37,15 @@ jobs:
         with:
           name: g4g8-policy-posthoc-${{ github.sha }}
           path: ${{ runner.temp }}/g4g8-posthoc/
+          retention-days: 14
+          if-no-files-found: error
+      - name: Exploratory B2 x supplement pilot on UCI Iris alpha 0.1
+        run: python -m experiments.g4_g8_closure_20261118.coverage_b2_factorial_pilot --dataset iris --seed 203 --regime NONIID_01 --discretizer EQUAL_WIDTH_3 --out "$RUNNER_TEMP/g4g8-coverage"
+      - name: Upload exploratory coverage-vs-BA and validation gate evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: g4g8-coverage-pilot-${{ github.sha }}
+          path: ${{ runner.temp }}/g4g8-coverage/
           retention-days: 14
           if-no-files-found: error
       - name: Verify no published data changed in this audit branch
