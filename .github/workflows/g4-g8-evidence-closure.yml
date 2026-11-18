@@ -30,6 +30,15 @@ jobs:
         run: python -m pytest tests/test_g4_g8_rule_trace.py tests/test_g4_g8_bounds.py -q
       - name: Recalculate published G4-G8 diagnostic evidence
         run: python -m experiments.g4_g8_closure_20261118.evidence_guard --json
+      - name: Post-hoc policy conditions from frozen 51-source Gate 5 raw CSV
+        run: python -m experiments.g4_g8_closure_20261118.posthoc_policy_conditions --out "$RUNNER_TEMP/g4g8-posthoc"
+      - name: Upload derived post-hoc audit outputs (not the frozen source CSV)
+        uses: actions/upload-artifact@v4
+        with:
+          name: g4g8-policy-posthoc-${{ github.sha }}
+          path: ${{ runner.temp }}/g4g8-posthoc/
+          retention-days: 14
+          if-no-files-found: error
       - name: Verify no published data changed in this audit branch
         shell: bash
         run: |
