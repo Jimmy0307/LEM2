@@ -28,12 +28,38 @@ from fedrs.experiment import fit_model, nested_split
 from fedrs.partition import original_partition
 from fedrs.predict import RULE_VARIANTS, match_matrix, variant_matrix, resolve
 from fedrs.metrics import scores
-from teacher_demo.supplementary_rule_coverage_pilot import generate
+from teacher_demo.supplementary_rule_coverage_pilot import generate, Supplement
 
 ROOT = Path(__file__).resolve().parents[2]
 FROZEN = ROOT / "docs/research/redesign_20261116/data"
 VARIANTS = ("A_ALL_RULES", "B2_TRUE_AS_FALLBACK")
 ARMS = ("NO_SUPPLEMENTS", "ALL_TRAIN_SUPPLEMENTS", "VALIDATION_GATED_SUPPLEMENTS")
+
+
+def generate_single_literal(train: pd.DataFrame, columns, target: str,
+                            purity_floor: float, min_support: int, cap: int):
+    """Exploratory pooled-development 1-literal candidates; no Test labels used.
+
+    This is intentionally a distinct generator from one-condition relaxation.
+    It is a *centralized diagnostic only*: pooling raw Development rows is
+    NOT a deployable federated or privacy-preserving mechanism.
+    """
+    y=train[target].astype(str).to_numpy()
+    candidates=[]
+    for attr in columns:
+        v=train[attr].astype(str).to_numpy()
+        for value in sorted(set(v)):
+            matches=v==value
+            support=int(matches.sum())
+            if support<min_support: continue
+            labels,counts=np.unique(y[matches],return_counts=True)
+            best=max(zip(counts,labels),key=lambda pair:(int(pair[0]),str(pair[1])))
+            correct=int(best[0]);decision=str(best[1])
+            purity=correct/support
+            if purity+1e-12<purity_floor:continue
+            candidates.append(Supplement(((attr,value),),decision,support,correct,purity,0))
+    candidates.sort(key=lambda r:(-r.purity,-r.correct,-r.support,str(r.conditions),r.decision))
+    return candidates[:cap],len(candidates)
 
 
 def supp_matrix(frame: pd.DataFrame, supplements) -> np.ndarray:
@@ -157,6 +183,8 @@ def main():
     p.add_argument("--discretizer",choices=["EQUAL_WIDTH_3","FED_MD_HIST"],required=True)
     p.add_argument("--out",type=Path,required=True)
     p.add_argument("--max-supp",type=int,default=30)
+    p.add_argument("--supp-generator",choices=["RULE_RELAX","SINGLE_LITERAL"],default="RULE_RELAX")
+    p.add_argument("--min-purity",type=float,default=0.8)
     a=p.parse_args()
     if a.max_supp<=0 or a.max_supp>80:
         raise ValueError("max-supp should be in 1..80")
@@ -172,7 +200,13 @@ def main():
     fm=fit_model(src.features,src.continuous,src.categorical,src.target,clients,dev,val,test,disc)
     train=fm.frames["dev"]
     minority=str(dev[src.target].astype(str).value_counts().sort_values().index[0])
-    supp,proposals=generate(train,fm.rules[:240],src.target,min_support=5,min_purity=.9,max_candidates=a.max_supp)
+    if a.supp_generator=="RULE_RELAX":
+        supp,proposals=generate(train,fm.rules[:240],src.target,min_support=5,
+                                min_purity=.9,max_candidates=a.max_supp)
+    else:
+        if not (0.5<=a.min_purity<=1.0):raise ValueError("min-purity must be 0.5..1")
+        supp,proposals=generate_single_literal(train,fm.cond_cols,src.target,
+                                                a.min_purity,8,a.max_supp)
     mval=supp_matrix(fm.frames["val"],supp)
     mtest=supp_matrix(fm.frames["test"],supp)
     results=[]
@@ -190,6 +224,7 @@ def main():
                             "seed":a.seed,"regime":a.regime,"discretizer":a.discretizer,
                             "rule_variant":variant,"supplement_arm":arm,
                             "supplement_source":"POOLED_DEVELOPMENT_CENTRALIZED_DIAGNOSTIC",
+                            "supplement_generator":a.supp_generator,
                             "original_rules":len(fm.rules),"true_rules":int(fm.ctx.is_empty.sum()),
                             "candidate_supplements":len(supp),"selected_supplements":len(selected),
                             "minority_class":minority,**result})
@@ -201,14 +236,15 @@ def main():
         if row["nonempty_evidence_coverage_pct"]+1e-9 < b["nonempty_evidence_coverage_pct"]:
             raise AssertionError("Supplement reduced nonempty evidence coverage")
     dest.mkdir(parents=True,exist_ok=True)
-    prefix=f"{a.dataset}_seed{a.seed}_{a.regime}_{a.discretizer}"
+    prefix=f"{a.dataset}_seed{a.seed}_{a.regime}_{a.discretizer}_{a.supp_generator}"
     output=dest/(prefix+"_ROWS.csv")
     events_path=dest/(prefix+"_GATE_EVENTS.csv")
     pd.DataFrame(results).to_csv(output,index=False)
     pd.DataFrame(events).to_csv(events_path,index=False)
     manifest={"status":"EXPLORATORY_PILOT_NOT_CONFIRMATORY","dataset":a.dataset,"seed":a.seed,
               "regime":a.regime,"discretizer":a.discretizer,
-              "source_sha256":src.sha256,
+              "source_sha256":src.sha256,"supplement_generator":a.supp_generator,
+              "candidate_proposals":proposals,
               "design":"EW3/FED_MD and A/B2 and NoSupp/AllSupp/ValidationGated",
               "gate_uses":"INNER_VALIDATION_ONLY","outer_test_used_for_selection":False,
               "supplement_provenance":"POOLED_DEV_CENTRALIZED_DIAGNOSTIC_ONLY_NOT_PRIVACY_PRESERVING",
