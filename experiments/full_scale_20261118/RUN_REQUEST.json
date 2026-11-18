@@ -1,5 +1,5 @@
 {
-  "smoke": true,
+  "smoke": false,
   "shard_count": 24,
   "seeds": "1001,1002,1003,1004,1005",
   "note": "Changing this file on research/full-scale-six-policy-20261118 triggers the full-scale workflow via push (workflow_dispatch needs the file on main, which this task may not modify)."
