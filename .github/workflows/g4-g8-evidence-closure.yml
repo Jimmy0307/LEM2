@@ -24,6 +24,10 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Install minimal test dependencies
+        run: python -m pip install "numpy>=2" "pandas>=2.2" pytest
+      - name: Test per-row TRUE-only and No-Match semantics
+        run: python -m pytest tests/test_g4_g8_rule_trace.py -q
       - name: Recalculate published G4-G8 diagnostic evidence
         run: python -m experiments.g4_g8_closure_20261118.evidence_guard --json
       - name: Verify no published data changed in this audit branch
