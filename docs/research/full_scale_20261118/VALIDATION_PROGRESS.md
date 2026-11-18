@@ -25,3 +25,12 @@
 
 GitHub 規則：
 https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_dispatch
+
+## 觸發方式調整（2026-11-19）
+
+為了不修改 `main`，比照本 repo 其他研究分支（例如
+`research/server-rule-cost-frontier-20261118`）的做法，在同一個 workflow 檔加入
+`push` 觸發：只有本分支上的 `experiments/full_scale_20261118/RUN_REQUEST.json`
+變動時才會執行，輸入參數（smoke、shard_count、seeds）從該檔讀取。
+`workflow_dispatch` 觸發保留；兩種觸發都在 setup job 統一解析成相同的輸出。
+`main_registration_draft.yml` 不會使用，也不會放到 `main`。

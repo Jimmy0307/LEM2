@@ -1,5 +1,13 @@
 name: Full-scale six-policy research 20261118
 on:
+  # workflow_dispatch only works once this file exists on the default branch (main),
+  # which this research task may not modify. Pushing a change to RUN_REQUEST.json on
+  # the research branch runs the same pipeline with the inputs stored in that file.
+  push:
+    branches:
+      - research/full-scale-six-policy-20261118
+    paths:
+      - experiments/full_scale_20261118/RUN_REQUEST.json
   workflow_dispatch:
     inputs:
       shard_count:
@@ -33,8 +41,36 @@ jobs:
       shards: ${{ steps.matrix.outputs.shards }}
       g5: ${{ steps.matrix.outputs.g5 }}
       smoke_url: ${{ steps.matrix.outputs.smoke_url }}
+      smoke: ${{ steps.resolve.outputs.smoke }}
+      seeds: ${{ steps.resolve.outputs.seeds }}
+      shard_count: ${{ steps.resolve.outputs.shard_count }}
     steps:
       - uses: actions/checkout@v4
+      - name: Resolve run inputs (workflow_dispatch inputs or RUN_REQUEST.json)
+        id: resolve
+        env:
+          EVENT: ${{ github.event_name }}
+          IN_SMOKE: ${{ inputs.smoke }}
+          IN_SEEDS: ${{ inputs.seeds }}
+          IN_SHARDS: ${{ inputs.shard_count }}
+        run: |
+          python - <<'PYRESOLVE'
+          import json, os
+          if os.environ['EVENT'] == 'workflow_dispatch':
+              smoke, seeds, shards = os.environ['IN_SMOKE'], os.environ['IN_SEEDS'], os.environ['IN_SHARDS']
+          else:
+              req = json.load(open('experiments/full_scale_20261118/RUN_REQUEST.json', encoding='utf-8'))
+              smoke, seeds, shards = req['smoke'], req['seeds'], req['shard_count']
+          smoke = str(smoke).strip().lower()
+          if smoke not in ('true', 'false'):
+              raise SystemExit(f'smoke must be true/false, got {smoke!r}')
+          shards = int(shards)
+          seeds = ','.join(str(int(x)) for x in str(seeds).split(',') if x.strip())
+          print(f'smoke={smoke} seeds={seeds} shard_count={shards}')
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as out:
+              for key, value in (('smoke', smoke), ('seeds', seeds), ('shard_count', shards)):
+                  print(f'{key}={value}', file=out)
+          PYRESOLVE
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -42,9 +78,9 @@ jobs:
       - name: Check equivalence and build deterministic matrix
         id: matrix
         env:
-          SHARD_COUNT: ${{ inputs.shard_count }}
-          SEEDS: ${{ inputs.seeds }}
-          SMOKE: ${{ inputs.smoke }}
+          SHARD_COUNT: ${{ steps.resolve.outputs.shard_count }}
+          SEEDS: ${{ steps.resolve.outputs.seeds }}
+          SMOKE: ${{ steps.resolve.outputs.smoke }}
         run: |
           python -m pytest tests/test_full_scale_resolve_equivalence.py experiments/full_scale_20261118 -q
           python -m experiments.full_scale_20261118.workflow_matrix --shard-count "$SHARD_COUNT" --seeds "$SEEDS"
@@ -64,7 +100,7 @@ jobs:
           PYCHECK
           fi
   smoke:
-    if: ${{ inputs.smoke }}
+    if: ${{ needs.setup.outputs.smoke == 'true' }}
     needs: setup
     runs-on: ubuntu-latest
     timeout-minutes: 340
@@ -76,7 +112,7 @@ jobs:
       - run: python -m pip install -r requirements-dev.txt scipy pyarrow
       - name: Five small datasets and one seed
         env:
-          SEEDS: ${{ inputs.seeds }}
+          SEEDS: ${{ needs.setup.outputs.seeds }}
         run: python -m experiments.full_scale_20261118.shard --shard 0 --smoke --seeds "$SEEDS" --output "$RUNNER_TEMP/shard"
       - uses: actions/upload-artifact@v4
         if: ${{ always() }}
@@ -85,7 +121,7 @@ jobs:
           path: ${{ runner.temp }}/shard/*.csv
           if-no-files-found: warn
   verify_g5:
-    if: ${{ !inputs.smoke }}
+    if: ${{ needs.setup.outputs.smoke != 'true' }}
     needs: setup
     runs-on: ubuntu-latest
     timeout-minutes: 340
@@ -161,7 +197,7 @@ jobs:
             gh run cancel "$GITHUB_RUN_ID"
           fi
   g5_stop_report:
-    if: ${{ always() && !inputs.smoke && needs.setup.result == 'success' && needs.verify_g5.result == 'failure' }}
+    if: ${{ always() && needs.setup.outputs.smoke != 'true' && needs.setup.result == 'success' && needs.verify_g5.result == 'failure' }}
     needs: [setup, verify_g5]
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -214,7 +250,7 @@ jobs:
           git commit -m "Record stopped G5 validation"
           git push origin HEAD:"$GITHUB_REF_NAME"
   central:
-    if: ${{ !inputs.smoke }}
+    if: ${{ needs.setup.outputs.smoke != 'true' }}
     needs: [setup, verify_g5]
     runs-on: ubuntu-latest
     timeout-minutes: 340
@@ -233,8 +269,8 @@ jobs:
         env:
           DATASET: ${{ matrix.dataset }}
           SHARD: ${{ matrix.shard }}
-          SHARD_COUNT: ${{ inputs.shard_count }}
-          SEEDS: ${{ inputs.seeds }}
+          SHARD_COUNT: ${{ needs.setup.outputs.shard_count }}
+          SEEDS: ${{ needs.setup.outputs.seeds }}
         run: |
           python -m experiments.full_scale_20261118.shard --shard "$SHARD" --shard-count "$SHARD_COUNT" --dataset "$DATASET" --scenarios CENTRALIZED --seeds "$SEEDS" --output "$RUNNER_TEMP/shard"
       - name: Preserve conflict-bound report
@@ -284,7 +320,7 @@ jobs:
             gh run cancel "$GITHUB_RUN_ID"
           fi
   iid:
-    if: ${{ !inputs.smoke }}
+    if: ${{ needs.setup.outputs.smoke != 'true' }}
     needs: [setup, verify_g5]
     runs-on: ubuntu-latest
     timeout-minutes: 340
@@ -303,8 +339,8 @@ jobs:
         env:
           DATASET: ${{ matrix.dataset }}
           SHARD: ${{ matrix.shard }}
-          SHARD_COUNT: ${{ inputs.shard_count }}
-          SEEDS: ${{ inputs.seeds }}
+          SHARD_COUNT: ${{ needs.setup.outputs.shard_count }}
+          SEEDS: ${{ needs.setup.outputs.seeds }}
         run: |
           python -m experiments.full_scale_20261118.shard --shard "$SHARD" --shard-count "$SHARD_COUNT" --dataset "$DATASET" --scenarios FED_IID --seeds "$SEEDS" --output "$RUNNER_TEMP/shard"
       - name: Preserve conflict-bound report
@@ -354,7 +390,7 @@ jobs:
             gh run cancel "$GITHUB_RUN_ID"
           fi
   a05:
-    if: ${{ !inputs.smoke }}
+    if: ${{ needs.setup.outputs.smoke != 'true' }}
     needs: [setup, verify_g5]
     runs-on: ubuntu-latest
     timeout-minutes: 340
@@ -373,8 +409,8 @@ jobs:
         env:
           DATASET: ${{ matrix.dataset }}
           SHARD: ${{ matrix.shard }}
-          SHARD_COUNT: ${{ inputs.shard_count }}
-          SEEDS: ${{ inputs.seeds }}
+          SHARD_COUNT: ${{ needs.setup.outputs.shard_count }}
+          SEEDS: ${{ needs.setup.outputs.seeds }}
         run: |
           python -m experiments.full_scale_20261118.shard --shard "$SHARD" --shard-count "$SHARD_COUNT" --dataset "$DATASET" --scenarios FED_A05 --seeds "$SEEDS" --output "$RUNNER_TEMP/shard"
       - name: Preserve conflict-bound report
@@ -424,7 +460,7 @@ jobs:
             gh run cancel "$GITHUB_RUN_ID"
           fi
   a01:
-    if: ${{ !inputs.smoke }}
+    if: ${{ needs.setup.outputs.smoke != 'true' }}
     needs: [setup, verify_g5]
     runs-on: ubuntu-latest
     timeout-minutes: 340
@@ -443,8 +479,8 @@ jobs:
         env:
           DATASET: ${{ matrix.dataset }}
           SHARD: ${{ matrix.shard }}
-          SHARD_COUNT: ${{ inputs.shard_count }}
-          SEEDS: ${{ inputs.seeds }}
+          SHARD_COUNT: ${{ needs.setup.outputs.shard_count }}
+          SEEDS: ${{ needs.setup.outputs.seeds }}
         run: |
           python -m experiments.full_scale_20261118.shard --shard "$SHARD" --shard-count "$SHARD_COUNT" --dataset "$DATASET" --scenarios FED_A01 --seeds "$SEEDS" --output "$RUNNER_TEMP/shard"
       - name: Preserve conflict-bound report
@@ -494,7 +530,7 @@ jobs:
             gh run cancel "$GITHUB_RUN_ID"
           fi
   merge_shards:
-    if: ${{ always() && !inputs.smoke && needs.setup.result == 'success' && needs.verify_g5.result == 'success' }}
+    if: ${{ always() && needs.setup.outputs.smoke != 'true' && needs.setup.result == 'success' && needs.verify_g5.result == 'success' }}
     needs: [setup, verify_g5, central, iid, a05, a01]
     runs-on: ubuntu-latest
     timeout-minutes: 340
@@ -515,8 +551,8 @@ jobs:
       - name: Merge one shard and account for missing jobs
         env:
           SHARD: ${{ matrix.shard }}
-          SHARD_COUNT: ${{ inputs.shard_count }}
-          SEEDS: ${{ inputs.seeds }}
+          SHARD_COUNT: ${{ needs.setup.outputs.shard_count }}
+          SEEDS: ${{ needs.setup.outputs.seeds }}
         run: |
           python -m experiments.full_scale_20261118.merge_shard --artifacts "$RUNNER_TEMP/datasets" --output "$RUNNER_TEMP/shard" --shard "$SHARD" --shard-count "$SHARD_COUNT" --seeds "$SEEDS"
       - uses: actions/upload-artifact@v4
@@ -526,7 +562,7 @@ jobs:
           path: ${{ runner.temp }}/shard/*
           if-no-files-found: warn
   aggregate:
-    if: ${{ always() && needs.setup.result == 'success' && (inputs.smoke || needs.verify_g5.result == 'success') }}
+    if: ${{ always() && needs.setup.result == 'success' && (needs.setup.outputs.smoke == 'true' || needs.verify_g5.result == 'success') }}
     needs: [setup, smoke, verify_g5, merge_shards]
     runs-on: ubuntu-latest
     timeout-minutes: 90
@@ -542,7 +578,7 @@ jobs:
           pattern: shard-*
           path: ${{ runner.temp }}/artifacts
       - uses: actions/download-artifact@v4
-        if: ${{ !inputs.smoke }}
+        if: ${{ needs.setup.outputs.smoke != 'true' }}
         continue-on-error: true
         with:
           pattern: g5-validation-*
@@ -550,8 +586,8 @@ jobs:
       - name: Validate and produce outputs
         id: aggregate
         env:
-          SMOKE: ${{ inputs.smoke }}
-          SEEDS: ${{ inputs.seeds }}
+          SMOKE: ${{ needs.setup.outputs.smoke }}
+          SEEDS: ${{ needs.setup.outputs.seeds }}
           SMOKE_URL: ${{ needs.setup.outputs.smoke_url }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
@@ -561,7 +597,7 @@ jobs:
             python -m experiments.full_scale_20261118.aggregate --artifacts "$RUNNER_TEMP/artifacts" --output docs/research/full_scale_20261118 --seeds "$SEEDS" --run-url "$RUN_URL" --smoke-url "$SMOKE_URL"
           fi
       - name: Record a passed smoke run
-        if: ${{ inputs.smoke && steps.aggregate.outcome == 'success' }}
+        if: ${{ needs.setup.outputs.smoke == 'true' && steps.aggregate.outcome == 'success' }}
         env:
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
@@ -577,7 +613,7 @@ jobs:
           git diff --cached --quiet || git commit -m "Record full-scale smoke run"
           git push origin HEAD:"$GITHUB_REF_NAME"
       - name: Commit newly produced full-scale outputs
-        if: ${{ always() && !inputs.smoke && steps.aggregate.outcome != 'skipped' }}
+        if: ${{ always() && needs.setup.outputs.smoke != 'true' && steps.aggregate.outcome != 'skipped' }}
         run: |
           if [ -f docs/research/full_scale_20261118/MANIFEST.json ]; then
             git config user.name github-actions[bot]
@@ -587,14 +623,14 @@ jobs:
             git push origin HEAD:"$GITHUB_REF_NAME"
           fi
       - name: Upload smoke report
-        if: ${{ always() && inputs.smoke }}
+        if: ${{ always() && needs.setup.outputs.smoke == 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: smoke-report-${{ github.run_id }}
           path: ${{ runner.temp }}/report/*
           if-no-files-found: warn
       - name: Upload full-scale report
-        if: ${{ always() && !inputs.smoke }}
+        if: ${{ always() && needs.setup.outputs.smoke != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: full-scale-report-${{ github.run_id }}
