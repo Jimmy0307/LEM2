@@ -1,0 +1,213 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LEM2 | 全量規模化 · 188 個資料集的六種決策方法</title>
+<meta name="description" content="全量列數、同一協定：188 個去重後的公開資料集 × 5 Seeds × 集中式／聯邦 IID／Dirichlet α=0.5／0.1，六種 LEM2 決策方法的 Accuracy 最佳方法統計。">
+<link rel="stylesheet" href="../site.css"><style>
+.hero{padding:35px max(18px,calc((100vw - 1150px)/2));background:linear-gradient(115deg,#143148,#24586c);color:white}
+.hero h1{font-size:clamp(26px,4vw,42px);line-height:1.23;margin:12px 0}.hero p{color:#ddecf2;max-width:1020px}
+.hero a{color:#d8fff3}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.stats>div{background:#f7fafb;border:1px solid #dae4e8;padding:15px;border-radius:12px}
+.stats strong{display:block;font-size:25px;color:#1d6575;font-variant-numeric:tabular-nums}.stats small{color:#596c79}
+.controls{display:flex;gap:14px;flex-wrap:wrap;margin:14px 0}
+.controls label{display:flex;flex-direction:column;gap:6px;flex:1 1 180px;font-size:13px}
+.controls input,.controls select{font:inherit;padding:7px 9px;border:1px solid #c9d6dc;border-radius:8px;background:#fff}
+.scroll-table{overflow:auto;max-height:650px}.scroll-table th,.scroll-table td{white-space:nowrap;font-variant-numeric:tabular-nums}
+.scroll-table thead{position:sticky;top:0;background:#eaf2f3}
+.scroll-table td.methods{white-space:normal;min-width:240px;max-width:420px}
+.num{text-align:right}.primary{font-weight:750;color:#0a6973}
+.warn{background:#fff6e7;border-left:4px solid #c69a4d;padding:13px 15px}
+.info{background:#eef5fb;border-left:4px solid #517da7;padding:13px 15px}
+.note{font-size:13px;color:#627786}
+.multiples{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.chart{background:#fcfcfb;border:1px solid #dae4e8;border-radius:12px;padding:12px 14px}
+.chart h3{margin:0 0 4px;font-size:15px}.chart p{margin:0 0 6px;font-size:12px;color:#627786}
+.chart svg{width:100%;height:auto;display:block}
+.chart .lbl{font-size:12px;fill:#2b3a44}.chart .val{font-size:12px;fill:#2b3a44;font-variant-numeric:tabular-nums}
+.chart .axis{stroke:#c9d6dc;stroke-width:1}
+.chart rect.bar{transition:opacity .15s}.chart rect.bar:hover{opacity:.8}
+.pass{color:#1d6b3a;font-weight:700}.fail{color:#a23b32;font-weight:700}
+details summary{cursor:pointer;color:#1d6575;margin:8px 0}
+@media(max-width:770px){.hero{padding:27px 18px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.multiples{grid-template-columns:1fr}}
+</style></head><body>
+<div class="site-top"><a class="brand" href="../">LEM2 Research · 教授報告</a><nav>
+<a href="../">研究首頁</a><a href="../data_catalog/">完整資料集 Rows／任務</a><a href="../pmlb_117/">109 資料 G4–G8</a><a href="../redesign/">聯邦 LEM2 重建（11-16）</a><a class="active" aria-current="page" href="./">全量規模化 188 資料集（11-19）</a>
+</nav></div>
+<header class="hero"><div class="eyebrow">FULL ROWS · 188 DEDUPLICATED SOURCES · 6 DECISION METHODS</div>
+<h1>不截列數之後，<br>哪一種決策方法的 Accuracy 最好？</h1>
+<p>先前每個資料集最多只用 1,800 列；這一輪改用<strong>全量列數</strong>、同一套預先固定的協定，重跑 188 個去重後的公開資料集。每個資料集都跑 5 個 Seeds × 4 種情境（集中式、聯邦 IID、Dirichlet α=0.5、α=0.1），六種決策方法在同一套規則上比較。</p>
+<p><a href="https://github.com/Jimmy0307/LEM2/actions/runs/44381723802">全量 workflow run</a> · <a href="https://github.com/Jimmy0307/LEM2/actions/runs/44465026637">補跑 run</a> · <a href="https://github.com/Jimmy0307/LEM2/actions/runs/44381227952">Smoke run</a> · <a href="../data/full_scale_20261118/FULL_SCALE_REPORT.md">自動產生的中文報告</a> · <a href="https://github.com/Jimmy0307/LEM2/blob/research/full-scale-six-policy-20261118/docs/research/full_scale_20261118/PROTOCOL.md">預先固定的協定</a></p>
+</header>
+<main class="wrap">
+
+<section class="panel"><span class="section-tag">00 · STATUS</span><h2>目前進度</h2>
+<p id="status" role="status" aria-live="polite">正在讀取實驗結果……</p>
+<div class="info"><strong>本頁顯示補跑合併版：</strong>全量 run 中有 3 個「資料集 × 情境」job 因 OpenML 下載中斷（IncompleteRead）而失敗，共 15 個模型：openml_40996／集中式、openml_42732／FED_A05、openml_42769／FED_IID。這 3 個 job 已重跑，其餘 job 沿用原 run 的結果（逐列相同）。openml_40996 與 openml_42769 補跑成功；openml_42732／FED_A05 下載成功，但 5 個 Seeds 都超過 45 分鐘上限，與它另外 3 個情境相同，記為逾時。原 run 的輸出檔保持不變。</div>
+</section>
+
+<section class="panel"><span class="section-tag">01 · SCALE AND SOURCES</span><h2>跑了多少資料、多少模型？</h2>
+<div class="stats">
+<div><small>去重後來源</small><strong id="sourceCount">—</strong><small id="sourceNote">同源排除另列</small></div>
+<div><small>成功模型／預定模型</small><strong id="modelCount">—</strong><small>資料集 × 5 Seeds × 4 情境</small></div>
+<div><small>六方法外測結果</small><strong id="resultCount">—</strong><small>主要結果 A_ALL_RULES</small></div>
+<div><small>四情境全部完成的來源</small><strong id="completeCount">—</strong><small>才列入最佳方法統計</small></div>
+</div>
+<h3>特徵型態 × 原始資料規模</h3>
+<p class="note">型態依實際入模的欄位判定（連續比例 = 1 為連續、= 0 為類別／離散，其餘為混合）；規模依原始列數：小 &lt;500、中 500–4,999、大 5,000–49,999、超大 ≥50,000。</p>
+<div class="scroll-table"><table><thead><tr><th>特徵型態</th><th class="num">小</th><th class="num">中</th><th class="num">大</th><th class="num">超大</th><th class="num">合計</th></tr></thead><tbody id="crossRows"><tr><td colspan="6">讀取中</td></tr></tbody></table></div>
+</section>
+
+<section class="panel"><span class="section-tag">02 · WHICH METHOD WINS?</span><h2>四種情境下，各方法當「Accuracy 最佳」的次數</h2>
+<p>每個資料集先對 5 個 Seeds 取平均 Accuracy，再找出最佳方法；差距 ≤1e-6 視為平手，平手時平分 1 次。只計入 5 個 Seeds 都完成的資料集。深色長條為該情境次數最多的方法。</p>
+<div class="multiples" id="winCharts"></div>
+<details><summary>以表格檢視（含平均名次、Friedman 與 Wilcoxon–Holm 檢定）</summary>
+<div class="scroll-table"><table><thead><tr><th>情境</th><th>方法</th><th class="num">資料集數</th><th class="num">當最佳次數</th><th class="num">平均名次</th><th class="num">平均 Accuracy（%）</th><th>對照基準</th><th class="num">Wilcoxon p（Holm）</th></tr></thead><tbody id="winRows"></tbody></table></div>
+<p id="friedmanNote" class="note"></p>
+</details>
+<div class="warn"><strong>怎麼讀：</strong>很多資料集六種方法的 Accuracy 完全相同（沒有衝突，或衝突時各方法剛好選到同一類），這些資料集每個方法各得 1/6 次，所以集中式的次數才會幾乎一樣。集中式只有一個 client，因此 POPULATION_STANDARD 的結果與 STANDARD_VOTING 相同，POPULATION_GLOBAL 也與 GLOBAL_STRENGTH 相同，這是演算法本身的性質，不是巧合。資料在 client 之間越不平均（α 越小），SIMPLE_VOTING 當最佳的次數越多。不過「次數最多」不等於「平均名次最好」：FED_A01 的平均名次，STANDARD_VOTING（2.62）與 SIMPLE_VOTING（2.63）幾乎相同。</div>
+</section>
+
+<section class="panel"><span class="section-tag">03 · BY FEATURE TYPE / SIZE</span><h2>依特徵型態或資料規模分層</h2>
+<div class="controls"><label>情境<select id="strScenario"></select></label>
+<label>分層維度<select id="strKind"><option value="feature_type">特徵型態</option><option value="size_class">資料規模</option></select></label></div>
+<div class="scroll-table"><table><thead id="strHead"></thead><tbody id="strRows"></tbody></table></div>
+<p class="note">表中數字為該分層內當最佳的次數（含平手平分）；括號內為該分層的資料集數。分層內資料集數少時（例如類別／超大），次數只能當描述，不宜推論。</p>
+</section>
+
+<section class="panel"><span class="section-tag">04 · PER DATASET</span><h2>每個資料集的最佳方法</h2>
+<div class="controls">
+<label>搜尋資料集<input id="dsSearch" type="search" placeholder="例如 adult、openml_1169、PMLB"></label>
+<label>情境<select id="dsScenario"></select></label>
+<label>特徵型態<select id="dsType"><option value="">全部</option><option>連續</option><option>混合</option><option>類別/離散</option></select></label>
+<label>資料規模<select id="dsSize"><option value="">全部</option><option>小</option><option>中</option><option>大</option><option>超大</option></select></label>
+</div>
+<p id="dsCount" class="note"></p>
+<div class="scroll-table"><table><thead><tr><th>資料集</th><th>型態</th><th>規模</th><th>Accuracy 最佳方法</th><th class="num">領先第二名（pp）</th><th class="num">六法最大差距（pp）</th><th>BA 最佳方法</th><th>兩指標一致</th></tr></thead><tbody id="dsRows"></tbody></table></div>
+<p><a href="../data/full_scale_20261118/DATASET_BEST.csv">DATASET_BEST.csv（含六法平均 Accuracy、BA、名次）</a> · <a href="../data/full_scale_20261118/REGISTRY.csv">REGISTRY.csv（來源 URL、SHA256、列數、剔除類別）</a> · <a href="https://github.com/Jimmy0307/LEM2/blob/research/full-scale-six-policy-20261118/docs/research/full_scale_20261118/retry_44465026637/FULL_SCALE_19COL.csv">19 欄大表（21,990 列，GitHub）</a> · <a href="https://github.com/Jimmy0307/LEM2/blob/research/full-scale-six-policy-20261118/docs/research/full_scale_20261118/retry_44465026637/FULL_SCALE_19COL_B2.csv">B2 版本（GitHub）</a></p>
+</section>
+
+<section class="panel"><span class="section-tag">05 · SCALE LADDER</span><h2>最佳方法會不會隨資料量改變？</h2>
+<p>原始列數 ≥20,000 的資料集，額外在 1,800、10,000 與全量三種列數下，跑 FED_IID 與 FED_A01（seed 1001）。</p>
+<div class="stats" id="ladderStats"></div>
+<div class="scroll-table"><table><thead><tr><th>資料集</th><th>情境</th><th>1,800 列</th><th>10,000 列</th><th>全量</th><th>三種規模的最佳方法</th></tr></thead><tbody id="ladderRows"></tbody></table></div>
+<p class="note">只有單一 seed，結果只能當描述。部分全量模型超過 45 分鐘上限，該列的「全量」顯示為未完成。</p>
+</section>
+
+<section class="panel"><span class="section-tag">06 · ACCEPTANCE AND FAILURES</span><h2>驗收與失敗紀錄</h2>
+<div class="scroll-table"><table><thead><tr><th>驗收條件</th><th>結果</th><th>說明</th></tr></thead><tbody>
+<tr><td>預測階段記憶體修正的等價測試</td><td class="pass">通過</td><td>resolve_scalable 與原 resolve 六法逐列相同（GitHub setup job）</td></tr>
+<tr><td>G5 對照（14 來源 × 5 Seeds × 6 方法）</td><td class="pass">通過</td><td>與先前發布值逐值相同，容差 1e-12</td></tr>
+<tr><td>19 欄大表檢查</td><td class="pass">通過</td><td>欄位順序一致、每組恰好 6 法、百分比在 0–100、covered + no_match = test_rows、true_in_candidate ≤ covered</td></tr>
+<tr><td>Conflict 上界</td><td class="pass">通過</td><td>六法 Accuracy 最大差距 ≤ conflict_rate_pct，3,665 組 0 違反</td></tr>
+<tr><td>資料集 ≥100、三種型態各 ≥20</td><td class="pass">通過</td><td id="typeMinNote"></td></tr>
+<tr><td>全部模型完成</td><td class="fail">未通過</td><td>95 個模型未完成，全部是超過 45 分鐘上限（7 個超大 OpenML 資料集）；下載中斷的 15 個已補跑。每一個缺少的組合在 FAILURES.csv 都有原因</td></tr>
+<tr><td>規模階梯完成</td><td class="fail">未通過</td><td>缺 10 組：全量模型超過 45 分鐘上限</td></tr>
+</tbody></table></div>
+<h3>模型失敗明細</h3>
+<div class="scroll-table"><table><thead><tr><th>資料集</th><th>失敗類型</th><th class="num">模型數</th><th>情境</th></tr></thead><tbody id="failRows"></tbody></table></div>
+<p><a href="../data/full_scale_20261118/FAILURES.csv">FAILURES.csv（含先前預檢、觸發失敗，以及以 RETRIED_ 標示、已被補跑取代的原 run 紀錄）</a> · <a href="../data/full_scale_20261118/MANIFEST.json">MANIFEST.json（commit、套件版本、每個檔案 SHA256）</a></p>
+</section>
+
+<section class="panel"><span class="section-tag">07 · LIMITATIONS</span><h2>研究限制</h2>
+<ul>
+<li><strong>只用前 6 個特徵：</strong>每個來源依原本的選欄規則取前 6 個預測欄，高維資料的其餘特徵沒有使用。</li>
+<li><strong>Seeds 不是新資料：</strong>5 個 Seeds 是同一份資料的不同切分，統計檢定一律以資料集為單位。</li>
+<li><strong>Accuracy 偏向多數類：</strong>類別不平衡時 Accuracy 會偏高，所以 DATASET_BEST 也同時列出 BA 最佳方法，以及兩者是否一致。</li>
+<li><strong>聯邦只是模擬：</strong>3 個 client 的切分是在同一台機器上模擬，沒有提供任何隱私保證。</li>
+<li><strong>45 分鐘上限：</strong>7 個超大型 OpenML 資料集的部分模型超過預先固定的上限，結果視為未完成，沒有放寬上限重跑。</li>
+<li><strong>未納入的資料：</strong>PatentsView 美國專利資料（約 900 萬件、四張關聯表、解壓後約 16 GB）不是現成的分類資料集，原始資料須登入 USPTO 才能下載、只能留在本機，目前的運算資源無法執行，列為研究限制。</li>
+</ul>
+</section>
+</main>
+<script>
+(()=>{"use strict";
+const D="../data/full_scale_20261118/";
+const $=id=>document.getElementById(id);
+const POLICIES=["FIRST_MATCH","SIMPLE_VOTING","STANDARD_VOTING","GLOBAL_STRENGTH","POPULATION_STANDARD","POPULATION_GLOBAL"];
+const SCEN=["CENTRALIZED","FED_IID","FED_A05","FED_A01"];
+const SCEN_LABEL={CENTRALIZED:"集中式",FED_IID:"聯邦 IID",FED_A05:"聯邦 Non-IID α=0.5",FED_A01:"聯邦 Non-IID α=0.1"};
+const TYPES=["連續","混合","類別/離散"],SIZES=["小","中","大","超大"];
+const C_BAR="#6da7ec",C_TOP="#1c5cab";
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const n=(x,d=2)=>Number.isFinite(+x)&&x!==""?(+x).toLocaleString("zh-TW",{minimumFractionDigits:d,maximumFractionDigits:d}):"—";
+const pfmt=p=>p===""||!Number.isFinite(+p)?"—":(+p<1e-4?(+p).toExponential(1):(+p).toFixed(4));
+const meth=s=>{const a=(Array.isArray(s)?s:String(s||"").split(";")).filter(Boolean);return a.length===6?"六法平手":a.join("、");};
+function parseCSV(text){const rows=[];let row=[],f="",q=false;for(let i=0;i<text.length;i++){const c=text[i];
+ if(q){if(c==='"'){if(text[i+1]==='"'){f+='"';i++;}else q=false;}else f+=c;}
+ else if(c==='"')q=true;else if(c===','){row.push(f);f="";}else if(c==='\n'){row.push(f);rows.push(row);row=[];f="";}else if(c!=='\r')f+=c;}
+ if(f!==""||row.length){row.push(f);rows.push(row);}
+ const h=rows.shift();return rows.filter(r=>r.length===h.length).map(r=>Object.fromEntries(h.map((k,i)=>[k,r[i]])));}
+const get=f=>fetch(D+f).then(r=>{if(!r.ok)throw new Error(f+" HTTP "+r.status);return r.text();});
+
+function winChart(scen,rows){
+ const data=POLICIES.map(p=>({p,w:+rows.find(r=>r.policy===p).wins}));
+ const max=Math.max(...data.map(d=>d.w)),top=data.filter(d=>Math.abs(d.w-max)<1e-9).map(d=>d.p);
+ const W=540,L=178,R=48,bh=20,gap=8,H=data.length*(bh+gap)+6,scale=v=>v/(Math.ceil(max/10)*10)*(W-L-R);
+ let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(SCEN_LABEL[scen])}各方法當最佳的次數">`;
+ s+=`<line class="axis" x1="${L}" y1="0" x2="${L}" y2="${H}"/>`;
+ data.forEach((d,i)=>{const y=i*(bh+gap)+3,w=Math.max(scale(d.w),1);
+  s+=`<text class="lbl" x="${L-8}" y="${y+bh/2+4}" text-anchor="end">${d.p}</text>`;
+  s+=`<rect class="bar" x="${L}" y="${y}" width="${w}" height="${bh}" rx="4" fill="${top.includes(d.p)?C_TOP:C_BAR}"><title>${d.p}：${n(d.w,1)} 次（${esc(SCEN_LABEL[scen])}）</title></rect>`;
+  s+=`<text class="val" x="${L+w+6}" y="${y+bh/2+4}">${n(d.w,1)}</text>`;});
+ return s+"</svg>";}
+
+Promise.all(["MANIFEST.json","REGISTRY.csv","SUMMARY.csv","DATASET_BEST.csv","SCALE_LADDER.csv","FAILURES.csv"].map(get)).then(([man,reg,sum,best,lad,fail])=>{
+ man=JSON.parse(man);reg=parseCSV(reg);sum=parseCSV(sum);best=parseCSV(best);lad=parseCSV(lad);fail=parseCSV(fail);
+ // 01 scale
+ const ran=reg.filter(r=>r.status==="SUCCESS"||r.status==="PARTIAL_OR_FAILED");
+ const dup=reg.filter(r=>r.status==="EXCLUDED_SAME_SOURCE").length;
+ $("sourceCount").textContent=ran.length;$("sourceNote").textContent=`另有 ${dup} 個同源來源未重複執行`;
+ $("modelCount").textContent=`${man.successful_models.toLocaleString()} / ${man.expected_models.toLocaleString()}`;
+ $("resultCount").textContent=(man.successful_models*6).toLocaleString();
+ const complete=reg.filter(r=>r.status==="SUCCESS");$("completeCount").textContent=complete.length;
+ const cnt=(arr,t,s)=>arr.filter(r=>(!t||r.feature_type===t)&&(!s||r.size_class===s)).length;
+ $("crossRows").innerHTML=[...TYPES,""].map(t=>`<tr${t?"":' class="primary"'}><td>${t||"合計"}</td>${SIZES.map(s=>`<td class="num">${cnt(ran,t,s)}</td>`).join("")}<td class="num">${cnt(ran,t,"")}</td></tr>`).join("");
+ $("typeMinNote").textContent=`執行 ${ran.length} 個來源；四情境完整的 ${complete.length} 個中，`+TYPES.map(t=>`${t} ${cnt(complete,t,"")}`).join("、")+" 個";
+ // 02 wins
+ const all=sum.filter(r=>r.stratum==="ALL");
+ $("winCharts").innerHTML=SCEN.map(sc=>{const rs=all.filter(r=>r.scenario===sc);
+  const ties=best.filter(r=>r.scenario===sc&&String(r.accuracy_best_methods).split(";").filter(Boolean).length===6).length;
+  return `<div class="chart"><h3>${esc(SCEN_LABEL[sc])}</h3><p>${rs[0].datasets} 個資料集 · 其中 ${ties} 個六法完全平手（各得 1/6 次）· Friedman p = ${pfmt(rs[0].friedman_p)}</p>${winChart(sc,rs)}</div>`;}).join("");
+ $("winRows").innerHTML=SCEN.flatMap(sc=>POLICIES.map(p=>{const r=all.find(x=>x.scenario===sc&&x.policy===p);
+  const ref=r.reference_method===p;
+  return `<tr><td>${esc(SCEN_LABEL[sc])}</td><td${ref?' class="primary"':""}>${p}</td><td class="num">${r.datasets}</td><td class="num">${n(r.wins,2)}</td><td class="num">${n(r.average_rank,2)}</td><td class="num">${n(r.average_accuracy_pct,2)}</td><td>${ref?"（基準：名次最佳）":esc(r.reference_method)}</td><td class="num">${ref?"—":pfmt(r.wilcoxon_holm_p)}</td></tr>`;})).join("");
+ $("friedmanNote").textContent="Friedman 檢定以資料集為單位："+SCEN.map(sc=>`${SCEN_LABEL[sc]} p = ${pfmt(all.find(r=>r.scenario===sc).friedman_p)}`).join("；")+"。Wilcoxon signed-rank 為名次最佳方法對其他五法，經 Holm 校正。";
+ // 03 strata
+ $("strScenario").innerHTML=SCEN.map(sc=>`<option value="${sc}">${esc(SCEN_LABEL[sc])}</option>`).join("");
+ const drawStrata=()=>{const sc=$("strScenario").value,k=$("strKind").value,vals=k==="feature_type"?TYPES:SIZES;
+  const rs=sum.filter(r=>r.scenario===sc&&r.stratum===k);
+  const nd=v=>{const x=rs.find(r=>r.stratum_value===v);return x?x.datasets:0;};
+  $("strHead").innerHTML=`<tr><th>方法</th>${vals.map(v=>`<th class="num">${v}（${nd(v)}）</th>`).join("")}</tr>`;
+  const maxBy=Object.fromEntries(vals.map(v=>[v,Math.max(...rs.filter(r=>r.stratum_value===v).map(r=>+r.wins))]));
+  $("strRows").innerHTML=POLICIES.map(p=>`<tr><td>${p}</td>${vals.map(v=>{const r=rs.find(x=>x.policy===p&&x.stratum_value===v);if(!r)return '<td class="num">—</td>';
+   const top=Math.abs(+r.wins-maxBy[v])<1e-9;return `<td class="num${top?" primary":""}">${n(r.wins,1)}</td>`;}).join("")}</tr>`).join("");};
+ $("strScenario").onchange=$("strKind").onchange=drawStrata;$("strScenario").value="FED_A01";drawStrata();
+ // 04 per dataset
+ $("dsScenario").innerHTML=SCEN.map(sc=>`<option value="${sc}">${esc(SCEN_LABEL[sc])}</option>`).join("");
+ const drawDs=()=>{const q=$("dsSearch").value.trim().toLowerCase(),sc=$("dsScenario").value,t=$("dsType").value,s=$("dsSize").value;
+  const rs=best.filter(r=>r.scenario===sc&&(!q||r.dataset.toLowerCase().includes(q))&&(!t||r.feature_type===t)&&(!s||r.size_class===s));
+  $("dsCount").textContent=`${rs.length} 個資料集（${SCEN_LABEL[sc]}）`;
+  $("dsRows").innerHTML=rs.map(r=>`<tr><td>${esc(r.dataset)}</td><td>${esc(r.feature_type)}</td><td>${esc(r.size_class)}</td><td class="primary methods">${esc(meth(r.accuracy_best_methods))}</td><td class="num">${n(r.accuracy_lead_pp)}</td><td class="num">${n(r.accuracy_range_pp)}</td><td class="methods">${esc(meth(r.ba_best_methods))}</td><td>${r.metric_winners_agree==="True"?"是":"否"}</td></tr>`).join("")||'<tr><td colspan="8">沒有符合條件的資料集</td></tr>';};
+ ["dsSearch","dsScenario","dsType","dsSize"].forEach(id=>$(id).addEventListener("input",drawDs));drawDs();
+ // 05 ladder
+ const key=r=>r.dataset+"|"+r.scenario,g={};
+ lad.filter(r=>r.rule_variant==="A_ALL_RULES").forEach(r=>{(g[key(r)]??={dataset:r.dataset,scenario:r.scenario,s:{}});(g[key(r)].s[r.scale]??=[]).push(r);});
+ const bestSet=rs=>{if(!rs)return null;const m=Math.max(...rs.map(r=>+r.accuracy_pct));return rs.filter(r=>+r.accuracy_pct>=m-1e-6).map(r=>r.selection_policy).sort();};
+ const lrows=Object.values(g).sort((a,b)=>a.dataset.localeCompare(b.dataset)||a.scenario.localeCompare(b.scenario)).map(x=>{const b={};["1800","10000","FULL"].forEach(k=>b[k]=bestSet(x.s[k]));
+  const done=b["1800"]&&b["10000"]&&b.FULL;let verdict="缺少規模，無法判斷";
+  if(done){const same=JSON.stringify(b["1800"])===JSON.stringify(b["10000"])&&JSON.stringify(b["10000"])===JSON.stringify(b.FULL);
+   const shared=b["1800"].filter(p=>b["10000"].includes(p)&&b.FULL.includes(p));verdict=same?"完全相同":shared.length?"部分相同（"+shared.join("、")+"）":"改變";}
+  return {...x,b,done,verdict};});
+ const done=lrows.filter(r=>r.done),same=done.filter(r=>r.verdict==="完全相同").length,part=done.filter(r=>r.verdict.startsWith("部分")).length;
+ $("ladderStats").innerHTML=`<div><small>資料集 × 情境</small><strong>${lrows.length}</strong><small>${new Set(lrows.map(r=>r.dataset)).size} 個大型資料集</small></div><div><small>三種規模都跑完</small><strong>${done.length}</strong><small>其餘為全量模型逾時</small></div><div><small>最佳方法完全相同</small><strong>${same}</strong><small>三種規模的最佳集合一樣</small></div><div><small>至少一個方法始終最佳</small><strong>${same+part}</strong><small>含部分相同</small></div>`;
+ const cell=b=>b?esc(meth(b)):'<span class="note">未完成</span>';
+ $("ladderRows").innerHTML=lrows.map(r=>`<tr><td>${esc(r.dataset)}</td><td>${esc(SCEN_LABEL[r.scenario])}</td><td class="methods">${cell(r.b["1800"])}</td><td class="methods">${cell(r.b["10000"])}</td><td class="methods">${cell(r.b.FULL)}</td><td class="methods">${esc(r.verdict)}</td></tr>`).join("");
+ // 06 failures
+ const mf=fail.filter(r=>r.phase==="MODEL"||r.phase==="SOURCE"),fg={};
+ mf.forEach(r=>{const k=r.dataset+"|"+r.status;(fg[k]??={dataset:r.dataset,status:r.status,n:0,sc:new Set()});fg[k].n++;fg[k].sc.add(SCEN_LABEL[r.scenario]||r.scenario);});
+ const label={TIMEOUT:"逾時（>45 分鐘）",IncompleteRead:"下載中斷"};
+ $("failRows").innerHTML=Object.values(fg).sort((a,b)=>a.dataset.localeCompare(b.dataset)).map(x=>`<tr><td>${esc(x.dataset)}</td><td>${esc(label[x.status]||x.status)}</td><td class="num">${x.n}</td><td>${esc([...x.sc].join("、"))}</td></tr>`).join("");
+ $("status").textContent=`已讀取補跑合併版的結果：${man.successful_models.toLocaleString()} / ${man.expected_models.toLocaleString()} 個模型成功；G5 對照${man.g5_validation_passed?"通過":"未通過"}。`;
+}).catch(e=>{$("status").textContent="無法讀取實驗結果："+e.message;});
+})();
+</script>
+</body></html>

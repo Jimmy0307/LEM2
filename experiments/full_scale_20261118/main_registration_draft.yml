@@ -1,0 +1,29 @@
+name: Full-scale six-policy research 20261118
+on:
+  workflow_dispatch:
+    inputs:
+      shard_count:
+        description: Number of deterministic shards (11–256)
+        type: number
+        default: 24
+        required: true
+      seeds:
+        description: Comma-separated split seeds
+        type: string
+        default: "1001,1002,1003,1004,1005"
+        required: true
+      smoke:
+        description: Run only five small datasets and one seed
+        type: boolean
+        default: true
+        required: true
+permissions:
+  contents: read
+jobs:
+  registration_notice:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Explain branch selection
+        run: |
+          echo "This registration file runs no experiments."
+          echo "Dispatch the research/full-scale-six-policy-20261118 branch instead."

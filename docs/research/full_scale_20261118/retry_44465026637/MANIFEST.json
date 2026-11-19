@@ -1,0 +1,55 @@
+{
+  "commit_sha": "1d64ff0b74e90301109393bb1f575eb961a331ad",
+  "tracked_worktree_dirty": false,
+  "tracked_diff_sha256": null,
+  "python": "3.12.16",
+  "packages": {
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "scipy": "1.18.1",
+    "pyarrow": "26.0.1",
+    "scikit-learn": null
+  },
+  "workflow_run_url": "https://github.com/Jimmy0307/LEM2/actions/runs/44465026637",
+  "smoke_run_url": "https://github.com/Jimmy0307/LEM2/actions/runs/44381227952",
+  "retry_of_run_url": "https://github.com/Jimmy0307/LEM2/actions/runs/44381723802",
+  "retry_jobs": [
+    [
+      "OML51:openml_40996",
+      "CENTRALIZED"
+    ],
+    [
+      "OML51:openml_42732",
+      "FED_A05"
+    ],
+    [
+      "OML51:openml_42769",
+      "FED_IID"
+    ]
+  ],
+  "expected_models": 3760,
+  "successful_models": 3665,
+  "failed_or_unrun_models": 95,
+  "g5_validation_passed": true,
+  "smoke_passed": false,
+  "acceptance": {
+    "all_models_completed": false,
+    "scale_ladder_completed": false,
+    "dataset_and_feature_minima": true,
+    "registry_feature_types_complete": true,
+    "g5": true,
+    "run_urls_present": true
+  },
+  "hashes_exclude_manifest_itself": true,
+  "file_sha256": {
+    "DATASET_BEST.csv": "2d0271b9dd59c5c586df9279886dc18ad768d1a3fc60fa10dd2aeab54518734a",
+    "FAILURES.csv": "e984954b80ea122f3a3553fa906a9816047aff31fb0e779b14a79f4b76e6a41c",
+    "FULL_SCALE_19COL.csv": "10b09a309641d5ece0c7773ad052d6230177eb47855bd185155754c15a08084a",
+    "FULL_SCALE_19COL_B2.csv": "f9a186cd14879abe90d5856b3f6cc713e8c9a62fa465871d961adbe818054b1b",
+    "FULL_SCALE_REPORT.md": "398367861c0d8f8425c31929a576fe61710df7bcfa3305543457b2a9a5fddaf2",
+    "REGISTRY.csv": "72995b24f26233807292387fe129ae8a7c0014b37bb82a1736b27df1a3837251",
+    "SCALE_LADDER.csv": "3512d5d4af18865fe3d3bcc0b7b2f769a07e09194177eae7701f1090248b436c",
+    "SUMMARY.csv": "88df01d7060fce7c40edb11ca97f216822d923e6af20f4a2a20a0261a118298b",
+    "TIMINGS.csv": "808f2e6a7f0ef282ab3f751c8d1227a65d70640d0a17a1567c334254133ddacc"
+  }
+}

@@ -70,12 +70,21 @@ def build_context(rules: Sequence[Rule], pooled_train: pd.DataFrame, target: str
     lookup = {c: i for i, c in enumerate(classes)}
     rule_class = np.asarray([lookup[d] for d in decisions], dtype=int)
     y = pooled_train[target].astype(str).to_numpy()
-    M = match_matrix(pooled_train, rules)
-    support = (M & (y[:, None] == decisions[None, :])).T if rules else np.zeros((0, len(y)), dtype=bool)
+    # Populate the final, contiguous (rule, row) support matrix directly.
+    # Building and then transposing a full (row, rule) match matrix requires
+    # multiple additional train-by-rule allocations for large datasets.
+    support = np.empty((len(rules), len(y)), dtype=bool)
+    cache: Dict[str, np.ndarray] = {}
+    for j, rule in enumerate(rules):
+        support[j] = y == decisions[j]
+        for attr, value in rule.conditions:
+            if attr not in cache:
+                cache[attr] = pooled_train[attr].astype(str).to_numpy()
+            support[j] &= cache[attr] == str(value)
     sizes = pooled_train[target].astype(str).value_counts().to_dict()
     return RuleContext(
         rules=rules, decisions=decisions, classes=classes, rule_class=rule_class,
-        support=np.ascontiguousarray(support), weights=support.sum(axis=1).astype(float),
+        support=support, weights=support.sum(axis=1).astype(float),
         class_sizes={str(k): int(v) for k, v in sizes.items()},
         default_class=str(default_class),
         is_empty=np.asarray([len(r.conditions) == 0 for r in rules], dtype=bool),
@@ -150,6 +159,75 @@ def resolve(M: np.ndarray, ctx: RuleContext, policy: str) -> np.ndarray:
         out = np.where(winners[:, default_idx], ctx.default_class, out)
     pred[hit] = out[hit]
     return pred
+
+
+def _resolve_support_chunked(M: np.ndarray, ctx: RuleContext, policy: str) -> np.ndarray:
+    """Original support-union scores, summed over bounded training-row blocks."""
+    n = M.shape[0]
+    pred = np.full(n, ctx.default_class, dtype=object)
+    hit = M.any(axis=1)
+    present = _decision_masks(M, ctx)
+    scores = np.zeros((n, len(ctx.classes)), dtype=float)
+    n_train = ctx.support.shape[1]
+    for k, cls in enumerate(ctx.classes):
+        cols = np.flatnonzero(ctx.rule_class == k)
+        active = np.flatnonzero(present[:, k])
+        if cols.size == 0 or active.size == 0:
+            continue
+        lhs = M[np.ix_(active, cols)].astype(np.int32)
+        total = np.zeros(len(active), dtype=np.int64)
+        # Bound both the converted support slice and the dense product.
+        block = max(1, (32 * 1024 * 1024) // (4 * (len(cols) + len(active))))
+        for start in range(0, n_train, block):
+            stop = min(start + block, n_train)
+            support = ctx.support[cols, start:stop].astype(np.int32)
+            total += ((lhs @ support) > 0).sum(axis=1)
+        U = total.astype(float)
+        N = float(ctx.class_sizes.get(cls, 0))
+        if policy == "GLOBAL_STRENGTH":
+            scores[active, k] = U / N if N > 0 else 0.0
+        elif policy == "POPULATION_STANDARD":
+            scores[active, k] = U
+        elif policy == "POPULATION_GLOBAL":
+            T = M[np.ix_(active, cols)].astype(float) @ ctx.weights[cols]
+            gs = U / N if N > 0 else np.zeros(len(active))
+            ratio = np.divide(U, T, out=np.zeros(len(active)), where=T > 0)
+            scores[active, k] = gs * ratio
+        else:
+            raise ValueError(policy)
+    masked = np.where(present, scores, -np.inf)
+    best = masked.max(axis=1)
+    tol = 1e-8 + 1e-5 * np.abs(np.where(np.isfinite(best), best, 0.0))
+    winners = present & (np.abs(scores - best[:, None]) <= tol[:, None])
+    classes = np.asarray(ctx.classes, dtype=object)
+    default_idx = ctx.classes.index(ctx.default_class) if ctx.default_class in ctx.classes else -1
+    out = classes[winners.argmax(axis=1)]
+    if default_idx >= 0:
+        out = np.where(winners[:, default_idx], ctx.default_class, out)
+    pred[hit] = out[hit]
+    return pred
+
+
+def resolve_scalable(M: np.ndarray, ctx: RuleContext, policy: str) -> np.ndarray:
+    """Resolve distinct Boolean match patterns using bounded support blocks."""
+    if M.shape[0] == 0 or ctx.n_rules == 0:
+        return resolve(M, ctx, policy)
+    policy = str(policy).strip().upper()
+    if policy not in POLICIES:
+        raise ValueError(f"Unknown policy {policy}")
+    # Bit packing is lossless for a Boolean match matrix and avoids several
+    # dense row-by-rule copies during np.unique on high-rule-count models.
+    packed = np.packbits(M, axis=1)
+    unique, inverse = np.unique(packed, axis=0, return_inverse=True)
+    inverse = inverse.reshape(-1)
+    predictions = np.empty(len(unique), dtype=object)
+    support_policies = {"GLOBAL_STRENGTH", "POPULATION_STANDARD", "POPULATION_GLOBAL"}
+    for start in range(0, len(unique), 1000):
+        end = min(start + 1000, len(unique))
+        block = np.unpackbits(unique[start:end], axis=1, count=M.shape[1]).astype(bool)
+        predictions[start:end] = (_resolve_support_chunked(block, ctx, policy) if policy in support_policies
+                                  else resolve(block, ctx, policy))
+    return predictions[inverse]
 
 
 # ------------------------------------------------ rule-set variants ------

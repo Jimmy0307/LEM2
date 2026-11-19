@@ -1,3 +1,25 @@
+## 2026-11-19｜全量規模化：188 個去重後資料集 × 六種決策方法
+
+- [互動頁：最佳方法統計、分層、逐資料集、規模階梯](./full_scale/)；[自動產生的中文報告](./data/full_scale_20261118/FULL_SCALE_REPORT.md)；[預先固定的協定](https://github.com/Jimmy0307/LEM2/blob/research/full-scale-six-policy-20261118/docs/research/full_scale_20261118/PROTOCOL.md)。
+- 移除先前每個資料集 1,800 列的上限，改用**全量列數**、同一套協定。教師主表 161 筆＋G5 已準備 51 筆，依指定同源清單排除 24 筆，共 **188 個來源**。每個來源取前 6 個特徵，5 Seeds（1001–1005）× 集中式／聯邦 IID／Dirichlet α=0.5／α=0.1。
+- 預定 3,760 個模型，**成功 3,665 個**，共 21,990 筆六方法結果（補跑合併版：原 run 中 15 個下載中斷的模型已重跑）。未完成 95 個，全部是超過每模型 45 分鐘上限（7 個超大 OpenML 資料集）。每一個缺少的組合在 FAILURES.csv 都有原因。
+- 型態（四情境完整的 181 個來源）：連續 79、混合 59、類別/離散 43。
+- **各方法當 Accuracy 最佳的次數**（平手平分）：
+  - 集中式：六法幾乎打平，介於 29.5 到 31.5 次。
+  - FED_IID：STANDARD_VOTING 39.4、SIMPLE_VOTING 39.3。
+  - α=0.5：SIMPLE_VOTING **81.8**。
+  - α=0.1：SIMPLE_VOTING **86.9**。
+  - 四種情境的 Friedman p 都小於 1e-6。但平均名次在 α=0.1 時，STANDARD_VOTING（2.62）與 SIMPLE_VOTING（2.63）幾乎相同。
+- 驗收：
+  - 通過：G5 對照（14 來源 × 5 Seeds × 6 法逐值相同）、19 欄大表檢查、Conflict 上界（3,655 組 0 違反）、資料集與型態數下限。
+  - 未通過：「全部模型完成」與「規模階梯完成」兩項。
+  - 執行紀錄：[全量 run](https://github.com/Jimmy0307/LEM2/actions/runs/44381723802) · [Smoke run](https://github.com/Jimmy0307/LEM2/actions/runs/44381227952)。
+- 限制：
+  - 只用前 6 個特徵；Seeds 不是新資料；Accuracy 偏向多數類；聯邦為模擬，沒有隱私保證。
+  - PatentsView 專利資料因須登入下載、規模與運算資源限制，未納入。
+
+---
+
 ## 2026-11-15｜連續型資料專用處理：三條控制實驗全部完成
 
 - [互動資料頁：A分箱＋B缺失標記＋C路由門檻](./g4_g8/controlled_ablation.html)；[教授版完整實證與學術限制](./g4_g8/CONTROLLED_DISCRETIZATION_MISSING_ROUTER_FINDINGS_20261115.md)。

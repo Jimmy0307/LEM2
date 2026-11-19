@@ -1,0 +1,22 @@
+{
+  "smoke": false,
+  "shard_count": 24,
+  "seeds": "1001,1002,1003,1004,1005",
+  "retry_of_run_id": 44381723802,
+  "retry_jobs": [
+    [
+      "OML51:openml_40996",
+      "CENTRALIZED"
+    ],
+    [
+      "OML51:openml_42732",
+      "FED_A05"
+    ],
+    [
+      "OML51:openml_42769",
+      "FED_IID"
+    ]
+  ],
+  "note": "Changing this file on research/full-scale-six-policy-20261118 triggers the full-scale workflow via push (workflow_dispatch needs the file on main, which this task may not modify). retry_of_run_id/retry_jobs rerun only the listed dataset x scenario jobs (IncompleteRead download failures in run 44381723802) and reuse that run's merged shard artifacts. Attempt 1 (run 44458946036) lost artifacts in the cross-run merge and is invalid; see docs/research/full_scale_20261118/retry_44458946036/INVALID_MERGE_NOTE.md.",
+  "retry_attempt": 2
+}

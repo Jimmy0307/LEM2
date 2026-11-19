@@ -1,0 +1,55 @@
+{
+  "commit_sha": "fba15d9087157ce1b566cf260bd7d93098ae731e",
+  "tracked_worktree_dirty": false,
+  "tracked_diff_sha256": null,
+  "python": "3.12.16",
+  "packages": {
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "scipy": "1.18.1",
+    "pyarrow": "26.0.1",
+    "scikit-learn": null
+  },
+  "workflow_run_url": "https://github.com/Jimmy0307/LEM2/actions/runs/44458946036",
+  "smoke_run_url": "https://github.com/Jimmy0307/LEM2/actions/runs/44381227952",
+  "retry_of_run_url": "https://github.com/Jimmy0307/LEM2/actions/runs/44381723802",
+  "retry_jobs": [
+    [
+      "OML51:openml_40996",
+      "CENTRALIZED"
+    ],
+    [
+      "OML51:openml_42732",
+      "FED_A05"
+    ],
+    [
+      "OML51:openml_42769",
+      "FED_IID"
+    ]
+  ],
+  "expected_models": 3760,
+  "successful_models": 3280,
+  "failed_or_unrun_models": 480,
+  "g5_validation_passed": false,
+  "smoke_passed": false,
+  "acceptance": {
+    "all_models_completed": false,
+    "scale_ladder_completed": false,
+    "dataset_and_feature_minima": true,
+    "registry_feature_types_complete": true,
+    "g5": false,
+    "run_urls_present": true
+  },
+  "hashes_exclude_manifest_itself": true,
+  "file_sha256": {
+    "DATASET_BEST.csv": "1336a8a23c06080e098763e3227a5fd74abcfa563d3bca23f7b6eb90fb2ec53a",
+    "FAILURES.csv": "7c6087ee0c277225804297000cdb4850e0013a8aac5dd757af4174ad1cdcae40",
+    "FULL_SCALE_19COL.csv": "d4bdd3b381131be62e1a5fe5f2295b42f2b4db999cab6852c384447951aed759",
+    "FULL_SCALE_19COL_B2.csv": "5c6b80330c34c286bce9b7c3f4239dc52fe6368b405cc81b5469674ef3d4e45e",
+    "FULL_SCALE_REPORT.md": "cfe28861904fdea1b0d36c666ce53df3b935299ef5401d84d8e2dd97ef58158b",
+    "REGISTRY.csv": "aa38f0ea8281a4c1d838dbcbbe66d80228f3a8fe6b85969ac062ccdb376f0312",
+    "SCALE_LADDER.csv": "8ba0047800dec95739fdab2e1de39cfd89af03ab6011f253e175f29b112a5536",
+    "SUMMARY.csv": "cf6ea09fa3e19468756754b6f8df931cdb013417a881cb663a5e9d142f88a207",
+    "TIMINGS.csv": "e8abc567a1f9b95571e1128679da13c365c405d13008c1b26dcaaed3834b6614"
+  }
+}

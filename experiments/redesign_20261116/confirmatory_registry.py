@@ -124,7 +124,7 @@ def _download(did: int):
     return desc, feats, path
 
 
-def prepare(did: int):
+def prepare(did: int, *, allow_fewer_classes: bool = False):
     """Returns (prepared frame, meta).  Raises with an explicit reason on exclusion."""
     desc, feats, path = _download(did)
     raw_sha = hashlib.sha256(path.read_bytes()).hexdigest()
@@ -178,7 +178,7 @@ def prepare(did: int):
     counts = frame[target].value_counts()
     small = counts[counts < 10].index.tolist()
     frame = frame[~frame[target].isin(small)]
-    if frame[target].nunique() < 2:
+    if frame[target].nunique() < 2 and not allow_fewer_classes:
         raise RuntimeError("EXCLUDED_E6_FEWER_THAN_2_CLASSES_AFTER_PREP")
     frame = frame.rename(columns={target: "class"}).reset_index(drop=True)
     prep_sha = hashlib.sha256(frame.to_csv(index=False).encode()).hexdigest()

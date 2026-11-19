@@ -1,0 +1,45 @@
+{
+  "commit_sha": "549174ced482ad01dd51852b2ceb77eb6f6a4674",
+  "tracked_worktree_dirty": false,
+  "tracked_diff_sha256": null,
+  "python": "3.12.16",
+  "packages": {
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "scipy": "1.18.1",
+    "pyarrow": "26.0.1",
+    "scikit-learn": null
+  },
+  "workflow_run_url": "https://github.com/Jimmy0307/LEM2/actions/runs/44381723802",
+  "smoke_run_url": "https://github.com/Jimmy0307/LEM2/actions/runs/44381227952",
+  "expected_models": 3760,
+  "successful_models": 3655,
+  "failed_or_unrun_models": 105,
+  "g5_validation_passed": true,
+  "smoke_passed": false,
+  "acceptance": {
+    "all_models_completed": false,
+    "scale_ladder_completed": false,
+    "dataset_and_feature_minima": true,
+    "registry_feature_types_complete": true,
+    "g5": true,
+    "run_urls_present": true
+  },
+  "hashes_exclude_manifest_itself": true,
+  "file_sha256": {
+    "DATASET_BEST.csv": "1c4225764f5a43ee7f64257e562b9007c0c4c4465a0ac97ca3bf75a36cf0fbd7",
+    "FAILURES.csv": "58c1f28164b6a3385ff2789019e0d06d6cfc946b9eccea50995407818624b899",
+    "FULL_SCALE_19COL.csv": "ee3b2ab949fe62d13058c1f003150faa4e150c32e103a2c8a9c320b8ee0d25ad",
+    "FULL_SCALE_19COL_B2.csv": "45c5f58beae24f2f844e0c87a1417dbc541207ca104df02738e3f7a23e02de3b",
+    "FULL_SCALE_REPORT.md": "f7bf48a82518d96e31c189046b5cb973128964630ceb3397a5e070f5dfc531fd",
+    "PROTOCOL.md": "0adf76eedd17e3245bacf56bd361c6b8ab680bdd1be9b5c195075f805d0090f4",
+    "REGISTRY.csv": "220a2b34a36ec85a0fe27937a2f26fae325ceda1298b541fe6d0635ee1649823",
+    "SCALE_LADDER.csv": "e35847b9fb40eb623f2245559361b3ddc149634d4320d5fa078ad7878db594d4",
+    "SMOKE_RUN.json": "91053df2b8212b871a34461a74280eed9969e488114f2e5d6fc9b52f3cd59124",
+    "SUMMARY.csv": "9e394c1d7e1a4cb1727fa7d6cf28db949ac2e7d4d1db6d721781dd79f384c8dd",
+    "TIMINGS.csv": "a31c54b211a4992c6c26244396c6340bcbf807c9404270d88f56a9805509c281",
+    "VALIDATION_PROGRESS.md": "c165145ce0c13a58f9661d59741d98807d08dccc36f059cac485dbcc5e92a68f",
+    "dispatch_attempt_20261119T014702+0800/DISPATCH_REPORT.md": "52c0ec2a603333102a1af2050590fe00e3e7448bf9e9885eaf7c2dd1bbca3ecb",
+    "dispatch_attempt_20261119T014702+0800/FAILURES.csv": "70612505ce6770fbf9b99d13a0de1317c253c246bb23863d70e486c801f5a408"
+  }
+}
