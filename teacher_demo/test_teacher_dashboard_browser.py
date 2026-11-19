@@ -31,6 +31,15 @@ def main():
             # The Pages root is a report gateway, NOT the CSV model test app.
             page.goto(base,wait_until="domcontentloaded",timeout=45000)
             page.wait_for_url("**/research/teacher_dashboard/",timeout=15000)
+            # The current entrypoint is the professor's six-question report.
+            assert "老師六個問題的回答" in page.title()
+            assert page.locator("main section[id^='q']").count() == 6
+            assert page.locator('a[href="./results/"]').count() >= 1
+            print("PROFESSOR_SIX_QUESTIONS_HOMEPAGE=PASS",flush=True)
+            # Historical interactive 42-seed instrument remains accessible
+            # as a separate technical view, not as the public homepage.
+            legacy_report = report + "technical_report.html"
+            page.goto(legacy_report, wait_until="domcontentloaded")
             page.wait_for_function("document.querySelectorAll('#seedGridLive button').length===42",timeout=40000)
             assert "37 欄" in page.locator("#dataState").inner_text()
             assert "互動研究流程" in page.title()
@@ -103,7 +112,7 @@ def main():
             print("CLASSICAL_FEDERATED_42SEED_VERSION_PP_STABILITY=PASS",flush=True)
 
             # Train/Test coverage teaching page: distinguish exact matching from rejection.
-            page.goto(report,wait_until="domcontentloaded")
+            page.goto(legacy_report,wait_until="domcontentloaded")
             assert page.locator('a[href="./coverage/"]').count() >= 1
             page.goto(report+"coverage/",wait_until="domcontentloaded")
             assert "Test Data Coverage 如何提高" in page.locator("h1").inner_text()
@@ -133,7 +142,7 @@ def main():
             print("TRAIN_TEST_COVERAGE_REJECTION_TEACHER_PAGE=PASS",flush=True)
 
             # Public CC-BY ecommerce & industrial datasets: real 4-seed evidence only.
-            page.goto(report,wait_until="domcontentloaded")
+            page.goto(legacy_report,wait_until="domcontentloaded")
             assert page.locator('a[href="./public_data/"]').count() >= 1
             page.goto(report+"public_data/",wait_until="domcontentloaded")
             page.wait_for_function("document.querySelector('#status').textContent.includes('PASS')",timeout=30000)
@@ -394,7 +403,7 @@ def main():
 
             # New total = 20 previous + 12 added public + two older commerce /
             # industrial domains. Only original 20 have C0 vs C3 pair evidence.
-            page.goto(report,wait_until="domcontentloaded")
+            page.goto(legacy_report,wait_until="domcontentloaded")
             assert page.locator('a[href="./atlas/"]').count()>=1
             page.goto(report+"atlas/",wait_until="domcontentloaded")
             page.wait_for_function(
