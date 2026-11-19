@@ -27,3 +27,19 @@ def test_workflow_matrix_has_one_dataset_entry_and_a_job_for_every_shard():
     assert len({x["dataset"] for x in datasets["include"]}) == 188
     assert len({x["token"] for x in datasets["include"]}) == 188
     assert shards["shard"] == list(range(24))
+
+
+def test_retry_matrix_keeps_shard_and_token_of_the_full_run():
+    import pytest
+    from experiments.full_scale_20261118.workflow_matrix import build_retry_matrix
+    datasets, _ = build_matrices(24)
+    name = datasets["include"][0]["dataset"]
+    retry = build_retry_matrix(datasets, [[name, "FED_A05"]])
+    original = datasets["include"][0]
+    assert retry["include"] == [dict(original, scenario="FED_A05")]
+    with pytest.raises(ValueError):
+        build_retry_matrix(datasets, [[name, "FED_X"]])
+    with pytest.raises(ValueError):
+        build_retry_matrix(datasets, [["NOPE:none", "FED_IID"]])
+    with pytest.raises(ValueError):
+        build_retry_matrix(datasets, [[name, "FED_IID"], [name, "FED_IID"]])

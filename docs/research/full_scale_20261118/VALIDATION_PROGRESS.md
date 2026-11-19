@@ -34,3 +34,14 @@ https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-t
 變動時才會執行，輸入參數（smoke、shard_count、seeds）從該檔讀取。
 `workflow_dispatch` 觸發保留；兩種觸發都在 setup job 統一解析成相同的輸出。
 `main_registration_draft.yml` 不會使用，也不會放到 `main`。
+
+## 下載中斷補跑（2026-11-19）
+
+全量 run https://github.com/Jimmy0307/LEM2/actions/runs/44381723802 中，有 3 個「資料集 × 情境」job 因 OpenML 下載中斷（IncompleteRead）而失敗，共 15 個模型：
+
+- openml_40996 / CENTRALIZED
+- openml_42732 / FED_A05
+- openml_42769 / FED_IID（含規模階梯）
+
+補跑只重跑這 3 個 job，其餘 job 沿用原 run 的 artifact。合併後的結果輸出到 `retry_<run_id>/`。
+原 run 的輸出檔維持不變；原 run 對這 3 個 job 的失敗紀錄，在新的 FAILURES.csv 中以 `RETRIED_` 開頭保留。

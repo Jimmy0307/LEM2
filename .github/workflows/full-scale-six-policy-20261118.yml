@@ -44,6 +44,9 @@ jobs:
       smoke: ${{ steps.resolve.outputs.smoke }}
       seeds: ${{ steps.resolve.outputs.seeds }}
       shard_count: ${{ steps.resolve.outputs.shard_count }}
+      retry_of: ${{ steps.resolve.outputs.retry_of }}
+      retry_jobs: ${{ steps.resolve.outputs.retry_jobs }}
+      retry: ${{ steps.matrix.outputs.retry }}
     steps:
       - uses: actions/checkout@v4
       - name: Resolve run inputs (workflow_dispatch inputs or RUN_REQUEST.json)
@@ -61,6 +64,13 @@ jobs:
           else:
               req = json.load(open('experiments/full_scale_20261118/RUN_REQUEST.json', encoding='utf-8'))
               smoke, seeds, shards = req['smoke'], req['seeds'], req['shard_count']
+          retry_of, retry_jobs = '', ''
+          if os.environ['EVENT'] != 'workflow_dispatch' and req.get('retry_of_run_id'):
+              retry_of = str(int(req['retry_of_run_id']))
+              pairs = [[str(d), str(sc)] for d, sc in req['retry_jobs']]
+              if not pairs:
+                  raise SystemExit('retry_of_run_id needs a nonempty retry_jobs list')
+              retry_jobs = json.dumps(pairs, separators=(',', ':'), ensure_ascii=False)
           smoke = str(smoke).strip().lower()
           if smoke not in ('true', 'false'):
               raise SystemExit(f'smoke must be true/false, got {smoke!r}')
@@ -68,7 +78,8 @@ jobs:
           seeds = ','.join(str(int(x)) for x in str(seeds).split(',') if x.strip())
           print(f'smoke={smoke} seeds={seeds} shard_count={shards}')
           with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as out:
-              for key, value in (('smoke', smoke), ('seeds', seeds), ('shard_count', shards)):
+              for key, value in (('smoke', smoke), ('seeds', seeds), ('shard_count', shards),
+                                 ('retry_of', retry_of), ('retry_jobs', retry_jobs)):
                   print(f'{key}={value}', file=out)
           PYRESOLVE
       - uses: actions/setup-python@v5
@@ -81,9 +92,10 @@ jobs:
           SHARD_COUNT: ${{ steps.resolve.outputs.shard_count }}
           SEEDS: ${{ steps.resolve.outputs.seeds }}
           SMOKE: ${{ steps.resolve.outputs.smoke }}
+          RETRY_JOBS: ${{ steps.resolve.outputs.retry_jobs }}
         run: |
           python -m pytest tests/test_full_scale_resolve_equivalence.py experiments/full_scale_20261118 -q
-          python -m experiments.full_scale_20261118.workflow_matrix --shard-count "$SHARD_COUNT" --seeds "$SEEDS"
+          python -m experiments.full_scale_20261118.workflow_matrix --shard-count "$SHARD_COUNT" --seeds "$SEEDS" --retry-jobs "$RETRY_JOBS"
           if [ "$SMOKE" = "false" ]; then
             python - <<'PYCHECK'
           import json, os
@@ -250,7 +262,7 @@ jobs:
           git commit -m "Record stopped G5 validation"
           git push origin HEAD:"$GITHUB_REF_NAME"
   central:
-    if: ${{ needs.setup.outputs.smoke != 'true' }}
+    if: ${{ needs.setup.outputs.smoke != 'true' && needs.setup.outputs.retry_of == '' }}
     needs: [setup, verify_g5]
     runs-on: ubuntu-latest
     timeout-minutes: 340
@@ -320,7 +332,7 @@ jobs:
             gh run cancel "$GITHUB_RUN_ID"
           fi
   iid:
-    if: ${{ needs.setup.outputs.smoke != 'true' }}
+    if: ${{ needs.setup.outputs.smoke != 'true' && needs.setup.outputs.retry_of == '' }}
     needs: [setup, verify_g5]
     runs-on: ubuntu-latest
     timeout-minutes: 340
@@ -390,7 +402,7 @@ jobs:
             gh run cancel "$GITHUB_RUN_ID"
           fi
   a05:
-    if: ${{ needs.setup.outputs.smoke != 'true' }}
+    if: ${{ needs.setup.outputs.smoke != 'true' && needs.setup.outputs.retry_of == '' }}
     needs: [setup, verify_g5]
     runs-on: ubuntu-latest
     timeout-minutes: 340
@@ -459,8 +471,79 @@ jobs:
             fi
             gh run cancel "$GITHUB_RUN_ID"
           fi
+  retry_models:
+    if: ${{ needs.setup.outputs.smoke != 'true' && needs.setup.outputs.retry_of != '' }}
+    needs: [setup, verify_g5]
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix: ${{ fromJSON(needs.setup.outputs.retry) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt scipy pyarrow
+      - name: Dataset and scenario model slice
+        id: execute
+        env:
+          DATASET: ${{ matrix.dataset }}
+          SHARD: ${{ matrix.shard }}
+          SHARD_COUNT: ${{ needs.setup.outputs.shard_count }}
+          SEEDS: ${{ needs.setup.outputs.seeds }}
+          SCENARIO: ${{ matrix.scenario }}
+        run: |
+          python -m experiments.full_scale_20261118.shard --shard "$SHARD" --shard-count "$SHARD_COUNT" --dataset "$DATASET" --scenarios "$SCENARIO" --seeds "$SEEDS" --output "$RUNNER_TEMP/shard"
+      - name: Preserve conflict-bound report
+        if: ${{ always() }}
+        env:
+          SHARD: ${{ matrix.shard }}
+        run: |
+          python - <<'PYREPORT'
+          import csv, os
+          from pathlib import Path
+          folder = Path(os.environ['RUNNER_TEMP']) / 'shard'
+          path = folder / ('failures_' + os.environ['SHARD'] + '.csv')
+          if path.exists():
+              with path.open(encoding='utf-8', newline='') as f:
+                  matches = [r for r in csv.DictReader(f) if r.get('status') == 'ConflictBoundViolation']
+              if matches:
+                  (folder / 'CONFLICT_REPORT.md').write_text('# Conflict 上界違反，實驗已中止\n\n' + '\n'.join(str(x) for x in matches), encoding='utf-8')
+          PYREPORT
+      - uses: actions/upload-artifact@v4
+        if: ${{ always() }}
+        with:
+          name: dataset-${{ matrix.shard }}-${{ matrix.token }}-${{ matrix.scenario }}
+          path: ${{ runner.temp }}/shard/*
+          if-no-files-found: warn
+      - name: Stop the run on a conflict-bound violation
+        if: ${{ always() && steps.execute.outcome == 'failure' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_TOKEN: ${{ matrix.token }}
+          SHARD: ${{ matrix.shard }}
+        run: |
+          if [ -f "$RUNNER_TEMP/shard/CONFLICT_REPORT.md" ]; then
+            DEST="docs/research/full_scale_20261118/conflict_stop_${GITHUB_RUN_ID}_${RUN_TOKEN}_${GITHUB_JOB}"
+            if [ ! -e "$DEST" ]; then
+              mkdir -p "$DEST"
+              cp "$RUNNER_TEMP/shard/failures_${SHARD}.csv" "$DEST/FAILURES.csv"
+              cp "$RUNNER_TEMP/shard/CONFLICT_REPORT.md" "$DEST/FULL_SCALE_REPORT.md"
+              git config user.name github-actions[bot]
+              git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+              git add "$DEST"
+              if git commit -m "Record stopped conflict-bound violation" && git push origin HEAD:"$GITHUB_REF_NAME"; then
+                echo "Conflict stop report committed."
+              else
+                echo "Could not commit conflict stop report; the uploaded artifact retains it." >&2
+              fi
+            fi
+            gh run cancel "$GITHUB_RUN_ID"
+          fi
   a01:
-    if: ${{ needs.setup.outputs.smoke != 'true' }}
+    if: ${{ needs.setup.outputs.smoke != 'true' && needs.setup.outputs.retry_of == '' }}
     needs: [setup, verify_g5]
     runs-on: ubuntu-latest
     timeout-minutes: 340
@@ -531,7 +614,7 @@ jobs:
           fi
   merge_shards:
     if: ${{ always() && needs.setup.outputs.smoke != 'true' && needs.setup.result == 'success' && needs.verify_g5.result == 'success' }}
-    needs: [setup, verify_g5, central, iid, a05, a01]
+    needs: [setup, verify_g5, central, iid, a05, a01, retry_models]
     runs-on: ubuntu-latest
     timeout-minutes: 340
     strategy:
@@ -543,6 +626,31 @@ jobs:
         with:
           python-version: "3.12"
       - run: python -m pip install -r requirements-dev.txt scipy pyarrow
+      - name: Retry mode - reuse dataset artifacts from the earlier full run
+        if: ${{ needs.setup.outputs.retry_of != '' }}
+        uses: actions/download-artifact@v4
+        with:
+          pattern: dataset-${{ matrix.shard }}-*
+          path: ${{ runner.temp }}/datasets
+          run-id: ${{ needs.setup.outputs.retry_of }}
+          github-token: ${{ github.token }}
+      - name: Retry mode - drop the earlier artifacts of the rerun jobs
+        if: ${{ needs.setup.outputs.retry_of != '' }}
+        env:
+          RETRY_JOBS: ${{ needs.setup.outputs.retry_jobs }}
+          SHARD: ${{ matrix.shard }}
+        run: |
+          python - <<'PYPRUNE'
+          import hashlib, json, os, shutil
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP']) / 'datasets'
+          for dataset, scenario in json.loads(os.environ['RETRY_JOBS']):
+              token = hashlib.sha256(dataset.encode('utf-8')).hexdigest()[:16]
+              folder = root / f"dataset-{os.environ['SHARD']}-{token}-{scenario}"
+              if folder.exists():
+                  shutil.rmtree(folder)
+                  print('replaced earlier artifact', folder.name, dataset, scenario)
+          PYPRUNE
       - uses: actions/download-artifact@v4
         continue-on-error: true
         with:
@@ -590,8 +698,13 @@ jobs:
           SEEDS: ${{ needs.setup.outputs.seeds }}
           SMOKE_URL: ${{ needs.setup.outputs.smoke_url }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          RETRY_OF: ${{ needs.setup.outputs.retry_of }}
+          RETRY_JOBS: ${{ needs.setup.outputs.retry_jobs }}
         run: |
-          if [ "$SMOKE" = "true" ]; then
+          if [ -n "$RETRY_OF" ]; then
+            BASE="docs/research/full_scale_20261118"
+            python -m experiments.full_scale_20261118.aggregate --artifacts "$RUNNER_TEMP/artifacts" --output "$BASE/retry_${GITHUB_RUN_ID}" --history-dir "$BASE" --seeds "$SEEDS" --run-url "$RUN_URL" --smoke-url "$SMOKE_URL" --retry-of-url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RETRY_OF" --retry-jobs "$RETRY_JOBS"
+          elif [ "$SMOKE" = "true" ]; then
             python -m experiments.full_scale_20261118.aggregate --artifacts "$RUNNER_TEMP/artifacts" --output "$RUNNER_TEMP/report" --seeds "$SEEDS" --smoke --run-url "$RUN_URL"
           else
             python -m experiments.full_scale_20261118.aggregate --artifacts "$RUNNER_TEMP/artifacts" --output docs/research/full_scale_20261118 --seeds "$SEEDS" --run-url "$RUN_URL" --smoke-url "$SMOKE_URL"

@@ -85,3 +85,30 @@ def test_aggregation_preserves_prior_dispatch_failure(tmp_path):
     aggregate(artifacts, report, [1001], smoke=True)
     failures = pd.read_csv(report / "FAILURES.csv")
     assert ((failures.phase == "PRELIMINARY_DISPATCH") & (failures.status == "HTTP_404")).any()
+
+
+def test_retry_aggregation_marks_replaced_failures_and_reads_parent_history(tmp_path):
+    artifacts = tmp_path / "artifacts"
+    artifacts.mkdir()
+    base = tmp_path / "base"
+    (base / "dispatch_attempt_1").mkdir(parents=True)
+    pd.DataFrame([dict(phase="DISPATCH", status="HTTP_404", error="workflow unavailable")]).to_csv(
+        base / "dispatch_attempt_1" / "FAILURES.csv", index=False)
+    pd.DataFrame([
+        dict(dataset="UCI20:iris", seed=1001, scenario="CENTRALIZED", phase="SOURCE", status="IncompleteRead", error="cut"),
+        dict(dataset="UCI20:iris", seed=1001, scenario="FED_IID", phase="MODEL", status="TIMEOUT", error="slow"),
+        dict(dataset="", seed=None, scenario="", phase="PRELIMINARY_DISPATCH", status="HTTP_404", error="old"),
+    ]).to_csv(base / "FAILURES.csv", index=False)
+    out = base / "retry_1"
+    manifest = aggregate(artifacts, out, [1001], smoke=True, run_url="new", history_dir=base,
+                         retry_of_url="old-run", retry_jobs=[("UCI20:iris", "CENTRALIZED")])
+    failures = pd.read_csv(out / "FAILURES.csv")
+    retried = failures[failures.phase == "RETRIED_SOURCE"]
+    assert len(retried) == 1 and "old-run" in retried.error.iloc[0]
+    # Jobs that were not rerun keep their failures only through the new artifacts, not the old log.
+    assert not failures.phase.astype(str).str.contains("TIMEOUT|RETRIED_MODEL").any()
+    # Earlier preliminary logs are read from the parent folder exactly once.
+    assert (failures.phase == "PRELIMINARY_DISPATCH").sum() == 1
+    assert manifest["retry_of_run_url"] == "old-run"
+    assert manifest["retry_jobs"] == [["UCI20:iris", "CENTRALIZED"]]
+    assert "補跑合併版" in (out / "FULL_SCALE_REPORT.md").read_text(encoding="utf-8")

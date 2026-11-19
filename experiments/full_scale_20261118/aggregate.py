@@ -110,8 +110,13 @@ def validate_g5_rows(primary, seeds):
     return complete
 
 
-def aggregate(artifacts, output, seeds, smoke=False, run_url="", smoke_url=""):
+def aggregate(artifacts, output, seeds, smoke=False, run_url="", smoke_url="",
+              history_dir=None, retry_of_url="", retry_jobs=()):
+    """retry_jobs: (dataset, scenario) pairs rerun in this run, replacing their artifacts from
+    the run at retry_of_url. history_dir holds earlier failure logs (defaults to output)."""
     output = Path(output)
+    history = Path(history_dir) if history_dir else output
+    retry_jobs = {(str(d), str(sc)) for d, sc in retry_jobs}
     output.mkdir(parents=True, exist_ok=True)
     names = ["FULL_SCALE_19COL.csv", "FULL_SCALE_19COL_B2.csv", "REGISTRY.csv", "DATASET_BEST.csv",
              "SUMMARY.csv", "SCALE_LADDER.csv", "FAILURES.csv", "TIMINGS.csv", "MANIFEST.json", "FULL_SCALE_REPORT.md"]
@@ -163,11 +168,24 @@ def aggregate(artifacts, output, seeds, smoke=False, run_url="", smoke_url=""):
                                                             status="MISSING_ARTIFACT_OR_EVENT", error="No model result or failure artifact")
                                                      for d, s, sc in missing])], ignore_index=True)
     prior = ROOT / "experiments/full_scale_20261118/FAILURES.csv"
-    previous_logs = (([prior] if prior.exists() else []) + sorted(output.glob("g5_stop_*/FAILURES.csv"))
-                     + sorted(output.glob("conflict_stop_*/FAILURES.csv")) + sorted(output.glob("dispatch_attempt_*/FAILURES.csv")))
+    previous_logs = (([prior] if prior.exists() else []) + sorted(history.glob("g5_stop_*/FAILURES.csv"))
+                     + sorted(history.glob("conflict_stop_*/FAILURES.csv")) + sorted(history.glob("dispatch_attempt_*/FAILURES.csv")))
     for log in previous_logs:
         old = pd.read_csv(log)
         old["phase"] = "PRELIMINARY_" + old["phase"].fillna("").astype(str)
+        failures = pd.concat([failures, old], ignore_index=True)
+    if retry_jobs:
+        # Keep the replaced run's failure rows for the rerun jobs, marked so they are not
+        # counted as current model failures (their configurations were rerun in this run).
+        base = history / "FAILURES.csv"
+        if not base.exists():
+            raise FileNotFoundError(f"Retry mode needs the earlier run's failure log: {base}")
+        old = pd.read_csv(base)
+        old = old[~old.phase.fillna("").astype(str).str.startswith("PRELIMINARY_")]
+        hit = [(str(d), str(sc)) in retry_jobs for d, sc in zip(old.dataset, old.scenario)]
+        old = old[hit].copy()
+        old["phase"] = "RETRIED_" + old["phase"].fillna("").astype(str)
+        old["error"] = old["error"].astype(str) + f" [replaced by rerun; earlier run {retry_of_url}]"
         failures = pd.concat([failures, old], ignore_index=True)
     if not metadata.empty and metadata.dataset.duplicated().any():
         raise ValueError("Duplicate source metadata across shard artifacts")
@@ -259,6 +277,10 @@ def aggregate(artifacts, output, seeds, smoke=False, run_url="", smoke_url=""):
                   "registry_feature_types_complete": unresolved_fraction == 0 and unresolved_type == 0,
                   "g5": g5_ok,
                   "run_urls_present": bool(run_url and smoke_url)}
+    retry_note = ("" if not retry_jobs else
+                  "\n" + f"本結果為補跑合併版：原全量 workflow {retry_of_url} 中，下列因資料下載中斷（IncompleteRead）而失敗的"
+                  f"資料集／情境 job 已重跑並以本次結果取代，其餘 job 沿用原 run 的 artifact：{sorted(retry_jobs)}。"
+                  f"原 run 對這些 job 的失敗紀錄以 `RETRIED_` 開頭保留於 FAILURES.csv，不計入模型失敗數。原 run 的輸出檔保持不變。" + "\n")
     report = f"""# 全量六策略實驗報告
 
 執行模式：{'smoke' if smoke else '全量'}。去重後預定來源 {len(datasets)} 個；有完整四種情境及全部指定種子的來源 {sum(all((d, int(s), sc) in primary_keys for s in seeds for sc in SCENARIOS) for d in datasets)} 個。
@@ -281,7 +303,7 @@ def aggregate(artifacts, output, seeds, smoke=False, run_url="", smoke_url=""):
 
 模型 wall time 秒數分位數：`{quantiles}`。G5 對照：{g5_detail}。規模階梯缺少 {len(ladder_missing)} 個資料集／情境／規模組合。未完成種子的資料集與情境不列入 DATASET_BEST 與 SUMMARY。
 Smoke workflow：{smoke_ref}；全量 workflow：{run_ref if not smoke else '尚未執行'}。Artifact：{run_ref + '#artifacts' if run_url else '未提供'}。
-
+{retry_note}
 ## 限制
 
 僅使用前六個符合各來源既有選欄規則的特徵；不同 seed 不是新資料。欄位型態或連續比例若隨 seed 變化，REGISTRY 保留各 seed 的實際值；無法用單一比例表示時留空並記錄失敗，未分類來源不計入三種型態的最低數量。Accuracy 偏向多數類；聯邦式為模擬，沒有隱私保證。結果僅描述成功執行的配置，不以重複來源補數。
@@ -298,6 +320,7 @@ Smoke workflow：{smoke_ref}；全量 workflow：{run_ref if not smoke else '尚
                     tracked_worktree_dirty=bool(tracked_diff),
                     tracked_diff_sha256=hashlib.sha256(tracked_diff).hexdigest() if tracked_diff else None,
                     python=platform.python_version(), packages=versions, workflow_run_url=run_url, smoke_run_url=smoke_url,
+                    retry_of_run_url=retry_of_url or None, retry_jobs=sorted([list(x) for x in retry_jobs]),
                     expected_models=len(expected), successful_models=len(primary_keys), failed_or_unrun_models=model_failures,
                     g5_validation_passed=g5_ok, smoke_passed=smoke and model_failures == 0,
                     acceptance=acceptance,
@@ -316,9 +339,13 @@ def main():
     p.add_argument("--smoke", action="store_true")
     p.add_argument("--run-url", default="")
     p.add_argument("--smoke-url", default="")
+    p.add_argument("--history-dir", default=None)
+    p.add_argument("--retry-of-url", default="")
+    p.add_argument("--retry-jobs", default="", help='JSON list of [dataset, scenario] pairs')
     a = p.parse_args()
+    retry_jobs = [tuple(x) for x in json.loads(a.retry_jobs)] if a.retry_jobs.strip() else []
     result = aggregate(a.artifacts, a.output, [int(s.strip()) for s in a.seeds.split(",") if s.strip()],
-                       a.smoke, a.run_url, a.smoke_url)
+                       a.smoke, a.run_url, a.smoke_url, a.history_dir, a.retry_of_url, retry_jobs)
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0 if (result["smoke_passed"] if a.smoke else all(result["acceptance"].values())) else 1
 

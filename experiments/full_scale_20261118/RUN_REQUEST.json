@@ -2,5 +2,11 @@
   "smoke": false,
   "shard_count": 24,
   "seeds": "1001,1002,1003,1004,1005",
-  "note": "Changing this file on research/full-scale-six-policy-20261118 triggers the full-scale workflow via push (workflow_dispatch needs the file on main, which this task may not modify)."
+  "retry_of_run_id": 44381723802,
+  "retry_jobs": [
+    ["OML51:openml_40996", "CENTRALIZED"],
+    ["OML51:openml_42732", "FED_A05"],
+    ["OML51:openml_42769", "FED_IID"]
+  ],
+  "note": "Changing this file on research/full-scale-six-policy-20261118 triggers the full-scale workflow via push (workflow_dispatch needs the file on main, which this task may not modify). retry_of_run_id/retry_jobs rerun only the listed dataset x scenario jobs (IncompleteRead download failures in run 44381723802) and reuse that run's other artifacts."
 }
