@@ -626,31 +626,21 @@ jobs:
         with:
           python-version: "3.12"
       - run: python -m pip install -r requirements-dev.txt scipy pyarrow
-      - name: Retry mode - reuse dataset artifacts from the earlier full run
+      - name: Retry mode - reuse the earlier run's merged shard (exact artifact name)
         if: ${{ needs.setup.outputs.retry_of != '' }}
         uses: actions/download-artifact@v4
         with:
-          pattern: dataset-${{ matrix.shard }}-*
-          path: ${{ runner.temp }}/datasets
+          name: shard-${{ matrix.shard }}
+          path: ${{ runner.temp }}/datasets/earlier-shard-${{ matrix.shard }}
           run-id: ${{ needs.setup.outputs.retry_of }}
           github-token: ${{ github.token }}
-      - name: Retry mode - drop the earlier artifacts of the rerun jobs
+      - name: Retry mode - drop the rerun dataset/scenario rows from the earlier shard
         if: ${{ needs.setup.outputs.retry_of != '' }}
         env:
           RETRY_JOBS: ${{ needs.setup.outputs.retry_jobs }}
           SHARD: ${{ matrix.shard }}
         run: |
-          python - <<'PYPRUNE'
-          import hashlib, json, os, shutil
-          from pathlib import Path
-          root = Path(os.environ['RUNNER_TEMP']) / 'datasets'
-          for dataset, scenario in json.loads(os.environ['RETRY_JOBS']):
-              token = hashlib.sha256(dataset.encode('utf-8')).hexdigest()[:16]
-              folder = root / f"dataset-{os.environ['SHARD']}-{token}-{scenario}"
-              if folder.exists():
-                  shutil.rmtree(folder)
-                  print('replaced earlier artifact', folder.name, dataset, scenario)
-          PYPRUNE
+          python -m experiments.full_scale_20261118.retry_merge --folder "$RUNNER_TEMP/datasets/earlier-shard-$SHARD" --shard "$SHARD" --retry-jobs "$RETRY_JOBS"
       - uses: actions/download-artifact@v4
         continue-on-error: true
         with:

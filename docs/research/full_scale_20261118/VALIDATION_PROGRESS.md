@@ -45,3 +45,15 @@ https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-t
 
 補跑只重跑這 3 個 job，其餘 job 沿用原 run 的 artifact。合併後的結果輸出到 `retry_<run_id>/`。
 原 run 的輸出檔維持不變；原 run 對這 3 個 job 的失敗紀錄，在新的 FAILURES.csv 中以 `RETRIED_` 開頭保留。
+
+### 第一次補跑無效，修正後重跑（2026-11-19）
+
+- 第一次補跑（run 44458946036）在合併時遺失原 run 的 385 個模型結果，判定無效，詳見 `retry_44458946036/INVALID_MERGE_NOTE.md`。
+- 修正一：合併改為用確切名稱下載原 run 已合併的 `shard-<k>` artifact，只刪掉要重跑的列（`retry_merge.py`）。
+- 修正二：OpenML 下載遇到暫時性網路錯誤時，最多重試 3 次（`sources.py`），並新增 `test_retry.py`。
+- 第二次補跑仍以原全量 run 44381723802 為基準，重跑同樣 3 個 job。
+
+### 網頁
+
+- Teacher Dashboard 新增 `full_scale/` 子頁，資料副本放在 `teacher_dashboard/data/full_scale_20261118/`；首頁導覽列與 README 各新增一個入口。
+- 這個資料夾不在原任務指定的三個路徑內，是應使用者要求新增；只有新增內容，既有內容沒有修改。

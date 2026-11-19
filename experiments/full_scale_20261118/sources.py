@@ -4,6 +4,9 @@ import hashlib
 import io
 import json
 import re
+import shutil
+import sys
+import time
 from pathlib import Path
 from copy import deepcopy
 from urllib.request import urlopen
@@ -131,13 +134,42 @@ def load_pmlb(name):
                   n_raw, len(original_predictors), chosen, dropped, spec["source_url"], True, missing_treatments, excluded)
 
 
+DOWNLOAD_ATTEMPTS = 3
+
+
+def _transient_download_error(exc):
+    """Network failures worth retrying; data or protocol errors are not."""
+    import http.client
+    import urllib.error
+    if isinstance(exc, urllib.error.HTTPError):
+        return exc.code >= 500
+    return isinstance(exc, (http.client.IncompleteRead, urllib.error.URLError, ConnectionError, TimeoutError))
+
+
+def _prepare_openml_with_retry(did, attempts=DOWNLOAD_ATTEMPTS, wait=time.sleep):
+    """Run the G5 preparation, retrying truncated or failed downloads.
+
+    The data is unchanged by a retry: the same URL is fetched again and its raw SHA-256
+    is recorded downstream. The partial cache folder is removed before each retry.
+    """
+    for attempt in range(1, attempts + 1):
+        try:
+            return openml.prepare(int(did), allow_fewer_classes=True)
+        except Exception as exc:  # noqa: BLE001 - re-raised unless transient
+            if attempt == attempts or not _transient_download_error(exc):
+                raise
+            shutil.rmtree(Path(openml.CACHE) / str(did), ignore_errors=True)
+            print(f"OPENML_DOWNLOAD_RETRY did={did} attempt={attempt} error={exc!r}", file=sys.stderr, flush=True)
+            wait(20 * attempt)
+
+
 def load_openml(did, cache_dir):
     """Reuse G5 preparation with its row cap disabled and record drop counts."""
     old_cache, old_limit = openml.CACHE, openml.MAX_ROWS
     try:
         openml.CACHE = Path(cache_dir)
         openml.MAX_ROWS = 2**63 - 1
-        frame, meta = openml.prepare(int(did), allow_fewer_classes=True)
+        frame, meta = _prepare_openml_with_retry(did)
         path = openml.CACHE / str(did) / f"dataset_{int(did)}.pq"
     finally:
         openml.CACHE, openml.MAX_ROWS = old_cache, old_limit
