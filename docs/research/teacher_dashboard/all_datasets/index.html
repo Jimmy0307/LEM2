@@ -1,0 +1,73 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LEM2 全研究資料｜109 PMLB＋51 OpenML＋3 歷史基準</title>
+<link rel="stylesheet" href="../site.css">
+<style>
+.hero{background:linear-gradient(115deg,#102a41,#195d69);color:#fff;padding:38px max(16px,calc((100vw - 1200px)/2))}.hero h1{font-size:clamp(26px,4vw,42px);margin:8px 0}.hero p{max-width:980px;color:#d8ebee}
+.navbox{display:flex;gap:12px;flex-wrap:wrap}.navbox a{display:inline-block;border:1px solid #78bcb5;border-radius:9px;padding:7px 12px;color:#d2f3ed}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}.kpi{border:1px solid #d7e6e7;background:#f4faf9;border-radius:12px;padding:15px}.kpi strong{font-size:27px;display:block;color:#135d69}.kpi span{color:#54707d;font-size:13px}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}.controls label{display:grid;gap:5px;font-weight:700}.controls select{padding:8px;border:1px solid #c4d9dc;background:#fff;border-radius:7px;min-width:0}
+.scroll{overflow:auto;max-height:590px;margin:12px 0;border:1px solid #d5e5e8;border-radius:9px}
+table.raw{border-collapse:collapse;font-size:12px;width:max-content;min-width:100%;white-space:nowrap}table.raw th,table.raw td{border-bottom:1px solid #e2ebee;padding:8px 10px;text-align:right;font-variant-numeric:tabular-nums}table.raw th{background:#173a4b;color:white;position:sticky;top:0}table.raw tr:nth-child(even){background:#f5f9fa}table.raw th:first-child,table.raw td:first-child{text-align:left;position:sticky;left:0;z-index:2;background:#fff}table.raw th:first-child{background:#173a4b}
+.tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.tools button{padding:7px 12px;border:1px solid #acd0cc;border-radius:8px;background:#eaf7f4;color:#135c67}.tools button:disabled{opacity:.4}
+.note{border-left:4px solid #199080;background:#e9f7f4;padding:12px 15px;border-radius:6px}.warning{border-left:4px solid #bd8d49;background:#fff4e4;padding:12px 15px;border-radius:6px}.small{font-size:12px;color:#607482}
+@media(max-width:650px){.hero{padding:28px 18px}.panel{padding:17px}.wrap{padding:16px 12px}}
+</style></head><body>
+<div class="site-top"><a class="brand" href="../">LEM2 Research</a><nav><a href="../">總報告</a><a class="active" href="./">全部資料集</a><a href="../federated_comparison/">19 欄歷史基準</a><a href="../pmlb_117/">109 份研究報告</a></nav></div>
+<header class="hero"><div class="eyebrow">SOURCE-VERIFIED EXPERIMENT CATALOGUE</div><h1>不只三份：109 份 PMLB、51 份 OpenML、歷史 3 份</h1><p>依研究批次開啟真正跑過的逐項 Output，保留原生欄位、逐資料集、Seed、分布與方法查詢。不同批次有不同實驗協定和特徵限制，不將來源數量直接相加當作互相獨立的資料集。</p>
+<div class="navbox"><a href="#pmlb">109 PMLB · 5,886 筆</a><a href="#gate5">51 OpenML · 13,770 筆</a><a href="../federated_comparison/#legacy19">歷史 3 份 · 15,876 筆</a><a href="../data_catalog/">161 筆來源名冊（含重複）</a></div></header>
+<main class="wrap"><section class="panel">
+<h2>已驗證研究批次</h2>
+<div class="kpis"><div class="kpi"><span>PMLB（有 Federated）</span><strong>109 份</strong><span>117 候選，109 成功，8 未完成；C3</span></div>
+<div class="kpi"><span>OpenML Gate 5</span><strong>51 份</strong><span>9 個主要方法、3 種分布、10 Seeds</span></div>
+<div class="kpi"><span>最早 42 Seeds</span><strong>3 份</strong><span>同設定中央／聯邦，完整 19 欄</span></div></div>
+<p class="warning"><strong>重要：</strong>109 份 PMLB 的原始實驗只有聯邦式 C3，<strong>沒有相同設定的非聯邦結果</strong>，不能替它補上假的 Centralized 分數。51 份 OpenML 的 C1 是集中式 CART，C2 是聯邦 CART；R1 使用集中式切點但仍採聯邦規則，不能當作完全非聯邦。</p>
+<p class="small">PMLB 使用 64/16/20 切分，每份最多 900 筆、前 6 特徵。OpenML Gate 5 最多 1,800 筆、前 6 特徵。兩批資料可能與其他歷史來源同源。只在各批相同測試協定內比較。</p>
+</section>
+<section class="panel" id="pmlb">
+<span class="section-tag">A · 109 PMLB CLASSIFICATION TABLES · ORIGINAL 40 COLUMNS</span><h2>109 份 PMLB：六策略逐次輸出</h2>
+<p>109 資料集 × 3 Seeds × 3 分布 × 六決策策略＝5,886 筆原始 Test 結果。保留原來全部 <strong>40 個表頭</strong>，包括 Test BA、Accuracy、Macro-F1、Coverage、Validation Conflict、時間與記憶體。</p>
+<div class="controls"><label>資料集<select id="pData"><option value="ALL">109 份全部</option></select></label>
+<label>分布<select id="pReg"><option value="ALL">全部</option><option value="IID">IID／相似</option><option value="NONIID_05">非IID／α=0.5</option><option value="NONIID_01">非IID／α=0.1</option></select></label>
+<label>Seed<select id="pSeed"><option value="ALL">全部</option><option>1</option><option>7</option><option>42</option></select></label>
+<label>策略<select id="pPolicy"><option value="ALL">全部六種</option><option>FIRST_MATCH</option><option>SIMPLE_VOTING</option><option>STANDARD_VOTING</option><option>GLOBAL_STRENGTH</option><option>POPULATION_STANDARD</option><option>POPULATION_GLOBAL</option></select></label></div>
+<p id="pState" class="note">載入原始結果中…</p>
+<div class="scroll"><table class="raw"><thead><tr><th>策略</th><th>平均 Test BA (%)</th><th>平均 Accuracy (%)</th><th>平均 Macro-F1 (%)</th><th>筆數</th></tr></thead><tbody id="pRank"></tbody></table></div>
+<div class="tools"><button id="pPrev">上一頁</button><span id="pPage"></span><button id="pNext">下一頁</button><button id="pExport">下載目前篩選的 40 欄 CSV</button></div>
+<div class="scroll"><table class="raw"><thead id="pHead"></thead><tbody id="pBody"></tbody></table></div>
+<p class="small">研究證據：<a href="../data/PMLB_117_3SEED_SIX_POLICY_RAW.csv">原始 5,886 筆</a> · <a href="../data/PMLB_117_3SEED_SOURCE_AUDIT.csv">117 份稽核清單</a> · <a href="../pmlb_117/">109 份 G4–G8 正式分析</a>。以上排名是當前篩選的描述性平均，不等於顯著性檢定。</p></section>
+<section class="panel" id="gate5">
+<span class="section-tag">B · 51 OPENML · VALIDATED GATE5 NINE-ARM VIEWS</span><h2>51 份 OpenML：聯邦與集中式分類結果</h2>
+<p>由原始 223,380 筆策略評估選出每份資料、Seed、分布下的九個主要方法，共 <strong>13,770 筆</strong>；本頁展示經核對的 14 欄衍生比較資料。M0／M1／M2／M3／R2／R3 都是聯邦 LEM2，R1 是集中式切點＋聯邦規則，C1 是集中式 CART，C2 是聯邦 CART 投票。</p>
+<div class="controls"><label>OpenML ID<select id="gData"><option value="ALL">51 份全部</option></select></label>
+<label>分布<select id="gReg"><option value="ALL">全部</option><option value="IID">IID／相似</option><option value="NONIID_05">非IID／α=0.5</option><option value="NONIID_01">非IID／α=0.1</option></select></label>
+<label>Seed<select id="gSeed"><option value="ALL">1001–1010 全部</option></select></label>
+<label>方法<select id="gArm"><option value="ALL">全部九方法</option><option>M0</option><option>M1</option><option>M2</option><option>M3</option><option>R1</option><option>R2</option><option>R3</option><option>C1</option><option>C2</option></select></label></div>
+<p id="gState" class="note">載入 51 份已核對比較結果…</p>
+<div class="scroll"><table class="raw"><thead><tr><th>方法</th><th>架構</th><th>平均 Test BA (%)</th><th>平均 Accuracy (%)</th><th>平均 Macro-F1 (%)</th><th>對 M0 差距 (pp)</th><th>配置數</th></tr></thead><tbody id="gRank"></tbody></table></div>
+<div class="tools"><button id="gPrev">上一頁</button><span id="gPage"></span><button id="gNext">下一頁</button><button id="gExport">下載目前篩選的 14 欄 CSV</button></div>
+<div class="scroll"><table class="raw"><thead id="gHead"></thead><tbody id="gBody"></tbody></table></div>
+<p class="small">證據：<a href="../data/G5_51_OPENML_NINE_ARMS_13770.csv">13,770 筆核對後對照</a> · <a href="https://github.com/Jimmy0307/LEM2/blob/research/federated-rule-degeneracy-redesign-20261116/docs/research/redesign_20261116/data/G5_ARM_MEANS.csv">原 51 資料集 Gate5 均值</a> · <a href="https://github.com/Jimmy0307/LEM2/pull/6">預註冊研究來源</a>。九方法均值已與原資料逐項比對；這不是重新執行模型。G5 未提供的原生指標不應誤填成零。</p></section>
+<section class="panel"><span class="section-tag">C · 3 LEGACY DATASETS / ORIGINAL 19 HEADERS</span><h2>原來三份完整 19 欄，仍保留在獨立比較頁</h2><p>Balance Scale、Car Evaluation、Hayes-Roth 的 42 Seeds 原始表包含 Federated 14,112 筆與非 Federated 1,764 筆，可直接做同測試條件比較，但不是整套研究的全部資料。</p><p><a href="../federated_comparison/">開啟最早 19 欄 Federated／非 Federated 兩張表</a></p></section>
+</main><footer class="footer">LEM2 多研究批次證據索引 · <a href="../">回到研究總報告</a></footer>
+<script>
+(()=>{"use strict";const $=id=>document.getElementById(id),LIMIT=60;
+const types={p:{url:"../data/PMLB_117_3SEED_SIX_POLICY_RAW.csv",expected:5886,columns:40,unique:109},g:{url:"../data/G5_51_OPENML_NINE_ARMS_13770.csv",expected:13770,columns:14,unique:51}};
+const fmt=x=>Number.isFinite(x)?x.toFixed(2):"—",num=x=>x===""?NaN:Number(x);
+function parse(s){const l=s.trim().split(/\r?\n/),h=l.shift().split(","),rows=l.map(line=>{const v=line.split(",");return Object.fromEntries(h.map((x,i)=>[x,v[i]??""]));});return {h,rows};}
+function option(sel,value){const op=document.createElement("option");op.value=value;op.textContent=value;$(sel).append(op);}
+function cell(parent,tag,s){const el=document.createElement(tag);el.textContent=String(s);parent.append(el);return el;}
+function average(a){return a.reduce((v,x)=>v+x,0)/a.length;}
+function controls(t){return t==="p"?[$("pData").value,$("pReg").value,$("pSeed").value,$("pPolicy").value]:[$("gData").value,$("gReg").value,$("gSeed").value,$("gArm").value];}
+function filter(t){const o=types[t],f=controls(t);o.shown=o.rows.filter(x=>{const data=x.dataset,reg=t==="p"?x.scenario:x.regime,seed=x.seed,policy=t==="p"?x.policy:x.arm;return (f[0]==="ALL"||f[0]===data)&&(f[1]==="ALL"||f[1]===reg)&&(f[2]==="ALL"||f[2]===seed)&&(f[3]==="ALL"||f[3]===policy);});o.page=0;render(t);rank(t);}
+function render(t){const o=types[t],frag=document.createDocumentFragment();for(const x of o.shown.slice(o.page*LIMIT,(o.page+1)*LIMIT)){const tr=document.createElement("tr");for(const h of o.h)cell(tr,"td",x[h]===""?"—":x[h]);frag.append(tr);}
+$(t+"Body").replaceChildren(frag);$(t+"Page").textContent=o.shown.length?"第 "+(o.page+1)+"／"+Math.ceil(o.shown.length/LIMIT)+" 頁（篩選 "+o.shown.length.toLocaleString()+" 筆）":"無符合資料";$(t+"Prev").disabled=o.page===0;$(t+"Next").disabled=(o.page+1)*LIMIT>=o.shown.length;}
+function rank(t){const o=types[t],gr=new Map();for(const r of o.shown){const k=t==="p"?r.policy:r.arm;if(!gr.has(k))gr.set(k,[]);gr.get(k).push(r);}
+let sums=[];for(const [k,vs] of gr){const m=t==="p"?["test_balanced_accuracy","test_accuracy","test_macro_f1"]:["test_ba_pct","test_accuracy_pct","test_macro_f1_pct"];const a=m.map(metric=>average(vs.map(x=>num(x[metric])).filter(Number.isFinite))*(t==="p"?100:1));sums.push({k,a,n:vs.length,sys:t==="g"?vs[0].system:"FEDERATED"});}
+sums.sort((a,b)=>b.a[0]-a.a[0]);const base=sums.find(x=>x.k==="M0"),body=$(t+"Rank");body.replaceChildren();for(const r of sums){const tr=document.createElement("tr");let vals=[r.k];if(t==="g")vals.push(r.sys);vals.push(...r.a.map(fmt));if(t==="g")vals.push(base?fmt(r.a[0]-base.a[0]):"—");vals.push(r.n);for(const v of vals)cell(tr,"td",v);body.append(tr);}}
+function exportRows(t){const o=types[t],str=[o.h.join(","),...o.shown.map(x=>o.h.map(k=>{const s=String(x[k]||"");return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}).join(","))].join("\r\n");const url=URL.createObjectURL(new Blob(["\ufeff"+str],{type:"text/csv;charset=utf-8"})),a=document.createElement("a");a.href=url;a.download="LEM2_"+(t==="p"?"109_PMLB_40_columns":"51_OpenML_9_methods")+".csv";document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+async function init(t){const o=types[t];try{const r=await fetch(o.url,{cache:"no-store"});if(!r.ok)throw Error("HTTP "+r.status);const data=parse(await r.text());if(data.h.length!==o.columns||data.rows.length!==o.expected||new Set(data.rows.map(x=>x.dataset)).size!==o.unique)throw Error("欄位、列數或資料集數量未通過驗證");o.h=data.h;o.rows=data.rows;const th=document.createElement("tr");for(const h of o.h)cell(th,"th",h);$(t+"Head").append(th);for(const v of [...new Set(o.rows.map(x=>x.dataset))].sort())option(t+"Data",v);if(t==="g")for(let i=1001;i<=1010;i++)option("gSeed",String(i));
+const ids=t==="p"?["pData","pReg","pSeed","pPolicy"]:["gData","gReg","gSeed","gArm"];for(const id of ids)$(id).addEventListener("change",()=>filter(t));$(t+"Prev").addEventListener("click",()=>{o.page--;render(t)});$(t+"Next").addEventListener("click",()=>{o.page++;render(t)});$(t+"Export").addEventListener("click",()=>exportRows(t));$(t+"State").textContent="原始檔核對通過："+o.unique+" 份資料、"+o.expected.toLocaleString()+" 筆、"+o.columns+" 欄。";filter(t);
+}catch(e){$(t+"State").className="warning";$(t+"State").textContent="資料無法核對："+e.message+"。請使用上方原始證據連結。";}}
+init("p");init("g");
+})();
+</script></body></html>
