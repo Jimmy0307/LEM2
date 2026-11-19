@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-Hant"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LEM2 聯邦規則研究｜教授版：七個問題、實驗結果與研究結論</title>
+<meta name="description" content="依老師七個問題整理：資料規模、切分、六策略、覆蓋、Standard / Global 修改、真實案例、錯誤分解；109 份 PMLB 實測與聯邦比較限制。">
+<link rel="stylesheet" href="./site.css">
+<style>
+:root{--navy:#132f40;--teal:#0f716c;--ink:#233849;--light:#eff8f7;--line:#dbe8e9}
+body{background:#f6f9fa}
+.teacher-nav{background:#132f40;color:white;padding:13px max(18px,calc((100vw - 1120px)/2));display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;position:sticky;top:0;z-index:5}
+.teacher-nav strong{font-size:16px;color:white}.teacher-nav .links{display:flex;gap:13px;flex-wrap:wrap}.teacher-nav a{color:#cbe7e5;font-size:13px}
+.teacher-nav a:hover{color:white}
+.teacher-hero{background:linear-gradient(115deg,#143148,#1c6970);color:white;padding:52px max(18px,calc((100vw - 1120px)/2)) 47px}
+.teacher-hero .eyebrow{color:#a1e8df;letter-spacing:.09em;font-weight:800;font-size:12px}
+.teacher-hero h1{font-size:clamp(32px,5.1vw,54px);line-height:1.19;max-width:920px;margin:12px 0}
+.teacher-hero p{color:#e3f4f1;font-size:17px;line-height:1.8;max-width:800px}
+.teacher-wrap{max-width:1140px;margin:0 auto;padding:28px 18px 65px}
+.teacher-panel{background:white;border:1px solid var(--line);border-radius:14px;padding:25px 26px;margin:0 0 18px;box-shadow:0 5px 18px #163a4810}
+.teacher-panel h2{font-size:25px;line-height:1.4;color:var(--navy);margin:0 0 10px}
+.teacher-panel h3{font-size:17px;color:#175861;margin:7px 0}
+.eyetag{display:block;color:var(--teal);font-size:12px;letter-spacing:.07em;font-weight:900;margin-bottom:5px}
+.teacher-panel p{font-size:15px;color:#3f5562;line-height:1.75}
+.teacher-big{font-size:20px!important;color:#163f4c!important;font-weight:800!important;margin:5px 0 16px!important}
+.teacher-highlight{color:#126860}
+.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0 10px}
+.metric{padding:17px;border:1px solid #dceae9;background:#f5fbfa;border-radius:11px}
+.metric small{display:block;color:#536c76;font-size:13px}
+.metric strong{display:block;color:#115e66;font-size:31px;line-height:1.3;margin:4px 0}
+.metric span{font-size:12px;color:#576d77}
+.tgrid{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
+.tgrid th{background:#173b4a;color:#fff;text-align:left;padding:11px}
+.tgrid td{padding:12px 11px;border-bottom:1px solid #e5edef;color:#2b414f}
+.tgrid tr:nth-child(even) td{background:#f6fafb}
+.tgrid td strong{color:#0e6760}
+.scroll{overflow-x:auto;border-radius:9px}
+.mini{font-size:12px!important;color:#647782!important}
+.pill{display:inline-block;background:#e6f6f2;color:#10695c;border-radius:99px;font-size:12px;padding:3px 9px;font-weight:800}
+.pill.warn{background:#fff1dc;color:#956023}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0}
+.step{background:#f2f8f8;border-left:4px solid #27847a;padding:18px 15px;border-radius:4px 10px 10px 4px}
+.step b{font-size:17px;display:block;color:#175760}.step p{font-size:13px;margin:6px 0 0}
+.question{border-top:1px solid #deeaeb;padding:15px 0;display:grid;grid-template-columns:42px 1fr;gap:10px}
+.question:first-child{border-top:0}.question .n{background:#dff2ee;color:#10695f;border-radius:9px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px}
+.question h3{margin:2px 0 5px!important;font-size:16px}
+.question p{margin:2px 0!important}.question a{font-size:13px}
+.case{background:#f1f8f7;border:1px solid #d3e9e5;border-radius:12px;padding:19px 22px;margin:17px 0}
+.case b{color:#115b65}
+.tag-row{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0 4px}
+.tag-row a{display:inline-block;border:1px solid #cce4e1;background:#f6fbf9;border-radius:9px;padding:8px 12px;color:#135f64;font-weight:750;font-size:13px}
+.tag-row a.main{background:#176d6a;color:white;border-color:#176d6a}
+.details-note{padding:13px 17px;border-left:4px solid #c5964f;background:#fff6e9;color:#6b552e;border-radius:5px;line-height:1.6;margin:17px 0}
+details{border:1px solid #d7e9e9;border-radius:11px;padding:15px 17px;margin-top:14px}
+summary{font-weight:800;cursor:pointer;color:#155762;font-size:14px}
+strong.yes{color:#0c7260}strong.no{color:#b45d31}
+.teacher-foot{padding:25px;text-align:center;color:#6b7d88;font-size:12px}
+@media(max-width:690px){.teacher-wrap{padding:14px 11px 45px}.teacher-panel{padding:20px 16px}.metrics,.steps{grid-template-columns:1fr}.teacher-hero{padding:34px 17px}.teacher-hero p{font-size:15px}.teacher-panel h2{font-size:22px}.teacher-big{font-size:18px!important}.teacher-nav{position:static}.metric strong{font-size:27px}}
+</style>
+</head><body>
+<nav class="teacher-nav" aria-label="研究網站主選單">
+<strong>LEM2 · 教授報告版</strong>
+<div class="links"><a href="#answer">先看結果</a><a href="#questions">老師的七題</a><a href="#why">真實案例</a><a href="#evidence">完整證據</a><a href="./technical_report.html">工程細節</a></div>
+</nav>
+<header class="teacher-hero">
+<div class="eyebrow">PROFESSOR FIRST · RESEARCH SUMMARY</div>
+<h1>六種規則決策方法<br>到底哪一種比較好？</h1>
+<p>我們用 Federated LEM2 做分類實驗。最重要的發現是：<b>沒有一種方法在所有資料分布下都最好。</b>當不同 Client 的資料越不相同，透過訓練資料內部的驗證集選擇策略，往往比永遠固定一種策略更好。</p>
+<div class="tag-row"><a class="main" href="#answer">先看 109 份實驗結論</a><a href="#questions">逐題回答老師</a><a href="./pmlb_117/">查看 109 份來源</a></div>
+</header>
+<main class="teacher-wrap">
+<section class="teacher-panel" id="answer">
+<span class="eyetag">第一件事｜研究到底跑了多少資料？</span>
+<h2>我們已完成 109 份公開基準資料表</h2>
+<p>這不是原本的三份而已。最早用三份資料驗證流程，後來增加到 117 份候選的 PMLB 資料，其中 <strong>109 份完整成功</strong>，另 8 份保留未成功紀錄。</p>
+<div class="metrics">
+<div class="metric"><small>候選／成功資料表</small><strong>109 / 117</strong><span>不等於 109 個完全獨立的真實產業來源</span></div>
+<div class="metric"><small>已完成規則配置</small><strong>981</strong><span>109 份 × 3 個 Seed × 3 種資料分布</span></div>
+<div class="metric"><small>六策略外測結果</small><strong>5,886</strong><span>每個配置測試六種決策方法</span></div>
+</div>
+<p class="mini">109 份 PMLB 使用每份最多 900 列與前六個特徵；資料分成 64% 訓練、16% 驗證、20% 最終測試，並非全量高維運算。</p>
+</section>
+<section class="teacher-panel">
+<span class="eyetag">第二件事｜直接回答：誰比較好？</span>
+<h2>資料越不均，事先驗證再選方法的效果越明顯</h2>
+<p>表中都是 109 份資料、3 個 Seed 的<strong>最終 20% Test Balanced Accuracy（BA，平衡正確率）</strong>。分數越高越好。</p>
+<div class="scroll"><table class="tgrid"><thead><tr><th>Client 資料分布</th><th>最佳固定策略</th><th>利用驗證集選策略</th><th>結果</th></tr></thead><tbody>
+<tr><td>IID（分布相似）</td><td>Global Strength <b>55.88%</b></td><td>55.72%</td><td><strong class="no">−0.16 pp，沒有更好</strong></td></tr>
+<tr><td>Non-IID α=0.5（中度不均）</td><td>Simple Voting <b>52.43%</b></td><td>54.11%</td><td><strong class="yes">+1.68 pp，較好</strong></td></tr>
+<tr><td>Non-IID α=0.1（高度不均）</td><td>Simple Voting <b>47.71%</b></td><td>49.52%</td><td><strong class="yes">+1.82 pp，較好</strong></td></tr>
+</tbody></table></div>
+<p class="teacher-big">結論：<span class="teacher-highlight">不要預先認定六種投票策略有一種永遠最好；要看資料分布與驗證結果。</span></p>
+<p class="mini">「利用驗證集選策略」是在 16% 內部驗證資料選定規則，再於獨立的 20% Test 評估；不是偷看 Test 答案。這個結果支持 Non-IID 條件下的選法效益，不等於證明聯邦架構整體優於集中式。</p>
+<div class="tag-row"><a class="main" href="./pmlb_117/">109 份完整實驗與統計</a><a href="./data/PMLB_117_3SEED_SIX_POLICY_RAW.csv">5,886 筆原始結果 CSV</a><a href="./data/PMLB_117_3SEED_MANIFEST.json">成功／失敗稽核</a></div>
+</section>
+<section class="teacher-panel" id="questions">
+<span class="eyetag">第三件事｜完全依照老師原本七個問題的順序</span>
+<h2>老師問什麼，我們就回答什麼</h2>
+<p>以下是依先前「Professor Question Closure」簡報整理的七個提問。三資料集的解釋性案例與後來 109 份的大規模驗證分開呈現。</p>
+<div class="question"><span class="n">1</span><div><h3>資料到底有幾筆？多少個條件欄位？</h3><p>早期三份：Balance Scale <b>625 筆／4 條件</b>、Car Evaluation <b>1,728 筆／6 條件</b>、Hayes-Roth <b>132 筆／4 條件</b>。後來完成 109 份 PMLB 來源，實際每表最多使用 900 筆及 6 特徵。</p><a href="./data_catalog/">查每份來源的 Rows、Features 與任務</a></div></div>
+<div class="question"><span class="n">2</span><div><h3>80/20 怎麼切？測試資料有沒有參與學規則？</h3><p>早期三份資料以 80% 學規則，最後 20% 測試；109 份新實驗則是 <b>64% 訓練／16% 內部驗證／20% 最後測試</b>。20% Test 不用來選規則或挑選策略。</p><a href="./methods/">查完整實驗切分與方法</a></div></div>
+<div class="question"><span class="n">3</span><div><h3>六種方法 Accuracy、Recall、F1 到底是多少？</h3><p>六種方法不是六套不同 LEM2：它們用同一組規則，但最後選答案的方法不同。<b>第一條規則、簡單投票、支持度投票、全域強度、去重後支持度、去重後全域強度</b>。上面的 BA 是主要結果；完整 Accuracy、BA、Macro-F1 留在逐筆表。</p><a href="./pmlb_117/">查看六策略完整績效</a></div></div>
+<div class="question"><span class="n">4</span><div><h3>Coverage 是什麼？規則命中很多，為什麼還會錯？</h3><p><b>規則有命中 ≠ 正確答案在候選裡 ≠ 最後答案正確。</b>例如早期 Balance Scale、Client=2 的單次測試：整體規則命中率 94.4%，但各類別平均的「真實答案進入候選」比例只有 57.5%。</p><a href="./technical_report.html">看規則命中與 Conflict 的診斷流程</a></div></div>
+<div class="question"><span class="n">5</span><div><h3>Standard 的「3+3」重複計票問題，改完是否變好？</h3><p>兩條規則各支援 3 筆訓練資料，可能有重複；原本算 <b>3+3=6 次</b>，去重後只有 <b>4 筆不同資料</b>。修改後有些案例變對，也有些原本正確的案例變錯，<b>不能說全面改善</b>。</p><a href="#why">看下面的真實對照案例</a></div></div>
+<div class="question"><span class="n">6</span><div><h3>Global 原方法與修正版到底差在哪？</h3><p>Global Strength 看一個決策獲得的支援資料占該類別比例；Population Global 再考慮「同一筆資料被多條規則重複計數」的程度。最後預測有時不同，<b>不代表修改後必然更準</b>。</p><a href="./methods/">看六種策略原始公式</a></div></div>
+<div class="question"><span class="n">7</span><div><h3>三份資料各挑五筆 Target，實際為什麼會改答案？</h3><p>每個 Target 是一筆真正的 Test row，先看原始輸入和真實答案，再看哪些規則命中、有哪些候選答案、六策略各選誰。總共 <b>3 × 5 = 15 筆回查案例</b>，用來解釋原因，不拿 15 筆估計整體成效。</p><a href="#why">看最容易理解的一個例子</a></div></div>
+</section>
+<section class="teacher-panel" id="why">
+<span class="eyetag">第四件事｜拿一筆資料，讓老師真的看懂 Conflict</span>
+<h2>同一個天平，為什麼兩種規則會給不同答案？</h2>
+<p>這是舊版 Balance Scale 的真實測試資料 <b>row_id=54</b>，有兩種規則同時命中，分別說「向左」與「向右」。真正答案是向右（R）。</p>
+<div class="case">
+<p><b>原始條件：</b>左側重量 1、距離 3；右側重量 1、距離 5。左邊力矩 3，右邊力矩 5，所以<strong>真實答案是 R（向右）</strong>。</p>
+<div class="steps">
+<div class="step"><b>① 規則同時命中</b><p>有規則說 L（向左），也有規則說 R（向右）。</p></div>
+<div class="step"><b>② 原 Standard</b><p>重複支持次數：L = 19，R = 18，所以選 L，<strong>判錯</strong>。</p></div>
+<div class="step"><b>③ 去重後 Standard</b><p>不同支持資料：L = 16，R = 18，所以選 R，<strong>判對</strong>。</p></div>
+</div>
+</div>
+<p><b>但這不是說去重一定比較好。</b>另一筆 Balance Scale row_id=77 恰好相反：原 Standard 判對，去重後反而判錯。這說明真正的研究問題是：<strong>什麼樣的衝突與重複支持，才適合改用另一種投票方式？</strong></p>
+<details><summary>老師若追問：我們如何判斷錯在規則，還是最後選答案？</summary>
+<p>先問三件事：① 有沒有規則命中？② 真實答案有沒有被任何命中的規則提出？③ 已經提出正確答案，為什麼最後還選錯？</p><p>若第②題就是「沒有」，換任何投票方法也救不了；必須回去改規則生成。若正確答案已在候選裡、最後仍選錯，才值得比較六種策略。</p></details>
+</section>
+<section class="teacher-panel">
+<span class="eyetag">第五件事｜對教授說清楚，我們證明了什麼、還沒證明什麼</span>
+<h2>目前可以下的結論</h2>
+<p><strong class="yes">已取得證據：</strong>在 109 份基準資料的 Non-IID 條件下，利用內部驗證集選六策略，平均 BA 高於表中最佳固定策略；原始資料與失敗紀錄可追查。</p>
+<p><strong class="no">還不能宣稱：</strong>所有新策略都勝過舊策略、Federated 一定勝過 Centralized、已完成大型高維資料全量實驗，或已有可直接宣稱原創性的 Federated 新演算法。</p>
+<div class="details-note"><b>重要研究缺口：</b>109 份 PMLB 目前主要是 <b>Federated C=3</b> 的六策略實驗，尚無每份相同切分／相同處理下完整的 Centralized 對照。因此網站不能拿早期三資料集的 Centralized 數字，冒充 109 份的聯邦優勢證據。</div>
+</section>
+<section class="teacher-panel" id="evidence">
+<span class="eyetag">第六件事｜想查再往下，不強迫老師先看程式</span>
+<h2>完整數據與技術細節都保留</h2>
+<div class="tag-row"><a class="main" href="./pmlb_117/">109 份資料：六策略完整研究</a><a href="./federated_comparison/">舊版三資料集：聯邦 vs 集中式 19 欄</a><a href="./data_catalog/">各批次 161 筆來源總目錄</a><a href="./technical_report.html">原本完整互動研究流程</a><a href="./ranking/">舊版 42 Seeds 配置排名</a><a href="./methods/">數學定義、公式與程式實作</a><a href="./g4_g8/">G4–G8 後續實驗</a></div>
+<details><summary>為什麼不把 109 份、51 份和 3 份全部混成一張平均排名？</summary>
+<p>因為資料表、訓練切分、Seed、Client 數及預處理方法不同。有些還有相同原始來源的變體。可以提供跨批次的來源清單，但只有協定一致且可配對的結果才能直接對比方法優劣。</p></details>
+<p class="mini">資料來源：教授原始七問依 2026-10-23 Professor Question Closure 簡報；109 份結果取自 <a href="./pmlb_117/G4_G8_109_DATASET_VALIDATION_REPORT.md">G4–G8 研究報告</a>與 <a href="./data/PMLB_117_3SEED_MANIFEST.json">執行核對 Manifest</a>。本頁只提煉已驗證結果，不修改任何原始實驗輸出。</p>
+</section>
+</main>
+<footer class="teacher-foot">LEM2 × Federated｜教授版研究報告 · 2026-11-19 · <a href="./technical_report.html">切換完整技術視圖</a></footer>
+</body></html>

@@ -1,147 +1,311 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LEM2 研究報告｜回答老師最新三個問題</title>
-<meta name="description" content="Federated vs Centralized、六種策略誰贏、Coverage與Conflict為什麼影響分類，109份PMLB及51份OpenML實驗重點。">
-<link rel="stylesheet" href="./site.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Federated LEM2｜老師六個問題的回答</title>
 <style>
-:root{--navy:#112f42;--teal:#116e68;--text:#253d4c;--line:#dce7e9}
-body{background:#f6f9fa;color:var(--text);line-height:1.7}
-.topbar{background:var(--navy);padding:10px max(18px,calc((100vw - 1080px)/2));display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
-.topbar strong{color:#fff;font-size:15px}.topbar a{color:#dcf4ef;font-size:13px;margin-left:12px}
-.hero-simple{background:linear-gradient(115deg,#112f42,#1c6971);color:white;padding:45px max(18px,calc((100vw - 1080px)/2))}
-.hero-simple h1{font-size:clamp(30px,4.5vw,46px);line-height:1.25;margin:9px 0}
-.hero-simple p{font-size:17px;max-width:860px;color:#ddefed;margin:8px 0}
-.hero-simple .tag{font-size:12px;letter-spacing:.08em;font-weight:850;color:#a9e6d9}
-.main{max-width:1120px;margin:auto;padding:22px 17px 60px}
-.section{background:#fff;border:1px solid var(--line);border-radius:15px;padding:23px 26px;margin-bottom:16px;box-shadow:0 5px 19px #24485e09}
-.eyebrow{color:#137770;font-weight:850;letter-spacing:.06em;font-size:12px}
-.section h2{font-size:24px;margin:4px 0 10px;line-height:1.36;color:#123c4f}
-.section p{margin:8px 0 13px}
-.conclusion{font-size:19px;font-weight:800;color:#0b6063;margin:13px 0!important}
-.numbars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.numbars div{border-radius:12px;border:1px solid #d6e9e5;background:#f4fbf9;padding:14px}
-.numbars small{display:block;font-size:12px;color:#566e7b}
-.numbars strong{display:block;font-size:26px;color:#116f67}
-.numbars span{font-size:12px;color:#5d7280}
-.tablebox{overflow-x:auto;border:1px solid #e1e8e9;border-radius:10px;margin:14px 0}
-table{border-collapse:collapse;width:100%;min-width:650px}
-table th{background:#153b4b;color:white;text-align:left;font-size:13px;font-weight:750;padding:10px 12px;white-space:nowrap}
-table td{border-top:1px solid #e4ebed;padding:11px 12px;font-size:13px}
-table tr:nth-child(even) td{background:#f8fbfc}
-.good{color:#06745b;font-weight:850}.bad{color:#b74c3f;font-weight:850}
-.intro{color:#4b6873}
-.callout{padding:13px 15px;border-left:4px solid #d19b46;background:#fff7eb;border-radius:6px;margin:16px 0;color:#69562e}
-.quicklinks{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 4px}
-.quicklinks a{border:1px solid #bfdad7;border-radius:9px;background:#f4faf9;color:#12686b;padding:8px 13px;font-weight:750;font-size:13px;text-decoration:none}
-.quicklinks a.primary{background:#116d6b;color:white;border-color:#116d6b}
-.mini{font-size:12px;color:#647984}
-.simplegrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.simplegrid div{background:#f7fafb;border:1px solid #e4edef;padding:14px;border-radius:9px}
-.simplegrid b{display:block;color:#164f5a}
-details{border:1px solid #dce7e8;border-radius:10px;padding:12px 15px;margin:10px 0}
-summary{cursor:pointer;font-weight:800;color:#155d64}
-.foot{text-align:center;color:#667e88;font-size:12px;padding:22px}
-@media(max-width:700px){.numbars,.simplegrid{grid-template-columns:1fr}.section{padding:19px 16px}.main{padding:12px 10px 45px}.section h2{font-size:21px}.hero-simple{padding:31px 17px}.hero-simple p{font-size:15px}.topbar a{margin-left:5px}}
+:root{--bg:#f4f6f7;--paper:#fff;--ink:#17252e;--muted:#5d6c76;--line:#d7dfe4;--link:#17607a;--h0:#f6f8f7;--h1:#e3efe9;--h2:#c6e0d4;--h3:#9dcab6;--h4:#5fa58a;--h5:#2f7d63;--warn-bg:#fbf3e3;--warn-line:#c9933b;--bad:#b4473a;--bad-bg:#f8e4e1;--good-bg:#d8ece3;--iid:#2f7d63;--a05:#c08a2c;--a01:#b4473a;--tr:#8fa9b8;--te:#2f6f8f}
+@media (prefers-color-scheme:dark){:root{--bg:#11181c;--paper:#182227;--ink:#e3eaee;--muted:#9aabb5;--line:#2d3b42;--link:#8cc7dd;--h0:#1b262b;--h1:#1f3530;--h2:#24473d;--h3:#2b5c4c;--h4:#33755f;--h5:#3f9174;--warn-bg:#2a2418;--warn-line:#b07f2e;--bad:#e58b7e;--bad-bg:#3a2522;--good-bg:#1f3a30;--iid:#6cc4a2;--a05:#e0b45c;--a01:#e58b7e;--tr:#5b7482;--te:#6fb2d4}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.8 "Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;font-variant-numeric:tabular-nums}
+a{color:var(--link)}a:focus-visible,summary:focus-visible{outline:3px solid var(--warn-line);outline-offset:2px;border-radius:4px}
+.top{background:var(--paper);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.top .in{max-width:1040px;margin:auto;padding:10px 20px;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.brand{font-weight:700;font-size:15px}.top nav{display:flex;gap:2px;flex-wrap:wrap}
+.top nav a{font-size:14px;padding:4px 10px;border-radius:6px;text-decoration:none;color:var(--muted)}.top nav a:hover{background:var(--bg);color:var(--ink)}
+main{max-width:1040px;margin:auto;padding:0 20px 64px}
+section{padding-top:56px}
+h1{font-size:clamp(26px,3.6vw,34px);line-height:1.45;margin:36px 0 12px}
+h2{font-size:23px;line-height:1.45;margin:0 0 6px}
+h3{font-size:17px;margin:26px 0 8px}
+p{max-width:46em;margin:0 0 14px}
+.lead{font-size:17px}
+.need{color:var(--muted);font-size:15px;margin-bottom:18px}
+.need b{color:var(--ink);font-weight:600}
+.qn{display:inline-block;min-width:1.7em;height:1.7em;line-height:1.7em;text-align:center;border-radius:50%;background:var(--ink);color:var(--paper);font-size:15px;margin-right:10px;vertical-align:2px}
+.answer{font-size:17px;font-weight:600;border-left:4px solid var(--h5);padding:2px 0 2px 14px;margin:0 0 18px;max-width:46em}
+.box{margin:18px 0 0;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:18px 18px 14px}
+.cap{font-size:14px;color:var(--muted);margin:0 0 12px;max-width:none}.cap strong{color:var(--ink)}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%}
+.t th,.t td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:15px}
+.t thead th{font-size:13px;color:var(--muted);font-weight:600;vertical-align:bottom}
+.t td.n,.t th.n{text-align:right}
+.sub{display:block;font-size:12px;color:var(--muted);line-height:1.45;font-weight:400}
+.ledger td:first-child{width:2.4em}.ledger td{font-size:15px}.ledger th[scope=row]{font-weight:600;width:24%}
+.ledger a{white-space:nowrap}
+.matrix{border-collapse:separate;border-spacing:4px;min-width:680px}
+.matrix thead th{padding:0 10px 6px;vertical-align:bottom;font-weight:400}
+.sc{display:block;font-weight:700}
+.matrix tbody th{padding:6px 10px 6px 0;white-space:nowrap;font-weight:400}
+.ab{display:inline-block;min-width:2.8em;font-weight:700}
+.matrix td{padding:8px 12px;border-radius:6px;border:2px solid transparent}
+.matrix td b{font-size:21px;display:block;line-height:1.3}.mini{font-size:12px;opacity:.85}
+.h0{background:var(--h0)}.h1{background:var(--h1)}.h2{background:var(--h2)}.h3{background:var(--h3)}.h4{background:var(--h4);color:#fff}.h5{background:var(--h5);color:#fff}
+.matrix td.top{border-color:var(--ink)}
+.t td.bad{color:var(--bad);font-weight:700}.t td.pos{color:var(--h5);font-weight:700}.t td.neg{color:var(--bad);font-weight:700}
+.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.panel svg{width:100%;height:auto;display:block}
+svg .grid{stroke:var(--line);stroke-width:1}svg .ax{fill:var(--muted);font-size:11px}svg .cap{fill:var(--ink);font-size:12px;font-weight:600}
+svg polyline{fill:none;stroke-width:2.2}svg .l-iid{stroke:var(--iid);fill:var(--iid)}svg .l-a05{stroke:var(--a05);fill:var(--a05)}svg .l-a01{stroke:var(--a01);fill:var(--a01)}
+svg polyline.l-iid,svg polyline.l-a05,svg polyline.l-a01{fill:none}svg .cen{fill:var(--ink)}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:8px}
+.legend i{display:inline-block;width:18px;height:3px;vertical-align:4px;margin-right:6px}
+.brow{display:grid;grid-template-columns:190px 1fr;gap:12px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)}
+.bl{font-size:14px;font-weight:600}.bt{display:grid;gap:3px}
+.bar{height:20px;border-radius:3px;position:relative;min-width:2px}.bar span{position:absolute;left:calc(100% + 6px);top:0;font-size:12px;line-height:20px;white-space:nowrap;color:var(--muted)}
+.bar.tr{background:var(--tr)}.bar.te{background:var(--te)}
+.bt{padding-right:90px}
+.cond td{text-align:center}.cond td.good{background:var(--good-bg);font-weight:700}.cond td.fail{background:var(--bad-bg);color:var(--bad);font-weight:700}.cond td.mid{color:var(--a05);font-weight:600}
+.cond th[scope=row]{min-width:200px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.fit{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:0 28px}
+.fit dl{margin:0}.fit dt{font-weight:700;margin-top:12px}.fit dd{margin:2px 0 0;color:var(--muted);font-size:15px}
+.warn{background:var(--warn-bg);border-left:4px solid var(--warn-line);border-radius:0 10px 10px 0;padding:14px 20px;margin:18px 0 0}
+.warn p:last-child,.warn ul:last-child{margin-bottom:0}.warn ul{padding-left:20px;margin:6px 0}.warn li{margin:5px 0;max-width:46em}
+.btn{display:inline-block;margin:14px 10px 0 0;padding:9px 16px;border-radius:8px;background:var(--h5);color:#fff;text-decoration:none;font-weight:600;font-size:15px}
+.btn.alt{background:transparent;color:var(--link);border:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:10px 0}details:last-of-type{border-bottom:1px solid var(--line)}summary{cursor:pointer;font-weight:600}
+.links{columns:2 300px;column-gap:28px;padding:0;list-style:none;margin:0}.links li{break-inside:avoid;padding:7px 0;border-bottom:1px solid var(--line);font-size:15px}
+.links li span{display:block;color:var(--muted);font-size:13px}
+footer{max-width:1040px;margin:auto;padding:24px 20px 48px;color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
+@media (max-width:720px){.two{grid-template-columns:1fr}.brow{grid-template-columns:1fr}.top{position:static}.box{padding:12px 10px}.bt{padding-right:80px}}
 </style>
 </head>
 <body>
-<nav class="topbar"><strong>LEM2 · 教授版研究總結</strong><div><a href="#rq1">① 聯邦比較</a><a href="#rq2">② 六策略</a><a href="#rq3">③ 原因</a><a href="#data">完整資料</a></div></nav>
-<header class="hero-simple">
-<div class="tag">LATEST RESEARCH QUESTIONS · SOURCE-VERIFIED</div>
-<h1>三個問題，看懂我們的 LEM2 研究</h1>
-<p>① 聯邦與非聯邦差多少？　② 六種規則決策方法誰贏？　③ 哪些資料條件會讓方法變好或變差？</p>
-<div class="quicklinks"><a class="primary" href="#rq1">直接看結果</a><a href="#data">查看所有實驗資料</a></div>
-</header>
-<main class="main">
-<section class="section" id="scope">
-<span class="eyebrow">研究證據：不是只有三份資料</span><h2>我們已完成兩批較大型的實驗，舊三份另外保存</h2>
-<div class="numbars">
-<div><small>PMLB 資料表</small><strong>109 份</strong><span>117 候選，109 完成；六策略比較</span></div>
-<div><small>OpenML 資料表</small><strong>51 份</strong><span>Gate 5，九種方法架構比較</span></div>
-<div><small>早期基線</small><strong>3 份</strong><span>42 Seeds；原始 19 欄完整表</span></div>
-</div>
-<p class="mini">這是三個不同實驗批次；來源可能重疊，不能直接相加宣稱有 163 個互相獨立資料來源。PMLB 每份實際建模最多 900 筆／6 特徵；OpenML Gate 5 為抽樣實驗，並非原始資料全量運算。</p>
-</section>
-<section class="section" id="rq1">
-<span class="eyebrow">老師問題 ① · FEDERATED VS CENTRALIZED</span>
-<h2>有聯邦學習，真的會比集中式好嗎？</h2>
-<p class="conclusion">目前沒有證據可以說「聯邦式一定比較準」。</p>
-<p>在 <strong>51 份 OpenML Gate 5</strong>，有同批可比較的 <strong>CART 決策樹</strong>基線：C1 是集中式；C2 是聯邦式的本地樹投票。以下是 Test Balanced Accuracy（BA，類別平衡正確率；越高越好）。</p>
-<div class="tablebox"><table><thead><tr><th>資料分布</th><th>集中式 CART (C1)</th><th>聯邦 CART (C2)</th><th>聯邦−集中 (pp)</th></tr></thead>
-<tbody><tr><td>IID（分布相近）</td><td>54.76%</td><td>53.47%</td><td class="bad">−1.29</td></tr>
-<tr><td>Non-IID α=0.5（中度偏斜）</td><td>54.76%</td><td>51.92%</td><td class="bad">−2.84</td></tr>
-<tr><td>Non-IID α=0.1（高度偏斜）</td><td>54.76%</td><td>46.71%</td><td class="bad">−8.05</td></tr></tbody></table></div>
-<p><b>怎麼解讀？</b>在這組 CART 基線中，資料分布差異越大，聯邦式表現越差；但<strong>這不是「集中式 LEM2 vs 聯邦 LEM2」的直接證明</strong>。</p>
-<div class="callout"><b>尚待補齊：</b>109 份 PMLB 已有聯邦 LEM2 六策略，但尚無相同資料切分與處理流程下的集中式 LEM2 配對結果。OpenML 的 R1 使用集中式切點、仍是聯邦規則，不能冒充純集中式 LEM2。</div>
-<div class="quicklinks"><a class="primary" href="./all_datasets/#gate5">查看 51 份實驗各方法</a><a href="./federated_comparison/">舊三資料集：19 欄同條件對照</a></div>
-<p class="mini">數據來源：OpenML Gate 5 <a href="https://github.com/Jimmy0307/LEM2/blob/research/federated-rule-degeneracy-redesign-20261116/docs/research/redesign_20261116/data/G5_ARM_MEANS.csv">G5_ARM_MEANS.csv</a>；這張表只比較 CART 架構，不拿不同演算法家族當作相同模型。</p>
-</section>
-<section class="section" id="rq2">
-<span class="eyebrow">老師問題 ② · SIX POLICIES</span>
-<h2>六種規則決策方法，究竟誰比較好？</h2>
-<p class="conclusion">沒有永遠第一名；要看 Client 的資料分布。</p>
-<p>下表是 <strong>109 份 PMLB</strong>、各分布 327 個配置的 <strong>20% 未見資料 Test BA</strong>。同一組 LEM2 規則分別使用六種投票方法。另有一種「先在驗證集比較六策略、再到 Test 使用選中策略」的選法。</p>
-<div class="tablebox"><table><thead><tr><th>Client 分布</th><th>最佳固定投票方法</th><th>先驗證再選方法</th><th>差距</th></tr></thead>
+<header class="top"><div class="in">
+<div class="brand">Federated LEM2 研究報告</div>
+<nav aria-label="主要導覽"><a href="#q1">1 19 欄</a><a href="#q2">2 誰比較好</a><a href="#q3">3 聯邦 vs 集中</a><a href="#q4">4 資料不均</a><a href="#q5">5 Coverage</a><a href="#q6">6 更多資料集</a><a href="./results/">逐筆結果表</a></nav>
+</div></header>
+<main>
+<h1>老師六個問題的回答</h1>
+<p class="lead">這一輪用兩批條件一致的實驗回答：<strong>181 個公開資料集的全量實驗</strong>（每個資料集都跑集中式與三種聯邦情境，各 5 個 seed，最多 1,000,000 列）；以及<strong>最早三個資料集的 42 seeds 實驗</strong>（集中式與聯邦 Client 2–5 個都補齊 42 seeds）。</p>
+
+<div class="box">
+<table class="t ledger">
+<thead><tr><th></th><th>老師的問題</th><th>一句話答案</th></tr></thead>
 <tbody>
-<tr><td>IID（資料分布相近）</td><td>Global Strength：55.88%</td><td>55.72%</td><td class="bad">−0.16 pp</td></tr>
-<tr><td>Non-IID α=0.5</td><td>Simple Voting：52.43%</td><td>54.11%</td><td class="good">+1.68 pp</td></tr>
-<tr><td>Non-IID α=0.1</td><td>Simple Voting：47.71%</td><td>49.52%</td><td class="good">+1.82 pp</td></tr>
-</tbody></table></div>
-<p><b>結論：</b>Client 資料分布相近時，驗證選法不占優勢；資料偏斜時，選法能改善平均 BA。但<strong>不能說每個資料集都進步</strong>，也不能把六種「選答案策略」說成六種獨立 LEM2 規則學習演算法。</p>
-<p><b>老師另外要求「誰贏幾次」：</b>以同一資料集、同一 Seed、同一分布的六策略 Test BA 比較，<strong>IID 是 First Match 贏得最多配置（73.0）</strong>；<strong>Non-IID α=0.5 與 α=0.1 則是 Simple Voting 贏最多（87.43／118.58）</strong>。平手時每個策略分到 1/N 次，因此勝出次數可以是小數。</p>
-<details><summary>展開六策略各贏幾次（每種分布 327 組，109 資料表 × 3 Seeds）</summary>
-<div class="tablebox"><table><thead><tr><th>六種決策策略</th><th>IID</th><th>α=0.5</th><th>α=0.1</th></tr></thead><tbody>
-<tr><td>First Match／第一條規則</td><td><b>73.00</b></td><td>83.55</td><td>65.98</td></tr>
-<tr><td>Simple Voting／簡單投票</td><td>52.82</td><td><b>87.43</b></td><td><b>118.58</b></td></tr>
-<tr><td>Standard Voting／加權投票</td><td>47.20</td><td>42.32</td><td>45.08</td></tr>
-<tr><td>Global Strength／全域強度</td><td>58.78</td><td>43.07</td><td>33.75</td></tr>
-<tr><td>Population Standard／去重支持</td><td>35.62</td><td>32.65</td><td>27.75</td></tr>
-<tr><td>Population Global／去重全域</td><td>59.58</td><td>37.98</td><td>35.85</td></tr>
-</tbody></table></div>
-<p class="mini">計算來源：<a href="./data/PMLB_117_3SEED_SIX_POLICY_RAW.csv">5,886 筆 PMLB 原始結果</a>；以 dataset＋seed＋scenario 分組，每組六策略 Test BA 最大值算勝出，完全同分則平分一次。三分布各有 327 組，資料集和 Seeds 並非統計上完全獨立。各欄小數經四捨五入。</p>
-</details>
-<p class="mini"><b>請區分：</b>平均 BA 第一名不一定等於勝出次數最多的策略。例如 IID 的 Global Strength 有最高平均 BA，但 First Match 贏得最多單次配置；勝出次數不能取代平均效能與穩健性。</p>
-<div class="quicklinks"><a class="primary" href="./pmlb_117/">109 份資料完整六策略排名</a><a href="./all_datasets/#pmlb">依資料集、Seed 篩選 5,886 筆</a></div>
-<p class="mini">數據來源：<a href="./pmlb_117/G4_G8_109_DATASET_VALIDATION_REPORT.md">109 份 G4–G8 實證報告</a>；選法使用 16% 內部驗證資料，不偷看外部 Test。以上為配置等權描述平均，不應與家族等權推論值混用。</p>
-</section>
-<section class="section" id="rq3">
-<span class="eyebrow">老師問題 ③ · DATA CONDITIONS / COVERAGE / CONFLICT</span>
-<h2>為什麼有時變好、有時反而變差？</h2>
-<p class="conclusion">關鍵不只是有多少規則，而是規則有沒有提出正確答案，以及最後有沒有選對。</p>
-<div class="simplegrid">
-<div><b>規則沒有命中</b><span>這是 Coverage 問題；再怎麼改投票也無法補出不存在的規則。</span></div>
-<div><b>規則有命中，卻給出多種答案</b><span>這是 Conflict；此時才需要比較六種選擇策略。</span></div>
+<tr><td><span class="qn">1</span></td><th scope="row">19 欄完整結果</th><td>兩張 19 欄大表都已完成，共 31,818 筆配置，可以在「逐筆結果表」依資料集、情境、方法篩選與下載。<a href="#q1">看說明</a></td></tr>
+<tr><td><span class="qn">2</span></td><th scope="row">哪個方法比較好？</th><td>集中式時六種方法幾乎一樣。資料越不均差距越大：α=0.1 時 SV 在 87／182 個資料集最好，其中 59 個領先 1pp 以上；FM 在 91 個資料集落後最佳 5pp 以上。<a href="#q2">看勝場表</a></td></tr>
+<tr><td><span class="qn">3</span></td><th scope="row">Federated 與 Classical 差在哪？</th><td>同一切分、同一套規則學習下比較：IID 時聯邦平均 +2.4pp，略高；資料高度不均（α=0.1）時聯邦平均 −7.7pp，133 個資料集比集中式差。<a href="#q3">看比較</a></td></tr>
+<tr><td><span class="qn">4</span></td><th scope="row">資料變得不均勻會怎樣？</th><td>Accuracy 下降、Conflict 從 IID 的 3.6% 升到 α=0.1 的 61%、勝最多的方法從 STD 換成 SV。Coverage 看起來上升到 100%，但多半是「沒有條件的規則」造成的假象。<a href="#q4">看四個指標</a></td></tr>
+<tr><td><span class="qn">5</span></td><th scope="row">Training／Test Coverage 有什麼差異？</th><td>多數無法判斷的資料，不是「訓練有、測試沒有」：訓練資料本身就沒被規則覆蓋（例如 Online Shoppers 訓練 11%、測試 11%）。只有小型類別資料才是測試出現沒見過的組合。目前補 Coverage 的方法都沒有穩定提高 Accuracy。<a href="#q5">看原因</a></td></tr>
+<tr><td><span class="qn">6</span></td><th scope="row">更多資料集還會得到相同結論嗎？</th><td>會。181 個資料集涵蓋電商、工業、三種特徵型態與四種規模，各來源批次結論一致。並整理出每種方法適用與失效的條件。<a href="#q6">看條件表</a></td></tr>
+</tbody></table>
 </div>
-<p>109 份 PMLB 的內部驗證紀錄顯示，Client 資料越偏斜，規則衝突越明顯：</p>
-<div class="tablebox"><table><thead><tr><th>分布</th><th>有規則命中（Coverage）</th><th>規則相互衝突（Conflict）</th><th>最佳固定策略 Test BA</th></tr></thead>
-<tbody><tr><td>IID</td><td>69.43%</td><td>21.10%</td><td>55.88%</td></tr>
-<tr><td>Non-IID α=0.5</td><td>87.61%</td><td>44.66%</td><td>52.43%</td></tr>
-<tr><td>Non-IID α=0.1</td><td>95.36%</td><td>75.70%</td><td>47.71%</td></tr></tbody></table></div>
-<p><b>看懂這個現象：</b>即使命中率提高，也可能同時有更多相互矛盾的答案，導致正確率下降。因此 <strong>Coverage 高，不代表 Accuracy 高</strong>。</p>
-<div class="callout"><b>推論界線：</b>這些是不同資料分布下的觀察關係，不等於已證明 Conflict 直接導致 BA 下降。要驗證原因，還需控制規則集合、類別偏斜與預處理方式。</div>
-<div class="quicklinks"><a class="primary" href="./g4_g8/coverage_split_missingness.html">20 份 UCI：訓練／驗證／測試 Coverage</a><a href="./pmlb_117/">109 份：資料條件分組分析</a></div>
-<p class="mini">來源：<a href="./pmlb_117/G4_G8_109_DATASET_VALIDATION_REPORT.md">PMLB 研究結果，內部驗證 Coverage／Conflict</a>。上表的 Coverage／Conflict 是 Validation 指標，BA 是 Test 指標，二者並非相同測試集合。</p>
-</section>
-<section class="section" id="data">
-<span class="eyebrow">原始證據 · 需要再展開，不妨礙老師閱讀</span>
-<h2>完整 Output 在這裡，原始檔沒有刪除</h2>
-<div class="quicklinks">
-<a class="primary" href="./all_datasets/">全部成果：109 PMLB + 51 OpenML + 3 歷史基準</a>
-<a href="./federated_comparison/">19 個表頭：歷史聯邦／非聯邦比較</a>
-<a href="./data/POLICY_19_HEADERS_MANIFEST.json">19 欄完整定義</a>
-<a href="./data/POLICY_WINS_BY_DATASET.csv">六策略勝出次數</a>
-<a href="./data/PMLB_117_3SEED_SIX_POLICY_RAW.csv">109 份、40 欄原始 CSV</a>
-<a href="./data/G5_51_OPENML_NINE_ARMS_13770.csv">51 份、九方法原始比較</a>
-<a href="./data_catalog/">所有研究批次與來源名冊</a>
+
+<details style="margin-top:18px"><summary>六種方法是什麼？</summary>
+<p>六種方法用的是同一組 LEM2 規則，差別只在「多條規則同時命中、答案又不一樣」時怎麼決定最後答案。</p>
+<p><b>FM 第一條命中規則</b>：用第一條命中規則的答案。<b>SV 簡單投票</b>：每條命中規則一票。<b>STD 支持度投票</b>：依規則支持的訓練筆數加權。<b>GS 全域強度</b>：支持筆數除以該類別訓練筆數。<b>PS 去重支持度</b>：同 STD，但同一筆訓練資料只算一次。<b>PG 去重全域強度</b>：同 GS 並去重。PS、PG 是本研究自訂的方法。</p>
+</details>
+
+<section id="q1">
+<h2><span class="qn">1</span>19 欄完整結果</h2>
+<p class="need"><b>老師要看懂：</b>每個配置的資料、方法、準確率、覆蓋率和衝突率都要清楚呈現。</p>
+<p class="answer">兩張大表都是同一套 19 欄，一列就是「一個資料集 × 一個 seed × 一種架構 × 一種方法」。</p>
+<div class="box scroll">
+<table class="t">
+<thead><tr><th>大表</th><th class="n">筆數</th><th>涵蓋範圍</th><th>下載</th></tr></thead>
+<tbody>
+<tr><th scope="row">全量實驗</th><td class="n">21,990</td><td>188 個資料集（181 個四種情境都完成）× 集中式／聯邦 IID／α=0.5／α=0.1 × 5 seeds × 6 方法</td><td><a href="./data/full_scale_20261118/FULL_SCALE_19COL.csv">CSV</a></td></tr>
+<tr><th scope="row">三資料集 42 seeds</th><td class="n">9,828</td><td>Balance Scale、Car Evaluation、Hayes-Roth × 集中式＋聯邦 Client 2–5（IID／α=0.5／α=0.1）× 42 seeds × 6 方法</td><td><a href="./data/CLASSICAL_19_COLUMNS_42SEEDS.csv">CSV</a></td></tr>
+</tbody></table>
 </div>
-<details><summary>想看 19 個表頭、Seed、規則數與每筆指標？</summary>
-<p>點上面的「19 個表頭」可看到原始的 dataset、regime、seed、system、policy、accuracy、BA、F1、coverage、no-match、true-candidate、conflict-rate 等共 19 欄。<strong>此版本只涵蓋歷史 3 資料集</strong>，不應拿來代替 109 份／51 份的新實驗。</p>
-</details>
-<details><summary>想看演算法公式、完整流程、所有實驗歷史？</summary>
-<div class="quicklinks"><a href="./technical_report.html">原版完整互動報告</a><a href="./methods/">LEM2 與六種策略的公式</a><a href="./g4_g8/">G4–G8 後續消融</a><a href="./ranking/">舊 42 Seeds 排名</a><a href="./README.md">完整研究沿革</a></div>
-</details>
+<div class="box scroll">
+<p class="cap"><strong>19 個欄位</strong>：原本 18 個，加上最後的 Conflict Rate。</p>
+<table class="t">
+<thead><tr><th>類別</th><th>欄位</th><th>意思</th></tr></thead>
+<tbody>
+<tr><th scope="row" rowspan="8">這是哪個配置</th><td>dataset</td><td>資料集</td></tr>
+<tr><td>seed</td><td>隨機種子，決定 Train／Test 怎麼切</td></tr>
+<tr><td>distribution</td><td>Client 資料分布：IID 或 Dirichlet Non-IID</td></tr>
+<tr><td>dirichlet_alpha</td><td>不均程度，0.5 中度、0.1 高度</td></tr>
+<tr><td>split_mode</td><td>切分方式（全量實驗是 64% 訓練／16% 驗證／20% 測試）</td></tr>
+<tr><td>system</td><td>CENTRALIZED（集中式）或 FEDERATED（聯邦）</td></tr>
+<tr><td>client_count</td><td>Client 數，集中式記為 0</td></tr>
+<tr><td>selection_policy</td><td>六種決策方法之一</td></tr>
+<tr><th scope="row" rowspan="3">資料與規則規模</th><td>train_rows</td><td>訓練筆數</td></tr>
+<tr><td>test_rows</td><td>測試筆數</td></tr>
+<tr><td>rule_count</td><td>合併後的規則數</td></tr>
+<tr><th scope="row" rowspan="5">規則有沒有命中</th><td>no_match_count</td><td>沒有任何規則命中的測試筆數</td></tr>
+<tr><td>covered_count</td><td>至少一條規則命中的測試筆數</td></tr>
+<tr><td>test_coverage_pct</td><td>Coverage：有命中的比例</td></tr>
+<tr><td>true_in_candidate_count</td><td>正確答案出現在命中規則候選中的筆數</td></tr>
+<tr><td>candidate_coverage_pct</td><td>上面那個數的比例</td></tr>
+<tr><th scope="row" rowspan="3">結果</th><td>accuracy_pct</td><td>Accuracy</td></tr>
+<tr><td>balanced_accuracy_pct</td><td>平衡正確率（各類別 Recall 的平均）</td></tr>
+<tr><td>conflict_rate_pct</td><td>Conflict：命中規則給出兩種以上答案的比例</td></tr>
+</tbody></table>
+</div>
+<a class="btn" href="./results/">打開逐筆結果表（篩選、排序、下載）</a>
 </section>
-</main><footer class="foot">LEM2 × Federated · 教授版三問題總覽 · 2026-11-19 · 原始數據與舊研究流程均保留</footer>
-</body></html>
+
+<section id="q2">
+<h2><span class="qn">2</span>哪個方法比較好？</h2>
+<p class="need"><b>老師要看懂：</b>不能只給平均準確率，要知道誰贏、贏多少、在哪些資料集贏。</p>
+<p class="answer">沒有永遠最好的方法，要看資料分布。集中式時六種方法幾乎一樣；聯邦且資料不均時差距變大，SV 贏最多、也最少大輸。</p>
+<div class="box scroll">
+<p class="cap"><strong>表 2-1　每個方法在幾個資料集拿到最高 Accuracy</strong>（同一資料集先平均 5 個 seed；平手平分次數）。顏色越深勝越多；黑框為該情境勝最多者（相差不到 1 個並列）。集中式不上色，因為差距極小，勝場大多來自平手平分。</p>
+<table class="matrix">
+<thead><tr><th scope="col"></th><th scope="col"><span class="sc">集中式</span><span class="sub">訓練資料放在一起</span><span class="sub">184 個資料集</span></th><th scope="col"><span class="sc">聯邦 IID</span><span class="sub">3 個 Client 分布相似</span><span class="sub">181 個資料集</span></th><th scope="col"><span class="sc">聯邦 α=0.5</span><span class="sub">3 個 Client 中度不均</span><span class="sub">182 個資料集</span></th><th scope="col"><span class="sc">聯邦 α=0.1</span><span class="sub">3 個 Client 高度不均</span><span class="sub">182 個資料集</span></th></tr></thead>
+<tbody><tr><th scope="row"><span class="ab">FM</span>第一條命中規則</th><td class="h0"><b>32</b><span class="mini">平均落後最佳 0.24pp</span></td><td class="h1"><b>18</b><span class="mini">平均落後最佳 1.37pp</span></td><td class="h1"><b>20</b><span class="mini">平均落後最佳 3.27pp</span></td><td class="h1"><b>15</b><span class="mini">平均落後最佳 8.76pp</span></td></tr><tr><th scope="row"><span class="ab">SV</span>簡單投票</th><td class="h0"><b>31</b><span class="mini">平均落後最佳 0.26pp</span></td><td class="h2 top"><b>39</b><span class="mini">平均落後最佳 0.68pp</span></td><td class="h5 top"><b>82</b><span class="mini">平均落後最佳 0.65pp</span></td><td class="h5 top"><b>87</b><span class="mini">平均落後最佳 1.44pp</span></td></tr><tr><th scope="row"><span class="ab">STD</span>支持度投票</th><td class="h0"><b>31</b><span class="mini">平均落後最佳 0.08pp</span></td><td class="h2 top"><b>39</b><span class="mini">平均落後最佳 0.30pp</span></td><td class="h2"><b>34</b><span class="mini">平均落後最佳 1.75pp</span></td><td class="h2"><b>35</b><span class="mini">平均落後最佳 2.26pp</span></td></tr><tr><th scope="row"><span class="ab">GS</span>全域強度</th><td class="h0"><b>30</b><span class="mini">平均落後最佳 0.09pp</span></td><td class="h1"><b>26</b><span class="mini">平均落後最佳 0.59pp</span></td><td class="h1"><b>15</b><span class="mini">平均落後最佳 3.67pp</span></td><td class="h0"><b>9</b><span class="mini">平均落後最佳 6.56pp</span></td></tr><tr><th scope="row"><span class="ab">PS</span>去重支持度</th><td class="h0"><b>31</b><span class="mini">平均落後最佳 0.08pp</span></td><td class="h2"><b>37</b><span class="mini">平均落後最佳 0.33pp</span></td><td class="h1"><b>17</b><span class="mini">平均落後最佳 2.27pp</span></td><td class="h1"><b>23</b><span class="mini">平均落後最佳 3.26pp</span></td></tr><tr><th scope="row"><span class="ab">PG</span>去重全域強度</th><td class="h0"><b>30</b><span class="mini">平均落後最佳 0.09pp</span></td><td class="h1"><b>21</b><span class="mini">平均落後最佳 0.69pp</span></td><td class="h0"><b>14</b><span class="mini">平均落後最佳 4.58pp</span></td><td class="h0"><b>13</b><span class="mini">平均落後最佳 9.34pp</span></td></tr></tbody>
+</table>
+</div>
+<div class="box scroll">
+<p class="cap"><strong>表 2-2　贏多少、輸多少</strong>（三種聯邦情境）。「單獨勝出」不含平手，下方小字是其中領先第二名 1pp 以上的資料集數；「落後 ≥5pp」紅字代表四分之一以上的資料集大輸。</p>
+<table class="t">
+<thead><tr><th rowspan="2">方法</th><th colspan="3">聯邦 IID</th><th colspan="3">聯邦 α=0.5</th><th colspan="3">聯邦 α=0.1</th></tr>
+<tr><th>單獨勝出</th><th>平均領先 pp</th><th>落後 ≥5pp</th><th>單獨勝出</th><th>平均領先 pp</th><th>落後 ≥5pp</th><th>單獨勝出</th><th>平均領先 pp</th><th>落後 ≥5pp</th></tr></thead>
+<tbody><tr><th scope="row"><span class="ab">FM</span></th><td>14<span class="sub">≥1pp：3</span></td><td>0.44</td><td>17</td><td>17<span class="sub">≥1pp：6</span></td><td>2.12</td><td>38</td><td>12<span class="sub">≥1pp：2</span></td><td>0.67</td><td class="bad">91</td></tr><tr><th scope="row"><span class="ab">SV</span></th><td>31<span class="sub">≥1pp：5</span></td><td>0.58</td><td>4</td><td>77<span class="sub">≥1pp：35</span></td><td>2.30</td><td>5</td><td>82<span class="sub">≥1pp：59</span></td><td>3.81</td><td>16</td></tr><tr><th scope="row"><span class="ab">STD</span></th><td>22<span class="sub">≥1pp：0</span></td><td>0.20</td><td>1</td><td>23<span class="sub">≥1pp：1</span></td><td>0.28</td><td>25</td><td>23<span class="sub">≥1pp：5</span></td><td>0.67</td><td>32</td></tr><tr><th scope="row"><span class="ab">GS</span></th><td>11<span class="sub">≥1pp：0</span></td><td>0.29</td><td>5</td><td>7<span class="sub">≥1pp：0</span></td><td>0.19</td><td>42</td><td>1<span class="sub">≥1pp：0</span></td><td>0.04</td><td class="bad">71</td></tr><tr><th scope="row"><span class="ab">PS</span></th><td>17<span class="sub">≥1pp：1</span></td><td>0.26</td><td>2</td><td>4<span class="sub">≥1pp：0</span></td><td>0.18</td><td>29</td><td>10<span class="sub">≥1pp：1</span></td><td>0.51</td><td>41</td></tr><tr><th scope="row"><span class="ab">PG</span></th><td>10<span class="sub">≥1pp：0</span></td><td>0.12</td><td>5</td><td>8<span class="sub">≥1pp：0</span></td><td>0.32</td><td class="bad">51</td><td>10<span class="sub">≥1pp：0</span></td><td>0.19</td><td class="bad">85</td></tr></tbody>
+</table>
+</div>
+<p style="margin-top:16px">α=0.1 時，SV 單獨勝出的資料集平均領先第二名 3.8pp，所有資料集平均只落後最佳 1.4pp。相對地，FM 有 91 個、PG 有 85 個資料集落後最佳 5pp 以上。統計上，四種情境的 Friedman 檢定都是 p &lt; 0.001；但集中式的差距中位數只有 0.01pp，沒有實務意義。</p>
+<a class="btn alt" href="./results/#winners">查每個資料集是誰贏</a>
+</section>
+
+<section id="q3">
+<h2><span class="qn">3</span>Federated 與 Classical 差在哪？</h2>
+<p class="need"><b>老師要看懂：</b>比較集中式與聯邦式，並確保比較條件一致。</p>
+<p class="answer">資料分布相似時，聯邦和集中式差不多，平均還略高；資料越不均，聯邦越差；Client 增加時多半也會變差。</p>
+<p>比較條件：同一個 seed 的 Train／Test 切分完全相同（已檢查每個 seed 的測試筆數一致），離散化、約簡、LEM2 與六種方法都相同。唯一差別是聯邦把訓練資料分給各 Client，各自學規則後再合併。</p>
+<div class="box">
+<p class="cap"><strong>圖 3-1　三個原始資料集，42 seeds：Client 數與 Accuracy</strong>。每個點是 42 個 seed 的平均，取六種方法中平均最高的一個；黑點是集中式。</p>
+<div class="charts"><div class="panel"><svg viewBox="0 0 300 232" role="img" aria-label="Balance Scale：Client 數與 Accuracy"><title>Balance Scale</title><line class="grid" x1="38" x2="290" y1="180.0" y2="180.0"/><text class="ax" x="32" y="184.0" text-anchor="end">20</text><line class="grid" x1="38" x2="290" y1="138.5" y2="138.5"/><text class="ax" x="32" y="142.5" text-anchor="end">40</text><line class="grid" x1="38" x2="290" y1="97.0" y2="97.0"/><text class="ax" x="32" y="101.0" text-anchor="end">60</text><line class="grid" x1="38" x2="290" y1="55.5" y2="55.5"/><text class="ax" x="32" y="59.5" text-anchor="end">80</text><line class="grid" x1="38" x2="290" y1="14.0" y2="14.0"/><text class="ax" x="32" y="18.0" text-anchor="end">100</text><text class="ax" x="38.0" y="198" text-anchor="middle">集中</text><text class="ax" x="101.0" y="198" text-anchor="middle">C2</text><text class="ax" x="164.0" y="198" text-anchor="middle">C3</text><text class="ax" x="227.0" y="198" text-anchor="middle">C4</text><text class="ax" x="290.0" y="198" text-anchor="middle">C5</text><polyline class="l-iid" points="38.0,71.4 101.0,60.5 164.0,53.8 227.0,50.3 290.0,49.7"/><circle class="l-iid" cx="101.0" cy="60.5" r="3"><title>聯邦 IID C2：77.6%</title></circle><circle class="l-iid" cx="164.0" cy="53.8" r="3"><title>聯邦 IID C3：80.8%</title></circle><circle class="l-iid" cx="227.0" cy="50.3" r="3"><title>聯邦 IID C4：82.5%</title></circle><circle class="l-iid" cx="290.0" cy="49.7" r="3"><title>聯邦 IID C5：82.8%</title></circle><polyline class="l-a05" points="38.0,71.4 101.0,70.5 164.0,75.7 227.0,74.7 290.0,74.1"/><circle class="l-a05" cx="101.0" cy="70.5" r="3"><title>聯邦 α=0.5 C2：72.8%</title></circle><circle class="l-a05" cx="164.0" cy="75.7" r="3"><title>聯邦 α=0.5 C3：70.3%</title></circle><circle class="l-a05" cx="227.0" cy="74.7" r="3"><title>聯邦 α=0.5 C4：70.7%</title></circle><circle class="l-a05" cx="290.0" cy="74.1" r="3"><title>聯邦 α=0.5 C5：71.0%</title></circle><polyline class="l-a01" points="38.0,71.4 101.0,103.3 164.0,103.4 227.0,99.1 290.0,99.1"/><circle class="l-a01" cx="101.0" cy="103.3" r="3"><title>聯邦 α=0.1 C2：57.0%</title></circle><circle class="l-a01" cx="164.0" cy="103.4" r="3"><title>聯邦 α=0.1 C3：56.9%</title></circle><circle class="l-a01" cx="227.0" cy="99.1" r="3"><title>聯邦 α=0.1 C4：59.0%</title></circle><circle class="l-a01" cx="290.0" cy="99.1" r="3"><title>聯邦 α=0.1 C5：59.0%</title></circle><circle class="cen" cx="38.0" cy="71.4" r="4.5"><title>集中式：72.3%</title></circle><text class="cap" x="38" y="231">Balance Scale（集中式 72.3%）</text></svg></div><div class="panel"><svg viewBox="0 0 300 232" role="img" aria-label="Car Evaluation：Client 數與 Accuracy"><title>Car Evaluation</title><line class="grid" x1="38" x2="290" y1="180.0" y2="180.0"/><text class="ax" x="32" y="184.0" text-anchor="end">20</text><line class="grid" x1="38" x2="290" y1="138.5" y2="138.5"/><text class="ax" x="32" y="142.5" text-anchor="end">40</text><line class="grid" x1="38" x2="290" y1="97.0" y2="97.0"/><text class="ax" x="32" y="101.0" text-anchor="end">60</text><line class="grid" x1="38" x2="290" y1="55.5" y2="55.5"/><text class="ax" x="32" y="59.5" text-anchor="end">80</text><line class="grid" x1="38" x2="290" y1="14.0" y2="14.0"/><text class="ax" x="32" y="18.0" text-anchor="end">100</text><text class="ax" x="38.0" y="198" text-anchor="middle">集中</text><text class="ax" x="101.0" y="198" text-anchor="middle">C2</text><text class="ax" x="164.0" y="198" text-anchor="middle">C3</text><text class="ax" x="227.0" y="198" text-anchor="middle">C4</text><text class="ax" x="290.0" y="198" text-anchor="middle">C5</text><polyline class="l-iid" points="38.0,34.5 101.0,35.1 164.0,35.9 227.0,38.9 290.0,40.5"/><circle class="l-iid" cx="101.0" cy="35.1" r="3"><title>聯邦 IID C2：89.8%</title></circle><circle class="l-iid" cx="164.0" cy="35.9" r="3"><title>聯邦 IID C3：89.5%</title></circle><circle class="l-iid" cx="227.0" cy="38.9" r="3"><title>聯邦 IID C4：88.0%</title></circle><circle class="l-iid" cx="290.0" cy="40.5" r="3"><title>聯邦 IID C5：87.2%</title></circle><polyline class="l-a05" points="38.0,34.5 101.0,41.9 164.0,48.3 227.0,53.6 290.0,59.8"/><circle class="l-a05" cx="101.0" cy="41.9" r="3"><title>聯邦 α=0.5 C2：86.5%</title></circle><circle class="l-a05" cx="164.0" cy="48.3" r="3"><title>聯邦 α=0.5 C3：83.5%</title></circle><circle class="l-a05" cx="227.0" cy="53.6" r="3"><title>聯邦 α=0.5 C4：80.9%</title></circle><circle class="l-a05" cx="290.0" cy="59.8" r="3"><title>聯邦 α=0.5 C5：77.9%</title></circle><polyline class="l-a01" points="38.0,34.5 101.0,57.3 164.0,64.8 227.0,66.4 290.0,65.5"/><circle class="l-a01" cx="101.0" cy="57.3" r="3"><title>聯邦 α=0.1 C2：79.1%</title></circle><circle class="l-a01" cx="164.0" cy="64.8" r="3"><title>聯邦 α=0.1 C3：75.5%</title></circle><circle class="l-a01" cx="227.0" cy="66.4" r="3"><title>聯邦 α=0.1 C4：74.8%</title></circle><circle class="l-a01" cx="290.0" cy="65.5" r="3"><title>聯邦 α=0.1 C5：75.2%</title></circle><circle class="cen" cx="38.0" cy="34.5" r="4.5"><title>集中式：90.1%</title></circle><text class="cap" x="38" y="231">Car Evaluation（集中式 90.1%）</text></svg></div><div class="panel"><svg viewBox="0 0 300 232" role="img" aria-label="Hayes-Roth：Client 數與 Accuracy"><title>Hayes-Roth</title><line class="grid" x1="38" x2="290" y1="180.0" y2="180.0"/><text class="ax" x="32" y="184.0" text-anchor="end">20</text><line class="grid" x1="38" x2="290" y1="138.5" y2="138.5"/><text class="ax" x="32" y="142.5" text-anchor="end">40</text><line class="grid" x1="38" x2="290" y1="97.0" y2="97.0"/><text class="ax" x="32" y="101.0" text-anchor="end">60</text><line class="grid" x1="38" x2="290" y1="55.5" y2="55.5"/><text class="ax" x="32" y="59.5" text-anchor="end">80</text><line class="grid" x1="38" x2="290" y1="14.0" y2="14.0"/><text class="ax" x="32" y="18.0" text-anchor="end">100</text><text class="ax" x="38.0" y="198" text-anchor="middle">集中</text><text class="ax" x="101.0" y="198" text-anchor="middle">C2</text><text class="ax" x="164.0" y="198" text-anchor="middle">C3</text><text class="ax" x="227.0" y="198" text-anchor="middle">C4</text><text class="ax" x="290.0" y="198" text-anchor="middle">C5</text><polyline class="l-iid" points="38.0,51.2 101.0,51.8 164.0,57.9 227.0,68.9 290.0,78.4"/><circle class="l-iid" cx="101.0" cy="51.8" r="3"><title>聯邦 IID C2：81.8%</title></circle><circle class="l-iid" cx="164.0" cy="57.9" r="3"><title>聯邦 IID C3：78.8%</title></circle><circle class="l-iid" cx="227.0" cy="68.9" r="3"><title>聯邦 IID C4：73.5%</title></circle><circle class="l-iid" cx="290.0" cy="78.4" r="3"><title>聯邦 IID C5：69.0%</title></circle><polyline class="l-a05" points="38.0,51.2 101.0,69.3 164.0,88.9 227.0,100.3 290.0,101.4"/><circle class="l-a05" cx="101.0" cy="69.3" r="3"><title>聯邦 α=0.5 C2：73.4%</title></circle><circle class="l-a05" cx="164.0" cy="88.9" r="3"><title>聯邦 α=0.5 C3：63.9%</title></circle><circle class="l-a05" cx="227.0" cy="100.3" r="3"><title>聯邦 α=0.5 C4：58.4%</title></circle><circle class="l-a05" cx="290.0" cy="101.4" r="3"><title>聯邦 α=0.5 C5：57.9%</title></circle><polyline class="l-a01" points="38.0,51.2 101.0,101.8 164.0,106.3 227.0,104.3 290.0,109.4"/><circle class="l-a01" cx="101.0" cy="101.8" r="3"><title>聯邦 α=0.1 C2：57.7%</title></circle><circle class="l-a01" cx="164.0" cy="106.3" r="3"><title>聯邦 α=0.1 C3：55.5%</title></circle><circle class="l-a01" cx="227.0" cy="104.3" r="3"><title>聯邦 α=0.1 C4：56.5%</title></circle><circle class="l-a01" cx="290.0" cy="109.4" r="3"><title>聯邦 α=0.1 C5：54.0%</title></circle><circle class="cen" cx="38.0" cy="51.2" r="4.5"><title>集中式：82.1%</title></circle><text class="cap" x="38" y="231">Hayes-Roth（集中式 82.1%）</text></svg></div></div>
+<div class="legend"><span><i style="background:var(--iid)"></i>聯邦 IID</span><span><i style="background:var(--a05)"></i>聯邦 α=0.5</span><span><i style="background:var(--a01)"></i>聯邦 α=0.1</span><span><i style="background:var(--ink);height:8px;width:8px;border-radius:50%"></i>集中式</span></div>
+</div>
+<div class="box scroll">
+<p class="cap"><strong>表 3-1　181 個資料集，聯邦減集中式的 Accuracy</strong>（同一資料集先平均 5 個 seed）。分別用 STD 與 SV 比較，避免挑方法造成偏差。</p>
+<table class="t">
+<thead><tr><th>聯邦情境</th><th>STD 平均差</th><th>聯邦較好／較差（資料集數）</th><th>SV 平均差</th><th>聯邦較好／較差</th></tr></thead>
+<tbody><tr><th scope="row">聯邦 IID</th><td class="pos">+2.4pp</td><td>121／41</td><td class="pos">+2.2pp</td><td>113／49</td></tr><tr><th scope="row">聯邦 α=0.5</th><td class="neg">−1.7pp</td><td>76／96</td><td class="neg">−0.4pp</td><td>83／88</td></tr><tr><th scope="row">聯邦 α=0.1</th><td class="neg">−7.7pp</td><td>44／133</td><td class="neg">−6.7pp</td><td>36／142</td></tr></tbody>
+</table>
+</div>
+<p style="margin-top:16px">三個原始資料集的結果不完全一樣：Balance Scale 在 IID 下 Client 越多反而越準（集中式 72.3% → C5 82.8%），Car Evaluation 與 Hayes-Roth 則隨 Client 增加而下降。全量實驗中 IID 聯邦平均略高，可能和合併後規則較多、命中的測試資料變多有關（見問題 5），尚未驗證。</p>
+</section>
+
+<section id="q4">
+<h2><span class="qn">4</span>資料變得不均勻會怎樣？</h2>
+<p class="need"><b>老師要看懂：</b>Client 資料差異會不會影響 Accuracy、Coverage、Conflict 和策略排名。</p>
+<p class="answer">四個都會變：Accuracy 下降、Conflict 大增、最佳策略換人；Coverage 表面上升，但高度不均時大多是假的。</p>
+<div class="box scroll">
+<p class="cap"><strong>表 4-1　181 個資料集在四種情境下的變化</strong>（Accuracy 為平均，其餘為資料集中位數）。</p>
+<table class="t">
+<thead><tr><th>指標</th><th>集中式</th><th>聯邦 IID</th><th>聯邦 α=0.5</th><th>聯邦 α=0.1</th></tr></thead>
+<tbody><tr><th scope="row">平均 Accuracy（六法中平均最高的方法）</th><td>60.4%</td><td>62.8%</td><td>59.9%</td><td>53.5%</td></tr><tr><th scope="row">測試資料有規則命中（Coverage）</th><td>16%</td><td>44%</td><td>78%</td><td>100%<sup>＊</sup></td></tr><tr><th scope="row">正確答案出現在候選中</th><td>10%</td><td>33%</td><td>53%</td><td>80%</td></tr><tr><th scope="row">規則衝突率（Conflict）</th><td>0.1%</td><td>3.6%</td><td>20.5%</td><td>61.3%</td></tr><tr><th scope="row">六種方法的 Accuracy 差距</th><td>0.01pp</td><td>0.52pp</td><td>2.66pp</td><td>8.05pp</td></tr><tr><th scope="row">平均名次第一</th><td>STD、PS</td><td>STD、PS</td><td>SV</td><td>STD</td></tr><tr><th scope="row">勝最多資料集</th><td>差距極小</td><td>STD</td><td>SV</td><td>SV</td></tr></tbody>
+</table>
+<p class="sub" style="margin-top:8px">＊見下方說明：α=0.1 的 100% 大部分來自沒有條件的規則。</p>
+</div>
+<h3>為什麼 α=0.1 的 Coverage 是 100%？</h3>
+<p>資料高度不均時，有些 Client 只拿到單一類別。這種 Client 的最小約簡是空集合，學出「不看任何條件，一律判為 d」的規則（TRUE→d）。這種規則會命中所有測試資料，所以 Coverage 變成 100%，但它其實沒有判斷力。扣掉這類規則後，真正有條件的規則命中率低很多：</p>
+<div class="box scroll">
+<p class="cap"><strong>表 4-2　α=0.1 時，扣掉「沒有條件的規則」後的 Coverage</strong>（補充診斷，5 個 seed 平均）。</p>
+<table class="t">
+<thead><tr><th>資料集</th><th>全部規則的 Coverage</th><th>只算有條件的規則</th><th>平均每個模型的無條件規則數</th></tr></thead>
+<tbody><tr><th scope="row">Online Shoppers（電商）</th><td>100%</td><td>19%</td><td>1.6</td></tr><tr><th scope="row">Breast Cancer</th><td>100%</td><td>27%</td><td>1.8</td></tr><tr><th scope="row">AI4I（工業維護）</th><td>100%</td><td>86%</td><td>1.4</td></tr><tr><th scope="row">Wine</th><td>100%</td><td>91%</td><td>1.8</td></tr><tr><th scope="row">Iris</th><td>100%</td><td>90%</td><td>1.4</td></tr></tbody>
+</table>
+</div>
+<h3>更極端的情境：訓練標籤有 20% 錯誤</h3>
+<p>在 7 個 UCI 資料集上（2 個 seed，先導實驗），把訓練資料 20% 的標籤隨機改錯。集中式 Accuracy 從 76.1% 掉到 62.2%（STD）；聯邦 Client 5 個時只從 78.2% 掉到 76.3%。這時最好的是 STD 和 PS，而不是 SV。也就是說，「資料不均」和「資料有雜訊」適合的方法不一樣。</p>
+<p class="sub">來源：<a href="./data/EXTREME_UCI_PILOT_RESULTS.csv">EXTREME_UCI_PILOT_RESULTS.csv</a>。只有 2 個 seed，屬於先導結果。</p>
+</section>
+
+<section id="q5">
+<h2><span class="qn">5</span>Training／Test Coverage 有什麼差異？</h2>
+<p class="need"><b>老師要看懂：</b>為什麼訓練資料上的規則有用，到了新資料卻可能無法判斷。</p>
+<p class="answer">無法判斷的原因有兩種，而且大部分屬於第一種：規則根本沒覆蓋到訓練資料，不是測試資料太新。</p>
+<div class="two">
+<div class="box"><h3 style="margin-top:0">原因一：訓練資料本身就沒被覆蓋</h3><p>Classical Rough Set 只從「條件相同、答案也相同」的訓練資料學規則（正區域）。連續特徵切成 3 段後，很多條件相同但答案不同的資料會被排除，這些資料一開始就沒有規則。這時訓練 Coverage 和測試 Coverage 一樣低。</p><p class="sub">常見於連續特徵、資料量大。</p></div>
+<div class="box"><h3 style="margin-top:0">原因二：測試出現沒見過的組合</h3><p>訓練資料全部被覆蓋（100%），但規則的條件組合太具體，測試資料出現沒看過的組合就不會命中。這才是真正的「訓練有用、新資料不行」。</p><p class="sub">常見於小型、類別特徵的資料，例如最早的三個資料集。</p></div>
+</div>
+<div class="box">
+<p class="cap"><strong>圖 5-1　集中式的訓練與測試 Coverage</strong>。前 5 個是補充診斷（5 seeds），後 3 個來自先前的 Train／Test Coverage 實驗（3 seeds）。</p>
+<div class="brow"><div class="bl">Online Shoppers（電商）<span class="sub">連續特徵</span></div><div class="bt"><div class="bar tr" style="width:10.8%"><span>訓練 11%</span></div><div class="bar te" style="width:11.1%"><span>測試 11%</span></div></div></div><div class="brow"><div class="bl">Breast Cancer<span class="sub">連續特徵</span></div><div class="bt"><div class="bar tr" style="width:48.5%"><span>訓練 49%</span></div><div class="bar te" style="width:46.9%"><span>測試 47%</span></div></div></div><div class="brow"><div class="bl">AI4I（工業維護）<span class="sub">連續特徵</span></div><div class="bt"><div class="bar tr" style="width:67.5%"><span>訓練 67%</span></div><div class="bar te" style="width:68.2%"><span>測試 68%</span></div></div></div><div class="brow"><div class="bl">Wine<span class="sub">連續特徵</span></div><div class="bt"><div class="bar tr" style="width:81.6%"><span>訓練 82%</span></div><div class="bar te" style="width:77.8%"><span>測試 78%</span></div></div></div><div class="brow"><div class="bl">Iris<span class="sub">連續特徵</span></div><div class="bt"><div class="bar tr" style="width:90.4%"><span>訓練 90%</span></div><div class="bar te" style="width:92.7%"><span>測試 93%</span></div></div></div><div class="brow"><div class="bl">Balance Scale<span class="sub">類別特徵</span></div><div class="bt"><div class="bar tr" style="width:100.0%"><span>訓練 100%</span></div><div class="bar te" style="width:76.7%"><span>測試 77%</span></div></div></div><div class="brow"><div class="bl">Car Evaluation<span class="sub">類別特徵</span></div><div class="bt"><div class="bar tr" style="width:100.0%"><span>訓練 100%</span></div><div class="bar te" style="width:92.9%"><span>測試 93%</span></div></div></div><div class="brow"><div class="bl">Hayes-Roth<span class="sub">類別特徵</span></div><div class="bt"><div class="bar tr" style="width:80.5%"><span>訓練 80%</span></div><div class="bar te" style="width:85.9%"><span>測試 86%</span></div></div></div>
+<div class="legend"><span><i style="background:var(--tr);height:10px"></i>訓練資料 Coverage</span><span><i style="background:var(--te);height:10px"></i>測試資料 Coverage</span></div>
+</div>
+<p style="margin-top:16px">全量實驗中，集中式的測試 Coverage 中位數只有 16%，原因就是第一種。補充診斷也確認，集中式的訓練 Coverage 剛好等於正區域比例。先前 20 個 UCI 資料集、120 組配置的結果也一樣：訓練與測試 Coverage 平均只差 0.4pp 以內。</p>
+<h3>已經試過的提高 Coverage 方法</h3>
+<div class="box scroll">
+<table class="t">
+<thead><tr><th>方法</th><th>Coverage 變化</th><th>Accuracy／BA 變化</th><th>範圍</th></tr></thead>
+<tbody>
+<tr><th scope="row">部分比對：條件符合 50% 以上就算命中</th><td>Balance 76.7% → 100%</td><td>Balance −8.7pp、Car +5.1pp、Hayes −1.3pp</td><td>3 資料集、3 seeds</td></tr>
+<tr><th scope="row">最多一個條件不符的 4 條規則補位</th><td>補到 100%</td><td>Balance −7.1pp、Car +5.3pp、Hayes −1.0pp</td><td>3 資料集、4 seeds</td></tr>
+<tr><th scope="row">只用訓練資料生成補充規則</th><td>有條件規則命中 +0.6～+5.5pp</td><td>120 組中 112 組 BA 完全沒變</td><td>20 UCI、2 seeds、3 種分布</td></tr>
+</tbody></table>
+</div>
+<div class="warn"><p><b>結論：</b>Coverage 提高不等於判斷變準。既然主要原因是「連續特徵切 3 段後資料不一致」，下一步應該從源頭處理：改用依類別切點的離散化（如 MDLP），或用允許少量不一致的變精度 Rough Set（VPRS），讓邊界資料也能產生規則。</p></div>
+<p class="sub" style="margin-top:10px">補充診斷是用 repo 現有的全量實驗程式，在可直接取得的 5 份資料（scikit-learn 內建的 Wine、Breast Cancer、Iris，以及 repo 內的 AI4I、Online Shoppers）重跑，<a href="./data/coverage_diag_20261119/TRAIN_TEST_COVERAGE_DIAG.csv">逐筆結果</a>；程式在 experiments/coverage_diag_20261119/。</p>
+</section>
+
+<section id="q6">
+<h2><span class="qn">6</span>更多資料集還會得到相同結論嗎？</h2>
+<p class="need"><b>老師要看懂：</b>找出六種策略各自適用與失效的條件，而不只比較單一平均排名。</p>
+<p class="answer">181 個資料集的結論和三個資料集相同，而且在每一批來源都成立。真正決定用哪個方法的是衝突多寡、類別數與類別是否平均。</p>
+<div class="two">
+<div class="box scroll">
+<p class="cap"><strong>表 6-1　資料來源</strong>（完整跑完的資料集）與 α=0.1 下勝最多的方法。</p>
+<table class="t"><thead><tr><th>來源批次</th><th class="n">資料集</th><th>α=0.1 勝最多</th></tr></thead><tbody><tr><th scope="row">PMLB 基準集</th><td>93</td><td>SV<span class="sub">38.7／93</span></td></tr><tr><th scope="row">OpenML 51</th><td>44</td><td>SV<span class="sub">21.7／45</span></td></tr><tr><th scope="row">UCI 20</th><td>20</td><td>SV<span class="sub">13.0／20</span></td></tr><tr><th scope="row">UCI 補充 12</th><td>12</td><td>SV<span class="sub">5.5／12</span></td></tr><tr><th scope="row">UCI 延伸 7</th><td>7</td><td>SV<span class="sub">5.0／7</span></td></tr><tr><th scope="row">電商／工業 2</th><td>2</td><td>SV、FM<span class="sub">1.0／2</span></td></tr><tr><th scope="row">最早 3 份</th><td>3</td><td>SV<span class="sub">2.0／3</span></td></tr></tbody></table>
+</div>
+<div class="box scroll">
+<p class="cap"><strong>表 6-2　特徵型態 × 原始資料規模</strong>。小 &lt;500 列、中 500–4,999、大 5,000–49,999、超大 ≥50,000。</p>
+<table class="t"><thead><tr><th></th><th class="n">小</th><th class="n">中</th><th class="n">大</th><th class="n">超大</th><th class="n">合計</th></tr></thead><tbody><tr><th scope="row">連續</th><td>16</td><td>31</td><td>26</td><td>6</td><td><b>79</b></td></tr><tr><th scope="row">混合</th><td>20</td><td>23</td><td>10</td><td>6</td><td><b>59</b></td></tr><tr><th scope="row">類別／離散</th><td>7</td><td>30</td><td>4</td><td>2</td><td><b>43</b></td></tr><tr><th scope="row">合計</th><td><b>43</b></td><td><b>84</b></td><td><b>40</b></td><td><b>14</b></td><td><b>181</b></td></tr></tbody></table>
+</div>
+</div>
+<div class="box scroll">
+<p class="cap"><strong>表 6-3　各方法在不同條件下，平均落後最佳方法多少 pp</strong>。一組＝一個資料集 × 一種情境。綠色是該條件下最好的方法；紅色是平均落後 4pp 以上，視為失效。小字是落後 5pp 以上的比例。</p>
+<table class="t cond">
+<thead><tr><th>條件</th><th>FM</th><th>SV</th><th>STD</th><th>GS</th><th>PS</th><th>PG</th></tr></thead>
+<tbody>
+<tr><th colspan="7" style="padding-top:14px">依衝突率（所有情境）</th></tr>
+<tr><th scope="row">衝突率 <1%<span class="sub">226 組</span></th><td class="good">0.03<span class="sub">0% ≥5pp</span></td><td class="good">0.04<span class="sub">0% ≥5pp</span></td><td class="good">0.02<span class="sub">0% ≥5pp</span></td><td class="good">0.03<span class="sub">0% ≥5pp</span></td><td class="good">0.02<span class="sub">0% ≥5pp</span></td><td class="good">0.03<span class="sub">0% ≥5pp</span></td></tr><tr><th scope="row">衝突率 1–10%<span class="sub">159 組</span></th><td class="">0.55<span class="sub">0% ≥5pp</span></td><td class="good">0.32<span class="sub">0% ≥5pp</span></td><td class="good">0.29<span class="sub">0% ≥5pp</span></td><td class="">0.45<span class="sub">0% ≥5pp</span></td><td class="good">0.31<span class="sub">0% ≥5pp</span></td><td class="">0.47<span class="sub">0% ≥5pp</span></td></tr><tr><th scope="row">衝突率 10–30%<span class="sub">98 組</span></th><td class="mid">2.66<span class="sub">17% ≥5pp</span></td><td class="good">0.84<span class="sub">3% ≥5pp</span></td><td class="">1.10<span class="sub">9% ≥5pp</span></td><td class="mid">2.21<span class="sub">17% ≥5pp</span></td><td class="">1.29<span class="sub">10% ≥5pp</span></td><td class="mid">2.46<span class="sub">18% ≥5pp</span></td></tr><tr><th scope="row">衝突率 ≥30%<span class="sub">246 組</span></th><td class="fail">8.64<span class="sub">53% ≥5pp</span></td><td class="good">1.67<span class="sub">10% ≥5pp</span></td><td class="mid">2.60<span class="sub">20% ≥5pp</span></td><td class="fail">6.88<span class="sub">41% ≥5pp</span></td><td class="mid">3.67<span class="sub">25% ≥5pp</span></td><td class="fail">9.56<span class="sub">50% ≥5pp</span></td></tr>
+<tr><th colspan="7" style="padding-top:14px">依分布、類別數與類別比例</th></tr>
+<tr><th scope="row">聯邦 IID<span class="sub">181 組</span></th><td class="">1.37<span class="sub">9% ≥5pp</span></td><td class="">0.68<span class="sub">2% ≥5pp</span></td><td class="good">0.30<span class="sub">1% ≥5pp</span></td><td class="">0.59<span class="sub">3% ≥5pp</span></td><td class="good">0.33<span class="sub">1% ≥5pp</span></td><td class="">0.69<span class="sub">3% ≥5pp</span></td></tr><tr><th scope="row">Non-IID，2–5 類<span class="sub">296 組</span></th><td class="fail">6.94<span class="sub">42% ≥5pp</span></td><td class="good">1.04<span class="sub">6% ≥5pp</span></td><td class="mid">2.42<span class="sub">19% ≥5pp</span></td><td class="fail">6.15<span class="sub">38% ≥5pp</span></td><td class="mid">3.31<span class="sub">24% ≥5pp</span></td><td class="fail">8.34<span class="sub">45% ≥5pp</span></td></tr><tr><th scope="row">Non-IID，6 類以上<span class="sub">68 組</span></th><td class="">1.98<span class="sub">9% ≥5pp</span></td><td class="">1.06<span class="sub">4% ≥5pp</span></td><td class="good">0.18<span class="sub">0% ≥5pp</span></td><td class="">0.60<span class="sub">3% ≥5pp</span></td><td class="">0.38<span class="sub">0% ≥5pp</span></td><td class="">0.94<span class="sub">4% ≥5pp</span></td></tr><tr><th scope="row">Non-IID，少數類 <10%<span class="sub">106 組</span></th><td class="fail">6.07<span class="sub">28% ≥5pp</span></td><td class="">1.31<span class="sub">6% ≥5pp</span></td><td class="good">0.78<span class="sub">7% ≥5pp</span></td><td class="fail">4.66<span class="sub">24% ≥5pp</span></td><td class="good">0.87<span class="sub">5% ≥5pp</span></td><td class="fail">5.85<span class="sub">28% ≥5pp</span></td></tr><tr><th scope="row">Non-IID，類別平均（少數類 ≥25%）<span class="sub">160 組</span></th><td class="fail">4.86<span class="sub">34% ≥5pp</span></td><td class="good">0.67<span class="sub">4% ≥5pp</span></td><td class="mid">2.91<span class="sub">25% ≥5pp</span></td><td class="fail">5.58<span class="sub">39% ≥5pp</span></td><td class="fail">4.37<span class="sub">34% ≥5pp</span></td><td class="fail">7.64<span class="sub">44% ≥5pp</span></td></tr>
+</tbody></table>
+</div>
+<h3>整理成適用與失效條件</h3>
+<div class="fit">
+<dl>
+<dt>衝突率低於 1%（多數集中式）</dt><dd>六種方法結果幾乎一樣，選哪個都可以。</dd>
+<dt>SV 簡單投票</dt><dd>適用：資料不均、2–5 類、類別大致平均。失效：很少大輸，但類別很多或有稀有類別時不是最好。</dd>
+<dt>STD／PS 支持度投票</dt><dd>適用：IID、類別 6 類以上、有稀有類別（少數類 &lt;10%）、訓練標籤有雜訊。失效：資料不均且類別平均時落後約 3–4pp。</dd>
+</dl>
+<dl>
+<dt>FM 第一條命中規則</dt><dd>失效：衝突率 10% 以上就開始明顯落後，30% 以上有一半的情況落後 5pp 以上。</dd>
+<dt>GS／PG 全域強度</dt><dd>適用：幾乎沒有比 STD 更好的條件。失效：資料不均且類別少時，與 FM 一樣大輸。</dd>
+</dl>
+</div>
+<p class="sub" style="margin-top:12px">這些是事後依資料特性分組的觀察，不是因果結論；要變成選法規則，需要在新資料上事先固定規則再驗證。</p>
+</section>
+
+<section id="limits">
+<h2>目前的限制</h2>
+<div class="warn"><ul>
+<li>每個資料集只用前 6 個特徵（原始特徵數中位數 20）。最小約簡用窮舉法，特徵多就算不完。</li>
+<li>7 個資料集沒有跑完所有情境（共 95 個模型超過 45 分鐘上限），沒有列入統計，包含最大的 221 萬列資料。</li>
+<li>全量實驗是 5 個 seed；42 seeds 只有最早的三個資料集。seed 是同一份資料的不同切分，不是新資料。</li>
+<li>依老師要求以 Accuracy 排名；Accuracy 偏向多數類別，平衡正確率（BA）在大表中都有。</li>
+<li>聯邦是 3 個 Client 的模擬，沒有通訊或隱私機制。</li>
+</ul></div>
+</section>
+
+<section id="old">
+<h2>資料與先前頁面</h2>
+<ul class="links">
+<li><a href="./results/">逐筆結果表</a><span>兩張 19 欄大表與每個資料集的最佳方法</span></li>
+<li><a href="https://github.com/Jimmy0307/LEM2/tree/research/report-ready-dashboard-20261109/docs/research/teacher_dashboard/data/six_questions_20261119">本頁的彙整表</a><span>Q2–Q6 的 CSV，由 experiments/six_questions_20261119/build_tables.py 產生</span></li>
+<li><a href="./data/full_scale_20261118/PROTOCOL.md">全量實驗協定</a><span>切分、Client、分箱、類別剔除規則</span></li>
+<li><a href="./data/full_scale_20261118/FAILURES.csv">全量實驗失敗紀錄</a></li>
+<li><a href="./seven_questions.html">老師早期 7 個問題的回答</a><span>含 Balance Scale 的 Conflict 實例</span></li>
+<li><a href="./pmlb_117/">109 份 PMLB 實驗</a><span>每份最多 900 列的早期版本</span></li>
+<li><a href="./methods/">方法與公式</a></li>
+<li><a href="./technical_report.html">完整技術版報告</a></li>
+</ul>
+</section>
+</main>
+<footer>
+全量實驗：research/full-scale-six-policy-20261118（補跑合併版，<a href="https://github.com/Jimmy0307/LEM2/actions/runs/44465026637">workflow 44465026637</a>）。42 seeds 實驗：data/CLASSICAL_19_COLUMNS_42SEEDS.csv。本頁只彙整已發布的結果，未修改任何原始輸出。2026-11-19
+</footer>
+</body>
+</html>

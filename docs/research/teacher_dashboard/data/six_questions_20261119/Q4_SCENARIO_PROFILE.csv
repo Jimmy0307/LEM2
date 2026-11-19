@@ -1,0 +1,5 @@
+scenario,datasets,mean_acc_SV,mean_acc_STD,mean_acc_best_of_six,median_test_coverage_pct,median_truth_in_candidates_pct,median_conflict_pct,median_rules,median_six_policy_range_pp,best_mean_rank,most_wins
+CENTRALIZED,181,60.26,60.44,60.53,15.8,9.9,0.1,16.0,0.01,STANDARD_VOTING;POPULATION_STANDARD,FIRST_MATCH
+FED_IID,181,62.44,62.82,63.12,44.4,33.0,3.6,34.2,0.52,STANDARD_VOTING;POPULATION_STANDARD,STANDARD_VOTING
+FED_A05,181,59.87,58.76,60.52,77.7,52.8,20.5,29.4,2.66,SIMPLE_VOTING,SIMPLE_VOTING
+FED_A01,181,53.55,52.77,55.0,100.0,79.5,61.3,18.4,8.05,STANDARD_VOTING,SIMPLE_VOTING

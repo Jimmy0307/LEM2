@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Federated LEM2｜逐筆結果表</title>
+<style>
+:root{--bg:#f4f6f7;--paper:#fff;--ink:#17252e;--muted:#5d6c76;--line:#d7dfe4;--link:#17607a;--accent:#2f7d63;--soft:#e3efe9;--hl:#fbf3e3}
+@media (prefers-color-scheme:dark){:root{--bg:#11181c;--paper:#182227;--ink:#e3eaee;--muted:#9aabb5;--line:#2d3b42;--link:#8cc7dd;--accent:#3f9174;--soft:#1f3530;--hl:#2a2418}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 "Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;font-variant-numeric:tabular-nums}
+a{color:var(--link)}
+:focus-visible{outline:3px solid #c9933b;outline-offset:2px}
+.top{background:var(--paper);border-bottom:1px solid var(--line)}
+.top .in{max-width:1400px;margin:auto;padding:10px 20px;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.brand{font-weight:700}
+main{max-width:1400px;margin:auto;padding:18px 20px 60px}
+h1{font-size:24px;margin:8px 0 6px}
+p{margin:0 0 12px;max-width:60em}
+.muted{color:var(--muted)}
+.tabs{display:flex;gap:6px;margin:16px 0 0;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;border:1px solid var(--line);border-bottom:none;background:transparent;color:var(--muted);padding:8px 16px;border-radius:8px 8px 0 0;cursor:pointer;margin-bottom:-1px}
+.tabs button[aria-selected=true]{background:var(--paper);color:var(--ink);font-weight:700}
+.panel{background:var(--paper);border:1px solid var(--line);border-top:none;border-radius:0 0 10px 10px;padding:16px}
+.filters{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-end;margin-bottom:12px}
+label{display:flex;flex-direction:column;font-size:13px;color:var(--muted);gap:4px}
+select,input[type=search]{font:inherit;padding:7px 9px;border:1px solid var(--line);border-radius:7px;background:var(--paper);color:var(--ink);min-width:140px}
+label.chk{flex-direction:row;align-items:center;gap:6px;color:var(--ink);padding-bottom:8px}
+button.act{font:inherit;padding:7px 14px;border-radius:7px;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer}
+button.ghost{background:transparent;color:var(--link);border-color:var(--line)}
+.status{font-size:14px;margin:6px 0 10px;color:var(--muted)}
+.status b{color:var(--ink)}
+.wrap{overflow:auto;max-height:70vh;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{padding:7px 9px;border-bottom:1px solid var(--line);white-space:nowrap;text-align:left}
+td.n{text-align:right}
+thead th{position:sticky;top:0;background:var(--soft);cursor:pointer;vertical-align:bottom;z-index:1}
+thead th small{display:block;font-weight:400;color:var(--muted);font-size:11px}
+thead th[aria-sort=ascending]::after{content:" ▲";font-size:10px}
+thead th[aria-sort=descending]::after{content:" ▼";font-size:10px}
+tbody tr:hover{background:var(--hl)}
+td.best{font-weight:700;color:var(--accent)}
+.pill{display:inline-block;padding:0 7px;border-radius:9px;background:var(--soft);margin-right:4px;font-weight:600}
+.pager{display:flex;gap:8px;align-items:center;margin-top:10px;font-size:14px}
+.note{font-size:13px;color:var(--muted);margin-top:12px}
+</style>
+</head>
+<body>
+<header class="top"><div class="in"><div class="brand">Federated LEM2 研究報告</div><nav><a href="../">← 回到六個問題</a></nav></div></header>
+<main>
+<h1>逐筆結果表</h1>
+<p class="muted">兩張 19 欄大表的每一筆結果，以及每個資料集在各情境下的最佳方法。可以篩選、點欄名排序，並下載目前篩選的結果。</p>
+<div class="tabs" role="tablist">
+<button role="tab" id="tab-rows" aria-controls="p-rows" aria-selected="true">19 欄逐筆結果</button>
+<button role="tab" id="tab-winners" aria-controls="p-winners" aria-selected="false">每個資料集誰贏</button>
+</div>
+
+<section class="panel" id="p-rows" role="tabpanel" aria-labelledby="tab-rows">
+<div class="filters">
+<label>大表<select id="r-src"><option value="full">全量實驗（188 個資料集，5 seeds）</option><option value="s42">三資料集（42 seeds，Client 2–5）</option></select></label>
+<label>資料集<input type="search" id="r-ds" list="r-dslist" placeholder="輸入名稱搜尋"><datalist id="r-dslist"></datalist></label>
+<label>情境<select id="r-sc"><option value="">全部</option><option>集中式</option><option>聯邦 IID</option><option>聯邦 α=0.5</option><option>聯邦 α=0.1</option></select></label>
+<label>Client 數<select id="r-cc"><option value="">全部</option></select></label>
+<label>方法<select id="r-pol"><option value="">全部</option><option>FIRST_MATCH</option><option>SIMPLE_VOTING</option><option>STANDARD_VOTING</option><option>GLOBAL_STRENGTH</option><option>POPULATION_STANDARD</option><option>POPULATION_GLOBAL</option></select></label>
+<label>Seed<select id="r-seed"><option value="">全部</option></select></label>
+<label class="chk"><input type="checkbox" id="r-avg">各 seed 取平均</label>
+<button class="act ghost" id="r-dl">下載目前結果 CSV</button>
+</div>
+<div class="status" id="r-status">載入中…</div>
+<div class="wrap"><table><thead id="r-head"></thead><tbody id="r-body"></tbody></table></div>
+<div class="pager"><button class="act ghost" id="r-prev">上一頁</button><span id="r-page"></span><button class="act ghost" id="r-next">下一頁</button></div>
+<p class="note">一列＝一個資料集 × 一個 seed × 一種架構 × 一種方法。百分比欄位四捨五入到小數 2 位；下載的 CSV 保留原始精度。勾選「各 seed 取平均」時，數值欄是各 seed 的平均，seed 欄顯示納入的 seed 數。</p>
+</section>
+
+<section class="panel" id="p-winners" role="tabpanel" aria-labelledby="tab-winners" hidden>
+<div class="filters">
+<label>資料集<input type="search" id="w-ds" placeholder="輸入名稱搜尋"></label>
+<label>情境<select id="w-sc"><option value="">全部</option><option value="CENTRALIZED">集中式</option><option value="FED_IID">聯邦 IID</option><option value="FED_A05">聯邦 α=0.5</option><option value="FED_A01">聯邦 α=0.1</option></select></label>
+<label>最佳方法包含<select id="w-pol"><option value="">全部</option><option value="FIRST_MATCH">FM</option><option value="SIMPLE_VOTING">SV</option><option value="STANDARD_VOTING">STD</option><option value="GLOBAL_STRENGTH">GS</option><option value="POPULATION_STANDARD">PS</option><option value="POPULATION_GLOBAL">PG</option></select></label>
+<label>特徵型態<select id="w-ft"><option value="">全部</option><option>連續</option><option>混合</option><option>類別/離散</option></select></label>
+<label>規模<select id="w-sz"><option value="">全部</option><option>小</option><option>中</option><option>大</option><option>超大</option></select></label>
+<label class="chk"><input type="checkbox" id="w-clear">只看領先 ≥1pp 的</label>
+<button class="act ghost" id="w-dl">下載目前結果 CSV</button>
+</div>
+<div class="status" id="w-status">載入中…</div>
+<div class="wrap"><table><thead id="w-head"></thead><tbody id="w-body"></tbody></table></div>
+<p class="note">全量實驗，每個資料集先平均 5 個 seed 再比較六種方法的 Accuracy；差距 ≤1e-6 視為平手並列。只列出該情境 5 個 seed 都完成的資料集。</p>
+</section>
+</main>
+<script>
+"use strict";
+const SRC={full:"../data/full_scale_20261118/FULL_SCALE_19COL.csv",s42:"../data/CLASSICAL_19_COLUMNS_42SEEDS.csv"};
+const COLS=[["dataset","資料集"],["seed","Seed"],["distribution","分布"],["dirichlet_alpha","α"],["split_mode","切分"],["system","架構"],["client_count","Client 數"],["selection_policy","方法"],["train_rows","訓練筆數"],["test_rows","測試筆數"],["rule_count","規則數"],["no_match_count","無命中筆數"],["covered_count","有命中筆數"],["test_coverage_pct","Coverage %"],["true_in_candidate_count","正確答案在候選筆數"],["candidate_coverage_pct","正確答案在候選 %"],["accuracy_pct","Accuracy %"],["balanced_accuracy_pct","BA %"],["conflict_rate_pct","Conflict %"]];
+const NUM=new Set(["seed","dirichlet_alpha","client_count","train_rows","test_rows","rule_count","no_match_count","covered_count","test_coverage_pct","true_in_candidate_count","candidate_coverage_pct","accuracy_pct","balanced_accuracy_pct","conflict_rate_pct"]);
+const AB={FIRST_MATCH:"FM",SIMPLE_VOTING:"SV",STANDARD_VOTING:"STD",GLOBAL_STRENGTH:"GS",POPULATION_STANDARD:"PS",POPULATION_GLOBAL:"PG"};
+const SCN={CENTRALIZED:"集中式",FED_IID:"聯邦 IID",FED_A05:"聯邦 α=0.5",FED_A01:"聯邦 α=0.1"};
+const $=id=>document.getElementById(id);
+function parseCSV(t){const L=t.trim().split(/\r?\n/);const h=L[0].split(",");return L.slice(1).map(l=>{const v=l.split(",");const o={};h.forEach((k,i)=>o[k]=v[i]??"");return o;});}
+function scen(r){if(r.system==="CENTRALIZED")return"集中式";if(r.distribution.includes("IID")&&!r.distribution.includes("NON"))return"聯邦 IID";return Number(r.dirichlet_alpha)===0.5?"聯邦 α=0.5":"聯邦 α=0.1";}
+function fmt(k,v){if(v===""||v===undefined||v===null)return"";if(!NUM.has(k))return v;const x=Number(v);if(!isFinite(x))return v;return k.endsWith("_pct")?x.toFixed(2):(Number.isInteger(x)?String(x):x.toFixed(2));}
+function toCSV(rows,keys){return keys.join(",")+"\n"+rows.map(r=>keys.map(k=>r[k]).join(",")).join("\n");}
+function download(name,text){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type:"text/csv"}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000);}
+const cache={};
+async function load(url){if(!cache[url]){const r=await fetch(url);if(!r.ok)throw new Error(r.status+" "+url);cache[url]=parseCSV(await r.text());cache[url].forEach(x=>x._sc=x.system?scen(x):"");}return cache[url];}
+// ---------------- rows tab
+let R=[],RV=[],rpage=0,rsort={k:null,d:1};const PS=50;
+async function initRows(){
+  $("r-status").textContent="載入中…";
+  try{R=await load(SRC[$("r-src").value]);}catch(e){$("r-status").textContent="無法載入資料："+e.message;return;}
+  const ds=[...new Set(R.map(r=>r.dataset))].sort();$("r-dslist").innerHTML=ds.map(d=>`<option value="${d}">`).join("");
+  const seeds=[...new Set(R.map(r=>r.seed))].sort((a,b)=>a-b);$("r-seed").innerHTML='<option value="">全部</option>'+seeds.map(s=>`<option>${s}</option>`).join("");
+  const cc=[...new Set(R.map(r=>r.client_count))].sort((a,b)=>a-b);$("r-cc").innerHTML='<option value="">全部</option>'+cc.map(s=>`<option>${s}</option>`).join("");
+  $("r-head").innerHTML="<tr>"+COLS.map(([k,l])=>`<th data-k="${k}" scope="col">${l}<small>${k}</small></th>`).join("")+"</tr>";
+  $("r-head").querySelectorAll("th").forEach(th=>th.onclick=()=>{const k=th.dataset.k;rsort=rsort.k===k?{k,d:-rsort.d}:{k,d:NUM.has(k)?-1:1};rpage=0;renderRows();});
+  applyRows();
+}
+function applyRows(){
+  const q=$("r-ds").value.trim().toLowerCase(),sc=$("r-sc").value,cc=$("r-cc").value,pol=$("r-pol").value,sd=$("r-seed").value;
+  let v=R.filter(r=>(!q||r.dataset.toLowerCase().includes(q))&&(!sc||r._sc===sc)&&(cc===""||r.client_count===cc)&&(!pol||r.selection_policy===pol)&&(!sd||r.seed===sd));
+  if($("r-avg").checked){const g=new Map();const key=["dataset","distribution","dirichlet_alpha","split_mode","system","client_count","selection_policy"];
+    v.forEach(r=>{const k=key.map(x=>r[x]).join("|");if(!g.has(k))g.set(k,[]);g.get(k).push(r);});
+    v=[...g.values()].map(a=>{const o={...a[0]};o.seed=String(a.length);o._sc=a[0]._sc;COLS.forEach(([k])=>{if(NUM.has(k)&&!["seed","dirichlet_alpha","client_count"].includes(k)){const s=a.reduce((t,x)=>t+Number(x[k]),0)/a.length;o[k]=String(s);}});return o;});}
+  RV=v;rpage=0;renderRows();
+}
+function renderRows(){
+  let v=RV;if(rsort.k){const k=rsort.k,d=rsort.d;v=[...v].sort((a,b)=>NUM.has(k)?(Number(a[k])-Number(b[k]))*d:String(a[k]).localeCompare(String(b[k]))*d);}
+  $("r-head").querySelectorAll("th").forEach(th=>th.setAttribute("aria-sort",th.dataset.k===rsort.k?(rsort.d>0?"ascending":"descending"):"none"));
+  const pages=Math.max(1,Math.ceil(v.length/PS));rpage=Math.min(rpage,pages-1);
+  $("r-body").innerHTML=v.slice(rpage*PS,rpage*PS+PS).map(r=>"<tr>"+COLS.map(([k])=>`<td class="${NUM.has(k)?"n":""}">${fmt(k,r[k])}</td>`).join("")+"</tr>").join("");
+  $("r-status").innerHTML=`共 <b>${v.length.toLocaleString()}</b> 筆（整張表 ${R.length.toLocaleString()} 筆）`;
+  $("r-page").textContent=`第 ${rpage+1}／${pages} 頁`;$("r-prev").disabled=rpage===0;$("r-next").disabled=rpage>=pages-1;RV._sorted=v;
+}
+["r-ds","r-sc","r-cc","r-pol","r-seed","r-avg"].forEach(id=>$(id).addEventListener(id==="r-ds"?"input":"change",applyRows));
+$("r-src").addEventListener("change",()=>{rsort={k:null,d:1};initRows();});
+$("r-prev").onclick=()=>{rpage--;renderRows();};$("r-next").onclick=()=>{rpage++;renderRows();};
+$("r-dl").onclick=()=>download("lem2_19col_filtered.csv",toCSV(RV._sorted||RV,COLS.map(c=>c[0])));
+// ---------------- winners tab
+let Wd=[],WV=[],wsort={k:"dataset",d:1},winit=false;
+const P=Object.keys(AB);
+const WC=[["dataset","資料集"],["scenario","情境"],["feature_type","特徵型態"],["size_class","規模"],["accuracy_best_methods","最佳方法"],["accuracy_lead_pp","領先第二名 pp"],["accuracy_range_pp","六法差距 pp"],...P.map(p=>[p+"_accuracy_pct",AB[p]+" Accuracy %"])];
+const WN=new Set(["accuracy_lead_pp","accuracy_range_pp",...P.map(p=>p+"_accuracy_pct")]);
+async function initWinners(){
+  if(winit)return;winit=true;
+  try{Wd=await load("../data/full_scale_20261118/DATASET_BEST.csv");}catch(e){$("w-status").textContent="無法載入資料："+e.message;return;}
+  $("w-head").innerHTML="<tr>"+WC.map(([k,l])=>`<th data-k="${k}" scope="col">${l}</th>`).join("")+"</tr>";
+  $("w-head").querySelectorAll("th").forEach(th=>th.onclick=()=>{const k=th.dataset.k;wsort=wsort.k===k?{k,d:-wsort.d}:{k,d:WN.has(k)?-1:1};renderW();});
+  applyW();
+}
+function applyW(){
+  const q=$("w-ds").value.trim().toLowerCase(),sc=$("w-sc").value,pol=$("w-pol").value,ft=$("w-ft").value,sz=$("w-sz").value,cl=$("w-clear").checked;
+  WV=Wd.filter(r=>(!q||r.dataset.toLowerCase().includes(q))&&(!sc||r.scenario===sc)&&(!pol||r.accuracy_best_methods.split(";").includes(pol))&&(!ft||r.feature_type===ft)&&(!sz||r.size_class===sz)&&(!cl||Number(r.accuracy_lead_pp)>=1));
+  renderW();
+}
+function renderW(){
+  const k=wsort.k,d=wsort.d;const v=[...WV].sort((a,b)=>WN.has(k)?(Number(a[k])-Number(b[k]))*d:String(a[k]).localeCompare(String(b[k]))*d||a.scenario.localeCompare(b.scenario));
+  $("w-head").querySelectorAll("th").forEach(th=>th.setAttribute("aria-sort",th.dataset.k===k?(d>0?"ascending":"descending"):"none"));
+  const counts={};v.forEach(r=>{const m=r.accuracy_best_methods.split(";");m.forEach(p=>counts[p]=(counts[p]||0)+1/m.length);});
+  $("w-status").innerHTML=`共 <b>${v.length}</b> 組（資料集 × 情境）。勝場（平手平分）：`+P.map(p=>`${AB[p]} ${(counts[p]||0).toFixed(1)}`).join("、");
+  $("w-body").innerHTML=v.map(r=>{const best=r.accuracy_best_methods.split(";");return"<tr>"+WC.map(([c])=>{
+    if(c==="scenario")return`<td>${SCN[r[c]]||r[c]}</td>`;
+    if(c==="accuracy_best_methods")return`<td>${best.map(p=>`<span class="pill">${AB[p]}</span>`).join("")}</td>`;
+    if(WN.has(c)){const isb=c.endsWith("_accuracy_pct")&&best.includes(c.replace("_accuracy_pct",""));return`<td class="n${isb?" best":""}">${Number(r[c]).toFixed(2)}</td>`;}
+    return`<td>${r[c]}</td>`;}).join("")+"</tr>";}).join("");
+  WV._sorted=v;
+}
+["w-ds","w-sc","w-pol","w-ft","w-sz","w-clear"].forEach(id=>$(id).addEventListener(id==="w-ds"?"input":"change",applyW));
+$("w-dl").onclick=()=>download("lem2_dataset_winners_filtered.csv",toCSV(WV._sorted||WV,WC.map(c=>c[0])));
+// ---------------- tabs
+function show(which){const w=which==="winners";$("tab-rows").setAttribute("aria-selected",!w);$("tab-winners").setAttribute("aria-selected",w);$("p-rows").hidden=w;$("p-winners").hidden=!w;if(w)initWinners();}
+$("tab-rows").onclick=()=>{history.replaceState(null,"","#rows");show("rows");};
+$("tab-winners").onclick=()=>{history.replaceState(null,"","#winners");show("winners");};
+window.addEventListener("hashchange",()=>show(location.hash==="#winners"?"winners":"rows"));
+show(location.hash==="#winners"?"winners":"rows");initRows();
+</script>
+</body>
+</html>
