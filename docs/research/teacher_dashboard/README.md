@@ -1,3 +1,11 @@
+## 2026-11-19｜Federated vs Centralized 原始 19 欄總表同步
+- [完整 19 欄互動比較頁](./federated_comparison/)：分開檢視 **Federated 14,112 筆**與 **Centralized 1,764 筆**；可依資料集、42 Seeds、IID／Non-IID、Client 數、策略、Full／80:20 篩選與下載當前 CSV。
+- 原始來源固定為 [POLICY_COMPARISON_19_HEADERS_42SEEDS.csv](./data/POLICY_COMPARISON_19_HEADERS_42SEEDS.csv)、[POLICY_19_HEADERS_MANIFEST.json](./data/POLICY_19_HEADERS_MANIFEST.json) 和 [POLICY_WINS_BY_DATASET.csv](./data/POLICY_WINS_BY_DATASET.csv)；**不重算、不覆寫**原始研究數據。
+- 僅對相同資料集、Seed、80/20 Test、策略且 IID 的 Centralized／Federated 進行配對描述性比較；當 Non-IID 沒有 Centralized 同 regime 的原始列時不硬湊；Full Data 不混作 Test 結果。
+- 原始研究含三資料集與 42 Seeds，**不是** G5 51 份 OpenML Confirmatory。網站入口已加到研究首頁與「最佳條件比較」頁。
+
+---
+
 ## 2026-11-15｜連續型資料專用處理：三條控制實驗全部完成
 
 - [互動資料頁：A分箱＋B缺失標記＋C路由門檻](./g4_g8/controlled_ablation.html)；[教授版完整實證與學術限制](./g4_g8/CONTROLLED_DISCRETIZATION_MISSING_ROUTER_FINDINGS_20261115.md)。
