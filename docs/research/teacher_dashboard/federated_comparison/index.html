@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LEM2｜Federated vs 非 Federated｜完整 19 欄比較</title>
+<meta name="description" content="LEM2 42 Seeds 研究：Federated 與 Centralized 各自完整 19 欄原始表、同條件對照、六策略勝出紀錄。">
+<link rel="stylesheet" href="../site.css">
+<style>
+.hero-alt{background:linear-gradient(110deg,#11293c,#17676c);padding:38px max(18px,calc((100vw - 1240px)/2));color:#fff}.hero-alt h1{font-size:clamp(27px,4vw,43px);line-height:1.24;margin:9px 0}.hero-alt p{color:#e0f3f1;max-width:900px}.hero-alt a{color:#fff;text-decoration:underline}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(164px,1fr));gap:10px}.controls label{display:grid;gap:5px;color:#315565;font-weight:700;font-size:13px}.controls select{width:100%;padding:9px;border:1px solid #ccdfe1;border-radius:8px;background:white;color:#203b4a}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin:14px 0}.stat{background:#f3faf9;padding:13px;border:1px solid #daebeb;border-radius:10px}.stat small{display:block;color:#55737b}.stat strong{display:block;font-size:24px;color:#115b67}
+.note{background:#eaf6f4;border-left:4px solid #248577;border-radius:6px;padding:12px 15px}.warn{background:#fff4e5;border-left-color:#be8442}
+table.results{border-collapse:collapse;white-space:nowrap;width:max-content;min-width:100%;font-size:12px}table.results th,table.results td{border-bottom:1px solid #e3edf0;padding:8px 10px;text-align:right;font-variant-numeric:tabular-nums}table.results th{background:#173a4b;color:white;position:sticky;top:0}table.results td:first-child,table.results th:first-child{position:sticky;left:0;z-index:2;text-align:left}table.results td:first-child{background:white;font-weight:700}table.results tr:nth-child(even){background:#f5f9fa}table.results tr:nth-child(even) td:first-child{background:#f5f9fa}
+.table-scroll{max-width:100%;max-height:520px;overflow:auto;border:1px solid #d5e4e7;border-radius:9px;margin:10px 0}.toolrow{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:12px}.toolrow button{padding:7px 12px;border:1px solid #b6d2d3;border-radius:8px;background:#f0f9f7;color:#125d68;font-weight:bold}.toolrow button:disabled{opacity:.4}
+.delta-plus{color:#0b7856;font-weight:800}.delta-minus{color:#b33c4e;font-weight:800}.small{font-size:12px;color:#5d7181}.name{text-align:left!important}
+details{border:1px solid #dcebee;border-radius:10px;padding:12px;margin:12px 0}summary{cursor:pointer;font-weight:bold}.dict{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px}.dict div{padding:8px;background:#f7fafb;border-radius:7px}.dict code{display:block;color:#155e6a}.dict span{display:block;font-size:12px;color:#5a6d79}
+@media(max-width:600px){.panel{padding:16px}.wrap{padding:14px 10px 60px}.hero-alt{padding:30px 17px}}
+</style>
+</head><body>
+<div class="site-top"><a class="brand" href="../">LEM2 Research｜完整數據</a><nav><a href="../">研究總報告</a><a href="../ranking/">最佳條件</a><a class="active" href="./">19 欄聯邦對照</a><a href="../evidence/">歷史證據</a></nav></div>
+<header class="hero-alt"><div class="eyebrow">15,876 ROWS · FULL 19 HEADERS · 42 SEEDS</div><h1>有 Federated／沒有 Federated<br>兩張完整表，直接比較</h1>
+<p>同一資料集、Seed、預測策略、80/20 留出測試才拿來比較；保留全部 19 個原始欄位。這是 3 個資料集 × 42 Seeds 的 Classical Rough Set + LEM2 歷史實驗，不是 51 份 OpenML Gate 5。</p>
+<p><a href="https://docs.google.com/spreadsheets/d/1qOwsBSNBET-UpjchX_wKBsS-mZ-1isMeui3iNBdHmdo/edit" target="_blank" rel="noopener">Google Sheets 完整總表</a>　·　<a href="../data/POLICY_COMPARISON_19_HEADERS_42SEEDS.csv">原始 15,876 筆 CSV</a>　·　<a href="../data/POLICY_19_HEADERS_MANIFEST.json">19 欄契約</a></p></header>
+<main class="wrap">
+<section class="panel"><span class="section-tag">01 · 研究條件</span><h2>先篩選，再看兩張完整表</h2>
+<p><b>IID</b>：各 Client 類別分布相似。<b>Non-IID</b>：各 Client 類別分布不均；α=0.1 比 α=0.5 更偏斜。<b>BA</b>（Balanced Accuracy）：各類別召回率的平均。<b>pp</b>（百分點）：70% − 65% = +5 pp。</p>
+<div class="controls">
+<label>資料集<select id="dataset"><option value="ALL">三資料集全部</option><option>Balance Scale</option><option>Car Evaluation</option><option>Hayes-Roth</option></select></label>
+<label>分布<select id="regime"><option value="STRATIFIED_IID">IID（相似）</option><option value="DIRICHLET_NON_IID|0.5">Non-IID α=0.5</option><option value="DIRICHLET_NON_IID|0.1">Non-IID α=0.1</option><option value="ALL">全部分布</option></select></label>
+<label>資料切分<select id="split"><option value="HOLDOUT_80_20">80/20 未見資料</option><option value="FULL_DATA">Full Data 回代</option><option value="ALL">全部（只檢視）</option></select></label>
+<label>Seed<select id="seed"><option value="ALL">42 Seeds 全部</option></select></label>
+<label>Client 數<select id="client"><option value="ALL">2～5 全部</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></label>
+<label>決策策略<select id="policy"><option value="ALL">全部＋NONE</option><option value="FIRST_MATCH">第一條規則</option><option value="SIMPLE_VOTING">簡單投票</option><option value="STANDARD_VOTING">支持度投票</option><option value="GLOBAL_STRENGTH">全域強度</option><option value="POPULATION_STANDARD">母體支持</option><option value="POPULATION_GLOBAL">母體全域</option><option value="NONE">NONE（診斷）</option></select></label>
+</div><p id="status" class="note" role="status">正在讀取與核對 GitHub 的原始 19 欄 CSV…</p>
+<div class="stats"><div class="stat"><small>歷史原始總筆數</small><strong id="total">—</strong></div><div class="stat"><small>Federated 篩選筆數</small><strong id="nFed">—</strong></div><div class="stat"><small>非 Federated 篩選筆數</small><strong id="nCentral">—</strong></div><div class="stat"><small>原始欄位</small><strong id="cols">19</strong></div></div></section>
+<section class="panel"><span class="section-tag">02 · 配對比較</span><h2>同樣的測試，究竟哪一邊比較好？</h2>
+<div class="controls"><label>比較指標<select id="metric"><option value="balanced_accuracy_pct">BA：類別平衡正確率</option><option value="accuracy_pct">Accuracy：整體正確率</option><option value="macro_f1_pct">Macro-F1</option><option value="coverage_pct">Coverage：規則命中率</option><option value="conflict_rate_pct">Conflict：規則衝突率</option></select></label></div>
+<p id="pairNote" class="small"></p><div class="table-scroll"><table class="results"><thead><tr><th>Client</th><th>策略</th><th>Federated (%)</th><th>非 Federated (%)</th><th>差距 (pp)</th><th>同條件配對數</th></tr></thead><tbody id="pairs"></tbody></table></div>
+<p class="small">差距 = Federated − Centralized；各資料集先對所選 Seeds 平均，再讓資料集等權。Non-IID 沒有同分布標記的 Centralized 原始列，不用 IID 冒充同條件結果。這裡不是統計顯著性檢定。</p></section>
+<section class="panel"><span class="section-tag">03 · Federated</span><h2>第一張表：Federated 完整 19 欄</h2><p id="fedInfo" class="small"></p><div class="toolrow"><button id="fedPrev">上一頁</button><span id="fedPage"></span><button id="fedNext">下一頁</button><button id="fedDownload">下載篩選後 CSV</button></div><div class="table-scroll"><table class="results"><thead id="fedHead"></thead><tbody id="fedBody"></tbody></table></div></section>
+<section class="panel"><span class="section-tag">04 · Centralized</span><h2>第二張表：沒有 Federated 完整 19 欄</h2><p id="centralInfo" class="small"></p><div class="toolrow"><button id="centralPrev">上一頁</button><span id="centralPage"></span><button id="centralNext">下一頁</button><button id="centralDownload">下載篩選後 CSV</button></div><div class="table-scroll"><table class="results"><thead id="centralHead"></thead><tbody id="centralBody"></tbody></table></div></section>
+<section class="panel"><span class="section-tag">05 · 六策略勝出紀錄</span><h2>每種策略贏幾次？</h2><p>原始已發布資料集層級的 Balanced Accuracy 勝出統計。策略平手時各獲得 1/N 次，不重複灌票；本區依資料集與分布篩選，但不依 Seed／Client 子集合重新計票。</p><div class="table-scroll"><table class="results"><thead><tr><th>分布</th><th>策略</th><th>分數化勝出次數</th><th>競爭機會數</th><th>勝出占比 (%)</th></tr></thead><tbody id="winsBody"></tbody></table></div><p class="small">IID 包含集中式及聯邦式機會；Non-IID 只有聯邦式，不應把兩種勝率直接當架構優劣。</p></section>
+<section class="panel"><span class="section-tag">06 · 欄位字典與證據</span><h2>完整 19 個表頭解釋</h2><details><summary>展開原始欄位（逐欄中文說明）</summary><div id="dict" class="dict"></div></details>
+<p class="note warn"><b>不可混算：</b>本頁是 8,820 筆主矩陣＋7,056 筆 Non-IID 擴充 = 15,876 筆，不是 51 份 OpenML 預註冊新樣本。NONE 沒有產生 Accuracy／BA 等預測指標，空白不等於 0%。</p><p class="small">來源：<a href="../data/POLICY_COMPARISON_19_HEADERS_42SEEDS.csv">原始完整 19 欄 CSV</a> · <a href="../data/POLICY_WINS_BY_DATASET.csv">資料集勝出統計</a> · <a href="../methods/">方法與公式</a></p></section>
+</main><footer class="footer"><a href="../">LEM2 研究總報告</a> · 2026-11-19</footer>
+<script>
+"use strict";
+const H=["dataset","regime","dirichlet_alpha","seed","split_mode","system","client_count","selection_policy","train_rows","test_rows","rule_count","accuracy_pct","balanced_accuracy_pct","macro_f1_pct","coverage_pct","no_match_pct","true_candidate_pct","conflict_resolution_accuracy_pct","conflict_rate_pct"];
+const C=["資料集","分布方式","資料偏斜程度 α","隨機種子","切分方式","集中式或聯邦式","Client 數","決策策略","訓練資料筆數","測試資料筆數","規則總數","整體答對率 (%)","各類別平均答對率 BA (%)","各類別平均 F1 (%)","規則命中率 (%)","完全沒有命中規則 (%)","正確答案在候選集合 (%)","有衝突案例的決策正確率 (%)","規則之間答案衝突率 (%)"];
+const PN={FIRST_MATCH:"第一條規則",SIMPLE_VOTING:"簡單投票",STANDARD_VOTING:"支持度投票",GLOBAL_STRENGTH:"全域強度",POPULATION_STANDARD:"母體支持",POPULATION_GLOBAL:"母體全域"};
+const $=id=>document.getElementById(id);
+let raw=[],win=[],fed=[],central=[],pFed=0,pCentral=0;
+const per=60;
+const num=v=>v===""||v==null?null:Number(v);
+const f=v=>v==null||!Number.isFinite(v)?"—":v.toFixed(2);
+function parseCSV(txt){
+const lines=txt.trim().replace(/\r/g,"").split("\n"),head=lines.shift().split(",");
+return {head:head,rows:lines.map(line=>{const parts=line.split(",");const o={};head.forEach((k,i)=>o[k]=parts[i]||"");return o;})};
+}
+function buildHead(id){const tr=document.createElement("tr");H.forEach((x,i)=>{const el=document.createElement("th");el.textContent=x;el.title=C[i];tr.append(el);});$(id).append(tr);}
+function opt(){const s={};["dataset","regime","split","seed","client","policy"].forEach(k=>s[k]=$(k).value);return s;}
+function match(x,s){
+if(s.dataset!=="ALL"&&x.dataset!==s.dataset)return false;
+if(s.regime!=="ALL"){const p=s.regime.split("|");if(x.regime!==p[0]||p[1]&&Number(x.dirichlet_alpha)!==Number(p[1]))return false;}
+if(s.split!=="ALL"&&x.split_mode!==s.split)return false;
+if(s.seed!=="ALL"&&x.seed!==s.seed)return false;
+if(s.policy!=="ALL"&&x.selection_policy!==s.policy)return false;
+if(x.system==="FEDERATED"&&s.client!=="ALL"&&x.client_count!==s.client)return false;
+return true;
+}
+function table(kind){
+const rows=kind==="fed"?fed:central,pg=kind==="fed"?pFed:pCentral,tbody=$(kind+"Body");tbody.replaceChildren();
+const frag=document.createDocumentFragment();rows.slice(pg*per,(pg+1)*per).forEach(x=>{const tr=document.createElement("tr");H.forEach(k=>{const td=document.createElement("td");td.textContent=x[k]===""?"—":x[k];tr.append(td);});frag.append(tr);});tbody.append(frag);
+$(kind+"Page").textContent=rows.length?"第 "+(pg+1)+" / "+Math.ceil(rows.length/per)+" 頁":"無符合資料";
+$(kind+"Prev").disabled=pg===0;$(kind+"Next").disabled=(pg+1)*per>=rows.length;
+$(kind+"Info").textContent="篩選結果 "+rows.length.toLocaleString()+" 筆；表格可水平滑動查看全部 19 欄。";
+}
+function average(a){return a.reduce((x,y)=>x+y,0)/a.length;}
+function pairs(s){
+const tb=$("pairs");tb.replaceChildren();if(s.split!=="HOLDOUT_80_20"||s.regime!=="STRATIFIED_IID"&&s.regime!=="ALL"){$("pairNote").textContent="目前不是 IID＋80/20 同條件配對；不顯示虛構的比較。";return;}
+const metric=$("metric").value,lookup=new Map(central.filter(x=>x.regime==="STRATIFIED_IID").map(x=>[[x.dataset,x.seed,x.split_mode,x.selection_policy].join("|"),x])),groups=new Map();
+fed.filter(x=>x.regime==="STRATIFIED_IID"&&x.selection_policy!=="NONE").forEach(x=>{
+const y=lookup.get([x.dataset,x.seed,x.split_mode,x.selection_policy].join("|"));if(!y)return;
+const a=num(x[metric]),b=num(y[metric]);if(a===null||b===null||!Number.isFinite(a)||!Number.isFinite(b))return;
+const k=x.client_count+"|"+x.selection_policy;if(!groups.has(k))groups.set(k,[]);groups.get(k).push({dataset:x.dataset,a:a,b:b});
+});
+const list=[];groups.forEach((items,k)=>{const part=k.split("|"),byDataset=new Map();items.forEach(x=>{if(!byDataset.has(x.dataset))byDataset.set(x.dataset,[]);byDataset.get(x.dataset).push(x);});
+const avg=[...byDataset.values()].map(v=>({a:average(v.map(x=>x.a)),b:average(v.map(x=>x.b))}));list.push({c:part[0],p:part[1],a:average(avg.map(x=>x.a)),b:average(avg.map(x=>x.b)),n:items.length});});
+list.sort((x,y)=>Number(x.c)-Number(y.c)||y.a-x.a);
+list.forEach(x=>{const tr=document.createElement("tr"),d=x.a-x.b;[x.c,PN[x.p]+" ("+x.p+")",f(x.a),f(x.b),(d>0?"+":"")+f(d),String(x.n)].forEach((value,i)=>{const td=document.createElement("td");td.textContent=value;if(i===1)td.className="name";if(i===4)td.className=d>=0?"delta-plus":"delta-minus";tr.append(td);});tb.append(tr);});
+$("pairNote").textContent=list.length?"已配對 "+list.length+" 種 Client × 策略的平均結果；只用 80/20 Test。":"目前選項無可成對比較的預測指標。";
+}
+function wins(s){
+const xs=win.filter(x=>x.metric==="balanced_accuracy_pct"&&(s.dataset==="ALL"||x.dataset===s.dataset)&&(s.regime==="ALL"||x.regime===s.regime.split("|")[0]&&(!s.regime.includes("|")||Number(x.dirichlet_alpha)===Number(s.regime.split("|")[1]))));
+const g=new Map(),op=new Map();
+xs.forEach(x=>{const r=x.regime==="STRATIFIED_IID"?"IID":"Non-IID α="+Number(x.dirichlet_alpha),k=r+"|"+x.winning_policy;g.set(k,(g.get(k)||0)+Number(x.fractional_wins));op.set(r+"|"+x.dataset,Number(x.opportunities));});
+const out=[...g].map(x=>{const parts=x[0].split("|"),n=[...op].filter(y=>y[0].startsWith(parts[0]+"|")).reduce((a,y)=>a+y[1],0);return {r:parts[0],p:parts[1],v:x[1],n:n};});out.sort((a,b)=>a.r.localeCompare(b.r)||b.v-a.v);
+const tb=$("winsBody");tb.replaceChildren();out.forEach(x=>{const tr=document.createElement("tr");[x.r,PN[x.p]+" ("+x.p+")",f(x.v),String(x.n),f(100*x.v/x.n)].forEach((v,i)=>{const td=document.createElement("td");td.textContent=v;if(i===1)td.className="name";tr.append(td);});tb.append(tr);});
+}
+function update(){if(!raw.length)return;const s=opt();fed=raw.filter(x=>x.system==="FEDERATED"&&match(x,s));central=raw.filter(x=>x.system==="CENTRALIZED"&&match(x,s));pFed=0;pCentral=0;
+$("total").textContent=raw.length.toLocaleString();$("nFed").textContent=fed.length.toLocaleString();$("nCentral").textContent=central.length.toLocaleString();$("status").textContent=s.regime.startsWith("DIRICHLET")?"Non-IID 只有 Federated 的原始列，Centralized 沒有相同分布標記，因此不硬湊對照。":"資料已核對：15,876 列、19 欄；主比較只採用相同 80/20 外測設定。";$("status").className="note"+(s.regime.startsWith("DIRICHLET")?" warn":"");
+table("fed");table("central");pairs(s);wins(s);}
+function move(kind,dir){if(kind==="fed")pFed=Math.max(0,Math.min(pFed+dir,Math.ceil(fed.length/per)-1));else pCentral=Math.max(0,Math.min(pCentral+dir,Math.ceil(central.length/per)-1));table(kind);}
+function csvCell(v){v=String(v||"");return v.includes(",")||v.includes('"')||v.includes("\n")?'"'+v.replace(/"/g,'""')+'"':v;}
+function download(kind){const rows=kind==="fed"?fed:central,body=[H.join(",")].concat(rows.map(x=>H.map(k=>csvCell(x[k])).join(","))).join("\r\n"),url=URL.createObjectURL(new Blob(["\ufeff"+body],{type:"text/csv;charset=utf-8"})),a=document.createElement("a");a.href=url;a.download="LEM2_"+kind+"_19_columns.csv";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+async function init(){try{
+const replies=await Promise.all([fetch("../data/POLICY_COMPARISON_19_HEADERS_42SEEDS.csv",{cache:"no-cache"}),fetch("../data/POLICY_WINS_BY_DATASET.csv",{cache:"no-cache"})]);if(replies.some(x=>!x.ok))throw Error("HTTP 資料來源無法存取");
+const main=parseCSV(await replies[0].text()),w=parseCSV(await replies[1].text());if(main.rows.length!==15876||main.head.length!==19||H.some((x,i)=>x!==main.head[i]))throw Error("原始 19 欄或 15,876 筆不一致");
+const nf=main.rows.filter(x=>x.system==="FEDERATED").length;if(nf!==14112||main.rows.length-nf!==1764)throw Error("聯邦及集中式筆數未通過核對");
+raw=main.rows;win=w.rows;for(let i=1;i<=42;i++){const op=document.createElement("option");op.value=String(i);op.textContent=String(i);$("seed").append(op);}
+buildHead("fedHead");buildHead("centralHead");H.forEach((x,i)=>{const box=document.createElement("div"),name=document.createElement("code"),desc=document.createElement("span");name.textContent=x;desc.textContent=C[i];box.append(name,desc);$("dict").append(box);});update();
+}catch(e){$("status").textContent="載入失敗，或原始結果不符合契約："+e.message+"；請使用 Google Sheets 與原始 CSV。";$("status").className="note warn";}}
+["dataset","regime","split","seed","client","policy"].forEach(k=>$(k).addEventListener("change",update));$("metric").addEventListener("change",()=>pairs(opt()));
+["fed","central"].forEach(k=>{$(k+"Prev").addEventListener("click",()=>move(k,-1));$(k+"Next").addEventListener("click",()=>move(k,1));$(k+"Download").addEventListener("click",()=>download(k));});
+init();
+</script></body></html>
