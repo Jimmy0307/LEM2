@@ -1,3 +1,12 @@
+## 2026-11-19｜完整研究資料網站總入口：109 PMLB＋51 OpenML＋3 歷史基準
+- [新的全研究資料集瀏覽頁](./all_datasets/) 已連至研究首頁；原 [19 欄比較頁](./federated_comparison/) 只代表三份歷史資料，不是全部研究成果。
+- PMLB：117 份候選、109 份成功；5,886 筆六策略評估，完整 40 原始欄，3 個 Seeds × 3 分布 × 6 策略，只有 Federated C3，沒有相同設定的 Centralized 對照。
+- OpenML Gate 5：51 份、10 Seeds × 3 分布 × 9 方法；從原始 223,380 筆 Policy 結果產生 13,770 筆九方法配對視圖，資料集／Seed／分布／方法唯一，全部 27 個方法分布均值與已發布 G5_ARM_MEANS.csv 數字一致。
+- C1 是集中式 CART；C2 是聯邦 CART 投票；R1 是集中式切點＋聯邦 LEM2，並非純集中式。不同批次沒有一致的 19 欄與訓練設定，不得直接合併成獨立 163 資料的統計分析。
+- 原始 CSV 與既有研究結論未覆寫；完整來源和結論限制保留在各批研究頁。
+
+---
+
 ## 2026-11-19｜Federated vs Centralized 原始 19 欄總表同步
 - [完整 19 欄互動比較頁](./federated_comparison/)：分開檢視 **Federated 14,112 筆**與 **Centralized 1,764 筆**；可依資料集、42 Seeds、IID／Non-IID、Client 數、策略、Full／80:20 篩選與下載當前 CSV。
 - 原始來源固定為 [POLICY_COMPARISON_19_HEADERS_42SEEDS.csv](./data/POLICY_COMPARISON_19_HEADERS_42SEEDS.csv)、[POLICY_19_HEADERS_MANIFEST.json](./data/POLICY_19_HEADERS_MANIFEST.json) 和 [POLICY_WINS_BY_DATASET.csv](./data/POLICY_WINS_BY_DATASET.csv)；**不重算、不覆寫**原始研究數據。
