@@ -1,3 +1,12 @@
+## 2026-11-19｜教授版首頁改用最新 RQ1／RQ2／RQ3，不再以舊七題為首頁
+- [研究網站首頁](./) 改成：**RQ1 有／無 Federated 的同協定比較、RQ2 六策略適用性與勝出次數、RQ3 Coverage／Conflict 與資料條件對績效的影響**。主要資料採 109 PMLB 與 51 OpenML，歷史三資料集 19 欄留在附錄。
+- RQ1 用 51 OpenML 的 C1 集中 CART、C2 聯邦 CART 做同家族、同批次描述比較；**不可冒稱純集中式 LEM2 vs 聯邦 LEM2**。109 PMLB 目前無 Centralized LEM2 同設定對照，公開明列研究缺口。
+- RQ2 分開呈現 109 份 PMLB 的各分布最佳固定策略 Test BA、ValidationBest Test BA，以及從 5,886 筆原始結果重新逐 dataset×seed×scenario 計算的六策略 fractional wins；IID First Match 胜 73.00，α=.5 Simple Voting 胜 87.43，α=.1 Simple Voting 胜 118.58，各分布 327 組。
+- RQ3 保留 PMLB 109 份報告的內部驗證 Coverage／Conflict，明確與外部 Test BA 分開；訓練／驗證／測試 Coverage 導向已完成的 20 UCI 專頁。
+- 不更動原始實驗 CSV、Manifest；原 42 Seeds 完整互動技術報告備份於 [technical_report.html](./technical_report.html)。GitHub Pages 是否上線需另外完成發布驗證。
+
+---
+
 ## 2026-11-19｜完整研究資料網站總入口：109 PMLB＋51 OpenML＋3 歷史基準
 - [新的全研究資料集瀏覽頁](./all_datasets/) 已連至研究首頁；原 [19 欄比較頁](./federated_comparison/) 只代表三份歷史資料，不是全部研究成果。
 - PMLB：117 份候選、109 份成功；5,886 筆六策略評估，完整 40 原始欄，3 個 Seeds × 3 分布 × 6 策略，只有 Federated C3，沒有相同設定的 Centralized 對照。
