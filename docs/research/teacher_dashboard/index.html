@@ -90,6 +90,19 @@ summary{cursor:pointer;font-weight:800;color:#155d64}
 <tr><td>Non-IID α=0.1</td><td>Simple Voting：47.71%</td><td>49.52%</td><td class="good">+1.82 pp</td></tr>
 </tbody></table></div>
 <p><b>結論：</b>Client 資料分布相近時，驗證選法不占優勢；資料偏斜時，選法能改善平均 BA。但<strong>不能說每個資料集都進步</strong>，也不能把六種「選答案策略」說成六種獨立 LEM2 規則學習演算法。</p>
+<p><b>老師另外要求「誰贏幾次」：</b>以同一資料集、同一 Seed、同一分布的六策略 Test BA 比較，<strong>IID 是 First Match 贏得最多配置（73.0）</strong>；<strong>Non-IID α=0.5 與 α=0.1 則是 Simple Voting 贏最多（87.43／118.58）</strong>。平手時每個策略分到 1/N 次，因此勝出次數可以是小數。</p>
+<details><summary>展開六策略各贏幾次（每種分布 327 組，109 資料表 × 3 Seeds）</summary>
+<div class="tablebox"><table><thead><tr><th>六種決策策略</th><th>IID</th><th>α=0.5</th><th>α=0.1</th></tr></thead><tbody>
+<tr><td>First Match／第一條規則</td><td><b>73.00</b></td><td>83.55</td><td>65.98</td></tr>
+<tr><td>Simple Voting／簡單投票</td><td>52.82</td><td><b>87.43</b></td><td><b>118.58</b></td></tr>
+<tr><td>Standard Voting／加權投票</td><td>47.20</td><td>42.32</td><td>45.08</td></tr>
+<tr><td>Global Strength／全域強度</td><td>58.78</td><td>43.07</td><td>33.75</td></tr>
+<tr><td>Population Standard／去重支持</td><td>35.62</td><td>32.65</td><td>27.75</td></tr>
+<tr><td>Population Global／去重全域</td><td>59.58</td><td>37.98</td><td>35.85</td></tr>
+</tbody></table></div>
+<p class="mini">計算來源：<a href="./data/PMLB_117_3SEED_SIX_POLICY_RAW.csv">5,886 筆 PMLB 原始結果</a>；以 dataset＋seed＋scenario 分組，每組六策略 Test BA 最大值算勝出，完全同分則平分一次。三分布各有 327 組，資料集和 Seeds 並非統計上完全獨立。各欄小數經四捨五入。</p>
+</details>
+<p class="mini"><b>請區分：</b>平均 BA 第一名不一定等於勝出次數最多的策略。例如 IID 的 Global Strength 有最高平均 BA，但 First Match 贏得最多單次配置；勝出次數不能取代平均效能與穩健性。</p>
 <div class="quicklinks"><a class="primary" href="./pmlb_117/">109 份資料完整六策略排名</a><a href="./all_datasets/#pmlb">依資料集、Seed 篩選 5,886 筆</a></div>
 <p class="mini">數據來源：<a href="./pmlb_117/G4_G8_109_DATASET_VALIDATION_REPORT.md">109 份 G4–G8 實證報告</a>；選法使用 16% 內部驗證資料，不偷看外部 Test。以上為配置等權描述平均，不應與家族等權推論值混用。</p>
 </section>
