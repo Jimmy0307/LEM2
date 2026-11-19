@@ -35,13 +35,13 @@ details summary{cursor:pointer;color:#1d6575;margin:8px 0}
 <header class="hero"><div class="eyebrow">FULL ROWS · 188 DEDUPLICATED SOURCES · 6 DECISION METHODS</div>
 <h1>不截列數之後，<br>哪一種決策方法的 Accuracy 最好？</h1>
 <p>先前每個資料集最多只用 1,800 列；這一輪改用<strong>全量列數</strong>、同一套預先固定的協定，重跑 188 個去重後的公開資料集。每個資料集都跑 5 個 Seeds × 4 種情境（集中式、聯邦 IID、Dirichlet α=0.5、α=0.1），六種決策方法在同一套規則上比較。</p>
-<p><a href="https://github.com/Jimmy0307/LEM2/actions/runs/44381723802">全量 workflow run</a> · <a href="https://github.com/Jimmy0307/LEM2/actions/runs/44381227952">Smoke run</a> · <a href="../data/full_scale_20261118/FULL_SCALE_REPORT.md">自動產生的中文報告</a> · <a href="https://github.com/Jimmy0307/LEM2/blob/research/full-scale-six-policy-20261118/docs/research/full_scale_20261118/PROTOCOL.md">預先固定的協定</a></p>
+<p><a href="https://github.com/Jimmy0307/LEM2/actions/runs/44381723802">全量 workflow run</a> · <a href="https://github.com/Jimmy0307/LEM2/actions/runs/44465026637">補跑 run</a> · <a href="https://github.com/Jimmy0307/LEM2/actions/runs/44381227952">Smoke run</a> · <a href="../data/full_scale_20261118/FULL_SCALE_REPORT.md">自動產生的中文報告</a> · <a href="https://github.com/Jimmy0307/LEM2/blob/research/full-scale-six-policy-20261118/docs/research/full_scale_20261118/PROTOCOL.md">預先固定的協定</a></p>
 </header>
 <main class="wrap">
 
 <section class="panel"><span class="section-tag">00 · STATUS</span><h2>目前進度</h2>
 <p id="status" role="status" aria-live="polite">正在讀取實驗結果……</p>
-<div class="info"><strong>補跑進行中：</strong>全量 run 中有 3 個「資料集 × 情境」job 因 OpenML 下載中斷（IncompleteRead）而失敗，共 15 個模型：openml_40996／集中式、openml_42732／FED_A05、openml_42769／FED_IID。這 3 個 job 正在重跑，完成後會另外輸出合併版，並更新本頁。<strong>本頁目前顯示的是原全量 run 的結果</strong>，這 15 個模型在下方記為失敗。</div>
+<div class="info"><strong>本頁顯示補跑合併版：</strong>全量 run 中有 3 個「資料集 × 情境」job 因 OpenML 下載中斷（IncompleteRead）而失敗，共 15 個模型：openml_40996／集中式、openml_42732／FED_A05、openml_42769／FED_IID。這 3 個 job 已重跑，其餘 job 沿用原 run 的結果（逐列相同）。openml_40996 與 openml_42769 補跑成功；openml_42732／FED_A05 下載成功，但 5 個 Seeds 都超過 45 分鐘上限，與它另外 3 個情境相同，記為逾時。原 run 的輸出檔保持不變。</div>
 </section>
 
 <section class="panel"><span class="section-tag">01 · SCALE AND SOURCES</span><h2>跑了多少資料、多少模型？</h2>
@@ -82,7 +82,7 @@ details summary{cursor:pointer;color:#1d6575;margin:8px 0}
 </div>
 <p id="dsCount" class="note"></p>
 <div class="scroll-table"><table><thead><tr><th>資料集</th><th>型態</th><th>規模</th><th>Accuracy 最佳方法</th><th class="num">領先第二名（pp）</th><th class="num">六法最大差距（pp）</th><th>BA 最佳方法</th><th>兩指標一致</th></tr></thead><tbody id="dsRows"></tbody></table></div>
-<p><a href="../data/full_scale_20261118/DATASET_BEST.csv">DATASET_BEST.csv（含六法平均 Accuracy、BA、名次）</a> · <a href="../data/full_scale_20261118/REGISTRY.csv">REGISTRY.csv（來源 URL、SHA256、列數、剔除類別）</a> · <a href="https://github.com/Jimmy0307/LEM2/blob/research/full-scale-six-policy-20261118/docs/research/full_scale_20261118/FULL_SCALE_19COL.csv">19 欄大表（21,930 列，GitHub）</a> · <a href="https://github.com/Jimmy0307/LEM2/blob/research/full-scale-six-policy-20261118/docs/research/full_scale_20261118/FULL_SCALE_19COL_B2.csv">B2 版本（GitHub）</a></p>
+<p><a href="../data/full_scale_20261118/DATASET_BEST.csv">DATASET_BEST.csv（含六法平均 Accuracy、BA、名次）</a> · <a href="../data/full_scale_20261118/REGISTRY.csv">REGISTRY.csv（來源 URL、SHA256、列數、剔除類別）</a> · <a href="https://github.com/Jimmy0307/LEM2/blob/research/full-scale-six-policy-20261118/docs/research/full_scale_20261118/retry_44465026637/FULL_SCALE_19COL.csv">19 欄大表（21,990 列，GitHub）</a> · <a href="https://github.com/Jimmy0307/LEM2/blob/research/full-scale-six-policy-20261118/docs/research/full_scale_20261118/retry_44465026637/FULL_SCALE_19COL_B2.csv">B2 版本（GitHub）</a></p>
 </section>
 
 <section class="panel"><span class="section-tag">05 · SCALE LADDER</span><h2>最佳方法會不會隨資料量改變？</h2>
@@ -97,14 +97,14 @@ details summary{cursor:pointer;color:#1d6575;margin:8px 0}
 <tr><td>預測階段記憶體修正的等價測試</td><td class="pass">通過</td><td>resolve_scalable 與原 resolve 六法逐列相同（GitHub setup job）</td></tr>
 <tr><td>G5 對照（14 來源 × 5 Seeds × 6 方法）</td><td class="pass">通過</td><td>與先前發布值逐值相同，容差 1e-12</td></tr>
 <tr><td>19 欄大表檢查</td><td class="pass">通過</td><td>欄位順序一致、每組恰好 6 法、百分比在 0–100、covered + no_match = test_rows、true_in_candidate ≤ covered</td></tr>
-<tr><td>Conflict 上界</td><td class="pass">通過</td><td>六法 Accuracy 最大差距 ≤ conflict_rate_pct，3,655 組 0 違反</td></tr>
+<tr><td>Conflict 上界</td><td class="pass">通過</td><td>六法 Accuracy 最大差距 ≤ conflict_rate_pct，3,665 組 0 違反</td></tr>
 <tr><td>資料集 ≥100、三種型態各 ≥20</td><td class="pass">通過</td><td id="typeMinNote"></td></tr>
-<tr><td>全部模型完成</td><td class="fail">未通過</td><td>105 個模型未完成：90 個超過 45 分鐘上限、15 個下載中斷（補跑中）；每一個缺少的組合在 FAILURES.csv 都有原因</td></tr>
-<tr><td>規模階梯完成</td><td class="fail">未通過</td><td>缺 13 組：全量模型逾時，或 openml_42769 下載中斷</td></tr>
+<tr><td>全部模型完成</td><td class="fail">未通過</td><td>95 個模型未完成，全部是超過 45 分鐘上限（7 個超大 OpenML 資料集）；下載中斷的 15 個已補跑。每一個缺少的組合在 FAILURES.csv 都有原因</td></tr>
+<tr><td>規模階梯完成</td><td class="fail">未通過</td><td>缺 10 組：全量模型超過 45 分鐘上限</td></tr>
 </tbody></table></div>
 <h3>模型失敗明細</h3>
 <div class="scroll-table"><table><thead><tr><th>資料集</th><th>失敗類型</th><th class="num">模型數</th><th>情境</th></tr></thead><tbody id="failRows"></tbody></table></div>
-<p><a href="../data/full_scale_20261118/FAILURES.csv">FAILURES.csv（含先前預檢與觸發失敗的紀錄）</a> · <a href="../data/full_scale_20261118/MANIFEST.json">MANIFEST.json（commit、套件版本、每個檔案 SHA256）</a></p>
+<p><a href="../data/full_scale_20261118/FAILURES.csv">FAILURES.csv（含先前預檢、觸發失敗，以及以 RETRIED_ 標示、已被補跑取代的原 run 紀錄）</a> · <a href="../data/full_scale_20261118/MANIFEST.json">MANIFEST.json（commit、套件版本、每個檔案 SHA256）</a></p>
 </section>
 
 <section class="panel"><span class="section-tag">07 · LIMITATIONS</span><h2>研究限制</h2>
@@ -198,15 +198,15 @@ Promise.all(["MANIFEST.json","REGISTRY.csv","SUMMARY.csv","DATASET_BEST.csv","SC
    const shared=b["1800"].filter(p=>b["10000"].includes(p)&&b.FULL.includes(p));verdict=same?"完全相同":shared.length?"部分相同（"+shared.join("、")+"）":"改變";}
   return {...x,b,done,verdict};});
  const done=lrows.filter(r=>r.done),same=done.filter(r=>r.verdict==="完全相同").length,part=done.filter(r=>r.verdict.startsWith("部分")).length;
- $("ladderStats").innerHTML=`<div><small>資料集 × 情境</small><strong>${lrows.length}</strong><small>${new Set(lrows.map(r=>r.dataset)).size} 個大型資料集</small></div><div><small>三種規模都跑完</small><strong>${done.length}</strong><small>其餘有全量逾時或下載中斷</small></div><div><small>最佳方法完全相同</small><strong>${same}</strong><small>三種規模的最佳集合一樣</small></div><div><small>至少一個方法始終最佳</small><strong>${same+part}</strong><small>含部分相同</small></div>`;
+ $("ladderStats").innerHTML=`<div><small>資料集 × 情境</small><strong>${lrows.length}</strong><small>${new Set(lrows.map(r=>r.dataset)).size} 個大型資料集</small></div><div><small>三種規模都跑完</small><strong>${done.length}</strong><small>其餘為全量模型逾時</small></div><div><small>最佳方法完全相同</small><strong>${same}</strong><small>三種規模的最佳集合一樣</small></div><div><small>至少一個方法始終最佳</small><strong>${same+part}</strong><small>含部分相同</small></div>`;
  const cell=b=>b?esc(meth(b)):'<span class="note">未完成</span>';
  $("ladderRows").innerHTML=lrows.map(r=>`<tr><td>${esc(r.dataset)}</td><td>${esc(SCEN_LABEL[r.scenario])}</td><td class="methods">${cell(r.b["1800"])}</td><td class="methods">${cell(r.b["10000"])}</td><td class="methods">${cell(r.b.FULL)}</td><td class="methods">${esc(r.verdict)}</td></tr>`).join("");
  // 06 failures
  const mf=fail.filter(r=>r.phase==="MODEL"||r.phase==="SOURCE"),fg={};
  mf.forEach(r=>{const k=r.dataset+"|"+r.status;(fg[k]??={dataset:r.dataset,status:r.status,n:0,sc:new Set()});fg[k].n++;fg[k].sc.add(SCEN_LABEL[r.scenario]||r.scenario);});
- const label={TIMEOUT:"逾時（>45 分鐘）",IncompleteRead:"下載中斷（補跑中）"};
+ const label={TIMEOUT:"逾時（>45 分鐘）",IncompleteRead:"下載中斷"};
  $("failRows").innerHTML=Object.values(fg).sort((a,b)=>a.dataset.localeCompare(b.dataset)).map(x=>`<tr><td>${esc(x.dataset)}</td><td>${esc(label[x.status]||x.status)}</td><td class="num">${x.n}</td><td>${esc([...x.sc].join("、"))}</td></tr>`).join("");
- $("status").textContent=`已讀取原全量 run 的結果：${man.successful_models.toLocaleString()} / ${man.expected_models.toLocaleString()} 個模型成功；G5 對照${man.g5_validation_passed?"通過":"未通過"}。`;
+ $("status").textContent=`已讀取補跑合併版的結果：${man.successful_models.toLocaleString()} / ${man.expected_models.toLocaleString()} 個模型成功；G5 對照${man.g5_validation_passed?"通過":"未通過"}。`;
 }).catch(e=>{$("status").textContent="無法讀取實驗結果："+e.message;});
 })();
 </script>

@@ -1,5 +1,5 @@
 {
-  "commit_sha": "549174ced482ad01dd51852b2ceb77eb6f6a4674",
+  "commit_sha": "1d64ff0b74e90301109393bb1f575eb961a331ad",
   "tracked_worktree_dirty": false,
   "tracked_diff_sha256": null,
   "python": "3.12.16",
@@ -10,11 +10,26 @@
     "pyarrow": "26.0.1",
     "scikit-learn": null
   },
-  "workflow_run_url": "https://github.com/Jimmy0307/LEM2/actions/runs/44381723802",
+  "workflow_run_url": "https://github.com/Jimmy0307/LEM2/actions/runs/44465026637",
   "smoke_run_url": "https://github.com/Jimmy0307/LEM2/actions/runs/44381227952",
+  "retry_of_run_url": "https://github.com/Jimmy0307/LEM2/actions/runs/44381723802",
+  "retry_jobs": [
+    [
+      "OML51:openml_40996",
+      "CENTRALIZED"
+    ],
+    [
+      "OML51:openml_42732",
+      "FED_A05"
+    ],
+    [
+      "OML51:openml_42769",
+      "FED_IID"
+    ]
+  ],
   "expected_models": 3760,
-  "successful_models": 3655,
-  "failed_or_unrun_models": 105,
+  "successful_models": 3665,
+  "failed_or_unrun_models": 95,
   "g5_validation_passed": true,
   "smoke_passed": false,
   "acceptance": {
@@ -27,19 +42,14 @@
   },
   "hashes_exclude_manifest_itself": true,
   "file_sha256": {
-    "DATASET_BEST.csv": "1c4225764f5a43ee7f64257e562b9007c0c4c4465a0ac97ca3bf75a36cf0fbd7",
-    "FAILURES.csv": "58c1f28164b6a3385ff2789019e0d06d6cfc946b9eccea50995407818624b899",
-    "FULL_SCALE_19COL.csv": "ee3b2ab949fe62d13058c1f003150faa4e150c32e103a2c8a9c320b8ee0d25ad",
-    "FULL_SCALE_19COL_B2.csv": "45c5f58beae24f2f844e0c87a1417dbc541207ca104df02738e3f7a23e02de3b",
-    "FULL_SCALE_REPORT.md": "f7bf48a82518d96e31c189046b5cb973128964630ceb3397a5e070f5dfc531fd",
-    "PROTOCOL.md": "0adf76eedd17e3245bacf56bd361c6b8ab680bdd1be9b5c195075f805d0090f4",
-    "REGISTRY.csv": "220a2b34a36ec85a0fe27937a2f26fae325ceda1298b541fe6d0635ee1649823",
-    "SCALE_LADDER.csv": "e35847b9fb40eb623f2245559361b3ddc149634d4320d5fa078ad7878db594d4",
-    "SMOKE_RUN.json": "91053df2b8212b871a34461a74280eed9969e488114f2e5d6fc9b52f3cd59124",
-    "SUMMARY.csv": "9e394c1d7e1a4cb1727fa7d6cf28db949ac2e7d4d1db6d721781dd79f384c8dd",
-    "TIMINGS.csv": "a31c54b211a4992c6c26244396c6340bcbf807c9404270d88f56a9805509c281",
-    "VALIDATION_PROGRESS.md": "c165145ce0c13a58f9661d59741d98807d08dccc36f059cac485dbcc5e92a68f",
-    "dispatch_attempt_20261119T014702+0800/DISPATCH_REPORT.md": "52c0ec2a603333102a1af2050590fe00e3e7448bf9e9885eaf7c2dd1bbca3ecb",
-    "dispatch_attempt_20261119T014702+0800/FAILURES.csv": "70612505ce6770fbf9b99d13a0de1317c253c246bb23863d70e486c801f5a408"
+    "DATASET_BEST.csv": "2d0271b9dd59c5c586df9279886dc18ad768d1a3fc60fa10dd2aeab54518734a",
+    "FAILURES.csv": "e984954b80ea122f3a3553fa906a9816047aff31fb0e779b14a79f4b76e6a41c",
+    "FULL_SCALE_19COL.csv": "10b09a309641d5ece0c7773ad052d6230177eb47855bd185155754c15a08084a",
+    "FULL_SCALE_19COL_B2.csv": "f9a186cd14879abe90d5856b3f6cc713e8c9a62fa465871d961adbe818054b1b",
+    "FULL_SCALE_REPORT.md": "398367861c0d8f8425c31929a576fe61710df7bcfa3305543457b2a9a5fddaf2",
+    "REGISTRY.csv": "72995b24f26233807292387fe129ae8a7c0014b37bb82a1736b27df1a3837251",
+    "SCALE_LADDER.csv": "3512d5d4af18865fe3d3bcc0b7b2f769a07e09194177eae7701f1090248b436c",
+    "SUMMARY.csv": "88df01d7060fce7c40edb11ca97f216822d923e6af20f4a2a20a0261a118298b",
+    "TIMINGS.csv": "808f2e6a7f0ef282ab3f751c8d1227a65d70640d0a17a1567c334254133ddacc"
   }
 }

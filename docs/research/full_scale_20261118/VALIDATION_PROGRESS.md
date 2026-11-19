@@ -57,3 +57,18 @@ https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-t
 
 - Teacher Dashboard 新增 `full_scale/` 子頁，資料副本放在 `teacher_dashboard/data/full_scale_20261118/`；首頁導覽列與 README 各新增一個入口。
 - 這個資料夾不在原任務指定的三個路徑內，是應使用者要求新增；只有新增內容，既有內容沒有修改。
+
+### 第二次補跑結果（2026-11-19）
+
+- Run：https://github.com/Jimmy0307/LEM2/actions/runs/44465026637，輸出 `retry_44465026637/`（commit f1332c4）。
+- 成功模型 3,665 / 3,760（原 run 3,655 + openml_40996 集中式 5 + openml_42769 FED_IID 5）；G5 通過。
+- openml_42732 / FED_A05 這次下載成功，但 5 個 Seeds 都超過 45 分鐘上限，記為 TIMEOUT，與它另外 3 個情境相同。未完成的 95 個模型全部是逾時。
+- workflow 的 aggregate 步驟顯示失敗，原因是驗收條件「全部模型完成」與「規模階梯完成」未通過（與原 run 相同），輸出已照常 commit。
+- 本機獨立檢查：
+  - 19 欄順序、每組 6 法、covered + no_match = test_rows、百分比公式、true_in_candidate ≤ covered：0 違反。
+  - 六法 Accuracy 最大差距 ≤ conflict_rate_pct：3,665 組 0 違反。
+  - 非補跑的 21,930 列與原 run 逐列相同。
+  - openml_40996 與 openml_42769 的補跑結果與第一次補跑（run 44458946036）逐列相同，可重現。
+- 原 run 中 openml_42769 FED_IID 規模階梯缺少的 3 列已補齊；規模階梯完成 42 / 52 組，缺少的 10 組都是全量模型逾時。
+- 依使用者指示，GitHub Actions 額度不足，本次之後不再啟動新的 run；剩餘逾時列為研究限制。
+- Teacher Dashboard 的 `full_scale/` 頁與資料副本已改為此合併版。
