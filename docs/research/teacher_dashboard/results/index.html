@@ -49,7 +49,7 @@ td.best{font-weight:700;color:var(--accent)}
 <header class="top"><div class="in"><div class="brand">Federated LEM2 研究報告</div><nav><a href="../">← 回到六個問題</a></nav></div></header>
 <main>
 <h1>逐筆結果表</h1>
-<p class="muted">兩張 19 欄大表的每一筆結果，以及每個資料集在各情境下的最佳方法。可以篩選、點欄名排序，並下載目前篩選的結果。</p>
+<p class="muted"><strong>預設只顯示聯邦式（IID、α=0.5、α=0.1）</strong>，方便比較聯邦六策略的表現。集中式仍保留為對照組，可在「情境」中切換；兩張 19 欄原始表與下載均不刪除。</p>
 <div class="tabs" role="tablist">
 <button role="tab" id="tab-rows" aria-controls="p-rows" aria-selected="true">19 欄逐筆結果</button>
 <button role="tab" id="tab-winners" aria-controls="p-winners" aria-selected="false">每個資料集誰贏</button>
@@ -59,7 +59,7 @@ td.best{font-weight:700;color:var(--accent)}
 <div class="filters">
 <label>大表<select id="r-src"><option value="full">全量實驗（188 個資料集，5 seeds）</option><option value="s42">三資料集（42 seeds，Client 2–5）</option></select></label>
 <label>資料集<input type="search" id="r-ds" list="r-dslist" placeholder="輸入名稱搜尋"><datalist id="r-dslist"></datalist></label>
-<label>情境<select id="r-sc"><option value="">全部</option><option>集中式</option><option>聯邦 IID</option><option>聯邦 α=0.5</option><option>聯邦 α=0.1</option></select></label>
+<label>情境<select id="r-sc"><option value="FED_ONLY" selected>聯邦全部（研究主體）</option><option value="">全部（含集中式）</option><option>聯邦 IID</option><option>聯邦 α=0.5</option><option>聯邦 α=0.1</option><option>集中式（對照）</option></select></label>
 <label>Client 數<select id="r-cc"><option value="">全部</option></select></label>
 <label>方法<select id="r-pol"><option value="">全部</option><option>FIRST_MATCH</option><option>SIMPLE_VOTING</option><option>STANDARD_VOTING</option><option>GLOBAL_STRENGTH</option><option>POPULATION_STANDARD</option><option>POPULATION_GLOBAL</option></select></label>
 <label>Seed<select id="r-seed"><option value="">全部</option></select></label>
@@ -75,7 +75,7 @@ td.best{font-weight:700;color:var(--accent)}
 <section class="panel" id="p-winners" role="tabpanel" aria-labelledby="tab-winners" hidden>
 <div class="filters">
 <label>資料集<input type="search" id="w-ds" placeholder="輸入名稱搜尋"></label>
-<label>情境<select id="w-sc"><option value="">全部</option><option value="CENTRALIZED">集中式</option><option value="FED_IID">聯邦 IID</option><option value="FED_A05">聯邦 α=0.5</option><option value="FED_A01">聯邦 α=0.1</option></select></label>
+<label>情境<select id="w-sc"><option value="FED_ONLY" selected>聯邦全部（研究主體）</option><option value="">全部（含集中式）</option><option value="FED_IID">聯邦 IID</option><option value="FED_A05">聯邦 α=0.5</option><option value="FED_A01">聯邦 α=0.1</option><option value="CENTRALIZED">集中式（對照）</option></select></label>
 <label>最佳方法包含<select id="w-pol"><option value="">全部</option><option value="FIRST_MATCH">FM</option><option value="SIMPLE_VOTING">SV</option><option value="STANDARD_VOTING">STD</option><option value="GLOBAL_STRENGTH">GS</option><option value="POPULATION_STANDARD">PS</option><option value="POPULATION_GLOBAL">PG</option></select></label>
 <label>特徵型態<select id="w-ft"><option value="">全部</option><option>連續</option><option>混合</option><option>類別/離散</option></select></label>
 <label>規模<select id="w-sz"><option value="">全部</option><option>小</option><option>中</option><option>大</option><option>超大</option></select></label>
@@ -116,7 +116,7 @@ async function initRows(){
 }
 function applyRows(){
   const q=$("r-ds").value.trim().toLowerCase(),sc=$("r-sc").value,cc=$("r-cc").value,pol=$("r-pol").value,sd=$("r-seed").value;
-  let v=R.filter(r=>(!q||r.dataset.toLowerCase().includes(q))&&(!sc||r._sc===sc)&&(cc===""||r.client_count===cc)&&(!pol||r.selection_policy===pol)&&(!sd||r.seed===sd));
+  let v=R.filter(r=>(!q||r.dataset.toLowerCase().includes(q))&&(!sc||(sc==="FED_ONLY"?r._sc.startsWith("聯邦"):r._sc===sc))&&(cc===""||r.client_count===cc)&&(!pol||r.selection_policy===pol)&&(!sd||r.seed===sd));
   if($("r-avg").checked){const g=new Map();const key=["dataset","distribution","dirichlet_alpha","split_mode","system","client_count","selection_policy"];
     v.forEach(r=>{const k=key.map(x=>r[x]).join("|");if(!g.has(k))g.set(k,[]);g.get(k).push(r);});
     v=[...g.values()].map(a=>{const o={...a[0]};o.seed=String(a.length);o._sc=a[0]._sc;COLS.forEach(([k])=>{if(NUM.has(k)&&!["seed","dirichlet_alpha","client_count"].includes(k)){const s=a.reduce((t,x)=>t+Number(x[k]),0)/a.length;o[k]=String(s);}});return o;});}
@@ -148,7 +148,7 @@ async function initWinners(){
 }
 function applyW(){
   const q=$("w-ds").value.trim().toLowerCase(),sc=$("w-sc").value,pol=$("w-pol").value,ft=$("w-ft").value,sz=$("w-sz").value,cl=$("w-clear").checked;
-  WV=Wd.filter(r=>(!q||r.dataset.toLowerCase().includes(q))&&(!sc||r.scenario===sc)&&(!pol||r.accuracy_best_methods.split(";").includes(pol))&&(!ft||r.feature_type===ft)&&(!sz||r.size_class===sz)&&(!cl||Number(r.accuracy_lead_pp)>=1));
+  WV=Wd.filter(r=>(!q||r.dataset.toLowerCase().includes(q))&&(!sc||(sc==="FED_ONLY"?r.scenario.startsWith("FED_"):r.scenario===sc))&&(!pol||r.accuracy_best_methods.split(";").includes(pol))&&(!ft||r.feature_type===ft)&&(!sz||r.size_class===sz)&&(!cl||Number(r.accuracy_lead_pp)>=1));
   renderW();
 }
 function renderW(){
