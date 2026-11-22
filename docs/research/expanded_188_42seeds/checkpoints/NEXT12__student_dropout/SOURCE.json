@@ -1,0 +1,40 @@
+{
+  "features": [
+    "marital_status",
+    "application_mode",
+    "application_order",
+    "course",
+    "daytime/evening_attendance",
+    "previous_qualification"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [
+    "marital_status",
+    "application_mode",
+    "application_order",
+    "course",
+    "daytime/evening_attendance",
+    "previous_qualification"
+  ],
+  "raw_sha256": "a1b1a6531bbb93a5c7fdf0093b47172776652a4ffb12342fb79655c85b74801b",
+  "prepared_sha256": "d0bd143f1d5eaeff77465eb5fdf85efb36b8485fab9ac3f60b37c9e71d77bbfb",
+  "original_rows": 4424,
+  "original_features": 36,
+  "original_feature_names": [
+    "marital_status",
+    "application_mode",
+    "application_order",
+    "course",
+    "daytime/evening_attendance",
+    "previous_qualification"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/697",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "NEXT12:student_dropout",
+  "used_rows": 4424,
+  "cohort": "NEXT12"
+}
