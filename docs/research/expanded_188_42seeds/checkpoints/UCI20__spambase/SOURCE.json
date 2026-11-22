@@ -1,0 +1,40 @@
+{
+  "features": [
+    "word_freq_make",
+    "word_freq_address",
+    "word_freq_all",
+    "word_freq_3d",
+    "word_freq_our",
+    "word_freq_over"
+  ],
+  "target": "class",
+  "continuous": [
+    "word_freq_make",
+    "word_freq_address",
+    "word_freq_all",
+    "word_freq_3d",
+    "word_freq_our",
+    "word_freq_over"
+  ],
+  "categorical": [],
+  "raw_sha256": "d86711ceadadd177f09ca816fffa79d82edf5007b585a836c112462e2c217c0d",
+  "prepared_sha256": "c6b8ac269423bb0f8ca03b04c17173299af9e64f6c2c8a54df4771c864a41094",
+  "original_rows": 4601,
+  "original_features": 57,
+  "original_feature_names": [
+    "word_freq_make",
+    "word_freq_address",
+    "word_freq_all",
+    "word_freq_3d",
+    "word_freq_our",
+    "word_freq_over"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/94",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "UCI20:spambase",
+  "used_rows": 4601,
+  "cohort": "UCI20"
+}
