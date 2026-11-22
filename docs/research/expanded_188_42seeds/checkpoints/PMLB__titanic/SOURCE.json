@@ -1,0 +1,37 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "5fa6a6badd6b4e35fa5320bf27d06248fa01b7732380950c0057d6cf72c73739",
+  "prepared_sha256": "563ad002091775aa36cb08eb44c42b168744f640ef04dd50fd3b485a3a259c0b",
+  "original_rows": 2207,
+  "original_features": 8,
+  "original_feature_names": [
+    "gender",
+    "age",
+    "class",
+    "embarked",
+    "country",
+    "fare"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/titanic",
+  "dynamic_types": true,
+  "missing_treatments": {
+    "f1": "DROP_NUMERIC",
+    "f4": "DROP_NUMERIC",
+    "f5": "DROP_NUMERIC"
+  },
+  "excluded_features": [],
+  "dataset": "PMLB:titanic",
+  "used_rows": 2099,
+  "cohort": "PMLB"
+}
