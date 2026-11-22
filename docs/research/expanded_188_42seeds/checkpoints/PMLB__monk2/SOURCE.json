@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "34fd665457403f66db49a4d012c59d7c387f99a35597c8f0f0e31d40ada255f8",
+  "prepared_sha256": "77426dd037f546f71e3955825591ba0f9d7cbeb22943bc8c6202f74d50c4b4be",
+  "original_rows": 601,
+  "original_features": 6,
+  "original_feature_names": [
+    "attribute#1",
+    "attribute#2",
+    "attribute#3",
+    "attribute#4",
+    "attribute#5",
+    "attribute#6"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/monk2",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:monk2",
+  "used_rows": 601,
+  "cohort": "PMLB"
+}
