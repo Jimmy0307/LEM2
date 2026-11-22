@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "94abf897fcd6d93b0f78ea309b10ef5b83a8b95e46aa29974a43dbefb3741c0c",
+  "prepared_sha256": "07a401773426024ac336957d6260c06c368b15b8553e71e22981552827dd0c22",
+  "original_rows": 5500,
+  "original_features": 40,
+  "original_feature_names": [
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "A5",
+    "A6"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/texture",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:texture",
+  "used_rows": 5500,
+  "cohort": "PMLB"
+}
