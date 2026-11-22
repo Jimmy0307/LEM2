@@ -1,0 +1,40 @@
+{
+  "features": [
+    "buying",
+    "maint",
+    "doors",
+    "persons",
+    "lug_boot",
+    "safety"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [
+    "buying",
+    "maint",
+    "doors",
+    "persons",
+    "lug_boot",
+    "safety"
+  ],
+  "raw_sha256": "0023b86e0dd3502aaa0e4a610ef4d8aebbba7ff40f53fa7c2f0543c68bee5114",
+  "prepared_sha256": "0023b86e0dd3502aaa0e4a610ef4d8aebbba7ff40f53fa7c2f0543c68bee5114",
+  "original_rows": 1728,
+  "original_features": 6,
+  "original_feature_names": [
+    "buying",
+    "maint",
+    "doors",
+    "persons",
+    "lug_boot",
+    "safety"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/19",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "O3:Car Evaluation",
+  "used_rows": 1728,
+  "cohort": "O3"
+}
