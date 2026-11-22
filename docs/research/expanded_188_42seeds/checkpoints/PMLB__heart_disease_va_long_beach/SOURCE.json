@@ -1,0 +1,37 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "22053c4cdaaaf6169d90e4ee03f8b994cb682281ab6787bf14c617301db5663b",
+  "prepared_sha256": "cd8a1d1bdd40fbb1fed50b348ff2a4951ad25306e9f4497791526e417f3ecf14",
+  "original_rows": 200,
+  "original_features": 13,
+  "original_feature_names": [
+    "age",
+    "gender",
+    "chest_pain_type",
+    "resting_blood_pressure",
+    "serum_cholesterol",
+    "high_fasting_blood_sugar"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/heart_disease_va_long_beach",
+  "dynamic_types": true,
+  "missing_treatments": {
+    "f3": "DROP_NUMERIC",
+    "f4": "DROP_NUMERIC",
+    "f5": "KEEP_CATEGORY"
+  },
+  "excluded_features": [],
+  "dataset": "PMLB:heart_disease_va_long_beach",
+  "used_rows": 102,
+  "cohort": "PMLB"
+}
