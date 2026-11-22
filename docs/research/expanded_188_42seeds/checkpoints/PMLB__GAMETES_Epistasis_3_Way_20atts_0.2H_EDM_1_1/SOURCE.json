@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "4a3c14c493429b459a6f760532828083d836b6de9c930d3d0befaa4353753f65",
+  "prepared_sha256": "b84210b661637b51f1d4bc4558584744d5cc57d064cdcab1ae8d6e5e72729d6d",
+  "original_rows": 1600,
+  "original_features": 20,
+  "original_feature_names": [
+    "N0",
+    "N1",
+    "N2",
+    "N3",
+    "N4",
+    "N5"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/GAMETES_Epistasis_3_Way_20atts_0.2H_EDM_1_1",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:GAMETES_Epistasis_3_Way_20atts_0.2H_EDM_1_1",
+  "used_rows": 1600,
+  "cohort": "PMLB"
+}
