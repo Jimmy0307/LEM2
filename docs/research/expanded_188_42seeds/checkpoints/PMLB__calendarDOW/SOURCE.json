@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "4ef0487948a47e6394e4d5f9884dc4f2c931e6a488fed2134322e510c54c7c10",
+  "prepared_sha256": "a8262199dc66957735d983083a02b94a7280b297c0c0674bb225556efdc16ac7",
+  "original_rows": 399,
+  "original_features": 32,
+  "original_feature_names": [
+    "Feature00",
+    "Feature01",
+    "Feature02",
+    "Feature03",
+    "Feature04",
+    "Feature05"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/calendarDOW",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:calendarDOW",
+  "used_rows": 399,
+  "cohort": "PMLB"
+}
