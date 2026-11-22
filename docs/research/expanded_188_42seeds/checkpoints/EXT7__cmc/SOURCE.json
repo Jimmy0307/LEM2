@@ -1,0 +1,41 @@
+{
+  "features": [
+    "wife_age",
+    "wife_edu",
+    "husband_edu",
+    "num_children",
+    "wife_religion",
+    "wife_working"
+  ],
+  "target": "class",
+  "continuous": [
+    "wife_age",
+    "num_children"
+  ],
+  "categorical": [
+    "wife_edu",
+    "husband_edu",
+    "wife_religion",
+    "wife_working"
+  ],
+  "raw_sha256": "3a150623738e0fe1d2ad3803f102e94f3120f9ff6e3d27cc335af895e124d963",
+  "prepared_sha256": "efef9f7459af1f0e53629145988027d108fee0f98a66a70caa17ea08e4bc8d79",
+  "original_rows": 1473,
+  "original_features": 9,
+  "original_feature_names": [
+    "wife_age",
+    "wife_edu",
+    "husband_edu",
+    "num_children",
+    "wife_religion",
+    "wife_working"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/30/contraceptive+method+choice",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "EXT7:cmc",
+  "used_rows": 1473,
+  "cohort": "EXT7"
+}
