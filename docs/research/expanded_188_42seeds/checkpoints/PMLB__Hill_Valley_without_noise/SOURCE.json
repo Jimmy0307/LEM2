@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "c3fd942d6e092d477236c2fd28f5277030a248ded8b1be1b42f999305dd48be7",
+  "prepared_sha256": "c6520ef1b24cad566c850c32ca92b5e61740e9781939fc765828218d84b8b67e",
+  "original_rows": 1212,
+  "original_features": 100,
+  "original_feature_names": [
+    "X1",
+    "X2",
+    "X3",
+    "X4",
+    "X5",
+    "X6"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/Hill_Valley_without_noise",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:Hill_Valley_without_noise",
+  "used_rows": 1212,
+  "cohort": "PMLB"
+}
