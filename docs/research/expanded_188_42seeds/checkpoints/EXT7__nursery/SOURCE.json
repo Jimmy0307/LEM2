@@ -1,0 +1,42 @@
+{
+  "features": [
+    "parents",
+    "has_nurs",
+    "form",
+    "children",
+    "housing",
+    "finance"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [
+    "parents",
+    "has_nurs",
+    "form",
+    "children",
+    "housing",
+    "finance"
+  ],
+  "raw_sha256": "264aa9d0775dd87e510755af4d033125f46821744137320a3b8d71e1232cc8c0",
+  "prepared_sha256": "4887dd8d30c0bd534b96430285af2735c7d68203a73662e533a0c2fd4192b9e2",
+  "original_rows": 12960,
+  "original_features": 8,
+  "original_feature_names": [
+    "parents",
+    "has_nurs",
+    "form",
+    "children",
+    "housing",
+    "finance"
+  ],
+  "dropped_classes": {
+    "recommend": 2
+  },
+  "source_url": "https://archive.ics.uci.edu/dataset/76/nursery",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "EXT7:nursery",
+  "used_rows": 12958,
+  "cohort": "EXT7"
+}
