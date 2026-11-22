@@ -1,0 +1,41 @@
+{
+  "features": [
+    "date",
+    "day",
+    "period",
+    "nswprice",
+    "nswdemand",
+    "vicprice"
+  ],
+  "target": "class",
+  "continuous": [
+    "date",
+    "period",
+    "nswprice",
+    "nswdemand",
+    "vicprice"
+  ],
+  "categorical": [
+    "day"
+  ],
+  "raw_sha256": "b51cffb5e05c5d0849af5156b4ca3a3cab8d837008f0723f7b136bd162c25c79",
+  "prepared_sha256": "6d715e703d3659bc42c05d57726674d4d45ba40d5c4ea06fcfd3e20559ee5833",
+  "original_rows": 45312,
+  "original_features": 8,
+  "original_feature_names": [
+    "date",
+    "day",
+    "period",
+    "nswprice",
+    "nswdemand",
+    "vicprice"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://data.openml.org/datasets/0000/0151/dataset_151.pq",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "OML51:openml_151",
+  "used_rows": 45312,
+  "cohort": "OML51"
+}
