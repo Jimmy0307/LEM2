@@ -1,0 +1,39 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "416c13c9349eba384c5af4711f77a7761ffebcef23cb7e780f65172827b29087",
+  "prepared_sha256": "a2bb7b6f17b6574616fa40f846822c31cfdcb0cd4f3798eef14aa7f429cd6f9c",
+  "original_rows": 344,
+  "original_features": 7,
+  "original_feature_names": [
+    "island",
+    "bill_length_mm",
+    "bill_depth_mm",
+    "flipper_length_mm",
+    "body_mass_g",
+    "sex"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/penguins",
+  "dynamic_types": true,
+  "missing_treatments": {
+    "f1": "DROP_NUMERIC",
+    "f2": "DROP_NUMERIC",
+    "f3": "DROP_NUMERIC",
+    "f4": "DROP_NUMERIC",
+    "f5": "KEEP_CATEGORY"
+  },
+  "excluded_features": [],
+  "dataset": "PMLB:penguins",
+  "used_rows": 342,
+  "cohort": "PMLB"
+}
