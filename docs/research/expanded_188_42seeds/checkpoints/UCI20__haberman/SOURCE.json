@@ -1,0 +1,31 @@
+{
+  "features": [
+    "age",
+    "operation_year",
+    "positive_auxillary_nodes"
+  ],
+  "target": "class",
+  "continuous": [
+    "age",
+    "operation_year",
+    "positive_auxillary_nodes"
+  ],
+  "categorical": [],
+  "raw_sha256": "448a55e3bc7437f32a90d9becf2afddd850bdc1fb66d77cb747f61d4b9fb4c13",
+  "prepared_sha256": "424990d2c928faba30dade49efe3f5e8944f983227ae4866630a26e871cb26ec",
+  "original_rows": 306,
+  "original_features": 3,
+  "original_feature_names": [
+    "age",
+    "operation_year",
+    "positive_auxillary_nodes"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/43",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "UCI20:haberman",
+  "used_rows": 306,
+  "cohort": "UCI20"
+}
