@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "bd0e747cb0a16d9f68843ccd6fa0b0d382bb21f2c83ccbc222712426ee42274b",
+  "prepared_sha256": "d0b9fa46935955e88ccabe9a6042a874b0e02f7705b686ba01c2a7151a694807",
+  "original_rows": 462,
+  "original_features": 9,
+  "original_feature_names": [
+    "Sbp",
+    "Tobacco",
+    "Ldl",
+    "Adiposity",
+    "Famhist",
+    "Typea"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/saheart",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:saheart",
+  "used_rows": 462,
+  "cohort": "PMLB"
+}
