@@ -1,0 +1,25 @@
+{
+  "features": [
+    "f0",
+    "f1"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "6f1e38ad833f935f34dea145a8a8c3932f0ea3e56e38305b09f064f7e68d0ab4",
+  "prepared_sha256": "952286db5a736bdf312e25fc262c7ea3052289cc3f6636a74fac9d9eb387c853",
+  "original_rows": 250,
+  "original_features": 2,
+  "original_feature_names": [
+    "xs",
+    "ys"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/prnn_synth",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:prnn_synth",
+  "used_rows": 250,
+  "cohort": "PMLB"
+}
