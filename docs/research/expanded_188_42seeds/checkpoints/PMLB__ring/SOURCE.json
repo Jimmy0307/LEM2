@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "a5fff4a8241312d53818c146ca0b132dc760a6848e7b89ec2e3271fc6454e7da",
+  "prepared_sha256": "f7d932c093b546d088276674cd63ff5f9fc4b05a6e5a07f50d4305ad7912bf6d",
+  "original_rows": 7400,
+  "original_features": 20,
+  "original_feature_names": [
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "A5",
+    "A6"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/ring",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:ring",
+  "used_rows": 7400,
+  "cohort": "PMLB"
+}
