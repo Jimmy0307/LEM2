@@ -1,0 +1,40 @@
+{
+  "features": [
+    "tau1",
+    "tau2",
+    "tau3",
+    "tau4",
+    "p2",
+    "p3"
+  ],
+  "target": "class",
+  "continuous": [
+    "tau1",
+    "tau2",
+    "tau3",
+    "tau4",
+    "p2",
+    "p3"
+  ],
+  "categorical": [],
+  "raw_sha256": "ec7af733b64aa82d1254a1e97b0df2279319a94321112c7c519a551fb267ea6b",
+  "prepared_sha256": "46bfcd508076935091c08d35431c6dabb15a1e9c0767f257e898af54a0303345",
+  "original_rows": 10000,
+  "original_features": 12,
+  "original_feature_names": [
+    "tau1",
+    "tau2",
+    "tau3",
+    "tau4",
+    "p2",
+    "p3"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/471",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "UCI20:grid_stability",
+  "used_rows": 10000,
+  "cohort": "UCI20"
+}
