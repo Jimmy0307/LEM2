@@ -1,0 +1,31 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "169f66e07a933521e65fbcc4bdfeb1a2ad942441ae0aa48480fcb0a8e78e37a7",
+  "prepared_sha256": "ba8998442be91fba9dc35c47b89c89b1b6de736ad8554cbdac1b887c67864b99",
+  "original_rows": 345,
+  "original_features": 5,
+  "original_feature_names": [
+    "Mcv",
+    "Alkphos",
+    "Sgpt",
+    "Sgot",
+    "Gammagt"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/bupa",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:bupa",
+  "used_rows": 345,
+  "cohort": "PMLB"
+}
