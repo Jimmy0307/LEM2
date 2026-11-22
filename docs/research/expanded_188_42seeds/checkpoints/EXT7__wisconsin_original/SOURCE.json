@@ -1,0 +1,40 @@
+{
+  "features": [
+    "clump_thickness",
+    "uniformity_of_cell_size",
+    "uniformity_of_cell_shape",
+    "marginal_adhesion",
+    "single_epithelial_cell_size",
+    "bare_nuclei"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [
+    "clump_thickness",
+    "uniformity_of_cell_size",
+    "uniformity_of_cell_shape",
+    "marginal_adhesion",
+    "single_epithelial_cell_size",
+    "bare_nuclei"
+  ],
+  "raw_sha256": "3fb81e10c657874f9db975b43a5c10fd0f95ec9ca33150962d486fd4740a8701",
+  "prepared_sha256": "85b39f9476e052f46f5ca88127c5361be93010e2125050e5022afe8db3eca0c6",
+  "original_rows": 699,
+  "original_features": 9,
+  "original_feature_names": [
+    "clump_thickness",
+    "uniformity_of_cell_size",
+    "uniformity_of_cell_shape",
+    "marginal_adhesion",
+    "single_epithelial_cell_size",
+    "bare_nuclei"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/15/breast+cancer+wisconsin+original",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "EXT7:wisconsin_original",
+  "used_rows": 699,
+  "cohort": "EXT7"
+}
