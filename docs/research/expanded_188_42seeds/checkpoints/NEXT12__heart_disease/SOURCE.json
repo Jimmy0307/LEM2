@@ -1,0 +1,41 @@
+{
+  "features": [
+    "age",
+    "sex",
+    "cp",
+    "trestbps",
+    "chol",
+    "fbs"
+  ],
+  "target": "class",
+  "continuous": [
+    "age",
+    "trestbps",
+    "chol"
+  ],
+  "categorical": [
+    "sex",
+    "cp",
+    "fbs"
+  ],
+  "raw_sha256": "868cd646a53ffbc55611192bae7496911a163937c185710f6b8aa11549b88df1",
+  "prepared_sha256": "1a72ea3318ae8d873e726f8489654ee6836fe614c56e6791836064fd327c8216",
+  "original_rows": 303,
+  "original_features": 13,
+  "original_feature_names": [
+    "age",
+    "sex",
+    "cp",
+    "trestbps",
+    "chol",
+    "fbs"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/45",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "NEXT12:heart_disease",
+  "used_rows": 303,
+  "cohort": "NEXT12"
+}
