@@ -1,0 +1,40 @@
+{
+  "features": [
+    "area",
+    "perimeter",
+    "major_axis_length",
+    "minor_axis_length",
+    "eccentricity",
+    "convex_area"
+  ],
+  "target": "class",
+  "continuous": [
+    "area",
+    "perimeter",
+    "major_axis_length",
+    "minor_axis_length",
+    "eccentricity",
+    "convex_area"
+  ],
+  "categorical": [],
+  "raw_sha256": "a0d9b19693f0bde9a59a6a6e886df0456008fab1c3a406178a76e7c4440e95b3",
+  "prepared_sha256": "fe79d2796144e90f5208ea669b6aef10ffb0833b68dfeac9e0ef090e70967e2e",
+  "original_rows": 3810,
+  "original_features": 7,
+  "original_feature_names": [
+    "area",
+    "perimeter",
+    "major_axis_length",
+    "minor_axis_length",
+    "eccentricity",
+    "convex_area"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/545",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "UCI20:rice",
+  "used_rows": 3810,
+  "cohort": "UCI20"
+}
