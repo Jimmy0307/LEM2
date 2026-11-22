@@ -1,0 +1,41 @@
+{
+  "features": [
+    "pixel1",
+    "pixel2",
+    "pixel3",
+    "pixel4",
+    "pixel5",
+    "pixel6"
+  ],
+  "target": "class",
+  "continuous": [
+    "pixel2",
+    "pixel3",
+    "pixel4",
+    "pixel5",
+    "pixel6"
+  ],
+  "categorical": [
+    "pixel1"
+  ],
+  "raw_sha256": "78ede986ed6edc4fb68d32a4a59be384ed00bbe2130b90cf55ffb4da21ae11f3",
+  "prepared_sha256": "2f1941d74198700e6079e3242fbd129c922cff6069eb75101c4095daf8114396",
+  "original_rows": 70000,
+  "original_features": 784,
+  "original_feature_names": [
+    "pixel1",
+    "pixel2",
+    "pixel3",
+    "pixel4",
+    "pixel5",
+    "pixel6"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://data.openml.org/datasets/0004/40996/dataset_40996.pq",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "OML51:openml_40996",
+  "used_rows": 70000,
+  "cohort": "OML51"
+}
