@@ -1,0 +1,40 @@
+{
+  "features": [
+    "LOC_BLANK",
+    "BRANCH_COUNT",
+    "CALL_PAIRS",
+    "LOC_CODE_AND_COMMENT",
+    "LOC_COMMENTS",
+    "CONDITION_COUNT"
+  ],
+  "target": "class",
+  "continuous": [
+    "LOC_BLANK",
+    "BRANCH_COUNT",
+    "CALL_PAIRS",
+    "LOC_CODE_AND_COMMENT",
+    "LOC_COMMENTS",
+    "CONDITION_COUNT"
+  ],
+  "categorical": [],
+  "raw_sha256": "fbdfaa3edd34eef6a064b9ec37429b8de01947de1d095495a55361d98cd295da",
+  "prepared_sha256": "c3c0befef5c43681797c46f5f20c16c5c1bb732236ccfce21e95d2ffb8786e70",
+  "original_rows": 1458,
+  "original_features": 37,
+  "original_feature_names": [
+    "LOC_BLANK",
+    "BRANCH_COUNT",
+    "CALL_PAIRS",
+    "LOC_CODE_AND_COMMENT",
+    "LOC_COMMENTS",
+    "CONDITION_COUNT"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://data.openml.org/datasets/0000/1049/dataset_1049.pq",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "OML51:openml_1049",
+  "used_rows": 1458,
+  "cohort": "OML51"
+}
