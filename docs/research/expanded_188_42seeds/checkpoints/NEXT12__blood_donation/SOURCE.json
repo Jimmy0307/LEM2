@@ -1,0 +1,34 @@
+{
+  "features": [
+    "recency",
+    "frequency",
+    "monetary",
+    "time"
+  ],
+  "target": "class",
+  "continuous": [
+    "recency",
+    "frequency",
+    "monetary",
+    "time"
+  ],
+  "categorical": [],
+  "raw_sha256": "386a3671dddb9427d43d12fcf7e1eaa34bd17e249679d0043c2a7c62f089790f",
+  "prepared_sha256": "0eab63f3a5b151f549c1e49c40eb138716c0abbc21f91ed52e3203a277695a8b",
+  "original_rows": 748,
+  "original_features": 4,
+  "original_feature_names": [
+    "recency",
+    "frequency",
+    "monetary",
+    "time"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/176",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "NEXT12:blood_donation",
+  "used_rows": 748,
+  "cohort": "NEXT12"
+}
