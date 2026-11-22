@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "017e1ff56435818b639cc788ee35df6cee7ac2aea19cc62dcb10a3a0c60b6340",
+  "prepared_sha256": "a6b01f847d3f6ae1ae020365b9c75da0a895db517fd0c102cd8e4811fb2e2c0c",
+  "original_rows": 3186,
+  "original_features": 180,
+  "original_feature_names": [
+    "A0",
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "A5"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/dna",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:dna",
+  "used_rows": 3186,
+  "cohort": "PMLB"
+}
