@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "c8852ba546e92249debecd9a897cda3f94fd10872fa13c62eb14ab40e279166e",
+  "prepared_sha256": "da44ca664e706e5c349686c8e2d97603050876b1e5110792df9ac939b686ab03",
+  "original_rows": 366,
+  "original_features": 34,
+  "original_feature_names": [
+    "erythema",
+    "scaling",
+    "definite_borders",
+    "itching",
+    "koebner_phenomenon",
+    "polygonal_papules"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/dermatology",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:dermatology",
+  "used_rows": 366,
+  "cohort": "PMLB"
+}
