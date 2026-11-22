@@ -1,0 +1,40 @@
+{
+  "features": [
+    "ParticleID_0",
+    "ParticleID_1",
+    "ParticleID_2",
+    "ParticleID_3",
+    "ParticleID_4",
+    "ParticleID_5"
+  ],
+  "target": "class",
+  "continuous": [
+    "ParticleID_0",
+    "ParticleID_1",
+    "ParticleID_2",
+    "ParticleID_3",
+    "ParticleID_4",
+    "ParticleID_5"
+  ],
+  "categorical": [],
+  "raw_sha256": "d6e1dd4c395e1ef456a048b55e10ed662e30203e8ebab2f3216f680c9d439646",
+  "prepared_sha256": "0f254ae8bc7a07095e5a876364003d07105b0bdaf479133fc42632498f7a9658",
+  "original_rows": 130064,
+  "original_features": 50,
+  "original_feature_names": [
+    "ParticleID_0",
+    "ParticleID_1",
+    "ParticleID_2",
+    "ParticleID_3",
+    "ParticleID_4",
+    "ParticleID_5"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://data.openml.org/datasets/0004/41150/dataset_41150.pq",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "OML51:openml_41150",
+  "used_rows": 130064,
+  "cohort": "OML51"
+}
