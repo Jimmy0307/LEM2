@@ -1,0 +1,41 @@
+{
+  "features": [
+    "productrelated",
+    "productrelated_duration",
+    "bouncerates",
+    "exitrates",
+    "visitortype",
+    "weekend"
+  ],
+  "target": "class",
+  "continuous": [
+    "productrelated",
+    "productrelated_duration",
+    "bouncerates",
+    "exitrates"
+  ],
+  "categorical": [
+    "visitortype",
+    "weekend"
+  ],
+  "raw_sha256": "b3055ee355f59134d851d32641183cb4a8b45def7124d2f50442a042f358e0d9",
+  "prepared_sha256": "b3600316c57afa3f99f2f40b634506e715e08d895c8d4c552b76f92716ef3aee",
+  "original_rows": 12330,
+  "original_features": 17,
+  "original_feature_names": [
+    "productrelated",
+    "productrelated_duration",
+    "bouncerates",
+    "exitrates",
+    "visitortype",
+    "weekend"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/468/online+shoppers+purchasing+intention+dataset",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "COMMERCE2:online_shoppers",
+  "used_rows": 12330,
+  "cohort": "COMMERCE2"
+}
