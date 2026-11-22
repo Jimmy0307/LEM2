@@ -1,0 +1,40 @@
+{
+  "features": [
+    "loc",
+    "v(g)",
+    "ev(g)",
+    "iv(g)",
+    "n",
+    "v"
+  ],
+  "target": "class",
+  "continuous": [
+    "loc",
+    "v(g)",
+    "ev(g)",
+    "iv(g)",
+    "n",
+    "v"
+  ],
+  "categorical": [],
+  "raw_sha256": "f042e8d153b19a9b5c2bae7677afbe863928fde46a909e996adc9dbe63f29a51",
+  "prepared_sha256": "651824465db082960175de5f30cd4363e15f56a2e512d51efa52aafbadbab367",
+  "original_rows": 10885,
+  "original_features": 21,
+  "original_feature_names": [
+    "loc",
+    "v(g)",
+    "ev(g)",
+    "iv(g)",
+    "n",
+    "v"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://data.openml.org/datasets/0000/1053/dataset_1053.pq",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "OML51:openml_1053",
+  "used_rows": 10885,
+  "cohort": "OML51"
+}
