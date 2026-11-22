@@ -1,0 +1,41 @@
+{
+  "features": [
+    "attribute1",
+    "attribute2",
+    "attribute3",
+    "attribute4",
+    "attribute5",
+    "attribute6"
+  ],
+  "target": "class",
+  "continuous": [
+    "attribute2",
+    "attribute5"
+  ],
+  "categorical": [
+    "attribute1",
+    "attribute3",
+    "attribute4",
+    "attribute6"
+  ],
+  "raw_sha256": "f985b42636c9e28ce4fb3913738d1ebfd0f7947fda8d4406fe2ded5d84295acb",
+  "prepared_sha256": "9ed2dccff4ad5ace0610ccc151b8dc577cc8afd510665dc3e7ed7892e4f06430",
+  "original_rows": 1000,
+  "original_features": 20,
+  "original_feature_names": [
+    "attribute1",
+    "attribute2",
+    "attribute3",
+    "attribute4",
+    "attribute5",
+    "attribute6"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/144",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "UCI20:german_credit",
+  "used_rows": 1000,
+  "cohort": "UCI20"
+}
