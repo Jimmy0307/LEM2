@@ -1,0 +1,40 @@
+{
+  "features": [
+    "elevation",
+    "aspect",
+    "slope",
+    "horizontal_distance_to_hydrology",
+    "vertical_distance_to_hydrology",
+    "horizontal_distance_to_roadways"
+  ],
+  "target": "class",
+  "continuous": [
+    "elevation",
+    "aspect",
+    "slope",
+    "horizontal_distance_to_hydrology",
+    "vertical_distance_to_hydrology",
+    "horizontal_distance_to_roadways"
+  ],
+  "categorical": [],
+  "raw_sha256": "a07902ee1c9d3231c6655f23e6f75a6797d0ba26a2359f533c2c0e65d05c9bd4",
+  "prepared_sha256": "d2e820b8eb40b3a66210055ac96023732fdeb455ca36c67e2c0d3e2d1fe3ea7e",
+  "original_rows": 581012,
+  "original_features": 54,
+  "original_feature_names": [
+    "elevation",
+    "aspect",
+    "slope",
+    "horizontal_distance_to_hydrology",
+    "vertical_distance_to_hydrology",
+    "horizontal_distance_to_roadways"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/31",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "UCI20:covertype",
+  "used_rows": 581012,
+  "cohort": "UCI20"
+}
