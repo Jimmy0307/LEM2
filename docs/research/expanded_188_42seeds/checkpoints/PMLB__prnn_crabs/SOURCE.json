@@ -1,0 +1,35 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "febe62b7a09352cc6e2ede0603c3ebcebe33f90ae567490458a401b806f3c756",
+  "prepared_sha256": "ebf6fedc7150765054dbab374222040a1b960b2e96f3ce213b4294cc2a606704",
+  "original_rows": 200,
+  "original_features": 7,
+  "original_feature_names": [
+    "sex",
+    "FL",
+    "RW",
+    "CL",
+    "CW",
+    "BD"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/prnn_crabs",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [
+    "index"
+  ],
+  "dataset": "PMLB:prnn_crabs",
+  "used_rows": 200,
+  "cohort": "PMLB"
+}
