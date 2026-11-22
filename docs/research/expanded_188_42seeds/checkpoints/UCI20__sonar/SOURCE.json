@@ -1,0 +1,40 @@
+{
+  "features": [
+    "attribute1",
+    "attribute2",
+    "attribute3",
+    "attribute4",
+    "attribute5",
+    "attribute6"
+  ],
+  "target": "class",
+  "continuous": [
+    "attribute1",
+    "attribute2",
+    "attribute3",
+    "attribute4",
+    "attribute5",
+    "attribute6"
+  ],
+  "categorical": [],
+  "raw_sha256": "1a0efd0f67d20d6f487ea01dcb9d87e5c67c510d9b1b5d249d357588b6293ae9",
+  "prepared_sha256": "94fc2bd5b248b51c86798a9de3d240656a0e07cf1f055e1b385e89a7bdaca2ea",
+  "original_rows": 208,
+  "original_features": 60,
+  "original_feature_names": [
+    "attribute1",
+    "attribute2",
+    "attribute3",
+    "attribute4",
+    "attribute5",
+    "attribute6"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/151",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "UCI20:sonar",
+  "used_rows": 208,
+  "cohort": "UCI20"
+}
