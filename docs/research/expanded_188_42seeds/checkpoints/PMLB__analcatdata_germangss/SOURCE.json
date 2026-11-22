@@ -1,0 +1,31 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "4addd55e891f926323ea9563b70754607f9ea0e14862a18bde1aa385ed27bfdb",
+  "prepared_sha256": "faf6fe2f2ba4e96c8608edd937fdc6fbee3e21dd83d4a4dfe295ad58fdff6c06",
+  "original_rows": 400,
+  "original_features": 5,
+  "original_feature_names": [
+    "Age",
+    "Time_of_survey",
+    "Schooling",
+    "Region",
+    "Count"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/analcatdata_germangss",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:analcatdata_germangss",
+  "used_rows": 400,
+  "cohort": "PMLB"
+}

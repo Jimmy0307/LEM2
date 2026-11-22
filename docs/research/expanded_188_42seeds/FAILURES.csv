@@ -37,6 +37,10 @@ OML51:openml_41027,10,CENTRALIZED,TIMEOUT,exceeded 2700.00 seconds
 OML51:openml_41027,10,FED_IID,TIMEOUT,exceeded 2700.00 seconds
 OML51:openml_41027,10,FED_A05,TIMEOUT,exceeded 2700.00 seconds
 OML51:openml_41027,10,FED_A01,TIMEOUT,exceeded 2700.00 seconds
+OML51:openml_41027,11,CENTRALIZED,TIMEOUT,exceeded 2700.00 seconds
+OML51:openml_41027,11,FED_IID,TIMEOUT,exceeded 2700.00 seconds
+OML51:openml_41027,11,FED_A05,TIMEOUT,exceeded 2700.00 seconds
+OML51:openml_41027,11,FED_A01,TIMEOUT,exceeded 2700.00 seconds
 OML51:openml_42732,1,CENTRALIZED,TIMEOUT,exceeded 2700.00 seconds
 OML51:openml_42732,1,FED_IID,TIMEOUT,exceeded 2700.00 seconds
 OML51:openml_42732,1,FED_A05,TIMEOUT,exceeded 2700.00 seconds
