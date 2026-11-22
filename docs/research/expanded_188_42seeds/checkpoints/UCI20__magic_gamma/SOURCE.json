@@ -1,0 +1,40 @@
+{
+  "features": [
+    "flength",
+    "fwidth",
+    "fsize",
+    "fconc",
+    "fconc1",
+    "fasym"
+  ],
+  "target": "class",
+  "continuous": [
+    "flength",
+    "fwidth",
+    "fsize",
+    "fconc",
+    "fconc1",
+    "fasym"
+  ],
+  "categorical": [],
+  "raw_sha256": "a52d3a378e43df7b678c4c0b2f03a66a058bbfeb27c95ccd037a767e7d172984",
+  "prepared_sha256": "3bdf062215f35d7e06abd6028ecffb3cb3332437bfb8b68d252aef98bee0e218",
+  "original_rows": 19020,
+  "original_features": 10,
+  "original_feature_names": [
+    "flength",
+    "fwidth",
+    "fsize",
+    "fconc",
+    "fconc1",
+    "fasym"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/159",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "UCI20:magic_gamma",
+  "used_rows": 19020,
+  "cohort": "UCI20"
+}
