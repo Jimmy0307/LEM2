@@ -1,0 +1,40 @@
+{
+  "features": [
+    "alcohol",
+    "malicacid",
+    "ash",
+    "alcalinity_of_ash",
+    "magnesium",
+    "total_phenols"
+  ],
+  "target": "class",
+  "continuous": [
+    "alcohol",
+    "malicacid",
+    "ash",
+    "alcalinity_of_ash",
+    "magnesium",
+    "total_phenols"
+  ],
+  "categorical": [],
+  "raw_sha256": "70ba539f750faef04eb4859f68cf67f13676d42fafce8e4f85982705953c219a",
+  "prepared_sha256": "07a67cdf6cc38233663226c099ea1781488ca97916e8b6cce136e3141d3ee299",
+  "original_rows": 178,
+  "original_features": 13,
+  "original_feature_names": [
+    "alcohol",
+    "malicacid",
+    "ash",
+    "alcalinity_of_ash",
+    "magnesium",
+    "total_phenols"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/109",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "UCI20:wine",
+  "used_rows": 178,
+  "cohort": "UCI20"
+}
