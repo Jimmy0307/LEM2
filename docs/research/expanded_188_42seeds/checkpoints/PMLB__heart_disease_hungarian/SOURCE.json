@@ -1,0 +1,37 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "ed91959038654fe3a02da9d51ab0d8f5187003b899c767a2de436f6b0808425e",
+  "prepared_sha256": "ae0adc644d9d8b02fdcbdfe17186cfc8e926f4fd8f3a7003471e8754ebe7a542",
+  "original_rows": 294,
+  "original_features": 13,
+  "original_feature_names": [
+    "age",
+    "gender",
+    "chest_pain_type",
+    "resting_blood_pressure",
+    "serum_cholesterol",
+    "high_fasting_blood_sugar"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/heart_disease_hungarian",
+  "dynamic_types": true,
+  "missing_treatments": {
+    "f3": "DROP_NUMERIC",
+    "f4": "DROP_NUMERIC",
+    "f5": "KEEP_CATEGORY"
+  },
+  "excluded_features": [],
+  "dataset": "PMLB:heart_disease_hungarian",
+  "used_rows": 270,
+  "cohort": "PMLB"
+}
