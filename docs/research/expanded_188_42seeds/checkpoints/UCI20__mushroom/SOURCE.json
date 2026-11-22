@@ -1,0 +1,40 @@
+{
+  "features": [
+    "cap_shape",
+    "cap_surface",
+    "cap_color",
+    "bruises",
+    "odor",
+    "gill_attachment"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [
+    "cap_shape",
+    "cap_surface",
+    "cap_color",
+    "bruises",
+    "odor",
+    "gill_attachment"
+  ],
+  "raw_sha256": "3557ad6f2ffaca855d66d9a8165c6bfabd355cc51d89eac56bab55f0e38b3116",
+  "prepared_sha256": "1c748fe51d68775b181a95337990a48438ba3ca774ffb28bfe1c87fdb20aa861",
+  "original_rows": 8124,
+  "original_features": 22,
+  "original_feature_names": [
+    "cap_shape",
+    "cap_surface",
+    "cap_color",
+    "bruises",
+    "odor",
+    "gill_attachment"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/73",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "UCI20:mushroom",
+  "used_rows": 8124,
+  "cohort": "UCI20"
+}
