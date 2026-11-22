@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "ebd2c0505b95df7c3fbcd132fe97d35cf85dc6be9b939f26cb0962f8134a5198",
+  "prepared_sha256": "365b7c70871e6590e98d1bd11d03d3e076436a315a6b106585134877edef2429",
+  "original_rows": 5473,
+  "original_features": 10,
+  "original_feature_names": [
+    "height",
+    "lenght",
+    "area",
+    "eccen",
+    "p_black",
+    "p_and"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/page_blocks",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:page_blocks",
+  "used_rows": 5473,
+  "cohort": "PMLB"
+}
