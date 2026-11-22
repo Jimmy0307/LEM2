@@ -1,0 +1,40 @@
+{
+  "features": [
+    "x_box",
+    "y_box",
+    "width",
+    "high",
+    "onpix",
+    "x_bar"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [
+    "x_box",
+    "y_box",
+    "width",
+    "high",
+    "onpix",
+    "x_bar"
+  ],
+  "raw_sha256": "9ec44e47110540d997fc2e247464a75ed3da0ad9dfcd49ded7e68fcaab04a9f7",
+  "prepared_sha256": "ee8fdfa41193aa95c651daca419d81def212faab29682e7746d3714e26ac337b",
+  "original_rows": 20000,
+  "original_features": 16,
+  "original_feature_names": [
+    "x_box",
+    "y_box",
+    "width",
+    "high",
+    "onpix",
+    "x_bar"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/59",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "UCI20:letter",
+  "used_rows": 20000,
+  "cohort": "UCI20"
+}
