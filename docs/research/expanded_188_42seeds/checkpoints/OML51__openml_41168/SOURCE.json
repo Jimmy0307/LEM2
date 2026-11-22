@@ -1,0 +1,40 @@
+{
+  "features": [
+    "V1",
+    "V2",
+    "V3",
+    "V4",
+    "V5",
+    "V6"
+  ],
+  "target": "class",
+  "continuous": [
+    "V1",
+    "V2",
+    "V3",
+    "V4",
+    "V5",
+    "V6"
+  ],
+  "categorical": [],
+  "raw_sha256": "67c0583843715eb45c65e3f4a8a4196067c3a4d7100c792e14c4f4a1372093d1",
+  "prepared_sha256": "b668a9a4feafb56bfe15a4224200112795610e8eec625af3e6f251e4bcfd2fc6",
+  "original_rows": 83733,
+  "original_features": 54,
+  "original_feature_names": [
+    "V1",
+    "V2",
+    "V3",
+    "V4",
+    "V5",
+    "V6"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://data.openml.org/datasets/0004/41168/dataset_41168.pq",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "OML51:openml_41168",
+  "used_rows": 83733,
+  "cohort": "OML51"
+}
