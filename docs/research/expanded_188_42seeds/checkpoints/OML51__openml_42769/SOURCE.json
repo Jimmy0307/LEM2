@@ -1,0 +1,40 @@
+{
+  "features": [
+    "lepton_pT",
+    "lepton_eta",
+    "lepton_phi",
+    "missing_energy_magnitude",
+    "missing_energy_phi",
+    "jet_1_pt"
+  ],
+  "target": "class",
+  "continuous": [
+    "lepton_pT",
+    "lepton_eta",
+    "lepton_phi",
+    "missing_energy_magnitude",
+    "missing_energy_phi",
+    "jet_1_pt"
+  ],
+  "categorical": [],
+  "raw_sha256": "3b3dc3f6e17182eb9e5cee9548375d69564696344f4da74e24ac1cc18585bba9",
+  "prepared_sha256": "fed7dc4a64eeddb12b945a28eb03ebad174aa97a355ab161dab16f651d777b24",
+  "original_rows": 1000000,
+  "original_features": 28,
+  "original_feature_names": [
+    "lepton_pT",
+    "lepton_eta",
+    "lepton_phi",
+    "missing_energy_magnitude",
+    "missing_energy_phi",
+    "jet_1_pt"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://data.openml.org/datasets/0004/42769/dataset_42769.pq",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "OML51:openml_42769",
+  "used_rows": 1000000,
+  "cohort": "OML51"
+}
