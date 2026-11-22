@@ -1,0 +1,35 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "596303e877cb91ec3f96cab8c0eac3205f8c50d2e56debdde6a6b4bcffe57ccd",
+  "prepared_sha256": "2e617856da4c5b0514c7e3d03a5e2319e47ffb6e6499ca7b6ec8c13436effb76",
+  "original_rows": 340,
+  "original_features": 14,
+  "original_feature_names": [
+    "gain_ratio_1",
+    "gain_ratio_2",
+    "gain_ratio_3",
+    "gain_ratio_4",
+    "gain_ratio_5",
+    "gain_ratio_6"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/schizo",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [
+    "ID"
+  ],
+  "dataset": "PMLB:schizo",
+  "used_rows": 340,
+  "cohort": "PMLB"
+}
