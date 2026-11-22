@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "86e18c1aa7247f824f7097219d75d29f8dcba3034bc89e1ee92c7778aa31bd9c",
+  "prepared_sha256": "60cce52d9e5aeba2bea9ec6c1180d309f883ad4de2fc9a9e2c267a8ffdf499b5",
+  "original_rows": 1324,
+  "original_features": 10,
+  "original_feature_names": [
+    "Bit-0",
+    "Bit-1",
+    "Bit-2",
+    "Bit-3",
+    "Bit-4",
+    "Bit-5"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/mofn_3_7_10",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:mofn_3_7_10",
+  "used_rows": 1324,
+  "cohort": "PMLB"
+}
