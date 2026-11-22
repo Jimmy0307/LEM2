@@ -1,0 +1,40 @@
+{
+  "features": [
+    "profile_mean",
+    "profile_stdev",
+    "profile_skewness",
+    "profile_kurtosis",
+    "dm_mean",
+    "dm_stdev"
+  ],
+  "target": "class",
+  "continuous": [
+    "profile_mean",
+    "profile_stdev",
+    "profile_skewness",
+    "profile_kurtosis",
+    "dm_mean",
+    "dm_stdev"
+  ],
+  "categorical": [],
+  "raw_sha256": "f2ad10d1da05ebd2fa6b4e610e314284e646d56663cc64b889506e3a1c59c814",
+  "prepared_sha256": "f4aab539a59a8e528bc4bad75da6efca9fd60daf43a5686488894094fd2c7664",
+  "original_rows": 17898,
+  "original_features": 8,
+  "original_feature_names": [
+    "profile_mean",
+    "profile_stdev",
+    "profile_skewness",
+    "profile_kurtosis",
+    "dm_mean",
+    "dm_stdev"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/372",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "UCI20:htru2",
+  "used_rows": 17898,
+  "cohort": "UCI20"
+}
