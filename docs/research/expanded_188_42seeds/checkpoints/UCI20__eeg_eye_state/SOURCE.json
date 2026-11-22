@@ -1,0 +1,40 @@
+{
+  "features": [
+    "af3",
+    "f7",
+    "f3",
+    "fc5",
+    "t7",
+    "p7"
+  ],
+  "target": "class",
+  "continuous": [
+    "af3",
+    "f7",
+    "f3",
+    "fc5",
+    "t7",
+    "p7"
+  ],
+  "categorical": [],
+  "raw_sha256": "42ade6611f0fadbc8c15e48bb04e5f20813c9939de21aa5f8204293f623c912a",
+  "prepared_sha256": "3f5874ba016151dacd9f0ed5479768ccbdb777295dbb0961dae23cf66d263fd2",
+  "original_rows": 14980,
+  "original_features": 14,
+  "original_feature_names": [
+    "af3",
+    "f7",
+    "f3",
+    "fc5",
+    "t7",
+    "p7"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/264",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "UCI20:eeg_eye_state",
+  "used_rows": 14980,
+  "cohort": "UCI20"
+}
