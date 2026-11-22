@@ -1,0 +1,41 @@
+{
+  "features": [
+    "type",
+    "air_temperature",
+    "process_temperature",
+    "rotational_speed",
+    "torque",
+    "tool_wear"
+  ],
+  "target": "class",
+  "continuous": [
+    "air_temperature",
+    "process_temperature",
+    "rotational_speed",
+    "torque",
+    "tool_wear"
+  ],
+  "categorical": [
+    "type"
+  ],
+  "raw_sha256": "ffc3c28f35b1a1636eacd2bf46aca0ff5e795b4a8eb934309c5819079e9b5a18",
+  "prepared_sha256": "f855e936045f925e315cd8232bcced41099bb4a4ca4470f031abd98146a76dbf",
+  "original_rows": 10000,
+  "original_features": 6,
+  "original_feature_names": [
+    "type",
+    "air_temperature",
+    "process_temperature",
+    "rotational_speed",
+    "torque",
+    "tool_wear"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/601/ai4i",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "COMMERCE2:ai4i_maintenance",
+  "used_rows": 10000,
+  "cohort": "COMMERCE2"
+}
