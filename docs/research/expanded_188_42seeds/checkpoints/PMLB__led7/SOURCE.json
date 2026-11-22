@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "8e9abc79391ccf0362c55bc2c21f90e65166fefafb9cb7f46c3b5cd975d12b5c",
+  "prepared_sha256": "ffe855f05047406ab0e65d5301f65bb7b9e542a67dbcb8cdd81b43756403cd33",
+  "original_rows": 3200,
+  "original_features": 7,
+  "original_feature_names": [
+    "attribute#1",
+    "attribute#2",
+    "attribute#3",
+    "attribute#4",
+    "attribute#5",
+    "attribute#6"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/led7",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:led7",
+  "used_rows": 3200,
+  "cohort": "PMLB"
+}
