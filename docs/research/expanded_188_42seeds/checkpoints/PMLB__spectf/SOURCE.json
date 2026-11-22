@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "664081130aa48fc189b2e1d3c44332f0b3eb1ee6d31b79af1643c137697677e4",
+  "prepared_sha256": "9cbd5b316208dae11a52ff5ba9ab239c10b3108e39f717549bfa9db451a4e5f9",
+  "original_rows": 349,
+  "original_features": 44,
+  "original_feature_names": [
+    "F1R",
+    "F1S",
+    "F2R",
+    "F2S",
+    "F3R",
+    "F3S"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/spectf",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:spectf",
+  "used_rows": 349,
+  "cohort": "PMLB"
+}
