@@ -1,0 +1,31 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "b83ed3585be7a593faa1ae58d7021bed6ffa1af2e3d8298cdfb8f1bc2a0f2879",
+  "prepared_sha256": "4553a94ee5a5c07cff993485c0c5d5eea24180366ed6eb93dcc52c9203fee154",
+  "original_rows": 500,
+  "original_features": 5,
+  "original_feature_names": [
+    "Sex",
+    "DVRT",
+    "Educational_level",
+    "Prestige_score",
+    "Type_school"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/irish",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:irish",
+  "used_rows": 500,
+  "cohort": "PMLB"
+}
