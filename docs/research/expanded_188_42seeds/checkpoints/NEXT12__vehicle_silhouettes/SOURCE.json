@@ -1,0 +1,40 @@
+{
+  "features": [
+    "compactness",
+    "circularity",
+    "distance_circularity",
+    "radius_ratio",
+    "pr.axis_aspect_ratio",
+    "max.length_aspect_ratio"
+  ],
+  "target": "class",
+  "continuous": [
+    "compactness",
+    "circularity",
+    "distance_circularity",
+    "radius_ratio",
+    "pr.axis_aspect_ratio",
+    "max.length_aspect_ratio"
+  ],
+  "categorical": [],
+  "raw_sha256": "49e7a61b5b39575fa5570b029b5a33be6732d6824e11e94247f2d333b51a4d53",
+  "prepared_sha256": "fcdcfb2bb098e84773d5a7d1b9cab18d26652d83155d3734a4ff19adf4f79b47",
+  "original_rows": 846,
+  "original_features": 18,
+  "original_feature_names": [
+    "compactness",
+    "circularity",
+    "distance_circularity",
+    "radius_ratio",
+    "pr.axis_aspect_ratio",
+    "max.length_aspect_ratio"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/149",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "NEXT12:vehicle_silhouettes",
+  "used_rows": 845,
+  "cohort": "NEXT12"
+}
