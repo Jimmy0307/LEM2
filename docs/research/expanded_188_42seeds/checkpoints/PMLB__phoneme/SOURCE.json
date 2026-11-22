@@ -1,0 +1,31 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "2e1c31a2c560f3539be5bda1084939765c80ddd814bd6919fd8a3465f9b8aee6",
+  "prepared_sha256": "e90a6f339c0dae33b7441ff6f2063f9f8a23e739b50534f511018d1664376899",
+  "original_rows": 5404,
+  "original_features": 5,
+  "original_feature_names": [
+    "Aa",
+    "Ao",
+    "Dcl",
+    "Iy",
+    "Sh"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/phoneme",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:phoneme",
+  "used_rows": 5404,
+  "cohort": "PMLB"
+}
