@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "fc59b38546bd80f92ac7e6b06f418808ee62097d5452c62aff607f792ffd529a",
+  "prepared_sha256": "38587b6f8806aaa1d37512f6b1968fde2b65c01deec70a51b3796834cb7de150",
+  "original_rows": 209,
+  "original_features": 8,
+  "original_feature_names": [
+    "Observation_number",
+    "Hospital_identification_number_for_blood_sample",
+    "Age_of_patient",
+    "Date_that_blood_sample_was_taken",
+    "ml",
+    "m2"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/biomed",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:biomed",
+  "used_rows": 209,
+  "cohort": "PMLB"
+}
