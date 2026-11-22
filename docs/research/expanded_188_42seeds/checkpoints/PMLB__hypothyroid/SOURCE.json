@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "da3dd345d4cbdaeda8c1d0f3c91cb6ee45eb6dc6a40b6668933806a9e653ad26",
+  "prepared_sha256": "f455a2980977590ff00396bacee1fb4dfbb4471fb2920b4d769b2025eaa16e1b",
+  "original_rows": 3163,
+  "original_features": 25,
+  "original_feature_names": [
+    "age",
+    "sex",
+    "on_thyroxine",
+    "query_on_thyroxine",
+    "on_antithyroid_medication",
+    "thyroid_surgery"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/hypothyroid",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:hypothyroid",
+  "used_rows": 3163,
+  "cohort": "PMLB"
+}
