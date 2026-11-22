@@ -1,0 +1,39 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "1f69f25b0168c39018c214ae39f2bb8fe6da97e1df389c2cb88cf9bde2f08ace",
+  "prepared_sha256": "cca7a224fbf3e4157056c850dc9c32c058598a6c2b06816e8f3ccba29bf4af38",
+  "original_rows": 690,
+  "original_features": 15,
+  "original_feature_names": [
+    "attribute_1",
+    "attribute_2",
+    "attribute_3",
+    "attribute_4",
+    "attribute_5",
+    "attribute_6"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/credit_approval_australia",
+  "dynamic_types": true,
+  "missing_treatments": {
+    "f0": "KEEP_CATEGORY",
+    "f1": "DROP_NUMERIC",
+    "f3": "KEEP_CATEGORY",
+    "f4": "KEEP_CATEGORY",
+    "f5": "DROP_NUMERIC"
+  },
+  "excluded_features": [],
+  "dataset": "PMLB:credit_approval_australia",
+  "used_rows": 669,
+  "cohort": "PMLB"
+}
