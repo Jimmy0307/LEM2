@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "05d57ad53203e4f5ed4f278e08cc6e810127c151c9e4ac4be61fef56414f70e9",
+  "prepared_sha256": "87963850b0a44ebf840e83de48020251a36e551e4faac9837a36c3c1519bd3f3",
+  "original_rows": 392,
+  "original_features": 8,
+  "original_feature_names": [
+    "MPG",
+    "cylinders",
+    "cubicInches",
+    "horsepower",
+    "weightLbs",
+    "time-to-sixty"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/cars",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:cars",
+  "used_rows": 392,
+  "cohort": "PMLB"
+}
