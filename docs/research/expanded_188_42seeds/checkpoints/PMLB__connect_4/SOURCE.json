@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "e283074e1123d23361332bd83414c172640d2596fc076d1e20e8f4a64a658137",
+  "prepared_sha256": "b36d50756fecc014e499602ab0319d4789a04c3bb128b0d4c2615a0aff162daf",
+  "original_rows": 67557,
+  "original_features": 42,
+  "original_feature_names": [
+    "a1",
+    "a2",
+    "a3",
+    "a4",
+    "a5",
+    "a6"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/connect_4",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:connect_4",
+  "used_rows": 67557,
+  "cohort": "PMLB"
+}
