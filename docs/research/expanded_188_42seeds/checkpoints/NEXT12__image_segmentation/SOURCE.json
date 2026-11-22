@@ -1,0 +1,40 @@
+{
+  "features": [
+    "region_centroid_col",
+    "region_centroid_row",
+    "region_pixel_count",
+    "short_line_density_5",
+    "short_line_density_2",
+    "vedge_mean"
+  ],
+  "target": "class",
+  "continuous": [
+    "region_centroid_col",
+    "region_centroid_row",
+    "region_pixel_count",
+    "short_line_density_5",
+    "short_line_density_2",
+    "vedge_mean"
+  ],
+  "categorical": [],
+  "raw_sha256": "fddc213b8d668a7da006ff93d5f01ec099c2c2c2496770ef85cb185215c5f44e",
+  "prepared_sha256": "3a434fb21c694f130bbf63ff642d889bf71fdb1a84ff9346e64df2ef3c44516e",
+  "original_rows": 210,
+  "original_features": 19,
+  "original_feature_names": [
+    "region_centroid_col",
+    "region_centroid_row",
+    "region_pixel_count",
+    "short_line_density_5",
+    "short_line_density_2",
+    "vedge_mean"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/50",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "NEXT12:image_segmentation",
+  "used_rows": 210,
+  "cohort": "NEXT12"
+}
