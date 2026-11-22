@@ -1,0 +1,40 @@
+{
+  "features": [
+    "top_left_square",
+    "top_middle_square",
+    "top_right_square",
+    "middle_left_square",
+    "middle_middle_square",
+    "middle_right_square"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [
+    "top_left_square",
+    "top_middle_square",
+    "top_right_square",
+    "middle_left_square",
+    "middle_middle_square",
+    "middle_right_square"
+  ],
+  "raw_sha256": "0b2ceb1c8cb0b062bc273e91f3130ba13dd8a7813b9728fc883e166ba4fbafb5",
+  "prepared_sha256": "d322b24e802471e438dd0efd2dd7ea97c24f01a959ecba83cbd32bce11dd7dba",
+  "original_rows": 958,
+  "original_features": 9,
+  "original_feature_names": [
+    "top_left_square",
+    "top_middle_square",
+    "top_right_square",
+    "middle_left_square",
+    "middle_middle_square",
+    "middle_right_square"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/101/tic+tac+toe+endgame",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "EXT7:tictactoe",
+  "used_rows": 958,
+  "cohort": "EXT7"
+}
