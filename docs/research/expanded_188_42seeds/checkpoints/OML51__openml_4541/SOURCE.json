@@ -1,0 +1,41 @@
+{
+  "features": [
+    "patient_nbr",
+    "race",
+    "gender",
+    "age",
+    "weight",
+    "admission_type_id"
+  ],
+  "target": "class",
+  "continuous": [
+    "patient_nbr"
+  ],
+  "categorical": [
+    "race",
+    "gender",
+    "age",
+    "weight",
+    "admission_type_id"
+  ],
+  "raw_sha256": "683805487812449c42e8f311806e831d39e817d6353da2a3ca71b3770aa693ba",
+  "prepared_sha256": "a90c1b0babc5ce2684458c99efbe8439f260f637b10a2c01d8ff012492e67f52",
+  "original_rows": 101766,
+  "original_features": 49,
+  "original_feature_names": [
+    "patient_nbr",
+    "race",
+    "gender",
+    "age",
+    "weight",
+    "admission_type_id"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://data.openml.org/datasets/0000/4541/dataset_4541.pq",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "OML51:openml_4541",
+  "used_rows": 101766,
+  "cohort": "OML51"
+}
