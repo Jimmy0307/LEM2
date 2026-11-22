@@ -1,0 +1,42 @@
+{
+  "features": [
+    "ri",
+    "na",
+    "mg",
+    "al",
+    "si",
+    "k"
+  ],
+  "target": "class",
+  "continuous": [
+    "ri",
+    "na",
+    "mg",
+    "al",
+    "si",
+    "k"
+  ],
+  "categorical": [],
+  "raw_sha256": "84e7e49a57bbd4cc46b2b9a5498a91ac8ea890e2adb988f3641e4a63ee079cb9",
+  "prepared_sha256": "e7fee4594aa9b1bd4d5abe68ba2040acd3453b6a57deb0a691a22369a33c7300",
+  "original_rows": 214,
+  "original_features": 9,
+  "original_feature_names": [
+    "ri",
+    "na",
+    "mg",
+    "al",
+    "si",
+    "k"
+  ],
+  "dropped_classes": {
+    "6": 9
+  },
+  "source_url": "https://archive.ics.uci.edu/dataset/42/glass+identification",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "EXT7:glass",
+  "used_rows": 205,
+  "cohort": "EXT7"
+}
