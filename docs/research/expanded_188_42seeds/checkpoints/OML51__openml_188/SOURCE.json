@@ -1,0 +1,40 @@
+{
+  "features": [
+    "Abbrev",
+    "Rep",
+    "Locality",
+    "Map_Ref",
+    "Latitude",
+    "Altitude"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [
+    "Abbrev",
+    "Rep",
+    "Locality",
+    "Map_Ref",
+    "Latitude",
+    "Altitude"
+  ],
+  "raw_sha256": "40d70a65201f73b1000552323048c7a80816693a4f8cdde66c2ce3971d80a8b8",
+  "prepared_sha256": "7b0f052f203478a311f4d063d0179f0c39709cdc3b16c9f730ac0381bc1ce5be",
+  "original_rows": 736,
+  "original_features": 19,
+  "original_feature_names": [
+    "Abbrev",
+    "Rep",
+    "Locality",
+    "Map_Ref",
+    "Latitude",
+    "Altitude"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://data.openml.org/datasets/0000/0188/dataset_188.pq",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "OML51:openml_188",
+  "used_rows": 736,
+  "cohort": "OML51"
+}
