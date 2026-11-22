@@ -1,0 +1,42 @@
+{
+  "features": [
+    "mcg",
+    "gvh",
+    "alm",
+    "mit",
+    "erl",
+    "pox"
+  ],
+  "target": "class",
+  "continuous": [
+    "mcg",
+    "gvh",
+    "alm",
+    "mit",
+    "erl",
+    "pox"
+  ],
+  "categorical": [],
+  "raw_sha256": "294c84c36ff131305fe1baaeb9c8c93f9a557d01d1ee676a77a31607ad3df516",
+  "prepared_sha256": "929b1141d59a0d8cf9c9272e5160113ef0bed9ef82f766cc535ae40d40f1a87d",
+  "original_rows": 1484,
+  "original_features": 8,
+  "original_feature_names": [
+    "mcg",
+    "gvh",
+    "alm",
+    "mit",
+    "erl",
+    "pox"
+  ],
+  "dropped_classes": {
+    "ERL": 5
+  },
+  "source_url": "https://archive.ics.uci.edu/dataset/110",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "NEXT12:yeast_localization",
+  "used_rows": 1479,
+  "cohort": "NEXT12"
+}
