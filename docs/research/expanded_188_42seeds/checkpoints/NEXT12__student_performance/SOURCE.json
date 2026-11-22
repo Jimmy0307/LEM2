@@ -1,0 +1,41 @@
+{
+  "features": [
+    "school",
+    "sex",
+    "age",
+    "address",
+    "famsize",
+    "pstatus"
+  ],
+  "target": "class",
+  "continuous": [
+    "age"
+  ],
+  "categorical": [
+    "school",
+    "sex",
+    "address",
+    "famsize",
+    "pstatus"
+  ],
+  "raw_sha256": "5be7b02f13f5800fddd66e2c8d834cd00ece14c552fb404def2397b31b63236b",
+  "prepared_sha256": "9e86751a4c678f7bdebd9e91d2caeb97cec7d3485cea6882f6dd68ed02544d43",
+  "original_rows": 649,
+  "original_features": 30,
+  "original_feature_names": [
+    "school",
+    "sex",
+    "age",
+    "address",
+    "famsize",
+    "pstatus"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/320",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "NEXT12:student_performance",
+  "used_rows": 649,
+  "cohort": "NEXT12"
+}
