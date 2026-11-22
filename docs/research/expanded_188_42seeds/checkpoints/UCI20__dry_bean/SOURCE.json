@@ -1,0 +1,40 @@
+{
+  "features": [
+    "area",
+    "perimeter",
+    "majoraxislength",
+    "minoraxislength",
+    "aspectratio",
+    "eccentricity"
+  ],
+  "target": "class",
+  "continuous": [
+    "area",
+    "perimeter",
+    "majoraxislength",
+    "minoraxislength",
+    "aspectratio",
+    "eccentricity"
+  ],
+  "categorical": [],
+  "raw_sha256": "c91a086bb4357e69409d23287ec22be1be9512145cead1d8ca988c918be38fcb",
+  "prepared_sha256": "4e12e0aa99a4b519b6992736c1c77a2d9158de8c0a4c2c059f7185cc66a9bc6f",
+  "original_rows": 13611,
+  "original_features": 16,
+  "original_feature_names": [
+    "area",
+    "perimeter",
+    "majoraxislength",
+    "minoraxislength",
+    "aspectratio",
+    "eccentricity"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/602",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "UCI20:dry_bean",
+  "used_rows": 13611,
+  "cohort": "UCI20"
+}
