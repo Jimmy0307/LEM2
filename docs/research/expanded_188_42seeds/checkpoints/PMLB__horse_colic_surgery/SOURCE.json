@@ -1,0 +1,40 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "5079ad94ed5d03057e754b97692f1675603d515ebd663fcf34b87c45103e449c",
+  "prepared_sha256": "971161413f238e674b2f08c471467083203206214a473c6e52cba10940601c48",
+  "original_rows": 368,
+  "original_features": 20,
+  "original_feature_names": [
+    "age_category",
+    "rectal_temperature",
+    "heart_rate",
+    "respiratory_rate",
+    "extremity_temperature",
+    "peripheral_pulse"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/horse_colic_surgery",
+  "dynamic_types": true,
+  "missing_treatments": {
+    "f0": "KEEP_CATEGORY",
+    "f1": "DROP_NUMERIC",
+    "f2": "DROP_NUMERIC",
+    "f3": "DROP_NUMERIC",
+    "f4": "KEEP_CATEGORY",
+    "f5": "KEEP_CATEGORY"
+  },
+  "excluded_features": [],
+  "dataset": "PMLB:horse_colic_surgery",
+  "used_rows": 256,
+  "cohort": "PMLB"
+}
