@@ -1,0 +1,40 @@
+{
+  "features": [
+    "fixed_acidity",
+    "volatile_acidity",
+    "citric_acid",
+    "residual_sugar",
+    "chlorides",
+    "free_sulfur_dioxide"
+  ],
+  "target": "class",
+  "continuous": [
+    "fixed_acidity",
+    "volatile_acidity",
+    "citric_acid",
+    "residual_sugar",
+    "chlorides",
+    "free_sulfur_dioxide"
+  ],
+  "categorical": [],
+  "raw_sha256": "428bd8df7313b159988405ae5e3be6d363993d73f7ffc2adedfdc1d496508191",
+  "prepared_sha256": "b3942c25b6fb923e06dfadb77ec2da100596d9a893c9832ee74f4190a83826b2",
+  "original_rows": 6497,
+  "original_features": 11,
+  "original_feature_names": [
+    "fixed_acidity",
+    "volatile_acidity",
+    "citric_acid",
+    "residual_sugar",
+    "chlorides",
+    "free_sulfur_dioxide"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/186",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "NEXT12:wine_quality_ordinal_to_binary",
+  "used_rows": 6497,
+  "cohort": "NEXT12"
+}
