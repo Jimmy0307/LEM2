@@ -1,0 +1,40 @@
+{
+  "features": [
+    "radius1",
+    "texture1",
+    "perimeter1",
+    "area1",
+    "smoothness1",
+    "compactness1"
+  ],
+  "target": "class",
+  "continuous": [
+    "radius1",
+    "texture1",
+    "perimeter1",
+    "area1",
+    "smoothness1",
+    "compactness1"
+  ],
+  "categorical": [],
+  "raw_sha256": "3487b754ff02c93cdc8a18afafe223961d9cfbfdb932e57483e52581042767d7",
+  "prepared_sha256": "680a55c503b6f7dccde3a730975deb0dfa4095f97063f2bda06bb30238e0bb61",
+  "original_rows": 569,
+  "original_features": 30,
+  "original_feature_names": [
+    "radius1",
+    "texture1",
+    "perimeter1",
+    "area1",
+    "smoothness1",
+    "compactness1"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/17",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "UCI20:breast_diagnostic",
+  "used_rows": 569,
+  "cohort": "UCI20"
+}
