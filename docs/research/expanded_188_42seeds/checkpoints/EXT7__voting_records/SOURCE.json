@@ -1,0 +1,40 @@
+{
+  "features": [
+    "handicapped_infants",
+    "water_project_cost_sharing",
+    "adoption_of_the_budget_resolution",
+    "physician_fee_freeze",
+    "el_salvador_aid",
+    "religious_groups_in_schools"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [
+    "handicapped_infants",
+    "water_project_cost_sharing",
+    "adoption_of_the_budget_resolution",
+    "physician_fee_freeze",
+    "el_salvador_aid",
+    "religious_groups_in_schools"
+  ],
+  "raw_sha256": "d065a84731217cc149d64fd09a2b0c0232f14916a3d6fd3f60b8313d1bbab1d8",
+  "prepared_sha256": "2cbc2db68ece81f7d3f5bf2fda6304abcc2a463b80e0af344da04382a11a1f18",
+  "original_rows": 435,
+  "original_features": 16,
+  "original_feature_names": [
+    "handicapped_infants",
+    "water_project_cost_sharing",
+    "adoption_of_the_budget_resolution",
+    "physician_fee_freeze",
+    "el_salvador_aid",
+    "religious_groups_in_schools"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/105/congressional+voting+records",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "EXT7:voting_records",
+  "used_rows": 435,
+  "cohort": "EXT7"
+}
