@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "73294fc30c2c50bf737c954d04cca3a1be69508535d3d52e2512ec88fefaad3f",
+  "prepared_sha256": "55ea995a6297942f5c7e7248872e824dd595b4f148b3b61cf24217c0eace3cc6",
+  "original_rows": 10992,
+  "original_features": 16,
+  "original_feature_names": [
+    "input1",
+    "input2",
+    "input3",
+    "input4",
+    "input5",
+    "input6"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/pendigits",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:pendigits",
+  "used_rows": 10992,
+  "cohort": "PMLB"
+}
