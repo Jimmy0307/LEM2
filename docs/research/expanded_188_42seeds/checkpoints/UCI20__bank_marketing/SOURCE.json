@@ -1,0 +1,41 @@
+{
+  "features": [
+    "age",
+    "job",
+    "marital",
+    "education",
+    "balance",
+    "previous"
+  ],
+  "target": "class",
+  "continuous": [
+    "age",
+    "balance",
+    "previous"
+  ],
+  "categorical": [
+    "job",
+    "marital",
+    "education"
+  ],
+  "raw_sha256": "94a5cb4b7d461dab12f7f6123723054911fbdd28d84a2c4ec92378af019be686",
+  "prepared_sha256": "f5dd20a057ca80faf2ae6ad13f5e620b0ade2b7c502b1884d1f1a08befe0c41e",
+  "original_rows": 45211,
+  "original_features": 16,
+  "original_feature_names": [
+    "age",
+    "job",
+    "marital",
+    "education",
+    "balance",
+    "previous"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/222",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "UCI20:bank_marketing",
+  "used_rows": 45211,
+  "cohort": "UCI20"
+}
