@@ -1,0 +1,40 @@
+{
+  "features": [
+    "pelvic_incidence",
+    "pelvic_tilt",
+    "lumbar_lordosis_angle",
+    "sacral_slope",
+    "pelvic_radius",
+    "degree_spondylolisthesis"
+  ],
+  "target": "class",
+  "continuous": [
+    "pelvic_incidence",
+    "pelvic_tilt",
+    "lumbar_lordosis_angle",
+    "sacral_slope",
+    "pelvic_radius",
+    "degree_spondylolisthesis"
+  ],
+  "categorical": [],
+  "raw_sha256": "7b98e6802c824d4c20a97f86174ef47db9171875888775a3884245443f7432d5",
+  "prepared_sha256": "648335343fa5e44ea32efbaca7ac2d05f7c3fcbec6b8e716396ddd0b3093657c",
+  "original_rows": 310,
+  "original_features": 6,
+  "original_feature_names": [
+    "pelvic_incidence",
+    "pelvic_tilt",
+    "lumbar_lordosis_angle",
+    "sacral_slope",
+    "pelvic_radius",
+    "degree_spondylolisthesis"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/212",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "NEXT12:vertebral_column",
+  "used_rows": 310,
+  "cohort": "NEXT12"
+}
