@@ -1,0 +1,41 @@
+{
+  "features": [
+    "customer",
+    "job_number",
+    "grain_screened",
+    "ink_color",
+    "proof_on_ctd_ink",
+    "blade_mfg"
+  ],
+  "target": "class",
+  "continuous": [
+    "job_number"
+  ],
+  "categorical": [
+    "customer",
+    "grain_screened",
+    "ink_color",
+    "proof_on_ctd_ink",
+    "blade_mfg"
+  ],
+  "raw_sha256": "73229849bf329e65467d2f34f853ae992aebb0a57c0aafb9ded3173fbd4863ca",
+  "prepared_sha256": "68ba27646a680c3159296018572d9291db481da35f8e28f36c286424f9ee9a57",
+  "original_rows": 540,
+  "original_features": 39,
+  "original_feature_names": [
+    "customer",
+    "job_number",
+    "grain_screened",
+    "ink_color",
+    "proof_on_ctd_ink",
+    "blade_mfg"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://data.openml.org/datasets/0000/6332/dataset_6332.pq",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "OML51:openml_6332",
+  "used_rows": 540,
+  "cohort": "OML51"
+}
