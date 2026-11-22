@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "2ec3aa555bffb8694d90f857e5728b63db5d648aa9de2999767428d0f97c0801",
+  "prepared_sha256": "05b1d08aad7ae9face9e94ff2a0de0ef5c3ba5b034bf68024532000af1155335",
+  "original_rows": 2000,
+  "original_features": 240,
+  "original_feature_names": [
+    "attribute_0",
+    "attribute_1",
+    "attribute_2",
+    "attribute_3",
+    "attribute_4",
+    "attribute_5"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/mfeat_pixel",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:mfeat_pixel",
+  "used_rows": 2000,
+  "cohort": "PMLB"
+}
