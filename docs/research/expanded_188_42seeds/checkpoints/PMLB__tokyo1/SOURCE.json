@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "cc56489ff84d05337006dd509c1c5cf3a531a408d4e7e4432f73e797fe06face",
+  "prepared_sha256": "3eba714e4c7471435e3b71fbd7e3d591ef4ec09da54ef2ee9c4ad5b73c82ee4e",
+  "original_rows": 959,
+  "original_features": 44,
+  "original_feature_names": [
+    "cpu_avg_user",
+    "cpu_avg_sys",
+    "cpu_avg_busy",
+    "cpu_avg_wait",
+    "cpu_avg_idle",
+    "cpu_avg_waste"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/tokyo1",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:tokyo1",
+  "used_rows": 959,
+  "cohort": "PMLB"
+}
