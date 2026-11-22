@@ -1,0 +1,41 @@
+{
+  "features": [
+    "height",
+    "width",
+    "aratio",
+    "local",
+    "url.images.buttons",
+    "url.likesbooks.com"
+  ],
+  "target": "class",
+  "continuous": [
+    "height",
+    "width",
+    "aratio"
+  ],
+  "categorical": [
+    "local",
+    "url.images.buttons",
+    "url.likesbooks.com"
+  ],
+  "raw_sha256": "9e45f2ba98f0f2cf71976cce2c79ec9bbe25c3890b1643ec03cb1288e9aa29d6",
+  "prepared_sha256": "fd0163e30dd3eec124e36f61c7b3589624e7ee5d8f43e14a8196614dca626885",
+  "original_rows": 3279,
+  "original_features": 1558,
+  "original_feature_names": [
+    "height",
+    "width",
+    "aratio",
+    "local",
+    "url.images.buttons",
+    "url.likesbooks.com"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://data.openml.org/datasets/0004/40978/dataset_40978.pq",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "OML51:openml_40978",
+  "used_rows": 3279,
+  "cohort": "OML51"
+}
