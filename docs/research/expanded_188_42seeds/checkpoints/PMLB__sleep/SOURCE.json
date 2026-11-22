@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "da326113ba8074a5931eb92db0c9acbe8a0ffff62aa916b11a761bdef11231ce",
+  "prepared_sha256": "0b1752884dc28c7bb2a6feeeb99d109f810b5c0a96368c49453ac65146efaf8b",
+  "original_rows": 105908,
+  "original_features": 13,
+  "original_feature_names": [
+    "V0",
+    "V1",
+    "V2",
+    "V3",
+    "V4",
+    "V5"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/sleep",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:sleep",
+  "used_rows": 105908,
+  "cohort": "PMLB"
+}
