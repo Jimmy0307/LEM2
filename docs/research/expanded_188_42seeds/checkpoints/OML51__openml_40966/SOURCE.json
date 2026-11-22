@@ -1,0 +1,40 @@
+{
+  "features": [
+    "DYRK1A_N",
+    "ITSN1_N",
+    "BDNF_N",
+    "NR1_N",
+    "NR2A_N",
+    "pAKT_N"
+  ],
+  "target": "class",
+  "continuous": [
+    "DYRK1A_N",
+    "ITSN1_N",
+    "BDNF_N",
+    "NR1_N",
+    "NR2A_N",
+    "pAKT_N"
+  ],
+  "categorical": [],
+  "raw_sha256": "7ced21880af8755dcbb7a11c8da181361b2948426151241a435a05b6f0cb07a9",
+  "prepared_sha256": "d38a44f963d6b47e4a981fc7d47ff9e377cd38762b4caa7bc690422574e75674",
+  "original_rows": 1080,
+  "original_features": 81,
+  "original_feature_names": [
+    "DYRK1A_N",
+    "ITSN1_N",
+    "BDNF_N",
+    "NR1_N",
+    "NR2A_N",
+    "pAKT_N"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://data.openml.org/datasets/0004/40966/dataset_40966.pq",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "OML51:openml_40966",
+  "used_rows": 1077,
+  "cohort": "OML51"
+}
