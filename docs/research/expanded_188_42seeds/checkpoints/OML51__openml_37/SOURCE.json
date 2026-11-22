@@ -1,0 +1,40 @@
+{
+  "features": [
+    "preg",
+    "plas",
+    "pres",
+    "skin",
+    "insu",
+    "mass"
+  ],
+  "target": "class",
+  "continuous": [
+    "preg",
+    "plas",
+    "pres",
+    "skin",
+    "insu",
+    "mass"
+  ],
+  "categorical": [],
+  "raw_sha256": "4afd14f6318d2954a00fbd58ebe8427b73aa6b7ef9a1aac1ec1b88372b4a5cef",
+  "prepared_sha256": "bb499bb5dbb7967833aae1f15b5d3a0dc1c9bc950a3829d9d5928dd15f002e90",
+  "original_rows": 768,
+  "original_features": 8,
+  "original_feature_names": [
+    "preg",
+    "plas",
+    "pres",
+    "skin",
+    "insu",
+    "mass"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://data.openml.org/datasets/0000/0037/dataset_37.pq",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "OML51:openml_37",
+  "used_rows": 768,
+  "cohort": "OML51"
+}
