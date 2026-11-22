@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "b70b7ac68a54d1ccd41bd24f11324c3af96b67541791fb9d8684cbdf151533c3",
+  "prepared_sha256": "de185e9468ba32494fa37729e9591c71b6c297783ad2ccde44ff23d2ef3c08de",
+  "original_rows": 5620,
+  "original_features": 64,
+  "original_feature_names": [
+    "input1",
+    "input2",
+    "input3",
+    "input4",
+    "input5",
+    "input6"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/optdigits",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:optdigits",
+  "used_rows": 5620,
+  "cohort": "PMLB"
+}
