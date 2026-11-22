@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "65b5b5ccc50a20d50008e94c78d1bc1a56aa1e02869a3d3f66d8e57c5aa8619e",
+  "prepared_sha256": "06890c3886f392301820bb64f4cca7c5ceda3ad3a8fe1e25f5c251ee7f1d7d41",
+  "original_rows": 327,
+  "original_features": 7,
+  "original_feature_names": [
+    "mcg",
+    "gvh",
+    "lip",
+    "chg",
+    "aac",
+    "alm1"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/ecoli",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:ecoli",
+  "used_rows": 327,
+  "cohort": "PMLB"
+}
