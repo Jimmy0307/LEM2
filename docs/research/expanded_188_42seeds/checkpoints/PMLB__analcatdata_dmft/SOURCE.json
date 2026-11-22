@@ -1,0 +1,29 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "2bdda1022a866fd7fa6307e667173c821c206ae007308fb54cf580d668e01e6c",
+  "prepared_sha256": "b9752fe0c702cdd3c01ccd6288660e3f115eaa919e221af85aca90d4ad1c11ba",
+  "original_rows": 797,
+  "original_features": 4,
+  "original_feature_names": [
+    "DMFT.Begin",
+    "DMFT.End",
+    "Gender",
+    "Ethnic"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/analcatdata_dmft",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:analcatdata_dmft",
+  "used_rows": 797,
+  "cohort": "PMLB"
+}
