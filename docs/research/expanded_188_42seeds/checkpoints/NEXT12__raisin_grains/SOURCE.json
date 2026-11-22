@@ -1,0 +1,40 @@
+{
+  "features": [
+    "area",
+    "majoraxislength",
+    "minoraxislength",
+    "eccentricity",
+    "convexarea",
+    "extent"
+  ],
+  "target": "class",
+  "continuous": [
+    "area",
+    "majoraxislength",
+    "minoraxislength",
+    "eccentricity",
+    "convexarea",
+    "extent"
+  ],
+  "categorical": [],
+  "raw_sha256": "175ecbc52d351e0e0d9aa00605de09425b3a4826c5db294fabcbc24bcba955ab",
+  "prepared_sha256": "51237801e914a693b1e446da05ba7c460f32883434b318128dabc7a8d1f24459",
+  "original_rows": 900,
+  "original_features": 7,
+  "original_feature_names": [
+    "area",
+    "majoraxislength",
+    "minoraxislength",
+    "eccentricity",
+    "convexarea",
+    "extent"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/850",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "NEXT12:raisin_grains",
+  "used_rows": 900,
+  "cohort": "NEXT12"
+}
