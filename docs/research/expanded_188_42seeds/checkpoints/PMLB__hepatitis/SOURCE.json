@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "87df1bbfb83b8204093ccd84ed18bb3695220c03aa4096f63a84cc5e136dbc0b",
+  "prepared_sha256": "85179105563e59406e7767b7bf0e90cb94e01c79bdb5d1b23ff995001db2c381",
+  "original_rows": 155,
+  "original_features": 19,
+  "original_feature_names": [
+    "AGE",
+    "SEX",
+    "STEROID",
+    "ANTIVIRALS",
+    "FATIGUE",
+    "MALAISE"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/hepatitis",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:hepatitis",
+  "used_rows": 155,
+  "cohort": "PMLB"
+}
