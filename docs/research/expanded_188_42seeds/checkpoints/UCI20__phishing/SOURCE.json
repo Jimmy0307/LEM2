@@ -1,0 +1,40 @@
+{
+  "features": [
+    "having_ip_address",
+    "url_length",
+    "shortining_service",
+    "having_at_symbol",
+    "double_slash_redirecting",
+    "prefix_suffix"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [
+    "having_ip_address",
+    "url_length",
+    "shortining_service",
+    "having_at_symbol",
+    "double_slash_redirecting",
+    "prefix_suffix"
+  ],
+  "raw_sha256": "35dd9aa6870643c292d68343d926869095292a7406d198305cae7435069b59c2",
+  "prepared_sha256": "83d74981a454e9ce3d89ca33ff1a1e89399e131e451cce9e7832ea02fde07a96",
+  "original_rows": 11055,
+  "original_features": 30,
+  "original_feature_names": [
+    "having_ip_address",
+    "url_length",
+    "shortining_service",
+    "having_at_symbol",
+    "double_slash_redirecting",
+    "prefix_suffix"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/327",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "UCI20:phishing",
+  "used_rows": 11055,
+  "cohort": "UCI20"
+}
