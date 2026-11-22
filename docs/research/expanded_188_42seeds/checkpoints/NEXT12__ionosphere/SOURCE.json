@@ -1,0 +1,40 @@
+{
+  "features": [
+    "attribute1",
+    "attribute2",
+    "attribute3",
+    "attribute4",
+    "attribute5",
+    "attribute6"
+  ],
+  "target": "class",
+  "continuous": [
+    "attribute1",
+    "attribute2",
+    "attribute3",
+    "attribute4",
+    "attribute5",
+    "attribute6"
+  ],
+  "categorical": [],
+  "raw_sha256": "04f2023ba4b9ff438d76d4d236762981795772d4f75f3bca1c8db0fcf26c83c1",
+  "prepared_sha256": "b906d2f075a2d2656caf115197942cb125943561cdc4162e88d66c56bed482f3",
+  "original_rows": 351,
+  "original_features": 34,
+  "original_feature_names": [
+    "attribute1",
+    "attribute2",
+    "attribute3",
+    "attribute4",
+    "attribute5",
+    "attribute6"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/52",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "NEXT12:ionosphere",
+  "used_rows": 351,
+  "cohort": "NEXT12"
+}
