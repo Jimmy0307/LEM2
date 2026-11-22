@@ -2,9 +2,9 @@
   "datasets": 188,
   "complete_datasets": 70,
   "expected_models": 31584,
-  "complete_models": 12124,
+  "complete_models": 12137,
   "expected_rows": 379008,
-  "complete_rows": 145488,
-  "missing_models": 19460,
+  "complete_rows": 145644,
+  "missing_models": 19447,
   "status": "INCOMPLETE"
 }

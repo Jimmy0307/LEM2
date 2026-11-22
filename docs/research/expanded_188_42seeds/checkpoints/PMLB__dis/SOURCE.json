@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "42944e333c4ceeac9c41dd50a3b84d54865e6302ce0133fb76c392916c9a7833",
+  "prepared_sha256": "b75e7146cace8b4f3093b1d43da4acc941597b30b3edf8d7f8c4427b1f0a7ca5",
+  "original_rows": 3772,
+  "original_features": 29,
+  "original_feature_names": [
+    "age",
+    "sex",
+    "on thyroxine",
+    "query on thyroxine",
+    "on antithyroid medication",
+    "sick"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/dis",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:dis",
+  "used_rows": 3772,
+  "cohort": "PMLB"
+}
