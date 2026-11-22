@@ -1,0 +1,25 @@
+{
+  "features": [
+    "f0",
+    "f1"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "546c047502ad902c099a627f831f338bc77e824d2e7cadcc2733bd3d6a0a949e",
+  "prepared_sha256": "c1cc66d939ed0d58aed96e0bcbbe51a985582007e37f237a7ff66a7200cbdefc",
+  "original_rows": 5300,
+  "original_features": 2,
+  "original_feature_names": [
+    "At1",
+    "At2"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/banana",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:banana",
+  "used_rows": 5300,
+  "cohort": "PMLB"
+}
