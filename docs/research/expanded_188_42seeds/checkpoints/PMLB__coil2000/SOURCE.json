@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "849976657dc371578819f225ce81eb9a76bd084ce743b5ff6753e415567c68dd",
+  "prepared_sha256": "b720fa1161c982b23b93e66ac6faa48006cc572ecd915da20112312f4c97d680",
+  "original_rows": 9822,
+  "original_features": 85,
+  "original_feature_names": [
+    "MOSTYPE",
+    "MAANTHUI",
+    "MGEMOMV",
+    "MGEMLEEF",
+    "MOSHOOFD",
+    "MGODRK"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/coil2000",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:coil2000",
+  "used_rows": 9822,
+  "cohort": "PMLB"
+}
