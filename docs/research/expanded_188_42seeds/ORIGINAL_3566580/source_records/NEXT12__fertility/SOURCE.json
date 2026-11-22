@@ -1,0 +1,40 @@
+{
+  "features": [
+    "season",
+    "age",
+    "child_diseases",
+    "accident",
+    "surgical_intervention",
+    "high_fevers"
+  ],
+  "target": "class",
+  "continuous": [
+    "season",
+    "age",
+    "child_diseases",
+    "accident",
+    "surgical_intervention",
+    "high_fevers"
+  ],
+  "categorical": [],
+  "raw_sha256": "ef58e865a95fe5e2d406eb2d70072b779952624c44832bc3a0a7c3a3acaa4b25",
+  "prepared_sha256": "6d53b9b14ad28c19deae962215656e252e497b08298583b9f8a04f4b73371aec",
+  "original_rows": 100,
+  "original_features": 9,
+  "original_feature_names": [
+    "season",
+    "age",
+    "child_diseases",
+    "accident",
+    "surgical_intervention",
+    "high_fevers"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/244",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "NEXT12:fertility",
+  "used_rows": 100,
+  "cohort": "NEXT12"
+}

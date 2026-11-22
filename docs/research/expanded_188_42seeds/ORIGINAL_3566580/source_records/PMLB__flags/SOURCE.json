@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "ff82ee2887c023ec8c2e43877a13022bafac66211cdd50453738947a702d447f",
+  "prepared_sha256": "3b6e00b50814248efc894d6fe3ad4f0b507e5cec21f286dea639a468639e3457",
+  "original_rows": 178,
+  "original_features": 43,
+  "original_feature_names": [
+    "bars",
+    "stripes",
+    "colors",
+    "red",
+    "green",
+    "blue"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/flags",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:flags",
+  "used_rows": 178,
+  "cohort": "PMLB"
+}

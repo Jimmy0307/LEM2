@@ -1,0 +1,28 @@
+{
+  "migrated_at_utc": "2026-11-22T07:52:37.839203+00:00",
+  "reason": "Program re-created via GitHub API: identical tree, new commit SHA; run.py contract compares git_revision exactly.",
+  "original_commit": "35665809f9173d5e7dccb93e69c4ed15b006d372",
+  "original_commit_tree_declared": "3dc3d175d349a6acb893093a3996c78bfffeb8dc",
+  "original_commit_locally_available": false,
+  "current_commit": "56e293c7ddcaadc39d44d6e7522842c2b04b33e0",
+  "current_tree_verified": "3dc3d175d349a6acb893093a3996c78bfffeb8dc",
+  "fields_changed": [
+    "git_revision"
+  ],
+  "original_manifest_frozen_copy": "ORIGINAL_3566580/RUN_MANIFEST.json",
+  "original_manifest_sha256": "b35260d79a3f2b0c2e6e083ba37d50670bc144cc813e7757abe3f882259a9fb3",
+  "registry_sha256": "fffa25190002a971d49e82a71a57dda9b376a3bd3892022250693f15968f4612",
+  "source_verification": {
+    "report": "/mnt/d/Desk/LEM2_expanded_resume/reports/02_source_verification.json",
+    "datasets": 12,
+    "statuses": [
+      "VERIFIED_WROTE_PKL"
+    ]
+  },
+  "fidelity_gate": {
+    "report": "/mnt/d/Desk/LEM2_expanded_resume/reports/03_fidelity_gate.json",
+    "verdict": "PASS",
+    "recomputed_models": 1559,
+    "problems": 0
+  }
+}

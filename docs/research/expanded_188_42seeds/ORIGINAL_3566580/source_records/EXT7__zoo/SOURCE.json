@@ -1,0 +1,44 @@
+{
+  "features": [
+    "hair",
+    "feathers",
+    "eggs",
+    "milk",
+    "airborne",
+    "aquatic"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [
+    "hair",
+    "feathers",
+    "eggs",
+    "milk",
+    "airborne",
+    "aquatic"
+  ],
+  "raw_sha256": "0d758320c34e46a2331e5a0b5c9cf41866bcdf9343ca108d6644584e24e0da7b",
+  "prepared_sha256": "460caf074154495ff77b7bf09d0d53de4624920e4615cfe03c7d1f9848f198de",
+  "original_rows": 101,
+  "original_features": 16,
+  "original_feature_names": [
+    "hair",
+    "feathers",
+    "eggs",
+    "milk",
+    "airborne",
+    "aquatic"
+  ],
+  "dropped_classes": {
+    "6": 8,
+    "3": 5,
+    "5": 4
+  },
+  "source_url": "https://archive.ics.uci.edu/dataset/111/zoo",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "EXT7:zoo",
+  "used_rows": 84,
+  "cohort": "EXT7"
+}

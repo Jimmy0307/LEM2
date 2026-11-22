@@ -1,0 +1,34 @@
+{
+  "features": [
+    "hobby",
+    "age",
+    "educational_level",
+    "marital_status"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [
+    "hobby",
+    "age",
+    "educational_level",
+    "marital_status"
+  ],
+  "raw_sha256": "c2f49ef91631db4292e11be296a0485fb716e50d098918c4a86002ea7e31a2cf",
+  "prepared_sha256": "df23117367d39e1f2667c96997e8f1abcb2e0cbc297e356d3ae20e3a8ac6eca6",
+  "original_rows": 160,
+  "original_features": 4,
+  "original_feature_names": [
+    "hobby",
+    "age",
+    "educational_level",
+    "marital_status"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/44",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "O3:Hayes-Roth",
+  "used_rows": 132,
+  "cohort": "O3"
+}

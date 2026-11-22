@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "968ed110c09661cd14d6865c5bf989a40ff0ecdecbaf640ff40704e8bc0a00bd",
+  "prepared_sha256": "92eaa9ccf67143c439f6ea107573f3f133ba8643e3ede2d749e82644b647c64a",
+  "original_rows": 163,
+  "original_features": 9,
+  "original_feature_names": [
+    "Refractive Index",
+    "Sodium",
+    "Magnesium",
+    "Aluminum",
+    "Silicon",
+    "Potassium"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/glass2",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:glass2",
+  "used_rows": 163,
+  "cohort": "PMLB"
+}
