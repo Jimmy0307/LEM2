@@ -1,0 +1,37 @@
+{
+  "features": [
+    "GLCM_Pan",
+    "Mean_G",
+    "Mean_R",
+    "Mean_NIR",
+    "SD_Plan"
+  ],
+  "target": "class",
+  "continuous": [
+    "GLCM_Pan",
+    "Mean_G",
+    "Mean_R",
+    "Mean_NIR",
+    "SD_Plan"
+  ],
+  "categorical": [],
+  "raw_sha256": "382052803b0b6c7746231791bea569ba841d4538735f97ac685d3f0dfd410a70",
+  "prepared_sha256": "a7fbce33d5040f9bce1e3a95b9922c904293f573508ec0abe54cba3fb13425d6",
+  "original_rows": 4839,
+  "original_features": 5,
+  "original_feature_names": [
+    "GLCM_Pan",
+    "Mean_G",
+    "Mean_R",
+    "Mean_NIR",
+    "SD_Plan"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://data.openml.org/datasets/0004/40983/dataset_40983.pq",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "OML51:openml_40983",
+  "used_rows": 4839,
+  "cohort": "OML51"
+}
