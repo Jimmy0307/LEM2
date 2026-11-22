@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "dee348826f188c8aaa54cb4537f9dc27afd14b077d8484f451f92f46ee255675",
+  "prepared_sha256": "1024bd86dd9616b6b076243f0cf3a6039e3d0bc22d5db9547a0de6ddb8b80f30",
+  "original_rows": 672,
+  "original_features": 9,
+  "original_feature_names": [
+    "Overtime",
+    "Favorite_Points",
+    "Underdog_Points",
+    "Pointspread",
+    "Favorite_Name",
+    "Underdog_name"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/profb",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:profb",
+  "used_rows": 672,
+  "cohort": "PMLB"
+}
