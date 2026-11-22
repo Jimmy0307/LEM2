@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "a96ca8012634e20d924624747b939c1b99f7b4ec36a7819c80c962d7a1fafe49",
+  "prepared_sha256": "368ba912b9ba1ceaceff3a1c26d477a99e3ade206e5e262d4f454cf8f5b767d3",
+  "original_rows": 476,
+  "original_features": 168,
+  "original_feature_names": [
+    "molecule_name",
+    "conformation_name",
+    "f1",
+    "f2",
+    "f3",
+    "f4"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/clean1",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:clean1",
+  "used_rows": 476,
+  "cohort": "PMLB"
+}
