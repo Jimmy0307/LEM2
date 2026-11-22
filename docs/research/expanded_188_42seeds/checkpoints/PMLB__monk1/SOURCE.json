@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "7486697a3be18ebaad546e5729db5d04326072cfa673436824aadc1b60b0fb7a",
+  "prepared_sha256": "ef0eb3eef9d173d6ce8ac781d34774901ba34a58c8e37cfcc323c79153492554",
+  "original_rows": 556,
+  "original_features": 6,
+  "original_feature_names": [
+    "Head shape",
+    "Body shape",
+    "Is smiling",
+    "Holding",
+    "Jacket color",
+    "Has tie"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/monk1",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:monk1",
+  "used_rows": 556,
+  "cohort": "PMLB"
+}
