@@ -1,0 +1,33 @@
+{
+  "features": [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [],
+  "raw_sha256": "98d0239c98afa3d94847cd792ce07a316e67927b5e7a178a521fea6a14914eea",
+  "prepared_sha256": "4ebacbb36ca4e0cef2295b7225caadbadc8e600ef930181b1d7e82a0aa0cea63",
+  "original_rows": 990,
+  "original_features": 13,
+  "original_feature_names": [
+    "Train or Test",
+    "Speaker Number",
+    "Sex",
+    "Feature 0",
+    "Feature 1",
+    "Feature 2"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://github.com/EpistasisLab/pmlb/tree/7c1f4bdc00136dc2e55c87fa6b8ba6e8af6d1a68/datasets/vowel",
+  "dynamic_types": true,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "PMLB:vowel",
+  "used_rows": 990,
+  "cohort": "PMLB"
+}
