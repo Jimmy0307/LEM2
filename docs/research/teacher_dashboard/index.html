@@ -72,6 +72,61 @@ details{border-top:1px solid var(--line);padding:10px 0}details:last-of-type{bor
 .links li span{display:block;color:var(--muted);font-size:13px}
 footer{max-width:1040px;margin:auto;padding:24px 20px 48px;color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
 @media (max-width:720px){.two{grid-template-columns:1fr}.brow{grid-template-columns:1fr}.top{position:static}.box{padding:12px 10px}.bt{padding-right:80px}}
+
+/* Accessibility: fixed light-on-light Q2 formula and baseline cards.
+   These are light cards even when prefers-color-scheme is dark. */
+#q2 .q2-readable-card {
+  background: #ffffff !important;
+  color: #1f2937 !important;
+  border: 1px solid #cbd5e1;
+  border-left: 4px solid #2563eb !important;
+  box-shadow: 0 2px 9px rgba(0, 0, 0, .12);
+}
+#q2 .q2-readable-card h3,
+#q2 .q2-readable-card p,
+#q2 .q2-readable-card div,
+#q2 .q2-readable-card li,
+#q2 .q2-readable-card strong,
+#q2 .q2-readable-card b {
+  color: #1f2937 !important;
+}
+#q2 .q2-readable-card a {
+  color: #16569c !important;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+#q2 .q2-readable-card a:hover { color: #0b3868 !important; }
+#q2 #q2-comparison-formula code {
+  display: block;
+  background: #eff6ff !important;
+  color: #172b42 !important;
+  padding: 10px 12px;
+  border: 1px solid #c7d7eb;
+  border-radius: 7px;
+  overflow-wrap: anywhere;
+}
+#q2 #q2-actual-benchmark table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff !important;
+}
+#q2 #q2-actual-benchmark table th {
+  background: #e7f0fc !important;
+  color: #172b42 !important;
+  border-bottom: 2px solid #9db2c9;
+}
+#q2 #q2-actual-benchmark table td {
+  background: #ffffff !important;
+  color: #253447 !important;
+  border-bottom: 1px solid #cbd5e1;
+}
+#q2 #q2-actual-benchmark table td b { color: #174f92 !important; }
+#q2 #q2-actual-benchmark table tr:hover td { background: #f2f7fd !important; }
+@media (max-width: 720px) {
+  #q2 .q2-readable-card { padding: 12px !important; }
+  #q2 #q2-actual-benchmark table { min-width: 690px; }
+}
+
 </style>
 </head>
 <body>
@@ -157,12 +212,12 @@ footer{max-width:1040px;margin:auto;padding:24px 20px 48px;color:var(--muted);fo
 <strong>比較基準更正：本節「0.24 pp、1.37 pp」不是聯邦－集中式的效益，也不是相對於多數類別的效益。</strong>
 <p><b>本表是歷史版5 Seeds數據</b>（集中式184份、IID181份、α=0.5有182份、α=0.1有182份；各情境成功來源數不同），不等於上面最新179份完整來源×42 Seeds的固定共同母體。</p>
 <p>這裡「平均落後最佳」的比較對象是<strong>同一資料集、同一情境，在六種決策策略中，根據Test Accuracy事後挑出的最高平均值</strong>；這只是用來描述六策略差異的 <em>Oracle gap（事後最佳落差）</em>。不能當部署效能，也不能說FM比集中式差多少。</p>
-<div class="box" style="background:#fffefb;margin:12px 0;padding:12px">
+<div class="box q2-readable-card" id="q2-comparison-formula" style="background:#fffefb;margin:12px 0;padding:12px">
 <strong>真正的計算基準（每個資料集各自比較，再跨來源等權平均）：</strong>
 <code style="display:block;white-space:normal;margin:7px 0">落後最佳(d,s,p) = MAX[同資料集d／同情境s／6種策略q的5-Seed平均Test Accuracy] − [策略p的5-Seed平均Test Accuracy]</code>
 <code style="display:block;white-space:normal">本格數值 = 該情境所有可用資料集的上述落差之算術平均；pp=百分點。</code>
 </div>
-<div class="box scroll" id="q2-actual-benchmark" style="background:#f2f8fb;border-left:4px solid #257d91;padding:16px">
+<div class="box scroll" id="q2-actual-benchmark" class="q2-readable-card" style="background:#f2f8fb;border-left:4px solid #257d91;padding:16px">
 <h3 style="margin:0 0 9px">實際「比較基準」是多少？（舊版5 Seeds，已從逐來源CSV重算）</h3>
 <p style="margin:5px 0 11px"><strong>基準不是固定集中式，而是每個資料集×情境中六個策略事後最高的5-Seed平均Accuracy，再跨資料集取平均。</strong>這裡直接列出基準的絕對值和FM本身的絕對值，避免只寫pp卻找不到分母。</p>
 <table class="t"><thead><tr><th>舊版情境</th><th>資料集</th><th>每來源六策略事後最高的平均Accuracy（基準）</th><th>FM平均Accuracy</th><th>平均差（基準−FM）</th></tr></thead><tbody>
