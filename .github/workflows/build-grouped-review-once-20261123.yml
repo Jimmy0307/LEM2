@@ -1,0 +1,60 @@
+name: One-time stratified expanded LEM2 research review
+on:
+  push:
+    branches:
+      - research/expanded-42seeds-20261120
+    paths:
+      - .github/workflows/build-grouped-review-once-20261123.yml
+permissions:
+  contents: write
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install analysis dependencies
+        run: python -m pip install --disable-pip-version-check 'numpy==2.3.5' 'pandas==2.2.3'
+      - name: Analyze all complete datasets and cohort structure
+        run: python tools/expanded_resume_20261122/build_grouped_research_review.py
+      - name: Validate dataset grain, no SHA in report, and sources
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd
+          import json
+          p=Path("docs/research/expanded_188_42seeds/report_catalog/20261123T114229/grouped_analysis")
+          d=json.loads((p/"RECEIPT.json").read_text())
+          assert d["snapshot"]=="20261123T114229"
+          assert d["complete_datasets"]==179
+          assert d["input_policy_rows"]==8592
+          assert d["input_best_rows"]==1432
+          assert d["case_studies"]==179
+          meta=pd.read_csv(p/"DATASET_CATALOG_HUMAN_188.csv")
+          assert len(meta)==188
+          assert (meta.cohort=="OML51").sum()==51
+          for fname in p.glob("*.csv"):
+              frame=pd.read_csv(fname,encoding="utf-8-sig")
+              assert not any("sha" in str(c).lower() for c in frame.columns),(fname,frame.columns.tolist())
+              assert "raw_sha256" not in fname.read_text(encoding="utf-8-sig")[:2000]
+          print("PASS: 188 catalog, 179 complete, 51 OpenML, 42-seed grouped tables")
+          PY
+      - name: Commit derived report files
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/research/expanded_188_42seeds/report_catalog/20261123T114229/grouped_analysis
+          git commit -m "data(report): publish stratified 179-dataset findings without SHA fields [skip ci]"
+          for i in 1 2 3 4 5; do
+            git fetch origin research/expanded-42seeds-20261120
+            git rebase origin/research/expanded-42seeds-20261120
+            if git push origin HEAD:research/expanded-42seeds-20261120; then exit 0; fi
+            sleep 6
+          done
+          exit 1
