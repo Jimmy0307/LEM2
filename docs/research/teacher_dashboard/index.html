@@ -77,9 +77,13 @@ footer{max-width:1040px;margin:auto;padding:24px 20px 48px;color:var(--muted);fo
 <body>
 <header class="top"><div class="in">
 <div class="brand">Federated LEM2 研究報告</div>
-<nav aria-label="主要導覽"><a href="#q1">1 19 欄</a><a href="#q2">2 誰比較好</a><a href="#q3">3 聯邦 vs 集中</a><a href="#q4">4 資料不均</a><a href="#q5">5 Coverage</a><a href="#q6">6 更多資料集</a><a href="./results/">逐筆結果表</a></nav>
+<nav aria-label="主要導覽"><a href="#q1">1 19 欄</a><a href="#q2">2 誰比較好</a><a href="#q3">3 聯邦 vs 集中</a><a href="#q4">4 資料不均</a><a href="#q5">5 Coverage</a><a href="#q6">6 更多資料集</a><a href="./expanded42/" style="font-weight:800;color:var(--link)">最新：188 資料集 × 42 Seeds</a><a href="./results/">逐筆結果表</a></nav>
 </div></header>
-<main>
+<main><aside class="warn" style="margin:18px 0 0;border-left-color:#2f7d63">
+<strong>最新研究快照（2026-11-23 11:42）｜188 個資料集、42 Seeds：</strong>
+已完成 <b>179/188</b> 資料集（30,078／31,584 模型）；原始特徵 ≤6 有 <b>26</b> 份，其中 25 份完整；原始特徵 >6 有 <b>162</b> 份，這一輪只使用最多六特徵，未來須重跑特徵擴張。
+<a class="btn" href="./expanded42/">開啟最新可搜尋資料集、Accuracy／Coverage／Conflict 網頁</a>
+<p style="font-size:13px;margin:8px 0 0">下面保留原本「老師六個問題」的歷史證據與研究協定；請勿把舊 5 Seeds、原三資料集 42 Seeds 和新 188 來源 42 Seeds 合併解讀。</p></aside>
 <h1>Federated LEM2｜老師六個問題的回答</h1>
 <p class="lead"><strong>本研究的主要對象是 Federated LEM2（聯邦式粗糙集規則學習）</strong>：我們要計算聯邦式在 IID、Non-IID 與不同 Client 條件下，六種規則決策策略的準確率、Coverage、Conflict 與適用性。<strong>Centralized／Classical LEM2 僅作對照基準</strong>，用於衡量分散學習造成的差距，不是主要優化目標。</p>
 <p>證據包括 <strong>181 個公開資料集完成四情境的全量實驗</strong>（各情境 5 seeds，來源規模上限 1,000,000 列）及最早三資料集的 42 seeds 比較。全量資料仍保留集中式紀錄以進行同條件配對；研究結論以聯邦三種情境為主，不能把不同批次的成績直接混算。</p>
