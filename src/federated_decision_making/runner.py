@@ -52,12 +52,11 @@ class Case:
 
 def _software_sha() -> str:
     """Hash installed package code identically on disk or in Spark ZIP archives."""
-    from importlib.metadata import PackageNotFoundError, version
     from importlib.resources import files
+    from federated_decision_making import __version__
     root=files('federated_decision_making')
     h=hashlib.sha256()
-    try: h.update(version('federated-decision-making').encode())
-    except PackageNotFoundError: h.update(b'uninstalled-source')
+    h.update(__version__.encode())
     def walk(node, prefix=''):
         for child in sorted(node.iterdir(), key=lambda x:x.name):
             relative=f'{prefix}/{child.name}' if prefix else child.name

@@ -3,3 +3,4 @@
 Independent of LEM2 implementation; adapter lives under plugins/lem2.py.
 """
 API_VERSION = '1.0'
+__version__ = '0.1.0'
