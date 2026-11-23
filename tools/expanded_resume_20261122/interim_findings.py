@@ -155,6 +155,8 @@ def main():
     done_bin = pd.cut(done_rows, bins, labels=labels, right=False).value_counts().reindex(labels)
     size_lines = '\n'.join(f'| {lab} | {int(all_bin[lab])} | {int(done_bin[lab])} | '
                            f'{100 * done_bin[lab] / all_bin[lab]:.0f}% |' for lab in labels)
+    incomplete_bins = '、'.join(f'{lab} 列（{int(done_bin[lab])}/{int(all_bin[lab])}）'
+                                for lab in labels if done_bin[lab] < all_bin[lab]) or '無'
     a = prim[prim.rule_variant == 'A_ALL_RULES']
     bullets = []
     for sc in SCEN:
@@ -194,7 +196,7 @@ def main():
 - 已記錄失敗：{len(failures)} 筆（全部狀態：{', '.join(f"{k}={v}" for k, v in failures.status.value_counts().items()) if not failures.empty else '無'}）
 
 ### 樣本偏誤（重要）
-排程依預估運算量由重到輕排序、並受記憶體限制，因此已完成集合**不是隨機子集**：最大的資料集尚未完成，許多小型資料集也仍在佇列中。
+排程依預估運算量由重到輕排序、並受記憶體限制，因此已完成集合**不是隨機子集**。尚未全部完成的大小區間：{incomplete_bins}。
 - 已完成資料集原始列數中位數 **{int(done_rows.median()):,}**；全部 188 個為 {int(all_rows.median()):,}
 
 | 原始列數 | 全部 | 已完整完成 | 完成比例 |
