@@ -1,0 +1,75 @@
+name: One-time expanded 42-seed 19-column research package
+on:
+  push:
+    branches:
+      - research/expanded-42seeds-20261120
+    paths:
+      - .github/workflows/build-expanded-19col-once-20261123.yml
+
+permissions:
+  contents: write
+
+jobs:
+  full19:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install report-only dependencies
+        run: python -m pip install --disable-pip-version-check 'numpy==2.3.5' 'pandas==2.2.3'
+      - name: Build complete dataset-policy and 19-column tables from locked 11:42 snapshot
+        run: |
+          python tools/expanded_resume_20261122/build_dataset_19col_package.py \
+            --snapshot docs/research/expanded_188_42seeds/interim \
+            --registry docs/research/full_scale_20261118/REGISTRY.csv \
+            --output docs/research/expanded_188_42seeds/report_catalog/20261123T114229/full42_generated
+      - name: Verify scientific source, counts, and 19-header contract
+        run: |
+          python - <<'PY'
+          import json, gzip, csv
+          from pathlib import Path
+          d = Path("docs/research/expanded_188_42seeds/report_catalog/20261123T114229/full42_generated")
+          receipt=json.loads((d/"BUILD_RECEIPT.json").read_text())
+          assert receipt["source_snapshot"]=="20261123T114229", receipt
+          assert receipt["complete_models"]==30078, receipt
+          assert receipt["result_rows"]==360936, receipt
+          assert receipt["catalog_rows"]==188, receipt
+          want=["dataset","seed","distribution","dirichlet_alpha","split_mode","system","client_count",
+                "selection_policy","train_rows","test_rows","rule_count","no_match_count","covered_count",
+                "test_coverage_pct","true_in_candidate_count","candidate_coverage_pct","accuracy_pct",
+                "balanced_accuracy_pct","conflict_rate_pct"]
+          total=0
+          for variant in ("A_ALL_RULES","B2_TRUE_AS_FALLBACK"):
+              p=d/f"FULL42_19COL_{variant}.csv.gz"
+              with gzip.open(p,"rt",encoding="utf-8") as f:
+                  reader=csv.DictReader(f)
+                  assert reader.fieldnames==want, reader.fieldnames
+                  n=sum(1 for _ in reader)
+              assert n==180468,(variant,n)
+              total+=n
+          assert total==360936
+          print("Verified 19-column 42-seed rows:",total)
+          PY
+      - name: Commit generated tables without restarting experiments
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/research/expanded_188_42seeds/report_catalog/20261123T114229/full42_generated
+          git commit -m "data(report): materialize full 42-seed 19-column research tables [skip ci]"
+          for i in 1 2 3 4 5; do
+            git fetch origin research/expanded-42seeds-20261120
+            git rebase origin/research/expanded-42seeds-20261120
+            if git push origin HEAD:research/expanded-42seeds-20261120; then
+              exit 0
+            fi
+            sleep 6
+          done
+          echo "Unable to publish after retries" >&2
+          exit 1
