@@ -1,0 +1,61 @@
+name: LEM2 conflict regime and non-monotonicity exploratory diagnostics
+on:
+  push:
+    branches:
+      - research/expanded-42seeds-20261120
+    paths:
+      - .github/workflows/lem2-conflict-regime-once-20261123.yml
+      - tools/expanded_resume_20261122/analyze_conflict_regimes_20261123.py
+permissions:
+  contents: write
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install descriptive analysis dependencies
+        run: python -m pip install --disable-pip-version-check 'numpy==2.3.5' 'pandas==2.2.3'
+      - name: Fit predeclared size bins and exploratory breakpoint with out-of-sample evaluation
+        run: python tools/expanded_resume_20261122/analyze_conflict_regimes_20261123.py
+      - name: Check contracts and refuse claims without paired evidence
+        run: |
+          python - <<'PY'
+          import json
+          import pandas as pd
+          from pathlib import Path
+          p=Path('docs/research/expanded_188_42seeds/report_catalog/20261123T114229/regime_exploration')
+          r=json.loads((p/'RECEIPT.json').read_text())
+          assert r['snapshot']=='20261123T114229'
+          assert r['complete_datasets']==179
+          t=pd.read_csv(p/'SIZE_REGIMES_179.csv')
+          assert len(t)==12 and t.groupby('scenario').n_datasets.sum().eq(179).all()
+          ladder=pd.read_csv(p/'WITHIN_SOURCE_SCALE_LADDER_1SEED.csv')
+          assert ladder.seeds.eq(1).all()
+          assert len(pd.read_csv(p/'SPEARMAN_DESCRIPTIVE.csv'))==3
+          assert len(pd.read_csv(p/'EXPLORATORY_CHANGEPOINT_CV.csv'))==9
+          for f in p.glob('*.csv'):
+              d=pd.read_csv(f,encoding='utf-8-sig')
+              assert not any('sha256' in c.lower() for c in d.columns),(f,d.columns.tolist())
+          print('PASS exploratory cross-source size and within-source one-seed ladder contracts')
+          PY
+      - name: Commit derived CSV and scientific caveat report only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/research/expanded_188_42seeds/report_catalog/20261123T114229/regime_exploration
+          git commit -m "data(research): report row-size regimes, exploratory breakpoints and ladder curves [skip ci]"
+          for i in 1 2 3 4 5; do
+            git fetch origin research/expanded-42seeds-20261120
+            git rebase origin/research/expanded-42seeds-20261120
+            if git push origin HEAD:research/expanded-42seeds-20261120; then exit 0; fi
+            sleep 5
+          done
+          exit 1
