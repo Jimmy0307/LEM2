@@ -289,6 +289,26 @@ function init(data){
  el("prev").addEventListener("click",()=>{page--;render();});
  el("next").addEventListener("click",()=>{page++;render();});
 }
+
+function loadOperationalStatus(){
+ fetch("./ops_progress.json",{cache:"no-store"}).then(res=>{if(!res.ok)throw Error("HTTP "+res.status);return res.json();}).then(record=>{
+  const v=record.local_reported,g=record.github_verified;
+  if(v.successful_models!==30078||v.timeout_records!==154||v.not_yet_attempted_models!==1352||
+   g.timeout_records!==98||record.delta.newly_reported_timeouts_without_checkpoint_bytes!==56||
+   !Array.isArray(record.per_incomplete_dataset)||record.per_incomplete_dataset.length!==9)throw Error("operational source mismatch");
+  el("opsSuccess").textContent=fmt(v.successful_models)+" / "+fmt(record.fixed_model_total);
+  el("opsTimeout").textContent=fmt(v.timeout_records);
+  el("opsPending").textContent=fmt(v.not_yet_attempted_models);
+  el("opsAttempted").textContent=fmt(v.attempted_models)+" / "+fmt(record.fixed_model_total);
+  const row=x=>"<tr><td><strong>"+esc(x.dataset)+"</strong></td><td>"+x.github_success+"</td><td>"+
+  x.github_timeout+"</td><td>"+x.local_timeout_reported+"</td><td>"+x.local_timeout_unverified+
+  "</td><td>"+x.remaining_without_reported_outcome+"</td><td>"+x.expected+"</td></tr>";
+  el("opsDatasets").innerHTML=record.per_incomplete_dataset.map(row).join("");
+  el("opsLoad").textContent="已讀取 2026-11-23 18:05 本機進度憑證；新增 56 筆 TIMEOUT 尚無逐配置 checkpoint。研究指標維持 11:42 已驗證快照。";
+ }).catch(e=>{el("opsLoad").textContent="最新運行進度憑證未通過檢查（"+e.message+"）；上列為 18:05 回報值，請以 GitHub 對帳檔確認。";});
+}
+
+loadOperationalStatus();
 fetch("./data.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw Error("HTTP "+r.status);return r.json()})
 .then(init).catch(e=>{
  el("loadStatus").textContent="載入或來源驗證失敗："+e.message+"。可使用下方 CSV 核對原始資料。";
