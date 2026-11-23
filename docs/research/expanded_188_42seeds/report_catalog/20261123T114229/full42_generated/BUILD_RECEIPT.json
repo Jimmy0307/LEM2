@@ -1,0 +1,16 @@
+{
+  "status": "INCOMPLETE",
+  "complete_models": 30078,
+  "expected_models": 31584,
+  "complete_datasets": 179,
+  "expected_datasets": 188,
+  "result_rows": 360936,
+  "catalog_rows": 188,
+  "dataset_policy_rows": 8652,
+  "scenario_best_rows": 1442,
+  "overall_winner_rows": 181,
+  "source_snapshot": "20261123T114229",
+  "source_42seed": "docs/research/expanded_188_42seeds/interim/RESULTS.csv.gz",
+  "source_metadata": "docs/research/full_scale_20261118/REGISTRY.csv",
+  "warning": "42-seed INCOMPLETE; class label identities not in aggregated metadata"
+}
