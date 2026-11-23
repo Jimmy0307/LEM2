@@ -37,7 +37,7 @@ details summary{cursor:pointer;color:#1d6575;margin:8px 0}
 <p>先前每個資料集最多只用 1,800 列；這一輪改用<strong>全量列數</strong>、同一套預先固定的協定，重跑 188 個去重後的公開資料集。每個資料集都跑 5 個 Seeds × 4 種情境（集中式、聯邦 IID、Dirichlet α=0.5、α=0.1），六種決策方法在同一套規則上比較。</p>
 <p><a href="https://github.com/Jimmy0307/LEM2/actions/runs/44381723802">全量 workflow run</a> · <a href="https://github.com/Jimmy0307/LEM2/actions/runs/44465026637">補跑 run</a> · <a href="https://github.com/Jimmy0307/LEM2/actions/runs/44381227952">Smoke run</a> · <a href="../data/full_scale_20261118/FULL_SCALE_REPORT.md">自動產生的中文報告</a> · <a href="https://github.com/Jimmy0307/LEM2/blob/research/full-scale-six-policy-20261118/docs/research/full_scale_20261118/PROTOCOL.md">預先固定的協定</a></p>
 </header>
-<main class="wrap">
+<main class="wrap"><section class="panel"><span class="section-tag">2026-11-23 · DATA VERSION SEPARATION</span><h2>本頁為歷史 5-Seed 實驗；新版 42-Seed 另有完整資料</h2><p>目前最新凍結快照：188 資料集中 179 完整，最大六個候選特徵。已區分原始特徵 ≤6（26）與原始特徵 >6（162），並可逐筆查 Accuracy、Coverage、Conflict。<a href="../expanded42/"><strong>前往新版 188 × 42 Seeds 互動報告</strong></a>。以下原有數字保留，不與新實驗混用。</p></section>
 
 <section class="panel"><span class="section-tag">00 · STATUS</span><h2>目前進度</h2>
 <p id="status" role="status" aria-live="polite">正在讀取實驗結果……</p>

@@ -1,3 +1,10 @@
+## 2026-11-23｜現行 42 Seeds 特徵分組展示（最新快照）
+- [教授互動頁：188 個資料集 × 42 Seeds × 特徵上限／分類績效](./expanded42/)：原始 Features ≤6：26 筆，25 完整；原始 Features >6：162 筆，154 完整。179/188 來源完成，30,078/31,584 模型已成功；9 筆尚待補跑。
+- 所有原始 Features >6 的資料集僅跑最多六特徵，屬 feasibility baseline；後續完整特徵訓練與 feature budget 消融屬未完成研究，不可將此輪數字誤稱全特徵結果。
+- 歷史 full_scale（5 Seeds）保留在原頁；新版資料採固定快照 20261123T114229；研究展示頁與表格不公開 SHA256。
+
+---
+
 ## 2026-11-19｜全量規模化：188 個去重後資料集 × 六種決策方法
 
 - [互動頁：最佳方法統計、分層、逐資料集、規模階梯](./full_scale/)；[自動產生的中文報告](./data/full_scale_20261118/FULL_SCALE_REPORT.md)；[預先固定的協定](https://github.com/Jimmy0307/LEM2/blob/research/full-scale-six-policy-20261118/docs/research/full_scale_20261118/PROTOCOL.md)。
