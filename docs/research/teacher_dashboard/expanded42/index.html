@@ -25,6 +25,7 @@
  <div class="split-caption"><div><b>Development：約 64%</b><p>學離散化切點、Reduct 與 LEM2 規則；聯邦式把這部分的 <em>Rows</em> 分給三個 Client。</p></div><div><b>Validation：約 16%</b><p>程式會切出並離散化，但本批 188 × 42 的六種策略評估<strong>未用這一組來選最優政策</strong>。</p></div><div><b>Test：約 20%</b><p>以未用於學習規則的 Test 資料量測 Accuracy／BA／Coverage／Conflict。所有四情境使用相同 Seed 的同一 Test。</p></div></div>
 </div>
 <p class="muted small">例如清理後有 10,000 Rows，通常約 6,400 Dev / 1,600 Val / 2,000 Test。實際筆數依類別分層抽樣取整；應以各資料集實際紀錄為準。<code>train_rows</code> 在本批 19 欄資料表代表 <strong>Development Rows（約 64%）</strong>，不是外層 80% Train。</p>
+<div class="research-note"><strong>與早期三資料集的 Full Data 實驗不同：</strong>歷史實驗頁有 <code>FULL_DATA</code>（訓練樣本回代評估）和 <code>HOLDOUT_80_20</code> 兩種模式；但本頁的 188 資料集 ×42 Seeds 只有 <code>NESTED_64_16_20</code>。歷史 Full Data 的回代 Accuracy 並不是未見樣本泛化指標，不能直接跟這一輪 Test Accuracy 混合比較。<a href="../federated_comparison/">查看歷史三資料集的 Full／Holdout 分別結果</a>。</div>
 <h3>Step 2｜同樣的 Test，拿來比較四種訓練架構／資料分布</h3>
 <div class="protocol-scenarios">
 <div><b>Centralized</b><span>64% Dev 全部集中</span><p>在單一 Development 資料上學 Classical Reduct＋LEM2，當成配對對照組。</p></div>
