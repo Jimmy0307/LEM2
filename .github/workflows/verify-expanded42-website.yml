@@ -1,0 +1,90 @@
+name: Verify expanded 188-dataset 42-seed website
+on:
+  push:
+    branches: [research/report-ready-dashboard-20261109]
+    paths:
+      - docs/research/teacher_dashboard/expanded42/**
+      - .github/workflows/verify-expanded42-website.yml
+permissions:
+  contents: read
+jobs:
+  website-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify static JSON and JavaScript
+        run: |
+          node --check docs/research/teacher_dashboard/expanded42/expanded42.js
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("docs/research/teacher_dashboard/expanded42")
+          data=json.loads((root/"data.json").read_text(encoding="utf-8"))
+          rows=data["rows"];m=data["meta"]
+          assert len(rows)==188
+          assert sum(r["features"]<=6 for r in rows)==26
+          assert sum(r["features"]>6 for r in rows)==162
+          assert sum(r["status"]=="COMPLETE" for r in rows)==179
+          assert sum(r["status"]=="COMPLETE" and r["features"]<=6 for r in rows)==25
+          assert sum(r["status"]=="COMPLETE" and r["features"]>6 for r in rows)==154
+          assert m["completeModels"]==30078 and m["expectedModels"]==31584
+          assert all(1<=r["usedFeatures"]<=6 for r in rows)
+          assert all(r["features"]<=6 or r["usedFeatures"]==6 for r in rows)
+          assert not any("sha256" in k.lower() for r in rows for k in r)
+          assert len(set(r["id"] for r in rows))==188
+          assert (root/"index.html").exists()
+          assert (root/"expanded42.css").exists()
+          assert (root/"expanded42.js").exists()
+          print("PASS: frozen 188 / 179 / 26 / 162 / 30,078 model contracts")
+          PY
+      - name: Install Chromium browser test
+        run: |
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Test 188-dataset search, feature groups, completeness, detail and mobile
+        run: |
+          python -m http.server 8765 --directory docs >/tmp/expanded42-http.log 2>&1 &
+          python - <<'PY'
+          import time
+          from playwright.sync_api import sync_playwright
+          url="http://127.0.0.1:8765/research/teacher_dashboard/expanded42/"
+          time.sleep(2)
+          with sync_playwright() as p:
+              browser=p.chromium.launch(headless=True)
+              for width,height in [(1280,800),(390,844)]:
+                  page=browser.new_page(viewport={"width":width,"height":height})
+                  errors=[]
+                  page.on("pageerror",lambda err:errors.append(str(err)))
+                  res=page.goto(url,wait_until="networkidle",timeout=60000)
+                  assert res.status==200,res.status
+                  page.wait_for_function("document.querySelector('#loadStatus').textContent.includes('驗證完成')",timeout=15000)
+                  assert page.locator("#datasetRows tr").count()==30
+                  assert "188／188" in page.locator("#showing").inner_text()
+                  page.select_option("#featureGroup","FULL")
+                  assert "26／188" in page.locator("#showing").inner_text()
+                  page.select_option("#completion","INCOMPLETE")
+                  assert "1／188" in page.locator("#showing").inner_text()
+                  page.select_option("#featureGroup","LIMITED")
+                  assert "8／188" in page.locator("#showing").inner_text()
+                  page.select_option("#completion","ALL")
+                  assert "162／188" in page.locator("#showing").inner_text()
+                  page.fill("#search","Bioresponse")
+                  assert "1／188" in page.locator("#showing").inner_text()
+                  page.locator("#datasetRows button[data-detail]").click()
+                  assert "Bioresponse" in page.locator("#detailTitle").inner_text()
+                  assert page.locator("#detailResults tr").count()==4
+                  page.select_option("#variant","B2_TRUE_AS_FALLBACK")
+                  assert page.locator("#detailResults tr").count()==4
+                  page.select_option("#scenario","FED_IID")
+                  assert page.locator("#datasetRows tr").count()==1
+                  assert not errors,errors
+                  overflow=page.evaluate("document.documentElement.scrollWidth - window.innerWidth")
+                  assert overflow<12,f"viewport={width}, overflow={overflow}"
+                  print("PASS browser",width,"px: load/search/groups/detail/variant/scenario/mobile")
+                  page.close()
+              browser.close()
+          PY
