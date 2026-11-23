@@ -1,0 +1,12 @@
+# Reference only: Docker ignores this alternative name by default.
+# Use "docker build -f Dockerfile.validation-first" with the root .dockerignore.
+.git
+.venv
+__pycache__
+.pytest_cache
+outputs
+docs
+research
+evidence
+real_data
+wheels

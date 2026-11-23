@@ -1,0 +1,39 @@
+name: LEM2 Validation-First research pilot (separate from frozen 188x42)
+on:
+  push:
+    branches:
+      - research/validation-first-20261123
+    paths:
+      - 'experiments/validation_first_20261123/**'
+      - 'tests/test_validation_first_20261123.py'
+      - 'Dockerfile.validation-first'
+      - '.github/workflows/validation-first-smoke-20261123.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  protocol-and-leakage-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned core dependencies and Python unit test tools
+        run: python -m pip install 'numpy==2.3.5' 'pandas==2.2.3' 'scipy==1.16.3' 'pytest==9.0.2'
+      - name: Compile new experiment module and its tests
+        run: python -m compileall -q experiments/validation_first_20261123 tests/test_validation_first_20261123.py
+      - name: Verify 80/20 invariance, policy selection leakage and same-model controls
+        run: python -m pytest -q tests/test_validation_first_20261123.py
+      - name: Check command line can start
+        run: python -m experiments.validation_first_20261123.run --help
+  docker-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Linux container (not an expensive full data run)
+        run: docker build -f Dockerfile.validation-first -t lem2-validation-first:smoke .
+      - name: Check container startup and CLI contract
+        run: docker run --rm lem2-validation-first:smoke --help

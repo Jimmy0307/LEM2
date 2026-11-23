@@ -1,0 +1,17 @@
+# Validation-first research pilot only. NOT the frozen 188x42 checkpoint runner.
+FROM python:3.12-slim
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PIP_DISABLE_PIP_VERSION_CHECK=1
+WORKDIR /app
+COPY requirements-core.txt ./requirements-core.txt
+RUN python -m pip install --no-cache-dir -r requirements-core.txt scipy==1.16.3 \
+ && groupadd -g 10001 researcher && useradd -u 10001 -g researcher -M researcher \
+ && mkdir -p /out && chown researcher:researcher /out
+COPY roughset/ ./roughset/
+COPY fedrs/ ./fedrs/
+COPY experiments/__init__.py ./experiments/__init__.py
+COPY experiments/validation_first_20261123/ ./experiments/validation_first_20261123/
+COPY teacher_demo/ ./teacher_demo/
+USER researcher
+VOLUME ["/out"]
+ENTRYPOINT ["python", "-m", "experiments.validation_first_20261123.run"]
+CMD ["--help"]
