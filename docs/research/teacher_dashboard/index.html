@@ -162,6 +162,18 @@ footer{max-width:1040px;margin:auto;padding:24px 20px 48px;color:var(--muted);fo
 <code style="display:block;white-space:normal;margin:7px 0">落後最佳(d,s,p) = MAX[同資料集d／同情境s／6種策略q的5-Seed平均Test Accuracy] − [策略p的5-Seed平均Test Accuracy]</code>
 <code style="display:block;white-space:normal">本格數值 = 該情境所有可用資料集的上述落差之算術平均；pp=百分點。</code>
 </div>
+<div class="box scroll" id="q2-actual-benchmark" style="background:#f2f8fb;border-left:4px solid #257d91;padding:16px">
+<h3 style="margin:0 0 9px">實際「比較基準」是多少？（舊版5 Seeds，已從逐來源CSV重算）</h3>
+<p style="margin:5px 0 11px"><strong>基準不是固定集中式，而是每個資料集×情境中六個策略事後最高的5-Seed平均Accuracy，再跨資料集取平均。</strong>這裡直接列出基準的絕對值和FM本身的絕對值，避免只寫pp卻找不到分母。</p>
+<table class="t"><thead><tr><th>舊版情境</th><th>資料集</th><th>每來源六策略事後最高的平均Accuracy（基準）</th><th>FM平均Accuracy</th><th>平均差（基準−FM）</th></tr></thead><tbody>
+<tr><td>集中式</td><td>184</td><td><b>60.90%</b></td><td>60.67%</td><td>0.24 pp</td></tr>
+<tr><td>聯邦IID</td><td>181</td><td><b>63.12%</b></td><td>61.75%</td><td>1.37 pp</td></tr>
+<tr><td>聯邦α=0.5</td><td>182</td><td><b>60.57%</b></td><td>57.29%</td><td>3.28 pp</td></tr>
+<tr><td>聯邦α=0.1</td><td>182</td><td><b>55.01%</b></td><td>46.25%</td><td>8.76 pp</td></tr>
+</tbody></table>
+<p style="font-size:13px"><b>資料：</b><a href="./data/six_questions_20261119/DATASET_SCENARIO_WITH_DIAGNOSTICS.csv">逐來源原始表</a>、<a href="./data/six_questions_20261119/Q2_WINS_AND_MARGINS.csv">六策略落差核對表</a>。以上逐來源先取最高再平均，與「先跨來源平均六策略，最後挑最高者」不同；並且不能和179份完整來源×42Seeds直接比較。</p>
+<p style="font-size:13px"><b>新版正式配對基準：</b>179完整來源×42Seeds的固定STV＋A集中式Accuracy=<b>60.15%</b>。Fed IID=<b>62.45%</b>（+2.30pp），α=.5=<b>59.02%</b>（−1.12pp），α=.1=<b>53.41%</b>（−6.73pp）；這是另外一套同共同來源、同Seed、同策略的配對比較，<a href="./expanded42/#protocol-verified">查看新實驗詳情</a>。</p>
+</div>
 <p><b>例如：</b>假設某資料集在IID情境，六種方法的最高5-Seed平均Accuracy為75%，FM只有73%，則FM落後該資料集事後最佳<b>2 pp</b>。每個資料集都算一次這種差距，最後取平均；首頁的<b>1.37 pp</b>是這類落差的平均，不代表FM的絕對準確率，也不是與集中式的差異。</p>
 <p><b>實驗報告應優先展示有明確對照基準的比較：</b>例如最新179份完整來源×42 Seeds，固定STV＋A版本：<b>集中式60.15% → Fed IID 62.45%（+2.30 pp）</b>，Fed α=0.5為59.02%（−1.12 pp），Fed α=0.1為53.41%（−6.73 pp）。這三個Δ的基準都是<strong>同一來源／同一Seed／同一策略下的集中式 STV＋A</strong>，不是六策略中的Test最佳值。若看B2，則需另外明寫「B2−A」且固定同一策略。<a href="./expanded42/#protocol-verified">查看最新完整配對與方法限制</a>。</p>
 </div>
