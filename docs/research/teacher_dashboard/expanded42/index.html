@@ -10,10 +10,54 @@
 <div class="eyebrow">STUDY INVENTORY · FROZEN 42-SEED INTERIM · 2026-11-23</div>
 <h1>188 個資料集：<br>六特徵基準實驗與研究限制</h1>
 <p>這一輪先維持<strong>最多六個候選特徵、三個 Client、共同 Target／Feature Schema</strong> 的既有實驗；原始特徵未超過六個者為完整特徵基準，超過六個者為受限特徵測試，未來須另外做特徵擴張消融。</p>
-<div class="quicklinks"><a href="#policy-zh">新：六策略／整體效益中文報告</a><a href="./timeout/" style="font-weight:800">新增：TIMEOUT／縮放診斷</a><a href="#protocol-verified">實際測試目的／64:16:20</a><a href="#coverage-research">Coverage／Conflict 深度分析</a><a href="#inventory">188 筆完整明細</a><a href="#findings">特徵分組</a><a href="#method">實驗方法與限制</a><a href="#downloads">下載已核驗資料</a></div>
+<div class="quicklinks"><a href="#terms-explained" style="font-weight:800">報告必讀：α／pp／六策略中文說明</a><a href="#policy-zh">新：六策略／整體效益中文報告</a><a href="./timeout/" style="font-weight:800">新增：TIMEOUT／縮放診斷</a><a href="#protocol-verified">實際測試目的／64:16:20</a><a href="#coverage-research">Coverage／Conflict 深度分析</a><a href="#inventory">188 筆完整明細</a><a href="#findings">特徵分組</a><a href="#method">實驗方法與限制</a><a href="#downloads">下載已核驗資料</a></div>
 </header>
 <main class="wrap new-wrap">
 
+<section class="panel" id="terms-explained" aria-label="教授報告先讀，Alpha、百分點、六策略與B2中文說明">
+<span class="section-tag">報告必讀 · 名詞、分組和數據判讀（繁體中文）</span>
+<h2>α=0.5、α=0.1、pp、FM／SV 到底是什麼？</h2>
+<p><strong>先記住：</strong>α 是用來模擬三個客戶端的「資料標籤分布」有多不均勻；FM／SV／STV／GS／PS／PG 是把命中規則轉成最後決策的六種策略；A／B2 是 TRUE 無條件規則的使用版本；<strong>pp 指百分點</strong>，不是預測策略。</p>
+<h3>1. α 控制「每個 Client 分到哪些類別」，不是訓練率或正確率</h3>
+<div class="table-wrap"><table class="matrix-table"><thead><tr><th>網頁標記</th><th>中文</th><th>怎麼分配64% Development</th><th>請對老師說</th></tr></thead><tbody>
+<tr><td>Centralized</td><td>集中式</td><td>全部 Development 在同一方學規則，不分為三個Client</td><td>對照基準；不存在聯邦客戶端分配</td></tr>
+<tr><td>Fed IID</td><td>聯邦、類別比例接近一致</td><td>按類別分層分配給3個Client，各方的類別比例接近整體</td><td>測試「分開學、合併規則」本身的影響</td></tr>
+<tr><td>Fed α=0.5／FED_A05</td><td>聯邦、中度標籤偏斜</td><td>每類資料按 Dirichlet(0.5,0.5,0.5) 的隨機比例分配</td><td>測試中度Non-IID是否使衝突增加、Accuracy下降</td></tr>
+<tr><td>Fed α=0.1／FED_A01</td><td>聯邦、高度標籤偏斜</td><td>每類資料按 Dirichlet(0.1,0.1,0.1) 分配，類別可能集中在少數Client</td><td>更容易出現單類別Client與 TRUE→類別規則</td></tr>
+</tbody></table></div>
+<div class="research-note"><strong>示意，不是實驗測得的比例：</strong>若有三類A／B／C，IID時三方都可能接近 33／33／34%；α=0.1 時則可能有一方 95% 是A、另一方主要是B。但α不是「10%資料」或「50%資料」，也不保證每次都長這樣。同一資料集、同Seed的四種情境共用Test，改變的是Development的分配與規則學習。</div>
+<h3>2. 六種決策策略：三個縮寫不要混成一個</h3>
+<div class="table-wrap"><table class="matrix-table"><thead><tr><th>縮寫（方便口頭說）</th><th>程式名稱</th><th>正式中文名稱</th><th>規則衝突時怎麼選</th><th>是否需逐列支持集運算</th></tr></thead><tbody>
+<tr><td><b>FM</b></td><td>FIRST_MATCH</td><td>首條命中法</td><td>取規則合併順序中第一條命中的規則</td><td>否</td></tr>
+<tr><td><b>SV</b></td><td>SIMPLE_VOTING</td><td>簡單多數投票</td><td>哪個類別獲得較多命中規則票數，就選哪個</td><td>否</td></tr>
+<tr><td><b>STV</b></td><td>STANDARD_VOTING</td><td>標準支持度加權投票</td><td>每條命中規則依 pooled Development 的正確支持度給予權重再加總</td><td>只需要規則支持度彙總，但目前程式仍建立共用支持矩陣</td></tr>
+<tr><td><b>GS</b></td><td>GLOBAL_STRENGTH</td><td>全域相對支持強度法</td><td>計算支持集聯集，再依類別訓練樣本數正規化</td><td>是</td></tr>
+<tr><td><b>PS</b></td><td>POPULATION_STANDARD</td><td>支持集合計法</td><td>比較各類別命中規則在訓練資料的支持集聯集大小</td><td>是</td></tr>
+<tr><td><b>PG</b></td><td>POPULATION_GLOBAL</td><td>全域人口正規化法</td><td>結合支持集聯集、類別大小與總規則支持度修正決策分數</td><td>是</td></tr>
+</tbody></table></div>
+<p class="muted small">FM、SV、STV、GS、PS、PG 是方便報告的簡寫；實際原始19欄CSV以完整英文 <code>selection_policy</code> 為準。六種方法不是六條規則；都在同一組LEM2規則生成後使用。STV的平均效能較穩定，GS在部分條件的Balanced Accuracy較好，但支持集策略也可能造成高運算成本。</p>
+<h3>3. A、B2、Accuracy、Coverage、Conflict、pp 分別看什麼？</h3>
+<div class="table-wrap"><table class="matrix-table"><thead><tr><th>欄位／符號</th><th>中文意思</th><th>讀表重點</th></tr></thead><tbody>
+<tr><td>A_ALL_RULES</td><td>A版本：全部規則</td><td>TRUE→類別規則與一般條件規則同時使用</td></tr>
+<tr><td>B2_TRUE_AS_FALLBACK</td><td>B2版本：TRUE規則只當備援</td><td>若已有具條件的規則命中，就暫時不使用TRUE規則；不重新訓練</td></tr>
+<tr><td>Accuracy</td><td>整體準確率</td><td>全部Test中，最後分類預測正確的比例；沒有命中規則時也以訓練集多數類別猜測</td></tr>
+<tr><td>Balanced Accuracy／BA</td><td>平衡準確率</td><td>先算每個真實類別的召回率，再平均，適合觀察類別不平衡下的表現</td></tr>
+<tr><td>Coverage</td><td>規則覆蓋率</td><td>Test中至少有一條規則命中的比例，<strong>不等於命中正確</strong></td></tr>
+<tr><td>Candidate Coverage</td><td>候選正確類別覆蓋率</td><td>正確類別存在於命中規則候選集合的Test比例，是事後診斷、不是部署可先知道的訊號</td></tr>
+<tr><td>Conflict</td><td>跨類別規則衝突率</td><td>Test中命中的規則指向至少兩個不同類別的比例；<strong>不等於錯誤率</strong></td></tr>
+<tr><td>pp</td><td>百分點（percentage points）</td><td>50%→60%＝<strong>+10pp</strong>；若算相對變化才是+20%。負號為下降</td></tr>
+<tr><td>Rule Count</td><td>規則數</td><td>聯邦合併去重後的IF–THEN規則條數，不等於選用Features數</td></tr>
+</tbody></table></div>
+<h3>4. 你要怎麼解釋這頁的結果？（固定標準加權投票）</h3>
+<div class="table-wrap"><table class="matrix-table"><thead><tr><th>情境</th><th>A Accuracy</th><th>B2 Accuracy</th><th>A Conflict</th><th>B2 Conflict</th><th>教授報告重點</th></tr></thead><tbody>
+<tr><td>集中式</td><td>60.15%</td><td>60.15%</td><td>1.26%</td><td>1.26%</td><td>對照基準，覆蓋率只有27.56%，多數Test無命中</td></tr>
+<tr><td>Fed IID</td><td>62.45%</td><td>62.45%</td><td>13.08%</td><td>13.08%</td><td>同來源配對Accuracy平均比集中式高2.30pp</td></tr>
+<tr><td>Fed α=0.5</td><td>59.02%</td><td>59.89%</td><td>27.20%</td><td>22.33%</td><td>中度不均衝突上升，B2減少4.87pp衝突</td></tr>
+<tr><td>Fed α=0.1</td><td>53.41%</td><td>54.94%</td><td>55.48%</td><td>33.93%</td><td>高度不均衝突特別高；B2減少21.55pp衝突，但未回到集中式Accuracy</td></tr>
+</tbody></table></div>
+<div class="research-note"><strong>數據來源口徑：</strong>179個完整資料集×42 Seeds；先對每份資料集取Seed平均，再跨資料集等權平均。總Accuracy與Conflict可以用不同分母理解；跨情境Accuracy的差要固定同一Policy、同一Variant、同來源同Seed比較。這不是188資料集全部完成，也不是事先使用16% Validation選出最優Policy的部署測試。</div>
+<p><strong>一分鐘口頭說明：</strong>「α代表三個客戶端資料類別分配的不均勻程度，0.1比0.5更偏斜。FM、SV、STV等是同一套LEM2規則上六種不同裁決方式，並不是六個模型。以標準加權投票為例，IID聯邦比集中式準確率平均高2.30個百分點；但α降到0.1時，規則衝突率升到55.48%。把無條件TRUE規則改當備援後，衝突降至33.93%，Accuracy回升至54.94%。因此目前的研究價值在理解規則合併增加覆蓋與衝突的取捨，以及改善裁決方式，而不是證明所有聯邦配置都比集中式好。」</p>
+</section>
 <section class="panel protocol-panel" id="protocol-verified" aria-label="188 資料集實際測試目的、切分與方法學契約">
 <span class="section-tag">RESEARCH CONTRACT · SOURCE-VERIFIED · READ THIS FIRST</span>
 <h2>這 188 個資料集，真正測試什麼？</h2>
