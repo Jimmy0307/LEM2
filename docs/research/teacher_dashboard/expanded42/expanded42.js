@@ -229,7 +229,7 @@ function init(data){
  if(data.rows?.length!==188||data.meta?.completeDatasets!==179||data.meta?.nOriginalLE6!==26||
  data.coverageConflict?.summary?.length!==24||data.rows.some(x=>x.usedFeatures>6))throw Error("研究快照欄位／筆數未通過驗證");
  source=data;
- el("loadStatus").textContent="已驗證 · 凍結快照 "+data.meta.snapshot_local+" · "+
+ el("loadStatus").textContent="驗證完成 · 凍結快照 "+data.meta.snapshot_local+" · "+
  data.meta.completeDatasets+"/"+data.meta.expectedDatasets+" 完整資料集";
  el("progressText").textContent="已完成模型 "+fmt(data.meta.completeModels)+" / "+fmt(data.meta.expectedModels)+
  "（"+fmt(100*data.meta.completeModels/data.meta.expectedModels,1)+"%）；另有 9 個資料集未完整。";
