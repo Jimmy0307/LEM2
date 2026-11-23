@@ -1,0 +1,8 @@
+cohort,n_datasets,n_completed_42_seed,original_above6,original_exact6,original_below6,used6,used_below6,manual_selected
+COMMERCE2,2,2,1,1,0,2,0,2
+EXT7,7,7,7,0,0,7,0,0
+NEXT12,12,12,10,1,1,11,1,2
+O3,3,3,0,1,2,1,2,0
+OML51,51,43,49,1,1,50,1,0
+PMLB,93,93,78,5,10,83,10,0
+UCI20,20,19,17,0,3,17,3,4
