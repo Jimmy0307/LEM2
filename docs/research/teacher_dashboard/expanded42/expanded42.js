@@ -225,7 +225,27 @@ function detail(id,scroll=true){
  '<div><b>'+esc(k)+'</b><span>'+esc(val)+'</span></div>').join("")+'</div>'+
  '<p class="selection"><b>實際選用原始特徵欄位：</b>'+esc(r.chosen.join("、")||"沒有公開名稱")+'</p>'+
  '<p class="muted small">原始目標標籤值需逐來源核實，現階段只列出類別數。三個 Clients 使用相同的已選欄位與 Target，不是平均分配 Features。</p>';
- el("detailFunnel").innerHTML=metricBars(selected,versions[v]+" · "+scenes[scCurrent])+
+ const splitMetric=metric(r,"CENTRALIZED","A_ALL_RULES")||
+ source.scenarioKeys.map(sc=>metric(r,sc,"A_ALL_RULES")).find(Boolean);
+if(splitMetric&&Number.isFinite(splitMetric.meanTrainRows)&&Number.isFinite(splitMetric.meanTestRows)){
+ const dev=splitMetric.meanTrainRows,test=splitMetric.meanTestRows;
+ const val=r.usedRows-dev-test;
+ const n=r.usedRows;
+ const devPct=100*dev/n,valPct=100*val/n,testPct=100*test/n;
+ el("detailSplitContract").innerHTML='<h3>本資料集實際 Dev／Val／Test 分割</h3>'+
+ '<div class="split-contract-kpis"><div><small>清理後可用 Rows</small><strong>'+fmt(n,0)+'</strong></div>'+
+ '<div><small>Development（真正學規則）</small><strong>'+fmt(dev,1)+'</strong><small>'+pct(devPct)+' · train_rows</small></div>'+
+ '<div><small>Validation（未用來選六策略）</small><strong>'+fmt(val,1)+'</strong><small>'+pct(valPct)+' · 用N−Dev−Test核對</small></div>'+
+ '<div><small>Test（本頁成績分母）</small><strong>'+fmt(test,1)+'</strong><small>'+pct(testPct)+' · test_rows</small></div></div>'+
+ '<p class="muted small">由同一資料集已觀測模型的 meanTrainRows、meanTestRows 和清理後 N 計算；'+
+ '若跨 Seed 存在分層取整差異，筆數為已跑 Seeds 的均值。Validation 由 N−Dev−Test 推導，並非報表原本獨立保存欄位。'+
+ '目前同一資料集四情境共用 Seed 的相同 Test，聯邦模型僅從 Development 分配三個 Client。</p>';
+}else{
+ el("detailSplitContract").innerHTML='<h3>本資料集實際 Dev／Val／Test 分割</h3>'+
+ '<p class="muted small">尚無成功配置可核對這份來源的 Dev／Test 實際筆數；'+
+ '研究協定預設外層80/20及內層80/20，約64/16/20。此處不以推估值冒充已觀測數字。</p>';
+}
+el("detailFunnel").innerHTML=metricBars(selected,versions[v]+" · "+scenes[scCurrent])+
  metricBars(metric(r,scCurrent,v==="A_ALL_RULES"?"B2_TRUE_AS_FALLBACK":"A_ALL_RULES"),"對照版本 · "+scenes[scCurrent]);
  el("detailResults").innerHTML=source.scenarioKeys.map(sc=>{
  const m=metric(r,sc,v);

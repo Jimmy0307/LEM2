@@ -97,6 +97,9 @@ jobs:
                   assert "154" in page.locator("#opsTimeout").inner_text()
                   assert "1,352" in page.locator("#opsPending").inner_text()
                   assert "30,078" in page.locator("#opsSuccess").inner_text()
+                  assert page.locator("#protocol-verified").count()==1
+                  assert "64%" in page.locator("#protocol-verified").inner_text()
+                  assert "Validation" in page.locator("#protocol-verified").inner_text()
                   assert page.locator("#datasetRows tr").count()==30
                   assert page.locator("#analysisRows tr").count()==4
                   assert page.locator("#variantTradeoff tr").count()==4
@@ -125,6 +128,9 @@ jobs:
                   assert "Bioresponse" in page.locator("#detailTitle").inner_text()
                   assert page.locator("#detailResults tr").count()==4
                   assert page.locator("#detailAll tr").count()==8
+                  assert "Development" in page.locator("#detailSplitContract").inner_text()
+                  assert "Validation" in page.locator("#detailSplitContract").inner_text()
+                  assert "Test" in page.locator("#detailSplitContract").inner_text()
                   page.select_option("#variant","B2_TRUE_AS_FALLBACK")
                   assert page.locator("#detailResults tr").count()==4
                   page.select_option("#scenario","FED_IID")
