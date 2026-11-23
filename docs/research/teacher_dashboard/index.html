@@ -87,6 +87,7 @@ footer{max-width:1040px;margin:auto;padding:24px 20px 48px;color:var(--muted);fo
 <h1>Federated LEM2｜老師六個問題的回答</h1>
 <div class="warn" style="margin:18px 0 12px;border-left-color:#226f83"><strong>最新方法學澄清：188 × 42 Seeds 並非用80%資料直接訓練。</strong>
 實際程式採外層80/20再切內層80/20，約64% Dev（規則學習）／16% Validation（保留但主批六策略未用它選法）／20% Test（Accuracy、Coverage、Conflict）。全量資料集代表不先限制 Rows 為1,800，<strong>不是100% Rows訓練</strong>。新版188資料集報告的「最佳策略」是從 Test 事後挑的描述性最高值，不是可部署的 ValidationBest。
+<a href="./expanded42/timeout/" style="display:inline-block;margin:10px 10px 0 0;font-weight:800">新增：Timeout/Scaling 工程診斷（181 來源 × 48 梯度）</a>
 <a class="btn" href="./expanded42/#protocol-verified">看實際流程、四個RQ與固定策略的配對結果</a></div>
 <p class="lead"><strong>本研究的主要對象是 Federated LEM2（聯邦式粗糙集規則學習）</strong>：我們要計算聯邦式在 IID、Non-IID 與不同 Client 條件下，六種規則決策策略的準確率、Coverage、Conflict 與適用性。<strong>Centralized／Classical LEM2 僅作對照基準</strong>，用於衡量分散學習造成的差距，不是主要優化目標。</p>
 <p>證據包括 <strong>181 個公開資料集完成四情境的全量實驗</strong>（各情境 5 seeds，來源規模上限 1,000,000 列）及最早三資料集的 42 seeds 比較。全量資料仍保留集中式紀錄以進行同條件配對；研究結論以聯邦三種情境為主，不能把不同批次的成績直接混算。</p>

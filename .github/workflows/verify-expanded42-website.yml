@@ -19,6 +19,7 @@ jobs:
       - name: Verify static JSON and JavaScript
         run: |
           node --check docs/research/teacher_dashboard/expanded42/expanded42.js
+          node --check docs/research/teacher_dashboard/expanded42/timeout/timeout.js
           python - <<'PY'
           import json
           from pathlib import Path
@@ -68,6 +69,24 @@ jobs:
           assert ops["claims"]["new_timeout_checkpoint_uploaded"] is False
           assert (root/"index.html").exists()
           assert (root/"expanded42.css").exists()
+          timeout=root/"timeout"
+          assert (timeout/"index.html").exists()
+          assert (timeout/"timeout.js").exists()
+          assert (timeout/"timeout.css").exists()
+          import gzip,hashlib,io
+          digests={"per_source_observed.csv.gz":"cd76a5bca6e9cee37dce5cfc9f94bf5b5e4d309955212db52dcb81afc4a05ffc",
+                   "per_source_scaling.csv.gz":"935e632e0da9aa62ec70fc9d314370259c03c1451a8f9bbfaca736c90f002090"}
+          source_csv={}
+          for name,digest in digests.items():
+              uncompressed=gzip.decompress((timeout/name).read_bytes())
+              assert hashlib.sha256(uncompressed).hexdigest()==digest,(name,"SHA mismatch")
+              source_csv[name]=list(csv.DictReader(io.StringIO(uncompressed.decode("utf-8"))))
+          assert len(source_csv["per_source_observed.csv.gz"])==181
+          assert len(source_csv["per_source_scaling.csv.gz"])==48
+          assert sum(x["degenerate_ladder"]=="True" for x in source_csv["per_source_scaling.csv.gz"])==11
+          assert sum(x["many_rules"]=="True" for x in source_csv["per_source_scaling.csv.gz"])==17
+          assert sum(int(float(x["timeouts"])) for x in source_csv["per_source_observed.csv.gz"])==70
+          print("PASS: original raw CSV SHA256 and timeout data contracts")
           assert (root/"expanded42.js").exists()
           print("PASS: frozen 188 / 179 / 26 / 162 / 30,078 model contracts")
           PY
@@ -139,6 +158,21 @@ jobs:
                   overflow=page.evaluate("document.documentElement.scrollWidth - window.innerWidth")
                   assert overflow<12,f"viewport={width}, overflow={overflow}"
                   print("PASS browser",width,"px: load/search/groups/detail/variant/scenario/mobile")
+                  timeout_res=page.goto(url+"timeout/",wait_until="networkidle",timeout=60000)
+                  assert timeout_res.status==200,timeout_res.status
+                  page.wait_for_function("document.querySelector('#dataStatus').textContent.includes('已驗證')",timeout=15000)
+                  assert page.locator("#scatterSvg circle").count()==181
+                  assert page.locator("#scaleRows tr").count()==48
+                  assert page.locator("#fastSlowCases tr").count()==7
+                  page.select_option("#scaleScenario","FED_A01")
+                  page.select_option("#tableScenario","FED_IID")
+                  assert page.locator("#scaleRows tr").count()==24
+                  page.select_option("#tableRisk","DEGENERATE")
+                  assert page.locator("#scaleRows tr").count()>=1
+                  assert not errors,errors
+                  timeout_overflow=page.evaluate("document.documentElement.scrollWidth - window.innerWidth")
+                  assert timeout_overflow<12,f"timeout viewport={width}, overflow={timeout_overflow}"
+                  print("PASS timeout browser",width,"px: source-backed scatter, CI scaling, filters, mobile")
                   page.close()
               browser.close()
           PY
