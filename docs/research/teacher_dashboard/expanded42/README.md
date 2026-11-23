@@ -1,3 +1,10 @@
+## 2026-11-23｜先看研究到底在測什麼
+- [方法學稽核：真正的 188 ×42 配對設計與 64/16/20](https://github.com/Jimmy0307/LEM2/blob/research/expanded-42seeds-20261120/docs/research/expanded_188_42seeds/review/WHAT_WAS_ACTUALLY_TESTED_20261123.md)：外層80/20+內層80/20，64% Dev、16% Val未用來選六策略、20% Holdout Test。
+- [研究網頁上方的 Research Contract](./#protocol-verified)：四個研究問題、固定決策策略之配對效果、42 Seeds 不是42-fold；逐資料集明細顯示已觀測的 Dev／Val／Test 筆數。
+- 舊三資料集 `FULL_DATA` 為回代（resubstitution），與 188 資料集的 holdout 不可合併檢定。
+
+---
+
 ## 2026-11-23 18:05｜操作進度與凍結實驗結果分離
 - GitHub 成功模型 30,078、179 來源完整（42-seed verified）。
 - 本機最新回報 TIMEOUT 154（GitHub 中已存證 98，額外 56 尚無逐 Seed checkpoint），另 1,352 模型無執行結果；成功率仍為 30,078/31,584。
