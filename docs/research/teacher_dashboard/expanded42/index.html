@@ -10,7 +10,7 @@
 <div class="eyebrow">STUDY INVENTORY · FROZEN 42-SEED INTERIM · 2026-11-23</div>
 <h1>188 個資料集：<br>六特徵基準實驗與研究限制</h1>
 <p>這一輪先維持<strong>最多六個候選特徵、三個 Client、共同 Target／Feature Schema</strong> 的既有實驗；原始特徵未超過六個者為完整特徵基準，超過六個者為受限特徵測試，未來須另外做特徵擴張消融。</p>
-<div class="quicklinks"><a href="./timeout/" style="font-weight:800">新增：TIMEOUT／縮放診斷</a><a href="#protocol-verified">實際測試目的／64:16:20</a><a href="#coverage-research">Coverage／Conflict 深度分析</a><a href="#inventory">188 筆完整明細</a><a href="#findings">特徵分組</a><a href="#method">實驗方法與限制</a><a href="#downloads">下載已核驗資料</a></div>
+<div class="quicklinks"><a href="#policy-zh">新：六策略／整體效益中文報告</a><a href="./timeout/" style="font-weight:800">新增：TIMEOUT／縮放診斷</a><a href="#protocol-verified">實際測試目的／64:16:20</a><a href="#coverage-research">Coverage／Conflict 深度分析</a><a href="#inventory">188 筆完整明細</a><a href="#findings">特徵分組</a><a href="#method">實驗方法與限制</a><a href="#downloads">下載已核驗資料</a></div>
 </header>
 <main class="wrap new-wrap">
 
@@ -99,6 +99,31 @@
 </section>
 
 <section class="panel" id="timeout-evidence"><span class="section-tag">LATEST · COMPUTATIONAL REPRODUCIBILITY</span><h2>逾時不是單純 Rows 過多：已新增 181 來源實測與 48 組縮放證據</h2><p>根據 2026-11-23 上傳的逐來源計時與 CI 梯度，44,819 Rows 的 openml_41027 多次超過 2,700 秒，但 1,000,000 Rows 的 openml_42769 在成功模型中最慢 87.8 秒。需區分 Rule Count、不同 Rule Match Pattern、Support-Union 決策計分，以及真正的 TIMEOUT 右設限，不能用單一 Rows 門檻描述。</p><div class="notice"><strong>審查限制：</strong>原報告的 (n^{2+g}) 是具條件的成本外推，不是普遍複雜度；其中 11/48 組 1,800→10,000 Rows 梯度屬退化案例，校正只有四組較高規則且全 CI 成功的資料。新網頁將實測與外推、CI 完成與超時分開繪圖，原本的 179 個完整資料集結果不變。</div><p><a href="./timeout/" style="font-size:17px;font-weight:800">查看完整 TIMEOUT 互動圖、48 組逐來源表和原始 CSV.gz</a></p></section>
+<section class="panel" id="policy-zh" aria-label="中文教授簡報：六種投票策略與衝突機制">
+<span class="section-tag">教授報告 · 六種規則衝突裁決 · 整體效益</span>
+<h2>衝突高的真正原因？六種決策策略有沒有價值？</h2>
+<p><strong>結論：</strong>目前179個完整來源（42 Seeds）的固定策略比較顯示，Fed IID可比集中式多約 <b>2.30pp Accuracy</b>，嚴重Non-IID下則產生「覆蓋增加、衝突增加、分類效能下降」的取捨。六種裁決方法不是六條LEM2 Rules，也不是六個Features；六方法只改變同一規則集的決策結果，不會直接改變Conflict。</p>
+<div class="cards"><div class="stat"><small>179完整來源 · α=.1 A衝突</small><strong>55.48%</strong><span>整個Test為分母</span></div><div class="stat"><small>179完整來源 · α=.1 B2衝突</small><strong>33.93%</strong><span>減少21.55pp</span></div><div class="stat"><small>179完整來源 · α=.1 B2標準法</small><strong>54.94%</strong><span>最高平均Accuracy，非統計勝出保證</span></div><div class="stat"><small>152來源×3Seeds · α=.1含TRUE衝突</small><strong>75%</strong><span>本機診斷回報，待原始CSV核驗</span></div></div>
+<h3>六種決策方法的中文名稱與結果（Accuracy；179來源×42 Seeds）</h3>
+<div class="table-wrap"><table class="matrix-table"><thead><tr><th>決策方式</th><th>集中式</th><th>聯邦IID</th><th>α=.5 A</th><th>α=.5 B2</th><th>α=.1 A</th><th>α=.1 B2</th></tr></thead><tbody>
+<tr><td>首條命中法</td><td>60.00%</td><td>61.48%</td><td>57.41%</td><td>58.18%</td><td>47.59%</td><td>50.66%</td></tr>
+<tr><td>簡單多數投票</td><td>60.00%</td><td>62.06%</td><td><b>59.72%</b></td><td>59.85%</td><td><b>54.52%</b></td><td>54.51%</td></tr>
+<tr><td>標準支持度加權投票</td><td>60.15%</td><td><b>62.45%</b></td><td>59.02%</td><td><b>59.89%</b></td><td>53.41%</td><td><b>54.94%</b></td></tr>
+<tr><td>全域相對支持強度法</td><td>60.10%</td><td>62.23%</td><td>57.19%</td><td>58.80%</td><td>49.58%</td><td>54.07%</td></tr>
+<tr><td>支持集合計法</td><td>60.15%</td><td>62.41%</td><td>58.61%</td><td>59.74%</td><td>52.44%</td><td>54.87%</td></tr>
+<tr><td>全域人口正規化法</td><td>60.10%</td><td>62.11%</td><td>56.38%</td><td>58.37%</td><td>46.28%</td><td>53.83%</td></tr>
+</tbody></table></div>
+<p class="muted small">同一來源42 Seeds取平均，再對179來源等權平均；A=全部規則，B2=TRUE規則備援。中度與重度Non-IID A版是簡單多數投票平均最高；B2版三個聯邦情境是標準支持度加權投票平均最高。但B2 α=.1與第二名僅差約0.07pp，尚未完成六策略間成對顯著性檢定。</p>
+<h3>新增152來源逐列診斷：TRUE規則「參與衝突」不等於「造成全部衝突」</h3>
+<div class="table-wrap"><table class="matrix-table"><thead><tr><th>情境</th><th>Conflict（Test為分母）</th><th>衝突列有TRUE參與</th><th>平均單類別客戶端數</th></tr></thead><tbody>
+<tr><td>集中式</td><td>1.5%</td><td>0%</td><td>0</td></tr><tr><td>聯邦IID</td><td>14.9%</td><td>0%</td><td>0</td></tr>
+<tr><td>聯邦α=.5</td><td>29.5%</td><td>23%</td><td>0.21</td></tr><tr><td>聯邦α=.1</td><td><b>63.9%</b></td><td><b>75%</b></td><td>1.28</td></tr>
+</tbody></table></div>
+<p><strong>機制：</strong>三客戶端規則直接UNION，即使IID也會讓不同類別規則同時命中。Non-IID下單類別Client增加，可能產生前件為TRUE的規則；B2讓TRUE只在沒有其他條件規則命中時才使用。在152來源子樣本，α=.1的Conflict由63.9%降至39.1%（<b>−24.8pp</b>），但不能說75%的衝突都由TRUE規則獨立造成。</p>
+<div class="notice"><strong>新研究切入點：</strong>152來源的α=.1 A衝突樣本中，候選包含真實類別的比例為90.6%，隨機挑候選猜對43.5%，最佳簡單多數投票猜對57.9%。提升14.4pp，但與候選上界尚差32.7pp。這是衝突裁決演算法可研究的空間，<strong>不是整套模型在所有Test上的Accuracy</strong>。</div>
+<div class="research-note"><b>兩種證據層級禁止混用：</b>上面的六策略整體Accuracy來自GitHub已驗證的179個完整來源、42Seeds。新增「有TRUE參與75%／衝突列57.9%」是使用者本機回報的152來源、Seed1–3診斷摘要，原始 <code>policy_analysis</code> CSV尚未進GitHub；且子樣本不超過1萬列，不能推廣至高維大型TIMEOUT來源。<b>不能因為策略排序就宣稱LEM2優於只猜多數類別</b>，還要補相同來源Seed的MAJORITY_ONLY與matched-only比較。</div>
+<p><a href="https://github.com/Jimmy0307/LEM2/blob/research/expanded-42seeds-20261120/docs/research/expanded_188_42seeds/review/PROFESSOR_BRIEF_CONFLICT_POLICY_20261123_ZH.md"><strong>開啟完整繁體中文教授報告與90秒口頭稿</strong></a></p>
+</section>
 <section class="panel" id="coverage-research"><span class="section-tag">03 · EXTENDED COVERAGE / CONFLICT EVIDENCE</span><h2>為什麼有規則命中，卻不一定能做出正確決策？</h2>
 <p>對於每一個資料集，在固定 <strong>42 個 Seed、同一分布與規則版本</strong> 下，先量測整個 Test Set 中的規則命中、正確決策是否在候選集合、無命中比例，以及同一物件被不同類別規則命中的衝突。這四個層級不能互相代替。</p>
 <div class="definition-grid">
