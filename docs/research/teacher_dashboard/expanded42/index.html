@@ -55,6 +55,21 @@
 <p>在相同資料集／分布／特徵設定下，B2 只允許 TRUE 空前件規則作備援。這不代表消除全部衝突，因此需要同時檢查 Candidate Coverage 和 Balanced Accuracy。下表為<strong>B2 − A 的資料集等權平均百分點差異</strong>。</p>
 <div class="table-wrap"><table class="matrix-table"><thead><tr><th>情境</th><th>Δ Test Coverage</th><th>Δ Candidate Coverage</th><th>Δ Conflict</th><th>Δ Covered-but-wrong</th><th>Δ 最佳 Accuracy</th><th>Δ 最佳 BA</th></tr></thead><tbody id="variantTradeoff"><tr><td colspan="7">等待讀取</td></tr></tbody></table></div>
 <div class="research-note"><strong>比較限制：</strong>「最佳 Accuracy / BA」指每資料集從六種決策策略的 Test 平均中事後取最大值，屬描述性上界，不能當成使用 Validation 選法後的部署績效；Coverage 與 Conflict 則是共同規則結構的指標，不由投票策略改變。</div>
+<h3>除了六特徵分組，還要比較 Rows、Class 數與特徵型態</h3>
+<p>下表以<strong>目前實際使用 Rows</strong>（非原始下載 Rows）、觀測類別數、特徵型態或來源分群。每筆資料集在本身的 42 Seeds 指標上先平均，再依資料集等權計算；同一來源家族的資料集可能相關，因此此表只是分層描述，不可當成獨立因果證據。</p>
+<div class="analysis-controls"><label>分層維度<select id="subgroupDimension"><option value="ROW_SIZE">實際使用 Rows</option><option value="CLASS_COUNT">決策類別數</option><option value="FEATURE_TYPE">特徵型態</option><option value="COHORT">資料來源群組</option></select></label></div>
+<p class="muted small" id="subgroupDescription">依本節上方選定的特徵組別、分布與規則版本重新統計。</p>
+<div class="table-wrap"><table class="matrix-table"><thead><tr><th>分層</th><th>完整資料集 n</th><th>Test Coverage</th><th>Candidate Coverage</th><th>真實類別不在候選集合的命中</th><th>No Match</th><th>Conflict</th><th>Coverage≥80% + Conflict≥50%</th></tr></thead><tbody id="subgroupRows"><tr><td colspan="8">等待分層統計…</td></tr></tbody></table></div>
+<div class="research-note">特徵是否超過六個與資料集規模／分類難度高度相關。即使某組 Conflict 較高，也不代表是六特徵截斷造成的。若某組少於五個資料集，表內會標示「小樣本」。</div>
+<h3>代表性案例：需要辨別兩種不同問題</h3>
+<div class="definition-grid case-cards">
+<article><h3>MNIST：規則幾乎無法覆蓋</h3><p><b>784 → 6 Features，70,000 Rows</b>。A 版四情境 Test Coverage 都是 <b>0%</b>，No Match 全部 <b>100%</b>；最高 Accuracy 約 11.25%，Balanced Accuracy 為 10%。這個案例提示「六特徵可能不足以留下有效的區辨資訊」，但沒有全特徵消融前，不能認定唯一原因。</p></article>
+<article><h3>Iris：覆蓋高卻高衝突</h3><p><b>原始 4 → 使用 4 Features</b>，因此不涉及六特徵截斷。在 α=0.1 的 A 版，Coverage <b>100%</b>、Candidate Coverage <b>97.78%</b>，但 Conflict <b>74.76%</b>；B2 的 Conflict 約下降 <b>52.62 pp</b>。顯示高衝突不必然來自高維截斷。</p></article>
+<article><h3>AI4I：有候選也未必容易選答案</h3><p><b>原始 6 → 使用 6 Features</b>。α=0.1 的 A 版 Coverage <b>99.86%</b>、Candidate Coverage <b>95.15%</b>、Conflict <b>55.87%</b>。B2 將衝突降低約 <b>38.20 pp</b>，但 Candidate Coverage 也下降 <b>9.12 pp</b>。</p></article>
+<article><h3>Bioresponse：極端高維截斷案例</h3><p><b>1,776 → 6 Features</b>。Centralized Coverage 只有 <b>2.09%</b>；α=0.1 時 Coverage 升至 <b>95.92%</b>，但 Candidate Coverage 為 <b>67.55%</b>，Conflict 為 <b>36.96%</b>。不能把「有規則命中」解讀成「有效分類」或宣稱已驗證完整 1,776 維模型。</p></article>
+<article><h3>Bank Marketing：高 Accuracy 也可能偏向多數類</h3><p><b>原始 16 → 使用 6 Features</b>；α=0.1 A 版 Coverage <b>94.97%</b>、Candidate <b>78.84%</b>、Conflict <b>55.80%</b>，事後最佳 Accuracy 約 <b>70.02%</b>，但 Balanced Accuracy 約 <b>50.32%</b>。類別不平衡使單看 Accuracy 有誤導風險。</p></article>
+<article><h3>Banana：只用 2 Features 也會轉變</h3><p><b>原始 2 → 使用 2 Features</b>，Centralized Coverage 僅 <b>0.38%</b>；α=0.1 A 版 Coverage <b>95.11%</b>、Candidate <b>76.31%</b>、Conflict <b>56.29%</b>。這是「所有非單調性皆由截成六維造成」的直接反例。</p></article>
+</div>
 <h3>風險樣本盤點：高 Coverage 不等於高有效性</h3>
 <p>以自訂的<strong>描述性篩選門檻</strong>找出「Coverage ≥80% 且 Conflict ≥50%」、「有規則命中卻不包含正確類別 ≥20 pp」、「No Match ≥50%」的資料集。門檻是閱讀輔助，不是已證明的自然臨界值。</p>
 <p class="muted small" id="riskCount">準備觀察樣本…</p>
