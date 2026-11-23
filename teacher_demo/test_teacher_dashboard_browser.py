@@ -36,6 +36,58 @@ def main():
             assert page.locator("main section[id^='q']").count() == 6
             assert page.locator('a[href="./results/"]').count() >= 1
             print("PROFESSOR_SIX_QUESTIONS_HOMEPAGE=PASS",flush=True)
+            # Dark/light accessibility regression: the Q2 benchmark table had
+            # two class attributes, causing headings and footnotes to inherit
+            # light-on-light colors. Check actual Chromium computed styles.
+            qa_selectors = [
+                "#q2-comparison-formula",
+                "#q2-comparison-formula strong",
+                "#q2-comparison-formula code",
+                "#q2-actual-benchmark",
+                "#q2-actual-benchmark h3",
+                "#q2-actual-benchmark p",
+                "#q2-actual-benchmark p strong",
+                "#q2-actual-benchmark thead th",
+                "#q2-actual-benchmark tbody td",
+                "#q2-actual-benchmark tbody td b",
+                "#q2-actual-benchmark p a",
+            ]
+            for scheme in ("dark", "light"):
+                page.emulate_media(color_scheme=scheme)
+                page.goto(report + "#q2-actual-benchmark",wait_until="domcontentloaded")
+                assert page.locator("#q2-actual-benchmark.q2-readable-card").count()==1
+                result=page.evaluate("""selectors => {
+                  const parse = s => {
+                    const v=s.match(/[\\d.]+/g);
+                    return v && v.length>=3 ? v.slice(0,3).map(Number) : null;
+                  };
+                  const lum = c => {
+                    const p=parse(c);
+                    if(!p)return NaN;
+                    const rgb=p.map(x=>{x=x/255;return x<=0.04045?x/12.92:Math.pow((x+0.055)/1.055,2.4);});
+                    return rgb[0]*.2126+rgb[1]*.7152+rgb[2]*.0722;
+                  };
+                  const bg = el => {
+                    while(el){
+                      const c=getComputedStyle(el).backgroundColor;
+                      if(c && !/rgba?\\([^)]*,\\s*0(?:\\.0+)?\\)/.test(c) && c!=='transparent')return c;
+                      el=el.parentElement;
+                    }
+                    return 'rgb(255,255,255)';
+                  };
+                  return selectors.map(selector=>{
+                    const el=document.querySelector(selector);
+                    if(!el)return {selector,missing:true};
+                    const fg=getComputedStyle(el).color,back=bg(el);
+                    const a=lum(fg),b=lum(back);
+                    return {selector,fg,back,ratio:(Math.max(a,b)+.05)/(Math.min(a,b)+.05)};
+                  });
+                }""", qa_selectors)
+                failures=[x for x in result if x.get("missing") or not (x.get("ratio",0)>=4.5)]
+                assert not failures, f"Q2 contrast {scheme}: {failures}"
+                print("Q2_TEXT_CONTRAST_"+scheme.upper()+"=PASS",flush=True)
+            page.emulate_media(color_scheme="light")
+            page.goto(report,wait_until="domcontentloaded")
             # Historical interactive 42-seed instrument remains accessible
             # as a separate technical view, not as the public homepage.
             legacy_report = report + "technical_report.html"
