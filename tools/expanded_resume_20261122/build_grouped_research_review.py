@@ -226,7 +226,7 @@ def main():
               "class_group","binary_imbalance_group","feature_retention_group",
               "source_url","status_42seed","completed_models_42seed","expected_models_42seed"]
     view=view[keepcols].rename(columns={"n_classes_int":"n_classes","status_42seed":"completion_42seed"})
-    nohash=lambda frame: ensure(not any("sha" in str(x).lower() for x in frame.columns),
+    nohash=lambda frame: ensure(not any(("sha256" in str(x).lower()) or str(x).lower().endswith("_sha") for x in frame.columns),
       "Presentation table includes SHA field")
     for frame in [view,by_group,by_winner,overview,cases]:
         nohash(frame)
