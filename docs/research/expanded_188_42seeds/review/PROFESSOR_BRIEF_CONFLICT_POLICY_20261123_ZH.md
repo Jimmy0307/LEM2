@@ -41,7 +41,7 @@
 
 **A（全部規則）下：**中／重度Non-IID均由簡單多數投票取得最高平均Accuracy。  
 **B2（TRUE規則僅備援）下：**Fed IID、α=.5、α=.1均由標準支持度加權投票取得最高平均Accuracy，且資料集平均名次在這三情境也最低。  
-**不可過度主張：**B2在α=.5時標準加權僅比簡單投票高**0.042pp**，α=.1僅比支持集合計高**0.069pp**。六方法間尚未做成對顯著性和等效性檢定，不能稱標準法「顯著優於全部方法」。
+**已重新核對推論統計：**新上傳的 `policy_ranking.csv` 包含179資料集配對 Wilcoxon（各方法 vs 同條件平均最佳）及 `policy_effect_size.csv` 的 Friedman檢定。B2 在 α=.5 時標準加權比簡單投票高 **0.0416pp**，未校正 Wilcoxon **p=0.209**，沒有足夠證據說兩者有差；B2 在 α=.1 時標準加權比支持集合計高 **0.0694pp**，未校正 Wilcoxon **p=3.76×10⁻⁶**，配對差異有統計證據，但平均實務幅度很小。原CSV沒有對五個事後top-policy比較進行多重檢定校正；如採保守Bonferroni×5，α=.1的差異仍小於0.05，但事後選top仍需謹慎。Friedman在八組情境／版本中均 p<0.001，說明至少部分策略有差異，不代表每兩者皆有顯著差異。
 
 ## 四、為什麼規則衝突率這麼高？
 
@@ -100,21 +100,21 @@
 
 ## 新增獨立診斷｜152 個來源 × Seeds 1–3：為什麼 Conflict 高？
 
-> **證據級別：使用者提供的本機執行摘要，尚未取得 `D:\Desk\LEM2_expanded_resume\policy_analysis\` 的原始四份 CSV／逐列重算證據，故以下是待原始資料推送後需複驗的診斷結果。**不能與179來源42-Seed全量結果直接加權或合併檢定。
+> **證據級別：GitHub 原始檔已上傳，並獨立重算主要指標。** 2026-11-23 commit `7dbbfb76137f1cd12436e599179bdfdbafcf023f` 包含 `policy_analysis/conflict_diag.csv`（3,648列）、`conflict_by_dataset.csv`（1,216列）、`conflict_summary.csv`（8列）、`policy_ranking.csv`（48列）與 `policy_effect_size.csv`（8列）；152個資料集×3 Seeds×4情境=1,824組擬合，A/B2 兩版本共3,648列。資料集×Seed×情境×版本沒有重複鍵，逐模型 `faithful_max_abs_diff_pct` 最大值為 **1.4210854715202004×10⁻¹⁴ pp**；以獨立計算程式依每資料集三Seed聚合後再跨152資料集等權平均，與上傳的 `conflict_summary.csv` 最大差異僅在浮點捨入範圍內（<1×10⁻¹²）。**注意：這確認現有CSV的內部一致性、程式所報精度與彙總算式，不代表獨立重新訓練1824組模型。** 此子樣本不可與179來源42-Seed全量結果直接加權或合併檢定。
 
-此新診斷另使用 152 個資料集、3個Seeds、4情境，總共 **1,824 個模型**，限定抽樣規模不超過一萬列；聲稱重算Accuracy與正式結果完全一致，但此說法仍需用逐列證據核驗。下列為使用者提供的摘要：
+此新診斷使用 152 個資料集、Seeds 1–3、4情境，總共 **1,824 個模型**，限定原始資料列數不超過一萬；同一模型有 A／B2 共兩列。下列數字直接來自上傳的原始CSV，且已獨立檢查分組加總與資料完整性：
 
 | 情境（抽樣診斷） | 整體 Test Conflict | 衝突列中有 TRUE 規則參與 | 每模型平均單類別Client數（Fed三客戶端） |
 |---|---:|---:|---:|
 | 集中式 | 1.5% | 0% | 0 |
 | 聯邦 IID | 14.9% | 0% | 0 |
-| 聯邦 α=.5 | 29.5% | 23% | 0.21 |
-| 聯邦 α=.1 | **63.9%** | **75%** | **1.28** |
+| 聯邦 α=.5 | 29.54% | 23.11% | 0.21 |
+| 聯邦 α=.1 | **63.85%** | **75.43%** | **1.28** |
 
 ### 對「最大元兇是 TRUE 規則」的精確陳述
 
-1. **TRUE 規則參與（involved）≠ TRUE 規則必然造成（caused）**。75% 是在所有衝突列中同時命中 TRUE 的比例；其中部分即使移除 TRUE，也可能因兩條非 TRUE 規則指向不同類別而繼續衝突，不能把 75% 稱為 TRUE 的因果貢獻。
-2. 在相同152資料集×3Seeds的α=.1診斷，A→B2使Conflict由 **63.9%→39.1%（−24.8個百分點）**。這提供較直接的規則使用機制對照（但是 B2 是「有非TRUE命中則遮蔽TRUE」，並非永久刪除TRUE規則）。
+1. **TRUE 規則參與（involved）≠ TRUE 規則必然造成（caused）**。75.43% 是在所有衝突列中同時命中 TRUE 的比例；其中部分即使移除 TRUE，也可能因兩條非 TRUE 規則指向不同類別而繼續衝突，不能把 75% 稱為 TRUE 的因果貢獻。
+2. 在相同152資料集×3Seeds的α=.1診斷，A→B2使Conflict由 **63.85%→39.14%（−24.71個百分點）**。這提供較直接的規則使用機制對照（但是 B2 是「有非TRUE命中則遮蔽TRUE」，並非永久刪除TRUE規則）。
 3. IID仍有14.9% Conflict且TRUE參與0%，說明**即使沒有空前件規則，合併不同Client學到的普通規則也會互相重疊**。
 4. **每模型1.28個單類Client**為本次診斷子樣本結果，不應推論所有188資料集或所有42Seeds必然如此。原主程式只有原分割函式擲出錯誤時才fallback至constrained partition，因此單類Client有可能出現在成功的原分割中。
 5. 六特徵上限與等寬三段離散化可能增加區域重疊，但**未做受控消融**，不能稱其已被證實造成此次衝突。
@@ -134,8 +134,17 @@
 - **RQ-TRUE：**完整拆解僅由 TRUE 造成的衝突、TRUE 與一般規則共同參與的衝突、純一般規則間衝突；還要量測 B2 在各型衝突的候選真實類別損失。
 - **RQ-RESOLVE：**用相同模型、相同Test的衝突樣本，研究六方法何時正確；與均勻隨機候選、固定多數類別、oracle candidate upper bound 比較，並保存 class-aware BA。
 - **RQ-BUDGET：**逐策略計時與記憶體，而不是只看Accuracy。GLOBAL_STRENGTH若對BA較有利，也要驗證其高成本是否值得。
-- **資料封版門檻：**先將 `POLICY_AND_CONFLICT.md`、`policy_ranking.csv`、`policy_effect_size.csv`、`conflict_summary.csv`、`conflict_by_dataset.csv` 推至研究分支；核對 1,824模型、152來源、seed1–3、正確率與原主結果對應關係後，才能把本章的「本機回報」標籤改成「原始CSV已驗證」。
+- **資料封版結果：**五個分析檔、逐模型 `conflict_diag.csv` 和生成腳本已由另一工作階段推至 GitHub commit `7dbbfb76`，且原始 3,648 列完成結構及彙總檢查。接下來仍需獨立運行從原始 checkpoint 到全部 CSV 的端到端重現，並對統計測試的多重比較做預先指定的校正；本次沒有重新啟動正在跑的主實驗。
 
+
+### 這次新增原始來源已可查核
+- [152來源×3Seeds的原始逐模型規則診斷（3,648列）](../policy_analysis/conflict_diag.csv)
+- [逐資料集衝突構成與決策策略正確率（1,216列）](../policy_analysis/conflict_by_dataset.csv)
+- [每情境A/B2衝突機制彙總（8列）](../policy_analysis/conflict_summary.csv)
+- [179來源六策略準確率、平衡準確率與Wilcoxon](../policy_analysis/policy_ranking.csv)
+- [8條件策略效果大小與Friedman檢定](../policy_analysis/policy_effect_size.csv)
+- [兩份19欄全配置總表與原始驗證記錄](../table_19col/SUMMARY_19COL.md)：A與B2各180,468列；目前已核對Git Blob大小及研究彙總文件，這次**未重新解壓並獨立重跑check_19**。
+- [逾時分析原始報告與兩張圖](../timeout_analysis/TIMEOUT_ANALYSIS.md)
 
 ## 八、給老師的90秒口頭說明稿
 
