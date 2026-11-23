@@ -1,0 +1,17 @@
+{
+  "snapshot": "20261123T114229",
+  "complete_datasets": 179,
+  "ladder_sources": 26,
+  "three_level_A01": 22,
+  "three_level_IID": 19,
+  "primary_statistic": "dataset-level paired mean of 42-seed differences",
+  "inference": "candidate threshold exploratory; no significance or physical phase transition asserted",
+  "limitations": [
+    "unbalanced source families",
+    "missing large/timeout cases",
+    "scale ladder seed 1001 only",
+    "scale ladder subsets not necessarily nested",
+    "first six features",
+    "candidate selection per outcome"
+  ]
+}

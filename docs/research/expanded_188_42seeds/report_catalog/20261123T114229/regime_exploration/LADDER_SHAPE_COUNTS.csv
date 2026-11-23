@@ -1,0 +1,7 @@
+﻿scenario,metric,n_three_levels,DECREASE,INCREASE,PEAK,VALLEY,PLATEAU_OR_SINGLE_STEP
+FED_IID,conflict,19,9,0,0,0,10
+FED_IID,accuracy,19,3,2,0,0,14
+FED_IID,coverage,19,13,1,0,0,5
+FED_A01,conflict,22,9,2,4,1,6
+FED_A01,accuracy,22,1,3,2,6,10
+FED_A01,coverage,22,3,0,2,2,15
