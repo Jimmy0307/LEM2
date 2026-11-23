@@ -1,0 +1,125 @@
+{
+  "schema": "lem2.operational_snapshot.v1",
+  "reported_at": "2026-11-23T18:05:00+08:00",
+  "provenance": "Operator-reported local aggregate; 56 newly timed-out original checkpoints not accessible here",
+  "fixed_model_total": 31584,
+  "github_verified": {
+    "successful_models": 30078,
+    "timeout_records": 98,
+    "datasets_complete": 179,
+    "as_of": "2026-11-23T11:42:29+08:00"
+  },
+  "local_reported": {
+    "successful_models": 30078,
+    "timeout_records": 154,
+    "attempted_models": 30232,
+    "not_yet_attempted_models": 1352,
+    "datasets_complete": 179,
+    "reported_benign_conflicts": 4,
+    "timeout_limit_sec": 2700,
+    "heavy_concurrency": 6,
+    "approx_free_ram_gb": 3
+  },
+  "delta": {
+    "newly_reported_timeouts_without_checkpoint_bytes": 56,
+    "additional_verified_success": 0
+  },
+  "per_incomplete_dataset": [
+    {
+      "dataset": "UCI20:adult_income",
+      "cohort": "UCI20",
+      "expected": 168,
+      "github_success": 4,
+      "github_timeout": 0,
+      "local_timeout_reported": 0,
+      "local_timeout_unverified": 0,
+      "remaining_without_reported_outcome": 164
+    },
+    {
+      "dataset": "OML51:openml_1169",
+      "cohort": "OML51",
+      "expected": 168,
+      "github_success": 0,
+      "github_timeout": 0,
+      "local_timeout_reported": 0,
+      "local_timeout_unverified": 0,
+      "remaining_without_reported_outcome": 168
+    },
+    {
+      "dataset": "OML51:openml_4135",
+      "cohort": "OML51",
+      "expected": 168,
+      "github_success": 0,
+      "github_timeout": 0,
+      "local_timeout_reported": 0,
+      "local_timeout_unverified": 0,
+      "remaining_without_reported_outcome": 168
+    },
+    {
+      "dataset": "OML51:openml_41027",
+      "cohort": "OML51",
+      "expected": 168,
+      "github_success": 2,
+      "github_timeout": 70,
+      "local_timeout_reported": 106,
+      "local_timeout_unverified": 36,
+      "remaining_without_reported_outcome": 60
+    },
+    {
+      "dataset": "OML51:openml_41162",
+      "cohort": "OML51",
+      "expected": 168,
+      "github_success": 0,
+      "github_timeout": 0,
+      "local_timeout_reported": 0,
+      "local_timeout_unverified": 0,
+      "remaining_without_reported_outcome": 168
+    },
+    {
+      "dataset": "OML51:openml_42732",
+      "cohort": "OML51",
+      "expected": 168,
+      "github_success": 0,
+      "github_timeout": 28,
+      "local_timeout_reported": 48,
+      "local_timeout_unverified": 20,
+      "remaining_without_reported_outcome": 120
+    },
+    {
+      "dataset": "OML51:openml_42733",
+      "cohort": "OML51",
+      "expected": 168,
+      "github_success": 0,
+      "github_timeout": 0,
+      "local_timeout_reported": 0,
+      "local_timeout_unverified": 0,
+      "remaining_without_reported_outcome": 168
+    },
+    {
+      "dataset": "OML51:openml_42734",
+      "cohort": "OML51",
+      "expected": 168,
+      "github_success": 0,
+      "github_timeout": 0,
+      "local_timeout_reported": 0,
+      "local_timeout_unverified": 0,
+      "remaining_without_reported_outcome": 168
+    },
+    {
+      "dataset": "OML51:openml_42742",
+      "cohort": "OML51",
+      "expected": 168,
+      "github_success": 0,
+      "github_timeout": 0,
+      "local_timeout_reported": 0,
+      "local_timeout_unverified": 0,
+      "remaining_without_reported_outcome": 168
+    }
+  ],
+  "claims": {
+    "original_188_42_seed_outputs_unchanged": true,
+    "new_timeout_checkpoint_uploaded": false,
+    "upload_scope": "Aggregate operation receipt and research website only",
+    "do_not_modify_scheduler_timeout": true
+  }
+}

@@ -1,3 +1,12 @@
+## 2026-11-23 18:05｜操作進度與凍結實驗結果分離
+- GitHub 成功模型 30,078、179 來源完整（42-seed verified）。
+- 本機最新回報 TIMEOUT 154（GitHub 中已存證 98，額外 56 尚無逐 Seed checkpoint），另 1,352 模型無執行結果；成功率仍為 30,078/31,584。
+- 網頁最新 operational 區塊載入 [ops_progress.json](./ops_progress.json)；與 11:42 的 42-seed Coverage/Conflict 科學指標來源分離。
+- 完整資料與 TIMEOUT 原始存證留在 GitHub research/expanded-42seeds-20261120 分支。
+- 本次不調整 timeout／本地排程，也不將 timeout 對應 Accuracy=0。
+
+---
+
 # Teacher-facing 188-dataset × 42-seed feature-cap audit
 Source snapshot: 20261123T114229, frozen. 179/188 complete, 30078/31584 models, 360936/379008 metric rows.
 - original ≤6: 26 datasets, 25 complete; used all original features (9 exactly 6, 17 below 6).
