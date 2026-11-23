@@ -127,6 +127,32 @@ footer{max-width:1040px;margin:auto;padding:24px 20px 48px;color:var(--muted);fo
   #q2 #q2-actual-benchmark table { min-width: 690px; }
 }
 
+
+/* Q2 complete contrast fix: explicit ID rules also protect against class regressions. */
+#q2 #q2-actual-benchmark,
+#q2 #q2-comparison-formula {
+  background: #ffffff !important;
+  color: #1f2937 !important;
+  border: 1px solid #cbd5e1 !important;
+  border-left: 4px solid #2563eb !important;
+}
+#q2 #q2-actual-benchmark :is(h1,h2,h3,h4,p,span,div,strong,b,small,em,li),
+#q2 #q2-comparison-formula :is(h1,h2,h3,h4,p,span,div,strong,b,small,em,li) {
+  color: #1f2937 !important;
+}
+#q2 #q2-actual-benchmark :is(a,a:visited),
+#q2 #q2-comparison-formula :is(a,a:visited) {
+  color: #17569a !important;
+}
+#q2 #q2-actual-benchmark a:hover,
+#q2 #q2-comparison-formula a:hover {
+  color: #0a3668 !important;
+}
+#q2 #q2-actual-benchmark table th { color: #172b42 !important; background: #e7f0fc !important; }
+#q2 #q2-actual-benchmark table td { color: #253447 !important; background: #fff !important; }
+#q2 #q2-actual-benchmark table td b { color: #174f92 !important; }
+#q2 #q2-comparison-formula code { color: #172b42 !important; background: #eff6ff !important; }
+
 </style>
 </head>
 <body>
@@ -217,7 +243,7 @@ footer{max-width:1040px;margin:auto;padding:24px 20px 48px;color:var(--muted);fo
 <code style="display:block;white-space:normal;margin:7px 0">落後最佳(d,s,p) = MAX[同資料集d／同情境s／6種策略q的5-Seed平均Test Accuracy] − [策略p的5-Seed平均Test Accuracy]</code>
 <code style="display:block;white-space:normal">本格數值 = 該情境所有可用資料集的上述落差之算術平均；pp=百分點。</code>
 </div>
-<div class="box scroll" id="q2-actual-benchmark" class="q2-readable-card" style="background:#f2f8fb;border-left:4px solid #257d91;padding:16px">
+<div class="box scroll q2-readable-card" id="q2-actual-benchmark" style="background:#f2f8fb;border-left:4px solid #257d91;padding:16px">
 <h3 style="margin:0 0 9px">實際「比較基準」是多少？（舊版5 Seeds，已從逐來源CSV重算）</h3>
 <p style="margin:5px 0 11px"><strong>基準不是固定集中式，而是每個資料集×情境中六個策略事後最高的5-Seed平均Accuracy，再跨資料集取平均。</strong>這裡直接列出基準的絕對值和FM本身的絕對值，避免只寫pp卻找不到分母。</p>
 <table class="t"><thead><tr><th>舊版情境</th><th>資料集</th><th>每來源六策略事後最高的平均Accuracy（基準）</th><th>FM平均Accuracy</th><th>平均差（基準−FM）</th></tr></thead><tbody>
