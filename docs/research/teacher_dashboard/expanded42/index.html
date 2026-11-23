@@ -10,7 +10,7 @@
 <div class="eyebrow">STUDY INVENTORY · FROZEN 42-SEED INTERIM · 2026-11-23</div>
 <h1>188 個資料集：<br>六特徵基準實驗與研究限制</h1>
 <p>這一輪先維持<strong>最多六個候選特徵、三個 Client、共同 Target／Feature Schema</strong> 的既有實驗；原始特徵未超過六個者為完整特徵基準，超過六個者為受限特徵測試，未來須另外做特徵擴張消融。</p>
-<div class="quicklinks"><a href="#inventory">篩選 188 資料集</a><a href="#findings">分組發現</a><a href="#method">實驗方法與限制</a><a href="#downloads">下載已核驗資料</a></div>
+<div class="quicklinks"><a href="#coverage-research">Coverage／Conflict 深度分析</a><a href="#inventory">188 筆完整明細</a><a href="#findings">特徵分組</a><a href="#method">實驗方法與限制</a><a href="#downloads">下載已核驗資料</a></div>
 </header>
 <main class="wrap new-wrap">
 <section class="panel"><span class="section-tag">01 · STUDY STATUS</span>
@@ -29,31 +29,71 @@
 <div class="table-wrap"><table><thead><tr><th>特徵群組</th><th>n</th><th>Central Accuracy</th><th>α=0.1 Accuracy</th><th>α=0.1 Coverage</th><th>α=0.1 Conflict</th></tr></thead><tbody id="groupSummary"><tr><td colspan="6">載入分組統計中…</td></tr></tbody></table></div>
 <p class="muted small">可讀圖結論：整體非 IID 下 Coverage 可能上升、Conflict 同時增大；此現象需要檢查有效類別支持、空前件規則與候選決策，而不是直接推論六特徵造成反曲線。</p>
 </section>
-<section class="panel" id="inventory"><span class="section-tag">03 · FULL DATASET DIRECTORY</span><h2>188 個資料集可搜尋／分組／比較</h2>
-<p>下表顯示原始 Rows、實驗 Rows、原始與使用特徵、分類標籤類別數，以及目前選定的 <strong>Scenario × Rule Variant</strong> 之最佳 Accuracy、Test Coverage、Conflict。點選資料列詳情可展開四種情境的完整比較。</p>
+
+<section class="panel" id="coverage-research"><span class="section-tag">03 · EXTENDED COVERAGE / CONFLICT EVIDENCE</span><h2>為什麼有規則命中，卻不一定能做出正確決策？</h2>
+<p>對於每一個資料集，在固定 <strong>42 個 Seed、同一分布與規則版本</strong> 下，先量測整個 Test Set 中的規則命中、正確決策是否在候選集合、無命中比例，以及同一物件被不同類別規則命中的衝突。這四個層級不能互相代替。</p>
+<div class="definition-grid">
+<article><h3>① Test Coverage</h3><p class="formula">Covered / Test × 100%</p><p>測試資料中，至少一條規則的前件條件成立的比例；<strong>只代表有命中，不代表類別正確</strong>。</p></article>
+<article><h3>② Candidate Coverage</h3><p class="formula">True-in-Candidates / Test × 100%</p><p>測試樣本真實類別是否包含在命中規則的候選決策集合中；這是事後評估指標，部署時不會知道真實類別。</p></article>
+<article><h3>③ No Match</h3><p class="formula">No-Match / Test × 100% = 100 − Coverage</p><p>沒有任何規則前件成立的比例；即使最終分類器有 fallback 猜出類別，也不能把它算成被規則覆蓋。</p></article>
+<article><h3>④ Conflict Rate</h3><p class="formula">Multi-decision matches / Test × 100%</p><p>同一筆資料同時匹配到<strong>不同決策類別</strong>的規則；命中多條但都指向相同類別，不算這個定義的衝突。</p></article>
+<article><h3>⑤ Covered but true class absent</h3><p class="formula">Coverage − Candidate Coverage (pp)</p><p>有規則匹配，卻沒有任何候選決策包含真實類別。這是規則命中但無法從既有候選類別選對答案的直接證據。</p></article>
+<article><h3>⑥ 規則數／平均筆數</h3><p class="formula">Mean over available Seeds</p><p>記錄平均 Test、Covered、No-Match、True-in-Candidates 筆數及 Rule Count；絕對筆數與百分比必須分開呈現，不能用百分比下降推論計算資源降低。</p></article>
+</div>
+<div class="research-note"><strong>交集不可直接相減：</strong>Conflict 可能與「正確類別在候選集合內」同時發生；Conflict 不是分類錯誤率。上列數值都是逐 Seed 計算比例後平均；平均筆數也是逐 Seed 平均。Coverage−Candidate Coverage 可以解釋為比例差，但不要把全部百分比加成 100%。</div>
+<h3>跨資料集分組 × 四種資料分布：完整指標矩陣</h3>
+<p class="muted small">僅納入 179 個 42 Seeds 完成的來源；每個資料集等權平均。下方可以切換原始 Features ≤6、原始 Features >6 及 A／B2 規則版本；數值不從歷史 5 Seeds 混入。</p>
+<div class="analysis-controls">
+<label>分組<select id="analysisGroup"><option value="ALL">179 筆完整資料集</option><option value="FULL_FEATURE">原始 Features ≤6（25 完成）</option><option value="LIMITED_6">原始 Features >6（154 完成）</option></select></label>
+<label>規則版本<select id="analysisVariant"><option value="A_ALL_RULES">A · ALL RULES</option><option value="B2_TRUE_AS_FALLBACK">B2 · TRUE fallback</option></select></label>
+<label>解讀情境<select id="analysisScenario"><option value="CENTRALIZED">Centralized</option><option value="FED_IID">Federated IID</option><option value="FED_A05">Dirichlet α=0.5</option><option value="FED_A01" selected>Dirichlet α=0.1</option></select></label>
+</div>
+<div id="analysisHeadline" class="finding-head" aria-live="polite">準備分組解讀…</div>
+<div class="table-wrap"><table class="matrix-table"><thead><tr><th>情境</th><th>完成 n</th><th>Test Coverage</th><th>Candidate Coverage</th><th>Covered but wrong candidates</th><th>No Match</th><th>Conflict Rate</th><th>Avg. Rule Count</th><th>Coverage ≥80% 且 Conflict ≥50%</th></tr></thead><tbody id="analysisRows"><tr><td colspan="9">等待載入研究快照</td></tr></tbody></table></div>
+<div id="funnelViz" class="funnel-evidence" aria-label="分類規則覆蓋與衝突的分層示意"></div>
+<h3>A → B2：降低 Conflict 的代價是什麼？</h3>
+<p>在相同資料集／分布／特徵設定下，B2 只允許 TRUE 空前件規則作備援。這不代表消除全部衝突，因此需要同時檢查 Candidate Coverage 和 Balanced Accuracy。下表為<strong>B2 − A 的資料集等權平均百分點差異</strong>。</p>
+<div class="table-wrap"><table class="matrix-table"><thead><tr><th>情境</th><th>Δ Test Coverage</th><th>Δ Candidate Coverage</th><th>Δ Conflict</th><th>Δ Covered-but-wrong</th><th>Δ 最佳 Accuracy</th><th>Δ 最佳 BA</th></tr></thead><tbody id="variantTradeoff"><tr><td colspan="7">等待讀取</td></tr></tbody></table></div>
+<div class="research-note"><strong>比較限制：</strong>「最佳 Accuracy / BA」指每資料集從六種決策策略的 Test 平均中事後取最大值，屬描述性上界，不能當成使用 Validation 選法後的部署績效；Coverage 與 Conflict 則是共同規則結構的指標，不由投票策略改變。</div>
+<h3>風險樣本盤點：高 Coverage 不等於高有效性</h3>
+<p>以自訂的<strong>描述性篩選門檻</strong>找出「Coverage ≥80% 且 Conflict ≥50%」、「有規則命中卻不包含正確類別 ≥20 pp」、「No Match ≥50%」的資料集。門檻是閱讀輔助，不是已證明的自然臨界值。</p>
+<p class="muted small" id="riskCount">準備觀察樣本…</p>
+<div class="table-wrap"><table class="matrix-table"><thead><tr><th>資料集</th><th>原始 Features</th><th>Coverage</th><th>Candidate</th><th>Covered but true absent</th><th>No Match</th><th>Conflict</th><th>B2-A Conflict Δ</th><th>完整紀錄</th></tr></thead><tbody id="riskExamples"><tr><td colspan="9">等待載入</td></tr></tbody></table></div>
+<p class="muted small">以上是完整性經確認的 179 筆資料集中符合條件的案例。可到下方逐筆表用「風險類型」篩選，也能下載 1,504 列情境 × 規則版本的詳細 CSV。</p>
+</section>
+
+<section class="panel" id="inventory"><span class="section-tag">04 · FULL DATASET DIRECTORY</span><h2>188 個資料集可搜尋／分組／比較</h2>
+<p>下表顯示原始與使用 Features、原始 Rows、Class 數，以及所選 <strong>Scenario × Rule Variant</strong> 的 Test Coverage、Candidate Coverage、Covered-but-true-absent、No Match、Conflict、平均筆數與 Accuracy。所有指標均從同一凍結快照取得；點「詳情」可檢視四情境與 A／B2 的完整交叉表。</p>
 <div class="formgrid">
 <label>搜尋名稱／OpenML 編號／欄位<input type="search" id="search" placeholder="例如 iris、Bioresponse、mnist、feature 名稱" autocomplete="off"></label>
 <label>原始特徵群組<select id="featureGroup"><option value="ALL">全部 188</option><option value="FULL">≤6：完整特徵</option><option value="LIMITED">>6：六特徵受限</option></select></label>
 <label>資料來源<select id="cohort"><option value="ALL">所有來源</option><option value="PMLB">PMLB</option><option value="OML51">OpenML</option><option value="UCI20">UCI20</option><option value="NEXT12">NEXT12</option><option value="EXT7">EXT7</option><option value="COMMERCE2">COMMERCE2</option><option value="O3">O3</option></select></label>
 <label>42 Seeds 完成度<select id="completion"><option value="ALL">全部狀態</option><option value="COMPLETE">168／168 成功</option><option value="INCOMPLETE">仍有缺漏</option></select></label>
 <label>實驗分布<select id="scenario"><option value="CENTRALIZED">Centralized</option><option value="FED_IID">Federated IID</option><option value="FED_A05">Federated α=0.5</option><option value="FED_A01" selected>Federated α=0.1</option></select></label>
+<label>風險條件<select id="riskFilter"><option value="ALL">不限風險</option><option value="HIGH_CONFLICT">Coverage≥80% 且 Conflict≥50%</option><option value="BAD_CANDIDATE">Covered but true absent ≥20pp</option><option value="NO_MATCH">No Match ≥50%</option><option value="B2_TRADEOFF">B2 降 Conflict 且 Candidate 也降</option></select></label>
+<label>結果排序<select id="sortBy"><option value="NAME">資料集名稱</option><option value="CONFLICT_DESC">Conflict 高→低</option><option value="GAP_DESC">Covered but true absent 高→低</option><option value="NO_MATCH_DESC">No Match 高→低</option><option value="COVERAGE_DESC">Coverage 高→低</option></select></label>
 <label>規則版本<select id="variant"><option value="A_ALL_RULES">A：All Rules</option><option value="B2_TRUE_AS_FALLBACK">B2：TRUE 僅 fallback</option></select></label>
 </div>
 <p class="muted small" id="showing" role="status">準備資料表…</p>
-<div class="table-wrap"><table class="dataset-table"><thead><tr><th>資料集</th><th>來源</th><th>原始／使用 Rows</th><th>原始／使用 Features</th><th>類別</th><th>完成度</th><th>最高 Accuracy</th><th>Coverage</th><th>Conflict</th><th>詳情</th></tr></thead><tbody id="datasetRows"><tr><td colspan="10">等待載入資料</td></tr></tbody></table></div>
+<div class="table-wrap"><table class="dataset-table"><thead><tr><th>資料集</th><th>來源</th><th>原始／使用 Rows</th><th>原始／使用 Features</th><th>類別</th><th>完成度</th><th>最高 Accuracy<br><small>事後最佳</small></th><th>Test Coverage</th><th>Candidate Coverage</th><th>Covered but true absent</th><th>No Match</th><th>Conflict</th><th>詳情</th></tr></thead><tbody id="datasetRows"><tr><td colspan="13">等待載入資料</td></tr></tbody></table></div>
 <div class="pager"><button type="button" id="prev">上一頁</button><span id="pageInfo">1 / 1</span><button type="button" id="next">下一頁</button></div>
 </section>
-<section class="panel" id="detail" hidden tabindex="-1"><span class="section-tag">04 · DATASET FACT SHEET</span><h2 id="detailTitle">單一資料集</h2><div id="detailMeta"></div>
-<h3>42 Seeds：四情境 × 目前規則版本</h3><div class="table-wrap"><table><thead><tr><th>情境</th><th>Seeds</th><th>最佳 Accuracy</th><th>Balanced Accuracy</th><th>Test Coverage</th><th>Candidate Coverage</th><th>Conflict</th><th>Rule Count</th><th>最高策略</th></tr></thead><tbody id="detailResults"></tbody></table></div><p class="muted small">同分策略全部保留；Coverage 與 Conflict 對同一組規則的六種決策策略相同。若 Seeds 少於 42，該值僅屬部分結果，不可當最終排名。</p><div id="detailLinks" class="quicklinks"></div>
+<section class="panel" id="detail" hidden tabindex="-1"><span class="section-tag">05 · DATASET FACT SHEET</span><h2 id="detailTitle">單一資料集</h2><div id="detailMeta"></div>
+<h3>42 Seeds：四情境 × 目前規則版本</h3>
+<p class="muted small">以下為逐 Seed 平均百分比；同時呈現平均 Test 筆數、Matched／No-Match／True-in-Candidates 的筆數與分母，及「有命中但未包含正確類別」的比例差。</p>
+<div id="detailFunnel" class="funnel-evidence"></div><div class="table-wrap"><table><thead><tr><th>情境</th><th>Seeds</th><th>最佳 Accuracy</th><th>Balanced Accuracy</th><th>Test Coverage</th><th>Candidate Coverage</th><th>Covered but true absent</th><th>No Match</th><th>Conflict</th><th>Rule Count</th><th>最高策略</th></tr></thead><tbody id="detailResults"></tbody></table></div><h3>四情境 × A／B2 全部 8 組數值（平均筆數與百分比）</h3>
+<div class="table-wrap"><table><thead><tr><th>情境 / 版本</th><th>Seeds</th><th>平均 Test 筆數</th><th>平均 Covered 筆數</th><th>平均 No-Match 筆數</th><th>平均 True-in-Candidate 筆數</th><th>Coverage</th><th>Candidate</th><th>No Match</th><th>Conflict</th><th>Candidate 缺口</th><th>規則數</th></tr></thead><tbody id="detailAll"><tr><td colspan="12">準備資料中…</td></tr></tbody></table></div>
+<h3>同資料集 A → B2 的變化</h3><div id="detailDelta" class="research-note"></div>
+<p class="muted small">平均筆數保留小數，因為 42 Seeds 可能不同切分；不是「總計 42 Seeds 的樣本數」。同分策略全部保留；Coverage 與 Conflict 對同一組規則的六種決策策略相同。若 Seeds 少於 42，該值僅屬部分結果，不可當最終排名。</p><div id="detailLinks" class="quicklinks"></div>
 </section>
-<section class="panel" id="method"><span class="section-tag">05 · METHODS / LIMITATIONS</span><h2>給教授的研究定位與下一步</h2>
+<section class="panel" id="method"><span class="section-tag">06 · METHODS / LIMITATIONS</span><h2>給教授的研究定位與下一步</h2>
 <div class="two-col"><div><h3>這一輪跑了什麼</h3><p>每個資料集採用<strong>最多六個預先固定的候選特徵</strong>；同一份資料先進行 64／16／20 Development／Validation／Test 分割，Development 依 IID 或 Dirichlet label skew 分配給三個 Client。各 Client 使用<strong>相同特徵集合與相同 Target</strong>，局部尋找精確最小 Reduct、歸納 LEM2 規則，再合併去重。</p></div><div><h3>下一輪不直接混入主結果</h3><p>原始 Features >6 的 162 筆，後續才執行 `k=8/12/ALL` 或受資源約束的特徵選擇消融，另測 Client 數／跨 Client 特徵異質性。重新訓練必須固定 Test 分割及資源預算，並將結果保留在獨立實驗版本，不能覆蓋這一輪六特徵基準。</p></div></div>
 <div class="notice"><strong>六特徵怎麼選：</strong>PMLB 與 OpenML 主要排除識別欄後依原始欄位順序選前六項；大部分 UCI 依來源順序取前六項，少數八筆事先設定業務／避免標籤洩漏的欄位。這不是資料驅動的最優六特徵。三個 Client 各自擁有最多六個相同 Features，<strong>不是把六特徵平均切成三份</strong>。</div>
 <p><strong>本輪研究限制：</strong>資料來源同源家族依賴、六特徵上限、HFL 相同 Schema／Target、四情境中的三客戶端模擬與 label-skew fallback、尚有九個資料集未完成、不同資料量的 CPU／時間複雜度、以及沒有執行完整 Feature Budget × Client Count 的消融。</p>
 <p><a href="https://github.com/Jimmy0307/LEM2/blob/research/expanded-42seeds-20261120/docs/research/expanded_188_42seeds/review/FEATURE_SELECTION_SIX_REVIEWER_AUDIT_20261123.md">六特徵方法學審查</a> · <a href="https://github.com/Jimmy0307/LEM2/blob/research/expanded-42seeds-20261120/docs/research/expanded_188_42seeds/report_catalog/20261123T114229/regime_exploration/REGIME_EVIDENCE_SYNTHESIS_20261123.md">規模／衝突反曲線分析</a> · <a href="https://github.com/Jimmy0307/LEM2/blob/research/expanded-42seeds-20261120/docs/research/expanded_188_42seeds/design/HETEROGENEOUS_FEATURE_TARGET_PROTOCOL_20261123.md">異質 Features／Target 後續研究設計</a></p>
 </section>
-<section class="panel" id="downloads"><span class="section-tag">06 · DATA ACCESS / PROVENANCE</span><h2>所有數字都有來源，並且不在展示表公開 SHA</h2>
-<div class="download-list"><a href="./data.json" download>網頁展示用 188 資料集凍結 JSON</a><a href="https://github.com/Jimmy0307/LEM2/blob/research/expanded-42seeds-20261120/docs/research/expanded_188_42seeds/review/FEATURE_SELECTION_AUDIT_188.csv">188 筆原始／使用特徵總表 CSV</a><a href="https://github.com/Jimmy0307/LEM2/blob/research/expanded-42seeds-20261120/docs/research/expanded_188_42seeds/report_catalog/20261123T114229/MASTER_188_DATASET_SCENARIO_VARIANT_42SEED.csv">1,504 列實驗總表 CSV</a><a href="https://github.com/Jimmy0307/LEM2/blob/research/expanded-42seeds-20261120/docs/research/expanded_188_42seeds/report_catalog/20261123T114229/full42_generated/DATASET_POLICY_METRICS_42SEED.csv">六方法 8,652 筆統計 CSV</a><a href="https://github.com/Jimmy0307/LEM2/blob/research/expanded-42seeds-20261120/docs/research/expanded_188_42seeds/interim/INTERIM_FINDINGS.md">原始 42 Seeds 期中研究摘要</a></div>
+<section class="panel" id="downloads"><span class="section-tag">07 · DATA ACCESS / PROVENANCE</span><h2>所有數字都有來源，並且不在展示表公開 SHA</h2>
+<div class="download-list"><a href="./coverage_conflict_188.csv" download>完整 1,504 列：Coverage／Candidate／No Match／Conflict 明細 CSV</a><a href="./coverage_conflict_group_summary.csv" download>24 列：特徵分組 × 情境 × A／B2 統計 CSV</a><a href="./data.json" download>網頁展示用 188 資料集凍結 JSON</a><a href="https://github.com/Jimmy0307/LEM2/blob/research/expanded-42seeds-20261120/docs/research/expanded_188_42seeds/review/FEATURE_SELECTION_AUDIT_188.csv">188 筆原始／使用特徵總表 CSV</a><a href="https://github.com/Jimmy0307/LEM2/blob/research/expanded-42seeds-20261120/docs/research/expanded_188_42seeds/report_catalog/20261123T114229/MASTER_188_DATASET_SCENARIO_VARIANT_42SEED.csv">1,504 列實驗總表 CSV</a><a href="https://github.com/Jimmy0307/LEM2/blob/research/expanded-42seeds-20261120/docs/research/expanded_188_42seeds/report_catalog/20261123T114229/full42_generated/DATASET_POLICY_METRICS_42SEED.csv">六方法 8,652 筆統計 CSV</a><a href="https://github.com/Jimmy0307/LEM2/blob/research/expanded-42seeds-20261120/docs/research/expanded_188_42seeds/interim/INTERIM_FINDINGS.md">原始 42 Seeds 期中研究摘要</a></div>
 <p class="muted small">資料由研究分支公開輸出所產生，來源驗證碼留在研究儲存庫內部的正式稽核檔。此頁不會假設 188 個資料集全部完成，也不會將過去 5 Seeds 的結果當成 42 Seeds。</p>
 </section>
 </main>
