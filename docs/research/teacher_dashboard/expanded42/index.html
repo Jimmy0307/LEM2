@@ -10,9 +10,59 @@
 <div class="eyebrow">STUDY INVENTORY · FROZEN 42-SEED INTERIM · 2026-11-23</div>
 <h1>188 個資料集：<br>六特徵基準實驗與研究限制</h1>
 <p>這一輪先維持<strong>最多六個候選特徵、三個 Client、共同 Target／Feature Schema</strong> 的既有實驗；原始特徵未超過六個者為完整特徵基準，超過六個者為受限特徵測試，未來須另外做特徵擴張消融。</p>
-<div class="quicklinks"><a href="#coverage-research">Coverage／Conflict 深度分析</a><a href="#inventory">188 筆完整明細</a><a href="#findings">特徵分組</a><a href="#method">實驗方法與限制</a><a href="#downloads">下載已核驗資料</a></div>
+<div class="quicklinks"><a href="#protocol-verified">實際測試目的／64:16:20</a><a href="#coverage-research">Coverage／Conflict 深度分析</a><a href="#inventory">188 筆完整明細</a><a href="#findings">特徵分組</a><a href="#method">實驗方法與限制</a><a href="#downloads">下載已核驗資料</a></div>
 </header>
 <main class="wrap new-wrap">
+
+<section class="panel protocol-panel" id="protocol-verified" aria-label="188 資料集實際測試目的、切分與方法學契約">
+<span class="section-tag">RESEARCH CONTRACT · SOURCE-VERIFIED · READ THIS FIRST</span>
+<h2>這 188 個資料集，真正測試什麼？</h2>
+<p class="protocol-lead"><strong>一句話研究目的：</strong>控制相同資料集、相同 Train/Test 切分與同一套 LEM2 規則學習方法，將「集中式學規則」改成「3 Clients 分別學規則後合併」，再觀察資料分布不均、投票策略與 TRUE 空前件規則對 Accuracy、Balanced Accuracy、Coverage 及 Conflict 的影響。</p>
+<div class="protocol-alert"><strong>最容易誤解的事：</strong>實驗名稱的「Full Rows」是將清理後整份資料集納入抽樣母體，<strong>不是用 100% Rows 來訓練</strong>。主程式確實使用外層 80/20、內層 80/20，對全部可用資料約為 <b>64% Development＋16% Validation＋20% Test</b>。而且本批全量六策略結果並未以 Validation 選出最後策略，因此網站的「事後最佳 Accuracy」不能宣稱是可部署方法的泛化準確率。</div>
+<h3>Step 1｜先分出真正的學習資料、保留資料與測試資料</h3>
+<div class="split-explainer">
+ <div class="split-bar" role="img" aria-label="100%來源：64% Development、16% Validation、20% Test"><span class="dev" style="width:64%">64% Development</span><span class="val" style="width:16%">16% Val</span><span class="test" style="width:20%">20% Test</span></div>
+ <div class="split-caption"><div><b>Development：約 64%</b><p>學離散化切點、Reduct 與 LEM2 規則；聯邦式把這部分的 <em>Rows</em> 分給三個 Client。</p></div><div><b>Validation：約 16%</b><p>程式會切出並離散化，但本批 188 × 42 的六種策略評估<strong>未用這一組來選最優政策</strong>。</p></div><div><b>Test：約 20%</b><p>以未用於學習規則的 Test 資料量測 Accuracy／BA／Coverage／Conflict。所有四情境使用相同 Seed 的同一 Test。</p></div></div>
+</div>
+<p class="muted small">例如清理後有 10,000 Rows，通常約 6,400 Dev / 1,600 Val / 2,000 Test。實際筆數依類別分層抽樣取整；應以各資料集實際紀錄為準。<code>train_rows</code> 在本批 19 欄資料表代表 <strong>Development Rows（約 64%）</strong>，不是外層 80% Train。</p>
+<div class="research-note"><strong>與早期三資料集的 Full Data 實驗不同：</strong>歷史實驗頁有 <code>FULL_DATA</code>（訓練樣本回代評估）和 <code>HOLDOUT_80_20</code> 兩種模式；但本頁的 188 資料集 ×42 Seeds 只有 <code>NESTED_64_16_20</code>。歷史 Full Data 的回代 Accuracy 並不是未見樣本泛化指標，不能直接跟這一輪 Test Accuracy 混合比較。<a href="../federated_comparison/">查看歷史三資料集的 Full／Holdout 分別結果</a>。</div>
+<h3>Step 2｜同樣的 Test，拿來比較四種訓練架構／資料分布</h3>
+<div class="protocol-scenarios">
+<div><b>Centralized</b><span>64% Dev 全部集中</span><p>在單一 Development 資料上學 Classical Reduct＋LEM2，當成配對對照組。</p></div>
+<div><b>Fed IID</b><span>同 Dev 分配三 Clients</span><p>按類別分層分配不同 Rows；三方各自學規則，最後 union / dedup。</p></div>
+<div><b>Fed α=0.5</b><span>3 Clients，中度 Non-IID</span><p>以 Dirichlet label-skew 分配 Rows；觀察 Client 類別比例失衡的效果。</p></div>
+<div><b>Fed α=0.1</b><span>3 Clients，高度 Non-IID</span><p>更強的 Label Skew；原分割失敗時 constrained fallback 會改變實際不均程度。</p></div>
+</div>
+<div class="research-note"><b>資料維度不是在 Client 之間切分：</b>三個 Client 各自保留同一份資料集已選用的最多六個特徵與同一 Target，只是資料列不同。這是同 Schema 的水平聯邦模擬，不是跨企業不同 Feature Schema 的垂直聯邦；目前也沒有真實的私有交換／密碼學安全聚合驗證。</div>
+<h3>Step 3｜對同一規則模型做什麼比較？</h3>
+<div class="protocol-axes">
+<article><h4>六種決策策略</h4><p>FIRST_MATCH、SIMPLE_VOTING、STANDARD_VOTING、GLOBAL_STRENGTH、POPULATION_STANDARD、POPULATION_GLOBAL。相同匹配規則出現多個候選決策時，依六種方式產生分類預測；<strong>不是每個策略都重訓一個 LEM2 模型</strong>。</p></article>
+<article><h4>兩種 TRUE 規則模式</h4><p><b>A_ALL_RULES</b> 保留全部規則；<b>B2_TRUE_AS_FALLBACK</b> 只在沒有非空前件規則命中時使用 TRUE 規則。兩版本作用於相同 Local Rules／Union，不重新學習規則。</p></article>
+<article><h4>42 個隨機 Seeds</h4><p>對每個資料集重複 <b>42 次 stratified holdout</b>；每次同一 Seed 的四情境共用 Test。這不是 42-fold 交叉驗證，測試樣本在不同 Seeds 間可以重複。</p></article>
+</div>
+<h3>Step 4｜能回答與尚未回答的研究問題</h3>
+<div class="table-wrap"><table class="matrix-table"><thead><tr><th>研究問題</th><th>本批操作的變因</th><th>真正的評估</th><th>證據範圍</th></tr></thead><tbody>
+<tr><th>RQ1｜聯邦 vs 集中式</th><td>Centralized／Fed IID，固定同 Seed 與投票策略</td><td>配對 Test Accuracy/BA 差異、Coverage、Conflict、Rule Count</td><td>已測，179完整來源</td></tr>
+<tr><th>RQ2｜Client 異質分布</th><td>IID／α=0.5／α=0.1</td><td>分類表現與規則覆蓋／衝突 trade-off</td><td>已測，同一來源 Target／Features</td></tr>
+<tr><th>RQ3｜規則決策策略</th><td>六種固定策略</td><td>各策略在相同 Test 的 Accuracy、BA；跨策略差距</td><td>已測；事後最佳不可當部署模型</td></tr>
+<tr><th>RQ4｜TRUE 規則的影響</th><td>A vs B2</td><td>Conflict、Candidate Coverage、Accuracy/BA</td><td>已測，Rule Induction 不變</td></tr>
+<tr><th>尚未驗證</th><td>70/30 vs 80/20、6 vs 全特徵、3 vs 5 Clients</td><td>不同 Split／特徵維度／Client 數的因果消融</td><td>本批沒有操作，不得宣稱已驗證</td></tr>
+</tbody></table></div>
+<h3>Step 5｜不能只展示「Test 上事後最好的六策略」</h3>
+<p><strong>以下才是固定 STANDARD_VOTING 策略、同資料集同 Seed 配對的研究結果。</strong>每個資料集先對 42 個 Seeds 計算 Fed − Central Accuracy 差異，再對 179 個完整資料集等權平均；單位為百分點（pp）。這不是 Test-selected Best 的樂觀上界。</p>
+<div class="table-wrap"><table class="matrix-table"><thead><tr><th>規則版本</th><th>聯邦情境</th><th>平均 Accuracy 差</th><th>Fed 較差／持平／較好</th><th>Wilcoxon Holm p</th></tr></thead><tbody>
+<tr><td>A · All Rules</td><td>Fed IID</td><td><b>+2.30 pp</b></td><td>46／10／123</td><td>&lt;0.001</td></tr>
+<tr><td>A · All Rules</td><td>Fed α=0.5</td><td><b>−1.12 pp</b></td><td>114／2／63</td><td>0.009</td></tr>
+<tr><td>A · All Rules</td><td>Fed α=0.1</td><td><b>−6.73 pp</b></td><td>139／2／38</td><td>&lt;0.001</td></tr>
+<tr><td>B2 · TRUE fallback</td><td>Fed IID</td><td><b>+2.30 pp</b></td><td>46／10／123</td><td>&lt;0.001</td></tr>
+<tr><td>B2 · TRUE fallback</td><td>Fed α=0.5</td><td><b>−0.25 pp</b></td><td>111／2／66</td><td>0.113</td></tr>
+<tr><td>B2 · TRUE fallback</td><td>Fed α=0.1</td><td><b>−5.21 pp</b></td><td>135／2／42</td><td>&lt;0.001</td></tr>
+</tbody></table></div>
+<p class="muted small">結果取自同一研究快照 <a href="https://github.com/Jimmy0307/LEM2/blob/research/expanded-42seeds-20261120/docs/research/expanded_188_42seeds/interim/INTERIM_FINDINGS.md" target="_blank" rel="noopener">42 Seeds interim findings</a>。以上配對比較不同於下方每個來源「事後最佳 Accuracy」；179 資料集並非隨機來源母體，9 個大型來源尚未完成，不能宣稱全部 188 筆已驗證。</p>
+<div class="protocol-alert muted-alert"><b>方法學待補的真正問題：</b>雖然 <code>fedrs/experiment.py</code> 的其他方法支援 ValidationBest，但本批 <code>run_model</code> 只把 Validation 保留／離散化，六策略都直接用 Test 評分。因此需要另做 <b>Validation 選策略 → 固定策略 Test 評估</b>，或另行實驗 Dev+Val 重訓。這不能在原本成功的 30,078 個模型上偷偷改口徑，更不能將 Test 預先挑出的 Winner 當正式部署效能。</div>
+<p class="protocol-links">完整方法與原始碼稽核：<a href="https://github.com/Jimmy0307/LEM2/blob/research/expanded-42seeds-20261120/docs/research/expanded_188_42seeds/review/WHAT_WAS_ACTUALLY_TESTED_20261123.md" target="_blank" rel="noopener">究竟測了什麼？SOURCE-VERIFIED 報告</a> · <a href="https://github.com/Jimmy0307/LEM2/blob/research/expanded-42seeds-20261120/experiments/full_scale_20261118/model.py" target="_blank" rel="noopener">實際執行程式</a> · <a href="https://github.com/Jimmy0307/LEM2/blob/research/expanded-42seeds-20261120/fedrs/experiment.py" target="_blank" rel="noopener">Nested Split / Model Pipeline</a></p>
+</section>
+
 <section class="panel"><span class="section-tag">01 · STUDY STATUS</span>
 <div class="status-line" id="loadStatus" role="status" aria-live="polite">正在核對靜態實驗快照…</div>
 <div class="cards" id="stats"><div class="stat"><small>納入研究資料集</small><strong>188</strong><span>來源固定</span></div><div class="stat"><small>已完整完成 42 Seeds</small><strong>179</strong><span>9 筆尚未完整</span></div><div class="stat"><small>原始特徵 ≤6</small><strong>26</strong><span>其中 25 筆完整</span></div><div class="stat"><small>原始特徵 >6</small><strong>162</strong><span>全採最多六特徵測試</span></div></div>
@@ -35,6 +85,7 @@
 <p id="opsLoad" class="muted small" role="status">已標示 18:05 本機進度；正在核對進度憑證。</p>
 <p><a href="https://github.com/Jimmy0307/LEM2/blob/research/expanded-42seeds-20261120/docs/research/expanded_188_42seeds/operations/PROGRESS_RECONCILIATION_20261123T1805.md" target="_blank" rel="noopener">查看 GitHub 運行進度與原始存證差異</a> · <a href="./ops_progress.json" download>下載機器可讀的 18:05 進度憑證 JSON</a> · <a href="https://github.com/Jimmy0307/LEM2/blob/research/expanded-42seeds-20261120/docs/research/expanded_188_42seeds/operations/RECONCILIATION_9_DATASETS.csv" target="_blank" rel="noopener">九資料集對帳 CSV</a></p>
 </section>
+<div class="notice"><strong>指標解讀提醒：</strong>下方「最高 Accuracy」是六策略在 Test 上事後挑出的描述性上界，不能當作事先由 Validation 選出後的效能。<a href="#protocol-verified">先閱讀本批真正的 64/16/20 訓練／驗證／測試契約與固定 STANDARD_VOTING 配對比較</a>。</div>
 <div class="notice">本頁保留尚未完成的資料集，也保留真實名稱與來源。標籤<strong>類別數</strong>有資料；原始標籤值若未核對，不以 0／1 猜測。所有最佳方法僅為<strong>在 Test 結果上的事後描述性最高值</strong>，不是可部署的策略選擇。</div>
 </section>
 <section class="panel" id="findings"><span class="section-tag">02 · PRIMARY RESEARCH GROUPS</span><h2>先分清「完整特徵」與「受限六特徵」</h2>
@@ -95,6 +146,7 @@
 </section>
 
 <section class="panel" id="inventory"><span class="section-tag">04 · FULL DATASET DIRECTORY</span><h2>188 個資料集可搜尋／分組／比較</h2>
+<p class="muted small"><strong>實際分割：</strong>NESTED_64_16_20；「最高 Accuracy」僅是 Test 選擇六策略的事後上界，不是根據 Val 選出的預期泛化表現。請先看 <a href="#protocol-verified">研究契約</a>。</p>
 <p>下表顯示原始與使用 Features、原始 Rows、Class 數，以及所選 <strong>Scenario × Rule Variant</strong> 的 Test Coverage、Candidate Coverage、Covered-but-true-absent、No Match、Conflict、平均筆數與 Accuracy。所有指標均從同一凍結快照取得；點「詳情」可檢視四情境與 A／B2 的完整交叉表。</p>
 <div class="formgrid">
 <label>搜尋名稱／OpenML 編號／欄位<input type="search" id="search" placeholder="例如 iris、Bioresponse、mnist、feature 名稱" autocomplete="off"></label>
@@ -107,10 +159,11 @@
 <label>規則版本<select id="variant"><option value="A_ALL_RULES">A：All Rules</option><option value="B2_TRUE_AS_FALLBACK">B2：TRUE 僅 fallback</option></select></label>
 </div>
 <p class="muted small" id="showing" role="status">準備資料表…</p>
-<div class="table-wrap"><table class="dataset-table"><thead><tr><th>資料集</th><th>來源</th><th>原始／使用 Rows</th><th>原始／使用 Features</th><th>類別</th><th>完成度</th><th>最高 Accuracy<br><small>事後最佳</small></th><th>Test Coverage</th><th>Candidate Coverage</th><th>Covered but true absent</th><th>No Match</th><th>Conflict</th><th>詳情</th></tr></thead><tbody id="datasetRows"><tr><td colspan="13">等待載入資料</td></tr></tbody></table></div>
+<div class="table-wrap"><table class="dataset-table"><thead><tr><th>資料集</th><th>來源</th><th>原始／使用 Rows</th><th>原始／使用 Features</th><th>類別</th><th>完成度</th><th>最高 Accuracy<br><small>Test 事後挑策略／不可部署</small></th><th>Test Coverage</th><th>Candidate Coverage</th><th>Covered but true absent</th><th>No Match</th><th>Conflict</th><th>詳情</th></tr></thead><tbody id="datasetRows"><tr><td colspan="13">等待載入資料</td></tr></tbody></table></div>
 <div class="pager"><button type="button" id="prev">上一頁</button><span id="pageInfo">1 / 1</span><button type="button" id="next">下一頁</button></div>
 </section>
 <section class="panel" id="detail" hidden tabindex="-1"><span class="section-tag">05 · DATASET FACT SHEET</span><h2 id="detailTitle">單一資料集</h2><div id="detailMeta"></div>
+<div id="detailSplitContract" class="split-contract-detail" role="region" aria-label="單一資料集實際訓練驗證測試切分"><h3>本資料集實際 Dev／Val／Test 分割</h3><p>請選有成功模型的資料集，以查看同一來源的平均切分筆數。</p></div>
 <h3>42 Seeds：四情境 × 目前規則版本</h3>
 <p class="muted small">以下為逐 Seed 平均百分比；同時呈現平均 Test 筆數、Matched／No-Match／True-in-Candidates 的筆數與分母，及「有命中但未包含正確類別」的比例差。</p>
 <div id="detailFunnel" class="funnel-evidence"></div><div class="table-wrap"><table><thead><tr><th>情境</th><th>Seeds</th><th>最佳 Accuracy</th><th>Balanced Accuracy</th><th>Test Coverage</th><th>Candidate Coverage</th><th>Covered but true absent</th><th>No Match</th><th>Conflict</th><th>Rule Count</th><th>最高策略</th></tr></thead><tbody id="detailResults"></tbody></table></div><h3>四情境 × A／B2 全部 8 組數值（平均筆數與百分比）</h3>
@@ -119,7 +172,7 @@
 <p class="muted small">平均筆數保留小數，因為 42 Seeds 可能不同切分；不是「總計 42 Seeds 的樣本數」。同分策略全部保留；Coverage 與 Conflict 對同一組規則的六種決策策略相同。若 Seeds 少於 42，該值僅屬部分結果，不可當最終排名。</p><div id="detailLinks" class="quicklinks"></div>
 </section>
 <section class="panel" id="method"><span class="section-tag">06 · METHODS / LIMITATIONS</span><h2>給教授的研究定位與下一步</h2>
-<div class="two-col"><div><h3>這一輪跑了什麼</h3><p>每個資料集採用<strong>最多六個預先固定的候選特徵</strong>；同一份資料先進行 64／16／20 Development／Validation／Test 分割，Development 依 IID 或 Dirichlet label skew 分配給三個 Client。各 Client 使用<strong>相同特徵集合與相同 Target</strong>，局部尋找精確最小 Reduct、歸納 LEM2 規則，再合併去重。</p></div><div><h3>下一輪不直接混入主結果</h3><p>原始 Features >6 的 162 筆，後續才執行 `k=8/12/ALL` 或受資源約束的特徵選擇消融，另測 Client 數／跨 Client 特徵異質性。重新訓練必須固定 Test 分割及資源預算，並將結果保留在獨立實驗版本，不能覆蓋這一輪六特徵基準。</p></div></div>
+<div class="two-col"><div><h3>這一輪跑了什麼</h3><p>每個資料集採用<strong>最多六個預先固定的候選特徵</strong>；同一份資料先執行外層 80/20，外層 Train 再 80/20，得到約 64／16／20 Development／Validation／Test 分割。<strong>本批六策略不以 Validation 選法，且「Full Rows」不是 100% Rows 訓練</strong>。Development 依 IID 或 Dirichlet label skew 分配給三個 Client。各 Client 使用<strong>相同特徵集合與相同 Target</strong>，局部尋找精確最小 Reduct、歸納 LEM2 規則，再合併去重。</p></div><div><h3>下一輪不直接混入主結果</h3><p>原始 Features >6 的 162 筆，後續才執行 `k=8/12/ALL` 或受資源約束的特徵選擇消融，另測 Client 數／跨 Client 特徵異質性。重新訓練必須固定 Test 分割及資源預算，並將結果保留在獨立實驗版本，不能覆蓋這一輪六特徵基準。</p></div></div>
 <div class="notice"><strong>六特徵怎麼選：</strong>PMLB 與 OpenML 主要排除識別欄後依原始欄位順序選前六項；大部分 UCI 依來源順序取前六項，少數八筆事先設定業務／避免標籤洩漏的欄位。這不是資料驅動的最優六特徵。三個 Client 各自擁有最多六個相同 Features，<strong>不是把六特徵平均切成三份</strong>。</div>
 <p><strong>本輪研究限制：</strong>資料來源同源家族依賴、六特徵上限、HFL 相同 Schema／Target、四情境中的三客戶端模擬與 label-skew fallback、尚有九個資料集未完成、不同資料量的 CPU／時間複雜度、以及沒有執行完整 Feature Budget × Client Count 的消融。</p>
 <p><a href="https://github.com/Jimmy0307/LEM2/blob/research/expanded-42seeds-20261120/docs/research/expanded_188_42seeds/review/FEATURE_SELECTION_SIX_REVIEWER_AUDIT_20261123.md">六特徵方法學審查</a> · <a href="https://github.com/Jimmy0307/LEM2/blob/research/expanded-42seeds-20261120/docs/research/expanded_188_42seeds/report_catalog/20261123T114229/regime_exploration/REGIME_EVIDENCE_SYNTHESIS_20261123.md">規模／衝突反曲線分析</a> · <a href="https://github.com/Jimmy0307/LEM2/blob/research/expanded-42seeds-20261120/docs/research/expanded_188_42seeds/design/HETEROGENEOUS_FEATURE_TARGET_PROTOCOL_20261123.md">異質 Features／Target 後續研究設計</a></p>
