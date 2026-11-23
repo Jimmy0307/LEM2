@@ -3,6 +3,11 @@
 **凍結快照：2026-11-23 11:42:29（台灣時間），模型 30,078/31,584，179/188 資料集完整。**
 以下均為從已發布真實 checkpoint 和 metadata 產生的結果；仍屬期中分析，不能宣稱 188 個來源全部完成。
 
+## 2026-11-23 方法學更正｜重要，請先讀
+[研究到底測了什麼？80/20 vs 64/16/20、Validation 是否真的使用、固定六策略比較](../../review/WHAT_WAS_ACTUALLY_TESTED_20261123.md)。
+
+本批 188 ×42 的 `NESTED_64_16_20`：每次取約64% Development作 Reduct / LEM2、16% Validation 保留但本批未用來挑六政策、20% Test 量測 Accuracy／Coverage／Conflict。這裡「全量」指允許全部清理後 Rows 納入分割母體，**不是100% Rows 訓練**；標記 `train_rows` 的值是 Dev 的列數。六策略的事後最佳 Accuracy 不能冒充 ValidationBest 真實泛化效能。較早三資料集的 `FULL_DATA` 是回代評估，不與本批 188 來源的 holdout 數據合併。
+
 ## 優先打開哪個檔案？
 
 | 需求 | 檔案 | 資料量與用途 |

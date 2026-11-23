@@ -55,6 +55,10 @@
 `train_rows` 這個 19欄欄名在本批 `model.py` **是 `len(dev)`**，也就是**原母體約64%的真正訓練筆數**，不是外層80%的 80/20「Train」。
 單一資料集的三個 client 不是6 features÷3=2 features/client；每個 client都持有相同六特徵，但資料列不同。
 
+## D.1. 為何舊版可以選 Full Data，但本次只有 64/16/20？
+在已發布的歷史三資料集展示頁 `docs/research/teacher_dashboard/federated_comparison/index.html`，UI 區分 `FULL_DATA` 與 `HOLDOUT_80_20`。其技術報告明確指出：Full Data 是 **訓練資料回代評估（resubstitution）**，不能代表未見樣本泛化。本批 188 × 42 使用另外凍結的 `NESTED_64_16_20` 協定，**並沒有 `FULL_DATA` 配對版本**。因此不能只因兩邊都寫 Full Dataset／42 Seeds 就把數字放在同一個表裡檢定。
+**若指導教授要「全部資料學規則」**：可以將原始可用100% Rows學規則的 `FULL_DATA` 作為不同目的的補充探索，但其 in-sample Accuracy 需和 held-out Test Accuracy 完全分開，不可稱作前者較高就是優秀的泛化性能。
+
 ## E. 應該如何標記結果有效性
 
 **已測試並可呈現**：固定最多六特徵、三 Client 的 HFL 模擬，與 Centralized 配對的 Holdout Test 指標、六種固定策略差異、A/B2 規則版本、non-IID 的結構權衡；各比較須同一 source/seed/rule-variant/policy。  
