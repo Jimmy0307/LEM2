@@ -53,6 +53,19 @@ jobs:
           assert not any("sha256" in k.lower() for k in summary[0])
           with open(root/"coverage_conflict_group_summary.csv",encoding="utf-8-sig",newline="") as fd:
               assert len(list(csv.DictReader(fd)))==24
+          ops=json.loads((root/"ops_progress.json").read_text(encoding="utf-8"))
+          assert ops["fixed_model_total"]==31584
+          assert ops["github_verified"]["successful_models"]==30078
+          assert ops["github_verified"]["timeout_records"]==98
+          assert ops["local_reported"]["timeout_records"]==154
+          assert ops["local_reported"]["not_yet_attempted_models"]==1352
+          assert ops["local_reported"]["successful_models"]==30078
+          assert ops["delta"]["newly_reported_timeouts_without_checkpoint_bytes"]==56
+          assert len(ops["per_incomplete_dataset"])==9
+          assert sum(x["local_timeout_unverified"] for x in ops["per_incomplete_dataset"])==56
+          assert sum(x["remaining_without_reported_outcome"] for x in ops["per_incomplete_dataset"])==1352
+          assert ops["local_reported"]["successful_models"]+ops["local_reported"]["timeout_records"]+ops["local_reported"]["not_yet_attempted_models"]==31584
+          assert ops["claims"]["new_timeout_checkpoint_uploaded"] is False
           assert (root/"index.html").exists()
           assert (root/"expanded42.css").exists()
           assert (root/"expanded42.js").exists()
@@ -79,6 +92,11 @@ jobs:
                   res=page.goto(url,wait_until="networkidle",timeout=60000)
                   assert res.status==200,res.status
                   page.wait_for_function("document.querySelector('#loadStatus').textContent.includes('驗證完成')",timeout=15000)
+                  page.wait_for_function("document.querySelector('#opsLoad').textContent.includes('已讀取')",timeout=15000)
+                  assert page.locator("#opsDatasets tr").count()==9
+                  assert "154" in page.locator("#opsTimeout").inner_text()
+                  assert "1,352" in page.locator("#opsPending").inner_text()
+                  assert "30,078" in page.locator("#opsSuccess").inner_text()
                   assert page.locator("#datasetRows tr").count()==30
                   assert page.locator("#analysisRows tr").count()==4
                   assert page.locator("#variantTradeoff tr").count()==4
