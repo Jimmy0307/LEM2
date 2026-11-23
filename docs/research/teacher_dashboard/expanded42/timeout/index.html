@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LEM2｜TIMEOUT 實測與縮放診斷 · 188×42 Seeds</title>
+<meta name="description" content="188個資料集的LEM2計時與2,700秒TIMEOUT: 181逐來源實測、48縮放組合、規則數與支持集計分、CI右設限與未完成來源。">
+<link rel="stylesheet" href="../../site.css"><link rel="stylesheet" href="../expanded42.css"><link rel="stylesheet" href="./timeout.css">
+</head><body>
+<div class="site-top"><a class="brand" href="../">LEM2 Research · 188×42</a><nav><a href="../../">研究首頁</a><a href="../">六特徵／主實驗</a><a class="active" aria-current="page" href="./">TIMEOUT 瓶頸分析</a></nav></div>
+<header class="hero timeout-hero"><div class="eyebrow">SYSTEMS DIAGNOSTICS · SOURCE-VERIFIED OBSERVATIONS · 2026-11-23</div>
+<h1>為什麼 4.5 萬筆會超時，<br>100 萬筆卻可以完成？</h1>
+<p>這不是對 Train/Test 比例的實驗，而是在凍結的 <strong>64/16/20、最多六特徵、三 Client、六決策策略</strong> 協定下，追查規則學習與推論的計算成本。此頁將觀測值、CI 右設限、理論複雜度與外推估計分開。</p>
+<div class="quicklinks"><a href="#scatter">181 個來源的實測</a><a href="#scaling">48 組縮放分析</a><a href="#bottleneck">程式瓶頸</a><a href="#decision">研究決策</a><a href="#data">來源下載</a></div>
+</header>
+<main class="wrap new-wrap">
+<section class="panel"><span class="section-tag">01 · DATA PROVENANCE & SNAPSHOT</span><h2>成功模型與 TIMEOUT 必須分開統計</h2>
+<div class="cards statuscards"><div class="stat"><small>11:42 凍結成功模型</small><strong>30,078</strong><span>31,584 個預定配置中的成功數</span></div><div class="stat"><small>完整資料集</small><strong>179/188</strong><span>9 個大型來源尚未完整</span></div><div class="stat"><small>11:42 GitHub TIMEOUT</small><strong>98</strong><span>原始逐 Seed 失敗記錄</span></div><div class="stat"><small>18:05 本機回報 TIMEOUT</small><strong>154</strong><span>新增 56 筆尚待逐配置核驗</span></div></div>
+<p id="dataStatus" role="status" class="small muted">正在載入兩份原始 CSV.gz …</p>
+<div class="research-note"><strong>範圍警語：</strong>181 個「成功模型可量測耗時」的來源包括 179 完整與 2 部分來源。完全沒有成功模型的 <code>openml_42732</code> 不在觀測散點 CSV，因此 <code>observed.timeouts</code> 合計 70，不能當作全部 98 或 154 個 TIMEOUT。報告的 154 是使用者本機後續回報，並非本頁重新產生的原始 checkpoint。</div>
+</section>
+<section class="panel" id="scatter"><span class="section-tag">02 · DIRECTLY OBSERVED · 181 SOURCES</span><h2>Rows alone do not predict timeout</h2>
+<p>藍點是上傳的 <code>per_source_observed.csv</code> 中每個來源<strong>成功模型的最長 Wall Time</strong>（不是所有 Seeds 的最高可能耗時）；紅色 × 是具有 TIMEOUT 紀錄的來源，繪在 2,700 秒截止線以表示「達到限制」，<strong>不是實際完成時間</strong>。橫軸為原始 Rows，兩軸皆為對數尺度。</p>
+<div class="chart-shell" id="scatterShell"><svg id="scatterSvg" viewBox="0 0 1060 580" role="img" aria-label="逐來源原始Rows與成功模型最長耗時的對數散點圖"></svg></div>
+<div class="legend"><span><i class="dot"></i>成功模型的最長實測</span><span><i class="cross">×</i>包含 TIMEOUT 的來源</span><span><i class="dash"></i>2,700 秒 deadline</span></div>
+<div class="table-wrap"><table class="matrix-table"><thead><tr><th>來源</th><th>原始 Rows</th><th>規則數中位數</th><th>成功模型最慢一次</th><th>成功模型數</th><th>解讀</th></tr></thead><tbody id="fastSlowCases"><tr><td colspan="6">載入觀測值…</td></tr></tbody></table></div>
+<p class="small muted">注意：此圖不同於傳統逐模型散點圖，<strong>每個來源只放一個「最慢成功模型」摘要點</strong>。TIMEOUT 是右設限，不是 2,700 秒真實完工時間；由於缺少未完成模型的時間分布，不可直接用此圖推估無偏的時間迴歸。</p>
+</section>
+<section class="panel" id="bottleneck"><span class="section-tag">03 · COMPUTATIONAL MECHANISM</span><h2>瓶頸多發生於支持集型決策計分，而非全部來自 Reduct</h2>
+<p>你提供的原報告指出，<strong>已完成且 Wall Time 超過 60 秒</strong>的模型中，Predict 耗時占 91.9%、LEM2 占 5.1%、Reduct 只有 0.9%。這是以原分析匯總的階段計時為依據；兩份 per-source CSV 並未保存逐模型 Phase Timings，因此這裡不宣稱已獨立重算每個比例，更不能直接證明每個逾時模型最後停在哪一行。</p>
+<div class="phase-bar" aria-label="慢模型各階段原報告匯總占比"><div style="width:91.9%" class="predict">Predict 91.9%</div><div style="width:5.1%" class="lem2">LEM2</div><div style="width:0.9%" class="reduct"></div><div style="width:2.1%" class="other"></div></div>
+<div class="metric-grid"><article><h3>核心成本：U × R × N<sub>dev</sub></h3><p><b>U</b>＝不同 Rule-Match Boolean Pattern 的數量；<b>R</b>＝規則數；<b>N<sub>dev</sub></b>＝Dev（真正訓練）列數，約為來源 64%。三種支持集計分策略的密集計算主項可用這個量級理解。</p></article>
+<article><h3>何時近似 n² × R？</h3><p>只有在 U 接近 Test Rows（約 0.2n），Dev 約 0.64n 時，推論主項才可能呈平方量級；若規則集合有限、匹配樣式大量重複，U 遠小於 Test Rows，成本就可能遠低於平方。</p></article>
+<article><h3>為何一個慢策略拖垮 12 筆成績？</h3><p>同一 <code>dataset × seed × scenario</code> 的模型會使用 A/B2 兩個 Rule Variants × 六種決策策略。原本程式需整組成功才能返回成績；若其中一個支持集策略逾時，先算完的策略也不能形成完整模型紀錄。</p></article></div>
+<div class="research-note"><strong>工程與方法學切割：</strong>Exact Reduct 的組合搜尋有潛在指數複雜度，但這批已完成的慢模型，從匯總結果看主要瓶頸是另一個階段。不能以「推論階段約 92%」推論 Rough Set 的 NP-hard 問題已解決，也不能把六種策略的後處理成本誤寫成 LEM2 規則歸納成本。</div>
+</section>
+<section class="panel" id="scaling"><span class="section-tag">04 · CI LADDER / MODEL EXTRAPOLATION · 48 GROUPS</span><h2>逐資料集縮放律：實測點、逾時和預測線分開</h2>
+<p>縮放 CSV 對 <strong>1,800／10,000 Rows</strong> 記錄規則數，並給出 10,000 Rows 耗時；但<strong>沒有提供 1,800 Rows 的耗時欄位</strong>，因此下圖只使用可核對的 10,000 Rows 時間點，後面接原報告的 <em>未校準</em> <code>n^(2+g)</code> 虛線。方塊＝CI Full Size 中成功模型的中位耗時；×＝同情境出現 timeout，位置只表示 2,700 秒的設限，不是完成時間。</p>
+<div class="formgrid compact-controls">
+<label>顯示聯邦分布<select id="scaleScenario"><option value="FED_IID">Fed IID</option><option value="FED_A01">Dirichlet α=0.1</option></select></label>
+<label>縮放線<select id="scaleDetail"><option value="SELECTED">重點風險來源</option><option value="ALL_HIGH">所有規則多的來源</option></select></label>
+</div>
+<div class="chart-shell"><svg id="scaleSvg" viewBox="0 0 1060 570" role="img" aria-label="實測10k資料列耗時與高規則數資料集外推縮放曲線"></svg></div>
+<div class="legend"><span><i class="dot"></i>10k CI ladder 實測</span><span><i class="square"></i>Full size CI 成功者中位數</span><span><i class="cross">×</i>有逾時，時間右設限</span><span><i class="dash"></i>未校準 n^(2+g) 外推</span></div>
+<p class="small muted">原報告中 48 組有 11 組 <code>degenerate_ladder=True</code>；圖上會排除這類不穩定梯度。外推可因樣式去重、規則退化、類別分布、硬體或右設限選樣而嚴重高估。超大 Rows 的長虛線只代表風險方向，不代表可信的完工秒數。</p>
+<h3>48 組完整交叉表：有來源、實測、外推與品質旗標</h3>
+<div class="formgrid compact-controls"><label>分布<select id="tableScenario"><option value="ALL">Fed IID＋α=0.1</option><option value="FED_IID">Fed IID</option><option value="FED_A01">α=0.1</option></select></label><label>證據類別<select id="tableRisk"><option value="ALL">全部 48 組</option><option value="TIMEOUT">CI 有 TIMEOUT</option><option value="HIGH">規則數較多（≥500）</option><option value="DEGENERATE">退化／不可穩定外推</option></select></label></div>
+<p id="tableCount" class="small muted" role="status">載入資料表…</p>
+<div class="table-wrap"><table class="matrix-table"><thead><tr><th>資料集</th><th>情境</th><th>原始 Rows</th><th>10k Rules</th><th>10k Wall (s)</th><th>CI 成功/逾時</th><th>CI 成功者 Median (s)</th><th>校正外推超時 Rows（不確定）</th><th>證據風險</th></tr></thead><tbody id="scaleRows"><tr><td colspan="9">載入 48 組原始資料…</td></tr></tbody></table></div>
+<div class="research-note"><strong>校正的外推也不是實測閾值。</strong>原報告的 2.02 倍校正只來自四組有較多規則、且 CI 全部成功的組合。CI 有 timeout 的情境，成功者的 median 會偏向較快的 Seed。這種資料屬右設限問題，宜用 survival／censored-time 方法或分開呈現 failure fraction，而非一般最小平方法硬擬合所有情況。</div>
+</section>
+<section class="panel" id="decision"><span class="section-tag">05 · ENGINEERING DECISION & STUDY LIMITATIONS</span><h2>下一步：不宜只拉長 timeout</h2>
+<div class="metric-grid"><article><h3>優先完成可成功的來源</h3><p><code>adult_income</code>、<code>openml_42734</code> 等 CI 五筆中多數成功的來源，值得先補完整；<code>openml_41027</code>、<code>openml_42732</code> 已有反覆 timeout 證據，應獨立記錄資源風險。</p></article>
+<article><h3>把缺漏當成研究限制</h3><p>剩九個來源並非隨機遺失，尤其大型且高規則數的模型更容易失敗。不可用 179 個成功資料集推論到全部 188 個，也不能把 TIMEOUT 填成 Accuracy=0。</p></article>
+<article><h3>新的效能實驗需要版本隔離</h3><p>下一版可對各決策策略單獨計時／checkpoint，研究 bitset／sparse support 與規則支持度索引，檢驗預測一致性（parity）。但不能替換既有 Frozen 42-seed Test 主結果。</p></article></div>
+<p><strong>研究定位：</strong>本輪量測的是固定特徵上限與 64/16/20 切分下的規則學習及後處理效能。沒有實驗證明 80/20 最佳、六特徵最佳、Client=3 最佳、或完整高維資料的運算效能。圖表不能單獨宣稱 `n²×rules` 是所有來源普適的時間定律。</p>
+</section>
+<section class="panel" id="data"><span class="section-tag">06 · ORIGINAL SOURCE / REPRODUCIBILITY</span><h2>數據來源與可追溯性</h2><div class="download-list">
+<a href="./per_source_observed.csv.gz" download>181 個逐來源原始觀測 CSV.gz</a><a href="./per_source_scaling.csv.gz" download>48 組縮放分析原始 CSV.gz</a>
+<a href="https://github.com/Jimmy0307/LEM2/blob/research/expanded-42seeds-20261120/docs/research/expanded_188_42seeds/timeout_analysis_20261123/TIMEOUT_ANALYSIS_REVIEWED.md" target="_blank" rel="noopener">方法學審查報告與資料哈希</a>
+<a href="https://github.com/Jimmy0307/LEM2/blob/research/expanded-42seeds-20261120/docs/research/expanded_188_42seeds/interim/FAILURES.csv" target="_blank" rel="noopener">11:42 TIMEOUT 原始逐模型紀錄（98筆）</a>
+<a href="../">返回188個資料集主研究網頁</a>
+</div><p class="small muted">此網頁在瀏覽器直接讀取相同的 gzip CSV 重新繪圖。此處繪圖不是對使用者提供原 PNG 的像素複製，原 PNG 保留於對話上傳與可下載附件中。上傳報告的 18:16 日期與操作回報的 18:05 分開標示。</p></section>
+</main><footer class="footer">LEM2 · Timeout Performance Diagnostics · 2026-11-23 · <a href="../">返回主實驗</a></footer><script defer src="./timeout.js"></script></body></html>
