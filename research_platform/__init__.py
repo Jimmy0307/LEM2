@@ -1,0 +1,1 @@
+"""Research Algorithm API v1; see docs/research/expanded_188_42seeds/handover/MODULAR_PLATFORM_HANDOVER_20261123.md.\nFull implementation is distributed as the handover overlay ZIP until merged.\n"""\nAPI_VERSION = "1.0"\n
