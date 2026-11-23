@@ -36,6 +36,23 @@ jobs:
           assert all(r["features"]<=6 or r["usedFeatures"]==6 for r in rows)
           assert not any("sha256" in k.lower() for r in rows for k in r)
           assert len(set(r["id"] for r in rows))==188
+          assert len(data["coverageConflict"]["summary"])==24
+          models=[m for r in rows for v in r["variants"].values() for m in v.values() if m]
+          assert len(models)==1442
+          assert sum(m["complete"] for m in models)==179*8
+          for m in models:
+              assert 0<=m["candidate"]<=m["coverage"]+1e-7
+              assert 0<=m["conflict"]<=m["coverage"]+1e-7
+              assert abs(m["coverage"]+m["noMatchPct"]-100)<1e-6
+              assert abs(m["meanMatchedRows"]+m["meanNoMatchRows"]-m["meanTestRows"])<1e-4
+          import csv
+          with open(root/"coverage_conflict_188.csv",encoding="utf-8-sig",newline="") as fd:
+              summary=list(csv.DictReader(fd))
+          assert len(summary)==188*4*2
+          assert sum(x["complete_42seeds"]=="true" for x in summary)==179*8
+          assert not any("sha256" in k.lower() for k in summary[0])
+          with open(root/"coverage_conflict_group_summary.csv",encoding="utf-8-sig",newline="") as fd:
+              assert len(list(csv.DictReader(fd)))==24
           assert (root/"index.html").exists()
           assert (root/"expanded42.css").exists()
           assert (root/"expanded42.js").exists()
@@ -63,6 +80,18 @@ jobs:
                   assert res.status==200,res.status
                   page.wait_for_function("document.querySelector('#loadStatus').textContent.includes('驗證完成')",timeout=15000)
                   assert page.locator("#datasetRows tr").count()==30
+                  assert page.locator("#analysisRows tr").count()==4
+                  assert page.locator("#variantTradeoff tr").count()==4
+                  assert page.locator("#subgroupRows tr").count()>=3
+                  assert "179" in page.locator("#analysisHeadline").inner_text()
+                  page.select_option("#analysisGroup","FULL_FEATURE")
+                  assert "25" in page.locator("#analysisHeadline").inner_text()
+                  page.select_option("#subgroupDimension","CLASS_COUNT")
+                  assert page.locator("#subgroupRows tr").count()>=2
+                  page.select_option("#analysisVariant","B2_TRUE_AS_FALLBACK")
+                  assert page.locator("#variantTradeoff tr").count()==4
+                  page.select_option("#analysisGroup","ALL")
+                  page.select_option("#subgroupDimension","ROW_SIZE")
                   assert "188／188" in page.locator("#showing").inner_text()
                   page.select_option("#featureGroup","FULL")
                   assert "26／188" in page.locator("#showing").inner_text()
@@ -77,6 +106,7 @@ jobs:
                   page.locator("#datasetRows button[data-detail]").click()
                   assert "Bioresponse" in page.locator("#detailTitle").inner_text()
                   assert page.locator("#detailResults tr").count()==4
+                  assert page.locator("#detailAll tr").count()==8
                   page.select_option("#variant","B2_TRUE_AS_FALLBACK")
                   assert page.locator("#detailResults tr").count()==4
                   page.select_option("#scenario","FED_IID")

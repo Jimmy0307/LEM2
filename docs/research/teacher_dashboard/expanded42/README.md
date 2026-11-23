@@ -9,3 +9,9 @@ Source snapshot: 20261123T114229, frozen. 179/188 complete, 30078/31584 models, 
 - partial datasets are never imputed. Snapshot is static, not a live run.
 - historic full_scale page remains 5 seeds.
 This page is included in whitelisted GitHub Pages site build by being under docs/research/teacher_dashboard/**.
+
+
+## 2026-11-23 Coverage / Conflict 完整深入版
+- [可讀研究判讀報告](./RESEARCH_FINDINGS_COVERAGE_CONFLICT_20261123.md)：六案例、指標定義、風險條件、A/B2 效益與成本。
+- [1,504 筆完整資料集 × 情境 × 規則版指標](./coverage_conflict_188.csv)，包含 test/covered/no-match/true-in-candidate 逐 seed 平均筆數，未完成保留為空。
+- [24 筆條件群組統計](./coverage_conflict_group_summary.csv)，完整 179 個資料集才計入平均。
