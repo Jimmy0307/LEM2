@@ -252,11 +252,11 @@ def main():
       "n_iid_best_accuracy_better":int((cases.iid_best_accuracy_gain_pp>1e-9).sum()),
       "n_a01_best_accuracy_worse":int((cases.a01_best_accuracy_change_pp<-1e-9).sum()),
       "correlation_a01_conflict_vs_accuracy_drop_standard_spearman":
-        float(cases["FED_A01__conflict_rate_pct"].corr(
-             cases["FED_A01__accuracy_delta_standard_pp"],method="spearman")),
+        float(cases["FED_A01__conflict_rate_pct"].rank().corr(
+             cases["FED_A01__accuracy_delta_standard_pp"].rank(),method="pearson")),
       "correlation_a01_coverage_vs_accuracy_drop_standard_spearman":
-        float(cases["FED_A01__test_coverage_pct"].corr(
-             cases["FED_A01__accuracy_delta_standard_pp"],method="spearman")),
+        float(cases["FED_A01__test_coverage_pct"].rank().corr(
+             cases["FED_A01__accuracy_delta_standard_pp"].rank(),method="pearson")),
     }
     (OUT/"DIAGNOSTIC_COUNTS.json").write_text(json.dumps(diag,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
     # For human-facing contrast, choose fixed STANDARD_VOTING, rather than test-selected best policy.
