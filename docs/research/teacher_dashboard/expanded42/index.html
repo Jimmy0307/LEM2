@@ -10,7 +10,7 @@
 <div class="eyebrow">STUDY INVENTORY · FROZEN 42-SEED INTERIM · 2026-11-23</div>
 <h1>188 個資料集：<br>六特徵基準實驗與研究限制</h1>
 <p>這一輪先維持<strong>最多六個候選特徵、三個 Client、共同 Target／Feature Schema</strong> 的既有實驗；原始特徵未超過六個者為完整特徵基準，超過六個者為受限特徵測試，未來須另外做特徵擴張消融。</p>
-<div class="quicklinks"><a href="#protocol-verified">實際測試目的／64:16:20</a><a href="#coverage-research">Coverage／Conflict 深度分析</a><a href="#inventory">188 筆完整明細</a><a href="#findings">特徵分組</a><a href="#method">實驗方法與限制</a><a href="#downloads">下載已核驗資料</a></div>
+<div class="quicklinks"><a href="./timeout/" style="font-weight:800">新增：TIMEOUT／縮放診斷</a><a href="#protocol-verified">實際測試目的／64:16:20</a><a href="#coverage-research">Coverage／Conflict 深度分析</a><a href="#inventory">188 筆完整明細</a><a href="#findings">特徵分組</a><a href="#method">實驗方法與限制</a><a href="#downloads">下載已核驗資料</a></div>
 </header>
 <main class="wrap new-wrap">
 
@@ -98,6 +98,7 @@
 <p class="muted small">可讀圖結論：整體非 IID 下 Coverage 可能上升、Conflict 同時增大；此現象需要檢查有效類別支持、空前件規則與候選決策，而不是直接推論六特徵造成反曲線。</p>
 </section>
 
+<section class="panel" id="timeout-evidence"><span class="section-tag">LATEST · COMPUTATIONAL REPRODUCIBILITY</span><h2>逾時不是單純 Rows 過多：已新增 181 來源實測與 48 組縮放證據</h2><p>根據 2026-11-23 上傳的逐來源計時與 CI 梯度，44,819 Rows 的 openml_41027 多次超過 2,700 秒，但 1,000,000 Rows 的 openml_42769 在成功模型中最慢 87.8 秒。需區分 Rule Count、不同 Rule Match Pattern、Support-Union 決策計分，以及真正的 TIMEOUT 右設限，不能用單一 Rows 門檻描述。</p><div class="notice"><strong>審查限制：</strong>原報告的 (n^{2+g}) 是具條件的成本外推，不是普遍複雜度；其中 11/48 組 1,800→10,000 Rows 梯度屬退化案例，校正只有四組較高規則且全 CI 成功的資料。新網頁將實測與外推、CI 完成與超時分開繪圖，原本的 179 個完整資料集結果不變。</div><p><a href="./timeout/" style="font-size:17px;font-weight:800">查看完整 TIMEOUT 互動圖、48 組逐來源表和原始 CSV.gz</a></p></section>
 <section class="panel" id="coverage-research"><span class="section-tag">03 · EXTENDED COVERAGE / CONFLICT EVIDENCE</span><h2>為什麼有規則命中，卻不一定能做出正確決策？</h2>
 <p>對於每一個資料集，在固定 <strong>42 個 Seed、同一分布與規則版本</strong> 下，先量測整個 Test Set 中的規則命中、正確決策是否在候選集合、無命中比例，以及同一物件被不同類別規則命中的衝突。這四個層級不能互相代替。</p>
 <div class="definition-grid">
