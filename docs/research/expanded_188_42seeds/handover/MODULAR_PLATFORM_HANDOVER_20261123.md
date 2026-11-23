@@ -1,3 +1,5 @@
+> **2026-11-24 最新狀態（此條優先於以下11/23歷史紀錄）**：完整 Python 套件原始碼、`pyproject.toml`、外部 Adapter 範例、`fdm batch`／`fdm compare`、CI 及 Dockerfile 已同步至本 GitHub 隔離分支；可由 Git 直接 pip 安裝，不再需要先解壓舊版 ZIP 才能取得源碼。舊下文提到「ZIP 尚未同步此 Git 分支」是 **11/23 的歷史狀態**，已不適用。已完成 GitHub wheel build／external adapter／Docker 煙霧測試；實際合作者 SSH 與 Spark 叢集尚未驗收。以 [新版繁體中文安裝與 API 指南](FDM_PIP_ADAPTER_GUIDE_ZH.md) 為準。
+
 # 多演算法研究平台交接｜Algorithm API + SSH + Spark
 
 **2026-11-23｜負責人：跨演算法實驗整合｜狀態：API v1 介面已在隔離分支建立；全套可執行程式與測試以本次對話交付的 ZIP 擴充包發行，尚未全部寫回此 Git 分支。**

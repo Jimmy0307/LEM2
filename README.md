@@ -1,3 +1,5 @@
+> **2026-11-24 更新｜Federated Decision Making v0.1.0 可安裝套件：**本隔離分支已新增 `pyproject.toml`、`src/federated_decision_making/`、`fdm` CLI、外部演算法 Entry Points、自動化測試、Dockerfile 與獨立 Adapter 範例。現在可執行 `python -m pip install 'git+https://github.com/Jimmy0307/LEM2.git@research/modular-platform-handover-20261123'`。PyPI尚未發布，不能直接從PyPI安裝。完整操作請見 [FDM 繁體中文手冊](docs/research/expanded_188_42seeds/handover/FDM_PIP_ADAPTER_GUIDE_ZH.md)。本分支不改動188×42主實驗的科學結果。
+
 ## 聯邦 LEM2 規則退化重建研究（2026-11-16，PR #6 審查中）
 
 分支 `research/federated-rule-degeneracy-redesign-20261116`：預先註冊的確認性驗證、獨立重算與限制。入口：[研究封版狀態](docs/research/redesign_20261116/RESEARCH_FINAL_STATUS.md)、[重現指南](docs/research/redesign_20261116/REPRODUCIBILITY_GUIDE.md)、[下一步 Roadmap](docs/research/redesign_20261116/NEXT_RESEARCH_ROADMAP.md)。下方內容屬於原始研究，未修改。
