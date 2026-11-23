@@ -49,8 +49,8 @@ def seg_setup(meta):
     m["feature_type_group"]=m.feature_type.fillna("UNCLASSIFIED")
     m["size_group"]=pd.cut(m.original_rows,[0,500,5000,50000,float("inf")],
           labels=["<500","500–4,999","5,000–49,999",">=50,000"],right=False).astype(str)
-    m["class_group"]=pd.cut(m.n_classes_int,[0,2,3,5,float("inf")],
-          labels=["1 (unexpected)","2","3–5","6+"],right=True).astype(str)
+    m["class_group"]=pd.cut(m.n_classes_int,[-.1,2.5,5.5,float("inf")],
+          labels=["2","3–5","6+"],right=True).astype(str)
     m["binary_imbalance_group"]=np.select(
        [(m.n_classes_int==2)&(m.minority_share<.05),
         (m.n_classes_int==2)&(m.minority_share>=.05)&(m.minority_share<.2),
