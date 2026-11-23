@@ -1,0 +1,64 @@
+name: Federated Decision Making Python Wheel and Plugin API
+on:
+  push:
+    branches: [research/modular-platform-handover-20261123]
+    paths:
+      - 'pyproject.toml'
+      - 'FDM_PACKAGE_README.md'
+      - 'src/federated_decision_making/**'
+      - 'examples/fdm_lookup_adapter/**'
+      - 'tests/test_federated_decision_making_package.py'
+      - 'Dockerfile.fdm'
+      - '.github/workflows/fdm-package.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  pip-wheel-and-external-plugin:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install platform and independent plugin
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install -e '.[test]'
+          python -m pip install -e ./examples/fdm_lookup_adapter
+      - name: Run stable API, legacy parity and plugin tests
+        run: pytest -q tests/test_federated_decision_making_package.py
+      - name: Validate CLI auto plugin discovery from external directory
+        run: |
+          cd /tmp
+          fdm algorithms | tee /tmp/fdm_algorithms.log
+          grep '"algorithm": "lookup_example", "status": "AVAILABLE"' /tmp/fdm_algorithms.log
+      - name: Build wheel and validate package metadata
+        run: |
+          python -m pip wheel . --no-deps -w /tmp/fdm_dist
+          python - <<'PY'
+          import pathlib,zipfile
+          w=list(pathlib.Path('/tmp/fdm_dist').glob('federated_decision_making*.whl'))
+          assert len(w)==1
+          with zipfile.ZipFile(w[0]) as z:
+              files=z.namelist()
+              assert any(f.endswith('entry_points.txt') for f in files)
+              assert 'federated_decision_making/registry.py' in files
+          print('FDM wheel verified',w[0])
+          PY
+      - name: Verify SSH helper syntax and Spark source bundle
+        run: |
+          bash -n scripts/fdm_ssh_run.sh
+          fdm-spark-bundle --output /tmp/fdm_bundle.zip --legacy-repo .
+  docker-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build core-only Docker image
+        run: docker build -f Dockerfile.fdm -t fdm:smoke .
+      - name: Check CLI and explicit legacy engine absence
+        run: |
+          docker run --rm fdm:smoke algorithms | tee /tmp/fdm_out.txt
+          grep '"algorithm": "lem2", "status": "MISSING_ENGINE"' /tmp/fdm_out.txt

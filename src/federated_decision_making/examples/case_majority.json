@@ -1,0 +1,10 @@
+{
+  "dataset_id": "example_binary_001",
+  "csv": "/data/example_binary.csv",
+  "target": "class",
+  "features": ["condition_a", "condition_b"],
+  "algorithm": "majority",
+  "scenario": "CENTRALIZED",
+  "seed": 1,
+  "split": "64_16_20"
+}

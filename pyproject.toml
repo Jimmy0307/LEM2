@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "federated-decision-making"
+version = "0.1.0"
+description = "Plugin-based scientific platform for centralized and federated decision-rule algorithm evaluation"
+readme = "FDM_PACKAGE_README.md"
+requires-python = ">=3.11,<3.14"
+authors = [{name = "LEM2 Research Team"}]
+classifiers = [
+ "Development Status :: 3 - Alpha",
+ "Intended Audience :: Science/Research",
+ "Programming Language :: Python :: 3",
+ "Programming Language :: Python :: 3.11",
+ "Programming Language :: Python :: 3.12",
+ "Programming Language :: Python :: 3.13",
+ "Topic :: Scientific/Engineering :: Artificial Intelligence",
+ "Operating System :: OS Independent",
+]
+dependencies = ["numpy>=1.26,<3", "pandas>=2.2,<3"]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<10", "scipy>=1.12,<2"]
+spark = ["pyspark>=3.5,<5"]
+
+[project.scripts]
+fdm = "federated_decision_making.cli:main"
+federated-decision-making = "federated_decision_making.cli:main"
+fdm-spark-bundle = "federated_decision_making.scripts.build_spark_bundle:main"
+
+[project.urls]
+Source = "https://github.com/Jimmy0307/LEM2"
+Documentation = "https://github.com/Jimmy0307/LEM2/tree/research/modular-platform-handover-20261123"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["federated_decision_making*"]
+
+[tool.setuptools.package-data]
+federated_decision_making = ["py.typed", "examples/*.json", "examples/*.csv"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

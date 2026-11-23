@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fdm-lookup-example"
+version = "0.1.0"
+requires-python = ">=3.11,<3.14"
+dependencies = ["federated-decision-making>=0.1,<0.2"]
+description = "Independent example classifier plugin for the Federated Decision Making platform"
+
+[project.entry-points."federated_decision_making.algorithms"]
+lookup_example = "fdm_lookup_adapter:LookupPlugin"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+[tool.setuptools.packages.find]
+where = ["src"]
