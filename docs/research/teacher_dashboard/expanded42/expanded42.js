@@ -98,7 +98,45 @@ function drawAnalysis(){
  b.coveredWrong-a.coveredWrong,b.accuracy-a.accuracy,b.ba-a.ba];
  return "<tr><th scope='row'>"+scenes[sc]+"</th>"+cols.map(x=>"<td>"+pp(x)+"</td>").join("")+"</tr>";
  }).join("");
+ drawSubgroups();
  drawRiskExamples();
+}
+function stratum(r,dimension){
+ if(dimension==="ROW_SIZE"){
+  const v=r.usedRows;
+  return v<500?"<500 Rows":v<5000?"500–4,999 Rows":v<50000?"5,000–49,999 Rows":"≥50,000 Rows";
+ }
+ if(dimension==="CLASS_COUNT")return r.classes===2?"2 類":r.classes<=5?"3–5 類":"≥6 類";
+ if(dimension==="FEATURE_TYPE")return r.type||"未分類";
+ if(dimension==="COHORT")return r.cohort==="OML51"?"OpenML":r.cohort;
+ return "其他";
+}
+function drawSubgroups(){
+ const grp=opt("analysisGroup"),sc=opt("analysisScenario"),vr=opt("analysisVariant");
+ const dimension=opt("subgroupDimension");
+ const eligible=source.rows.filter(r=>complete(r)&&(grp==="ALL"||groupOf(r)===grp));
+ const dictionary=new Map();
+ for(const r of eligible){
+  const key=stratum(r,dimension);
+  if(!dictionary.has(key))dictionary.set(key,[]);
+  dictionary.get(key).push(metric(r,sc,vr));
+ }
+ el("subgroupDescription").textContent="已選 "+groups[grp]+"、"+scenes[sc]+"、"+versions[vr]+
+ "；分層維度："+{ROW_SIZE:"實際使用 Rows",CLASS_COUNT:"決策類別數",FEATURE_TYPE:"資料型態",COHORT:"來源群組"}[dimension]+
+ "。分母為 42 Seeds 全完成的 "+eligible.length+" 個資料集；不是逐筆測試樣本數。";
+ const values=[...dictionary.entries()];
+ if(dimension==="ROW_SIZE")values.sort((a,b)=>["<500 Rows","500–4,999 Rows","5,000–49,999 Rows","≥50,000 Rows"].indexOf(a[0])-
+ ["<500 Rows","500–4,999 Rows","5,000–49,999 Rows","≥50,000 Rows"].indexOf(b[0]));
+ else if(dimension==="CLASS_COUNT")values.sort((a,b)=>["2 類","3–5 類","≥6 類"].indexOf(a[0])-["2 類","3–5 類","≥6 類"].indexOf(b[0]));
+ else values.sort((a,b)=>a[0].localeCompare(b[0],"zh-Hant"));
+ el("subgroupRows").innerHTML=values.map(([name,arr])=>{
+  const avg=k=>arr.reduce((t,m)=>t+m[k],0)/arr.length;
+  const high=arr.filter(m=>m.coverage>=80&&m.conflict>=50).length;
+  return "<tr><td><strong>"+esc(name)+"</strong>"+(arr.length<5?"<small class='risk'> · 小樣本</small>":"")+"</td>"+
+  "<td>"+arr.length+"</td><td>"+pct(avg("coverage"))+"</td><td>"+pct(avg("candidate"))+
+  "</td><td>"+pct(avg("coveredWrongPct"))+"</td><td>"+pct(avg("noMatchPct"))+
+  "</td><td>"+pct(avg("conflict"))+"</td><td>"+high+" / "+arr.length+"</td></tr>";
+ }).join("")||"<tr><td colspan='8'>此分組沒有完整實驗結果。</td></tr>";
 }
 function drawRiskExamples(){
  const grp=opt("analysisGroup"),variant=opt("analysisVariant"),sc=opt("analysisScenario");
@@ -241,7 +279,7 @@ function init(data){
   if((id==="scenario"||id==="variant")&&currentDetail)detail(currentDetail,false);
  });
  }
- for(const id of ["analysisGroup","analysisVariant","analysisScenario"]){
+ for(const id of ["analysisGroup","analysisVariant","analysisScenario","subgroupDimension"]){
  el(id).addEventListener("change",drawAnalysis);
  }
  for(const b of document.querySelectorAll("[data-filter-group]")){
