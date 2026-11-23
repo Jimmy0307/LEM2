@@ -1,0 +1,18 @@
+{
+  "n_complete": 179,
+  "n_incomplete": 9,
+  "n_binary": 110,
+  "n_multiclass": 78,
+  "n_feature_retention_below25_all": 74,
+  "n_feature_retention_below25_complete": 72,
+  "n_a05_acc_down_ba_up_standard": 56,
+  "n_a01_cov_up20_acc_down5_standard": 71,
+  "n_a01_coverage80_conflict50": 113,
+  "n_a01_high_acc_low_ba": 6,
+  "n_a01_rules_less_than_iid": 160,
+  "n_a01_conflict_greater_than_iid": 177,
+  "n_iid_best_accuracy_better": 128,
+  "n_a01_best_accuracy_worse": 131,
+  "correlation_a01_conflict_vs_accuracy_drop_standard_spearman": -0.27918253590885733,
+  "correlation_a01_coverage_vs_accuracy_drop_standard_spearman": -0.3426951939146282
+}

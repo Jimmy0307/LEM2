@@ -1,0 +1,70 @@
+﻿dimension,group,scenario,n,Accuracy Δ pp,Balanced Accuracy Δ pp,Coverage Δ pp,Candidate Coverage Δ pp,Conflict Δ pp,Accuracy下降且BA上升 n
+cohort,EXT7,FED_A01,7,-7.955,-8.947,45.097,34.374,73.994,1
+cohort,EXT7,FED_A05,7,2.516,3.075,37.623,29.387,43.631,1
+cohort,EXT7,FED_IID,7,6.321,6.907,28.622,22.54,20.257,0
+cohort,NEXT12,FED_A01,12,-6.091,-2.849,66.934,49.182,58.226,4
+cohort,NEXT12,FED_A05,12,-0.69,1.98,44.471,33.201,27.956,4
+cohort,NEXT12,FED_IID,12,3.522,4.508,22.014,18.462,11.623,1
+cohort,OML51,FED_A01,43,-5.049,-0.272,67.265,50.346,38.688,13
+cohort,OML51,FED_A05,43,-1.545,0.747,30.631,21.711,10.486,18
+cohort,OML51,FED_IID,43,0.445,0.739,7.411,6.009,4.02,6
+cohort,PMLB,FED_A01,93,-6.294,-3.106,56.331,43.925,58.721,23
+cohort,PMLB,FED_A05,93,-0.797,1.031,40.687,32.256,31.697,23
+cohort,PMLB,FED_IID,93,2.789,3.499,23.888,19.931,14.882,5
+cohort,UCI20,FED_A01,19,-9.64,-6.077,59.425,47.216,54.4,4
+cohort,UCI20,FED_A05,19,-1.376,1.939,32.698,26.381,21.833,7
+cohort,UCI20,FED_IID,19,2.553,4.316,18.528,15.828,8.593,1
+feature_type_group,混合,FED_A01,57,-7.121,-1.819,56.252,46.726,58.854,21
+feature_type_group,混合,FED_A05,57,-1.92,1.254,39.942,33.49,30.852,26
+feature_type_group,混合,FED_IID,57,2.014,2.94,24.151,21.123,14.972,8
+feature_type_group,連續,FED_A01,79,-5.221,-1.972,66.216,48.612,47.568,19
+feature_type_group,連續,FED_A05,79,0.531,2.406,35.066,25.887,16.844,22
+feature_type_group,連續,FED_IID,79,2.971,3.636,13.386,11.414,6.128,5
+feature_type_group,類別/離散,FED_A01,43,-8.985,-7.75,49.286,38.128,60.3,7
+feature_type_group,類別/離散,FED_A05,43,-3.098,-2.217,36.941,27.84,36.176,8
+feature_type_group,類別/離散,FED_IID,43,1.455,1.769,23.263,17.845,18.118,1
+size_group,"5,000–49,999",FED_A01,39,-5.241,-0.328,67.597,48.12,42.211,14
+size_group,"5,000–49,999",FED_A05,39,0.987,3.498,33.703,24.306,11.894,14
+size_group,"5,000–49,999",FED_IID,39,2.282,3.158,14.617,11.435,4.089,4
+size_group,"500–4,999",FED_A01,84,-6.626,-2.909,64.622,50.063,55.065,22
+size_group,"500–4,999",FED_A05,84,-1.545,0.658,41.414,31.63,24.541,30
+size_group,"500–4,999",FED_IID,84,2.19,2.741,19.694,16.243,10.818,6
+size_group,<500,FED_A01,43,-8.977,-8.299,45.31,40.828,75.859,5
+size_group,<500,FED_A05,43,-2.555,-0.98,40.357,34.542,48.92,8
+size_group,<500,FED_IID,43,3.166,3.962,27.775,24.441,24.293,3
+size_group,">=50,000",FED_A01,13,-4.438,1.636,41.841,23.516,13.217,6
+size_group,">=50,000",FED_A05,13,0.035,1.276,8.219,4.692,1.218,4
+size_group,">=50,000",FED_IID,13,0.228,0.549,1.211,0.903,0.29,1
+class_group,2,FED_A01,103,-7.859,-5.4,67.151,58.612,62.529,26
+class_group,2,FED_A05,103,-3.217,-0.597,42.561,34.824,26.603,41
+class_group,2,FED_IID,103,1.589,2.42,19.236,17.325,9.906,9
+class_group,3–5,FED_A01,42,-11.739,-4.92,56.086,36.963,58.329,13
+class_group,3–5,FED_A05,42,-1.008,0.565,36.746,27.62,33.935,13
+class_group,3–5,FED_IID,42,2.289,2.645,23.822,19.027,19.151,3
+class_group,6+,FED_A01,34,2.877,5.005,37.78,16.286,23.975,8
+class_group,6+,FED_A05,34,5.089,5.999,20.828,11.887,14.098,2
+class_group,6+,FED_IID,34,4.477,5.018,13.312,8.515,8.585,2
+binary_imbalance_group,binary minority 20–<40%,FED_A01,34,-9.053,-5.858,63.06,56.738,64.626,9
+binary_imbalance_group,binary minority 20–<40%,FED_A05,34,-4.797,-0.26,43.046,37.067,32.303,17
+binary_imbalance_group,binary minority 20–<40%,FED_IID,34,1.82,3.501,24.087,22.524,13.745,2
+binary_imbalance_group,binary minority 5–<20%,FED_A01,19,-8.185,-2.802,64.915,57.047,57.252,7
+binary_imbalance_group,binary minority 5–<20%,FED_A05,19,-2.268,1.241,31.732,28.357,16.92,10
+binary_imbalance_group,binary minority 5–<20%,FED_IID,19,0.743,1.386,12.474,12.508,5.772,5
+binary_imbalance_group,binary minority >=40%,FED_A01,47,-7.096,-6.518,70.708,60.041,63.507,7
+binary_imbalance_group,binary minority >=40%,FED_A05,47,-2.467,-1.711,45.653,34.684,27.522,11
+binary_imbalance_group,binary minority >=40%,FED_IID,47,1.867,2.184,18.176,15.155,9.406,1
+binary_imbalance_group,multiclass (not binary comparable),FED_A01,76,-5.2,-0.48,47.897,27.713,42.96,21
+binary_imbalance_group,multiclass (not binary comparable),FED_A05,76,1.72,2.996,29.625,20.582,25.061,15
+binary_imbalance_group,multiclass (not binary comparable),FED_IID,76,3.268,3.707,19.12,14.324,14.424,5
+feature_retention_group,100%,FED_A01,25,-11.635,-10.396,47.538,39.333,68.829,5
+feature_retention_group,100%,FED_A05,25,-4.706,-3.639,36.372,28.245,37.44,7
+feature_retention_group,100%,FED_IID,25,1.868,2.034,20.206,16.37,17.333,4
+feature_retention_group,25–<50%,FED_A01,46,-5.223,-1.531,63.394,50.103,58.981,7
+feature_retention_group,25–<50%,FED_A05,46,0.539,2.672,41.774,32.627,30.851,12
+feature_retention_group,25–<50%,FED_IID,46,3.268,3.733,22.041,18.645,15.123,2
+feature_retention_group,50–<100%,FED_A01,36,-8.37,-5.819,58.461,48.468,61.352,11
+feature_retention_group,50–<100%,FED_A05,36,-2.72,0.209,41.866,34.508,32.662,11
+feature_retention_group,50–<100%,FED_IID,36,2.407,4.142,26.127,22.287,13.745,3
+feature_retention_group,<25%,FED_A01,72,-5.17,-0.735,60.383,43.199,42.541,24
+feature_retention_group,<25%,FED_A05,72,-0.137,1.76,31.907,23.637,15.469,26
+feature_retention_group,<25%,FED_IID,72,1.783,2.212,13.539,11.164,6.844,5
