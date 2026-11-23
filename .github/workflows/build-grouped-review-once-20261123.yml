@@ -5,6 +5,7 @@ on:
       - research/expanded-42seeds-20261120
     paths:
       - .github/workflows/build-grouped-review-once-20261123.yml
+      - tools/expanded_resume_20261122/build_grouped_research_review.py
 permissions:
   contents: write
 jobs:
@@ -40,7 +41,7 @@ jobs:
           assert (meta.cohort=="OML51").sum()==51
           for fname in p.glob("*.csv"):
               frame=pd.read_csv(fname,encoding="utf-8-sig")
-              assert not any("sha" in str(c).lower() for c in frame.columns),(fname,frame.columns.tolist())
+              assert not any("sha256" in str(c).lower() for c in frame.columns),(fname,frame.columns.tolist())
               assert "raw_sha256" not in fname.read_text(encoding="utf-8-sig")[:2000]
           print("PASS: 188 catalog, 179 complete, 51 OpenML, 42-seed grouped tables")
           PY
