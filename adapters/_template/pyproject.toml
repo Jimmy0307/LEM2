@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fdm-algorithm-template"
+version = "0.0.0"
+description = "UNIMPLEMENTED template for a Federated Decision Making algorithm plugin"
+requires-python = ">=3.11,<3.14"
+dependencies = ["federated-decision-making>=0.1,<0.2"]
+
+[project.entry-points."federated_decision_making.algorithms"]
+algorithm_template = "fdm_algorithm_template:AlgorithmTemplatePlugin"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+[tool.setuptools.packages.find]
+where = ["src"]

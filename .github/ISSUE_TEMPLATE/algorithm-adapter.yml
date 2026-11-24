@@ -1,0 +1,43 @@
+name: Algorithm Adapter proposal / 演算法接入提案
+description: Propose a separate plugin package and evidence plan before a PR.
+title: "[Adapter] "
+labels: ["enhancement"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Algorithm name / 演算法名稱
+      placeholder: PRISM, RIPPER, DRSA-DOMLEM...
+    validations:
+      required: true
+  - type: textarea
+    id: paper
+    attributes:
+      label: Reference paper / implementation / license
+      description: DOI, version, original code license and any deviations
+    validations:
+      required: true
+  - type: dropdown
+    id: federation
+    attributes:
+      label: Supported execution modes
+      multiple: true
+      options:
+        - Centralized only
+        - Federated horizontal simulation (tested)
+        - Other (explain in description)
+    validations:
+      required: true
+  - type: textarea
+    id: reproducible
+    attributes:
+      label: Reproducibility and evaluation plan
+      description: Seed, split, feature budget, target semantics, majority baseline, accuracy/BA and runtime
+    validations:
+      required: true
+  - type: textarea
+    id: limitations
+    attributes:
+      label: Missingness / ordinal criteria / unsupported diagnostics / risks
+    validations:
+      required: true

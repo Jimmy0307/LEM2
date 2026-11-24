@@ -1,0 +1,10 @@
+# Code owner requests are active on a base branch containing this file.
+# GitHub branch rules must separately REQUIRE a code-owner review.
+* @Jimmy0307
+/.github/ @Jimmy0307
+/pyproject.toml @Jimmy0307
+/src/federated_decision_making/ @Jimmy0307
+/adapters/ @Jimmy0307
+/experiments/ @Jimmy0307
+/fedrs/ @Jimmy0307
+/roughset/ @Jimmy0307
