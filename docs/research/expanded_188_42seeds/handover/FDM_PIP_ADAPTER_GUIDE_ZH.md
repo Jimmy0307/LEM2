@@ -1,3 +1,11 @@
+## 2026-11-24｜新增合作者協作 Gate（此節優先）
+
+可分享的研究者引導：[FDM_COLLABORATOR_INVITE_ZH.md](FDM_COLLABORATOR_INVITE_ZH.md)。研究者應 Fork/Feature Branch → 提供 Adapter Wheel 與可重現測試 → 開 PR 到 `research/modular-platform-handover-20261123` → 由 CODEOWNERS 審查、CI 通過再合併。外部套件透過 Entry Point 自動註冊，不需提交改動 Core 的 PR。
+
+**已補：** README、CONTRIBUTING.md、CODEOWNERS、PR Template、Issue Template、SECURITY.md、空白 Adapter 模板、PR GitHub Actions。**仍須人為審核：** [FDM 授權選擇](../../../../LICENSE_DECISION.md) 和 GitHub 的 Branch Rulesets；未核准前不宣稱整個 Repo 已取得 MIT 開源授權。當前代碼處於研究 Alpha，真實 SSH/Spark 權限與叢集仍未驗收。
+
+---
+
 # Federated Decision Making｜pip 安裝與 Adapter 交接指南
 
 **v0.1.0，2026-11-24；研究用途／Alpha 版**。目標：把跨演算法的資料切分、聯邦分配、評估、執行及 Checkpoint 從 LEM2 抽離。

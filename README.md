@@ -1,3 +1,11 @@
+## 2026-11-24｜研究者協作分支已補 GitHub PR Gate
+
+**給外部研究者：** [FDM 合作者 5 分鐘起步與 Branch Rules 設定](docs/research/expanded_188_42seeds/handover/FDM_COLLABORATOR_INVITE_ZH.md) · [Contributing](CONTRIBUTING.md) · [Pull Request Template](.github/PULL_REQUEST_TEMPLATE.md) · [Adapter Template](adapters/_template/README.md) · [授權核准狀態](LICENSE_DECISION.md)。
+
+> 本研究分支已提供 **PR 自動測試、CODEOWNERS、CI 和安全協作規範**，但 GitHub 上的 *Branch Ruleset 啟用* 和 *FDM 著作權授權* 須 Repo Owner 最終確認。Legacy LEM2 / 188×42 Checkpoint 不納入此授權或新策略測試的更動。
+
+---
+
 > **2026-11-24 更新｜Federated Decision Making v0.1.0 可安裝套件：**本隔離分支已新增 `pyproject.toml`、`src/federated_decision_making/`、`fdm` CLI、外部演算法 Entry Points、自動化測試、Dockerfile 與獨立 Adapter 範例。現在可執行 `python -m pip install 'git+https://github.com/Jimmy0307/LEM2.git@research/modular-platform-handover-20261123'`。PyPI尚未發布，不能直接從PyPI安裝。完整操作請見 [FDM 繁體中文手冊](docs/research/expanded_188_42seeds/handover/FDM_PIP_ADAPTER_GUIDE_ZH.md)。本分支不改動188×42主實驗的科學結果。
 
 ## 聯邦 LEM2 規則退化重建研究（2026-11-16，PR #6 審查中）

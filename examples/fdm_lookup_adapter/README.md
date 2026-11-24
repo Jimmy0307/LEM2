@@ -1,7 +1,15 @@
-# Adapter 範例（不是 PRISM）
+# Independent lookup Adapter example (not PRISM)
 
-先安裝研究平台 Wheel，再執行 `pip install ./examples/lookup_adapter`。
+This is a runnable **example classification plugin** for exercising FDM's Entry Point Registry. Its simple prediction logic must never be represented as PRISM, RIPPER or DRSA.
 
-套件會註冊 `[project.entry-points."federated_decision_making.algorithms"]`，接著 `fdm algorithms` 可自動找到 `lookup_example`，`fdm run` 參數 `algorithm` 換成 `lookup_example` 即可。
+From the complete repository:
 
-實際 PRISM／RIPPER／DRSA Adapter 應按照相同 API 撰寫，**需要真實演算法原理與相同測試集**，不要直接將此 Lookup 範例冒充為其算法。
+```bash
+python -m pip install -e '.[test]'
+python -m pip install -e ./examples/fdm_lookup_adapter
+fdm algorithms
+```
+
+The package registers `lookup_example` in `[project.entry-points."federated_decision_making.algorithms"]` and can be selected in a `fdm run` Case. New algorithm implementations should copy [the blank template](../../adapters/_template/README.md), then replace `fit` / `predict` and add scientific tests and a methodology reference.
+
+The adapter template's `fit()` intentionally raises `NotImplementedError`; it is not a working PRISM algorithm.

@@ -1,39 +1,100 @@
 name: Federated Decision Making Python Wheel and Plugin API
+
+# PR checks use an unprivileged, ephemeral GitHub runner. Never use pull_request_target
+# to execute contributor-submitted plugin code.
 on:
   push:
     branches: [research/modular-platform-handover-20261123]
-    paths:
-      - 'pyproject.toml'
-      - 'FDM_PACKAGE_README.md'
-      - 'src/federated_decision_making/**'
-      - 'examples/fdm_lookup_adapter/**'
-      - 'tests/test_federated_decision_making_package.py'
-      - 'Dockerfile.fdm'
-      - '.github/workflows/fdm-package.yml'
+  pull_request:
+    branches: [research/modular-platform-handover-20261123]
   workflow_dispatch:
+
 permissions:
   contents: read
+
+concurrency:
+  group: fdm-ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  governance-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Validate collaboration metadata, plugin entry-point and isolation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import tomllib
+          required = [
+              "CONTRIBUTING.md",
+              "SECURITY.md",
+              "LICENSE_DECISION.md",
+              ".github/CODEOWNERS",
+              ".github/PULL_REQUEST_TEMPLATE.md",
+              ".github/ISSUE_TEMPLATE/algorithm-adapter.yml",
+              "adapters/_template/pyproject.toml",
+              "adapters/_template/src/fdm_algorithm_template/__init__.py",
+              "docs/research/expanded_188_42seeds/handover/FDM_COLLABORATOR_INVITE_ZH.md",
+          ]
+          assert all(Path(p).is_file() for p in required), [p for p in required if not Path(p).is_file()]
+          assert "@Jimmy0307" in Path(".github/CODEOWNERS").read_text()
+          conf = tomllib.loads(Path("pyproject.toml").read_text())
+          example = tomllib.loads(Path("examples/fdm_lookup_adapter/pyproject.toml").read_text())
+          template = tomllib.loads(Path("adapters/_template/pyproject.toml").read_text())
+          assert conf["project"]["name"] == "federated-decision-making"
+          assert conf["project"]["scripts"]["fdm"] == "federated_decision_making.cli:main"
+          group = "federated_decision_making.algorithms"
+          assert group in example["project"]["entry-points"]
+          assert group in template["project"]["entry-points"]
+          assert not Path("LICENSE").exists(), "Legacy repo licensing must be explicitly reviewed"
+          assert "APPROVAL REQUIRED" in Path("LICENSE_DECISION.md").read_text()
+          print("COLLABORATION_CONTRACT=PASS")
+          PY
+
   pip-wheel-and-external-plugin:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install platform and independent plugin
+      - name: Install platform and independent plugins
         run: |
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install -e '.[test]'
           python -m pip install -e ./examples/fdm_lookup_adapter
-      - name: Run stable API, legacy parity and plugin tests
-        run: pytest -q tests/test_federated_decision_making_package.py
-      - name: Validate CLI auto plugin discovery from external directory
+          python -m pip install -e ./adapters/_template
+          python -m pip check
+      - name: Run stable API, frozen-Lem2 parity and plugin tests
+        run: python -m pytest -q tests/test_federated_decision_making_package.py
+      - name: Validate CLI external discovery and unimplemented template
         run: |
           cd /tmp
           fdm algorithms | tee /tmp/fdm_algorithms.log
           grep '"algorithm": "lookup_example", "status": "AVAILABLE"' /tmp/fdm_algorithms.log
+          grep '"algorithm": "algorithm_template", "status": "AVAILABLE"' /tmp/fdm_algorithms.log
+          python - <<'PY'
+          from federated_decision_making.registry import load_algorithm
+          from federated_decision_making.api import FitRequest
+          import pandas as pd
+          adapter = load_algorithm("algorithm_template")
+          df = pd.DataFrame({"x": ["a", "b"], "label": ["a", "b"]})
+          req = FitRequest(train=df, clients={"central":df}, features=("x",), target="label",
+                           mode="CENTRALIZED", seed=1)
+          try:
+              adapter.fit(req)
+          except NotImplementedError:
+              print("UNIMPLEMENTED_TEMPLATE_FAILS_CLOSED=PASS")
+          else:
+              raise AssertionError("template must not fabricate a scientific model")
+          PY
       - name: Build wheel and validate package metadata
         run: |
           python -m pip wheel . --no-deps -w /tmp/fdm_dist
@@ -51,11 +112,34 @@ jobs:
         run: |
           bash -n scripts/fdm_ssh_run.sh
           fdm-spark-bundle --output /tmp/fdm_bundle.zip --legacy-repo .
+
+  python-version-matrix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Verify declared Python compatibility
+        run: |
+          python -m pip install '.[test]'
+          python -m pip install ./examples/fdm_lookup_adapter
+          python -m pytest -q tests/test_federated_decision_making_package.py
+
   docker-smoke:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - name: Build core-only Docker image
         run: docker build -f Dockerfile.fdm -t fdm:smoke .
       - name: Check CLI and explicit legacy engine absence
