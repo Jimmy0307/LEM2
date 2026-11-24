@@ -18,7 +18,7 @@ Thank you for improving this **research platform**. This guide applies to the mo
    ```
 
 4. For a new algorithm, start from [adapters/_template](adapters/_template/README.md) or the runnable [lookup example](examples/fdm_lookup_adapter/README.md). Prefer a separate Python distribution/adapter; use the `federated_decision_making.algorithms` entry-point group.
-5. Push the branch and open a **Pull Request targeting `research/modular-platform-handover-20261123`**, not `main`. Fill in the checklist and attach non-sensitive reproducibility evidence. Wait for CODEOWNERS review and CI.
+5. Push the branch and open a **Pull Request targeting `research/modular-platform-handover-20261123`**, not `main`. Copy the [PR checklist](.github/PULL_REQUEST_TEMPLATE.md) into the PR description if GitHub does not prefill it (the repository default branch is still `main`), and attach non-sensitive reproducibility evidence. Wait for CODEOWNERS review and CI.
 
 ## API v1 contract
 

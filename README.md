@@ -2,7 +2,7 @@
 
 **給外部研究者：** [FDM 合作者 5 分鐘起步與 Branch Rules 設定](docs/research/expanded_188_42seeds/handover/FDM_COLLABORATOR_INVITE_ZH.md) · [Contributing](CONTRIBUTING.md) · [Pull Request Template](.github/PULL_REQUEST_TEMPLATE.md) · [Adapter Template](adapters/_template/README.md) · [授權核准狀態](LICENSE_DECISION.md)。
 
-> 本研究分支已提供 **PR 自動測試、CODEOWNERS、CI 和安全協作規範**，但 GitHub 上的 *Branch Ruleset 啟用* 和 *FDM 著作權授權* 須 Repo Owner 最終確認。Legacy LEM2 / 188×42 Checkpoint 不納入此授權或新策略測試的更動。
+> 本研究分支已提供 **PR 自動測試、CODEOWNERS、CI 和安全協作規範**；PR／Issue 範本仍在研究分支（尚未同步預設 `main`），請先手動複製 checklist，但 GitHub 上的 *Branch Ruleset 啟用* 和 *FDM 著作權授權* 須 Repo Owner 最終確認。Legacy LEM2 / 188×42 Checkpoint 不納入此授權或新策略測試的更動。
 
 ---
 

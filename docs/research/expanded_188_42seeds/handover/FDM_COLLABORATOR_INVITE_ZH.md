@@ -50,3 +50,9 @@ prism = "fdm_prism.adapter:PrismPlugin"
 建議：Require pull requests before merging、至少 **1 位非作者 Approval**、Require review from CODEOWNERS、Require status checks to pass（`pip-wheel-and-external-plugin`、`docker-smoke`、`governance-checks`）、阻止 Force push/Deletion、Require branch to be up to date（依專案負載）。確認規則**Active**並套用此分支後，再通知研究者提交。
 
 **注意**：此文件與 CODEOWNERS 不會自行啟動 branch protection；若倉庫計畫／權限限制某些規則，維護者需依實際 GitHub 畫面確認。
+
+### PR／Issue 範本自動出現的限制
+
+目前專案預設分支仍是 `main`；我們只在研究隔離分支新增範本。依 [GitHub 官方文件](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository)，**PR 範本要進入預設分支才會自動填入**；Issue 範本亦以預設分支為主要來源。因此研究者目前請**直接複製** [PR Checklist](../../../../.github/PULL_REQUEST_TEMPLATE.md) 的內容至 PR 描述；Issue 提案可直接參考 [Algorithm Adapter issue form](../../../../.github/ISSUE_TEMPLATE/algorithm-adapter.yml)。
+
+不要只為了讓模板自動出現，就在未審查的情況下直接合併整個研究平台到 `main`。未來可以由維護者另送**僅包含社群模板的獨立 PR**到預設分支。真正的分支審查與強制 CI 仍需 GitHub Rulesets 啟用。

@@ -50,8 +50,10 @@ jobs:
           group = "federated_decision_making.algorithms"
           assert group in example["project"]["entry-points"]
           assert group in template["project"]["entry-points"]
-          assert not Path("LICENSE").exists(), "Legacy repo licensing must be explicitly reviewed"
-          assert "APPROVAL REQUIRED" in Path("LICENSE_DECISION.md").read_text()
+          # Legal approval is a separate maintainer decision. Do not hardcode
+          # "no LICENSE" or "APPROVAL REQUIRED": either may legitimately change.
+          decision = Path("LICENSE_DECISION.md").read_text()
+          assert "##" in decision and "maintainer" in decision.lower()
           print("COLLABORATION_CONTRACT=PASS")
           PY
 
