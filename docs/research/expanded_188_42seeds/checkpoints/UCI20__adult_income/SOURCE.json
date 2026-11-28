@@ -1,0 +1,41 @@
+{
+  "features": [
+    "age",
+    "workclass",
+    "education",
+    "marital_status",
+    "occupation",
+    "hours_per_week"
+  ],
+  "target": "class",
+  "continuous": [
+    "age",
+    "hours_per_week"
+  ],
+  "categorical": [
+    "workclass",
+    "education",
+    "marital_status",
+    "occupation"
+  ],
+  "raw_sha256": "26b38f8623766396e2ba0d1a235a283db8ed993cc32bf32fc8aab09708c3bdf2",
+  "prepared_sha256": "bdf67435239294cae5c5924e7326413b4da2e5ceed4097c037e1d1cffdf2eee8",
+  "original_rows": 48842,
+  "original_features": 14,
+  "original_feature_names": [
+    "age",
+    "workclass",
+    "education",
+    "marital_status",
+    "occupation",
+    "hours_per_week"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://archive.ics.uci.edu/dataset/2",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "UCI20:adult_income",
+  "used_rows": 48842,
+  "cohort": "UCI20"
+}
