@@ -1,0 +1,7 @@
+{
+  "dataset": "OML51:openml_1169",
+  "seed": 26,
+  "scenario": "FED_A05",
+  "status": "TIMEOUT",
+  "error": "exceeded 2700.00 seconds"
+}

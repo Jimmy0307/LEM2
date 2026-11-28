@@ -1,10 +1,10 @@
 {
   "datasets": 188,
-  "complete_datasets": 177,
+  "complete_datasets": 180,
   "expected_models": 31584,
-  "complete_models": 30014,
+  "complete_models": 30392,
   "expected_rows": 379008,
-  "complete_rows": 360168,
-  "missing_models": 1570,
+  "complete_rows": 364704,
+  "missing_models": 1192,
   "status": "INCOMPLETE"
 }

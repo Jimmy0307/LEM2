@@ -1,0 +1,41 @@
+{
+  "features": [
+    "Airline",
+    "Flight",
+    "AirportFrom",
+    "AirportTo",
+    "DayOfWeek",
+    "Time"
+  ],
+  "target": "class",
+  "continuous": [
+    "Flight",
+    "Time"
+  ],
+  "categorical": [
+    "Airline",
+    "AirportFrom",
+    "AirportTo",
+    "DayOfWeek"
+  ],
+  "raw_sha256": "9969df72e4384ce06ca9f06cb9df1a2a58c02d6575fd66c8651787eb3831360c",
+  "prepared_sha256": "d4ef505b49ed5f7b6a67f59d5c938787ed31800384afcf84107702bc121f3457",
+  "original_rows": 539383,
+  "original_features": 7,
+  "original_feature_names": [
+    "Airline",
+    "Flight",
+    "AirportFrom",
+    "AirportTo",
+    "DayOfWeek",
+    "Time"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://data.openml.org/datasets/0000/1169/dataset_1169.pq",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "OML51:openml_1169",
+  "used_rows": 539383,
+  "cohort": "OML51"
+}
