@@ -1,0 +1,41 @@
+{
+  "features": [
+    "age",
+    "body_type",
+    "diet",
+    "drinks",
+    "drugs",
+    "education"
+  ],
+  "target": "class",
+  "continuous": [
+    "age"
+  ],
+  "categorical": [
+    "body_type",
+    "diet",
+    "drinks",
+    "drugs",
+    "education"
+  ],
+  "raw_sha256": "0abfcf1a1c83360fc4016c95ff08d66448a80652c2c25641e95b8d628122c2a4",
+  "prepared_sha256": "fc41f2f6b8ecdfe10ae675303de5f6b6d14afb042b82932fe01f691fbb903347",
+  "original_rows": 50789,
+  "original_features": 19,
+  "original_feature_names": [
+    "age",
+    "body_type",
+    "diet",
+    "drinks",
+    "drugs",
+    "education"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://data.openml.org/datasets/0004/42734/dataset_42734.pq",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "OML51:openml_42734",
+  "used_rows": 50789,
+  "cohort": "OML51"
+}
