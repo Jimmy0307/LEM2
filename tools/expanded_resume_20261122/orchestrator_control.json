@@ -1,1 +1,1 @@
-{"max_jobs": 10, "max_heavy": 5, "mem_budget_gb": 11, "mem_reserve_gb": 2.0}
+{"max_jobs": 12, "max_heavy": 9, "mem_budget_gb": 14, "mem_reserve_gb": 2.0}

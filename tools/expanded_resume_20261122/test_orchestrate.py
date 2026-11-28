@@ -175,3 +175,16 @@ def test_chunking_and_pending(tmp_path):
         write(ck(main, f'seed01__{sc}.json'), record(1))
     write(ck(main, 'seed02__CENTRALIZED.failure.json'), {})
     assert o.pending_seeds(main, DS) == list(range(2, 43))
+
+
+def test_deferred_datasets_are_scheduled_last_without_dropping_jobs(tmp_path):
+    main = tmp_path / 'main'
+    registry = [{'dataset': d, 'original_rows': 1000} for d in ('A:slow_doomed', 'B:fast', 'C:medium')]
+    profile = {'A:slow_doomed': {'per_model': 2700}, 'B:fast': {'per_model': 10}, 'C:medium': {'per_model': 300}}
+    base = o.plan(main, registry, profile, set())
+    deferred = o.plan(main, registry, profile, set(), frozenset({'A:slow_doomed'}))
+    assert base[0].dataset == 'A:slow_doomed'                       # heaviest-first by default
+    assert sorted(j.key for j in base) == sorted(j.key for j in deferred)   # same jobs, order only
+    first_deferred = next(i for i, j in enumerate(deferred) if j.dataset == 'A:slow_doomed')
+    assert all(j.dataset == 'A:slow_doomed' for j in deferred[first_deferred:])
+    assert deferred[0].dataset == 'C:medium'                          # others keep heaviest-first

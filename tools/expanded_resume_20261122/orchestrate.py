@@ -96,7 +96,7 @@ def chunk(seeds, size):
     return [tuple(seeds[i:i + size]) for i in range(0, len(seeds), size)]
 
 
-def plan(main, registry, profile, only):
+def plan(main, registry, profile, only, defer=frozenset()):
     jobs = []
     for item in registry:
         dataset = item['dataset']
@@ -115,7 +115,8 @@ def plan(main, registry, profile, only):
         size = 1 if per_seed > 600 else 3 if per_seed > 120 else 7 if per_seed > 20 else 42
         for c in chunk(seeds, size):
             jobs.append(Job(dataset, c, per_seed * len(c), round(mem, 2), per_model > 600))
-    return sorted(jobs, key=lambda j: -j.cost)
+    # Deferred datasets (e.g. near-certain per-model timeouts) go last; scheduling only.
+    return sorted(jobs, key=lambda j: (j.dataset in defer, -j.cost))
 
 
 def source_dir(job_dataset, main, cache):
@@ -220,6 +221,8 @@ def run_job(job, a, main, work):
     env = {**os.environ, **THREAD_ENV}
     cmd = [a.python, '-m', 'experiments.expanded_42seeds_20261120.run', '--output', str(shard),
            '--dataset', job.dataset, '--seeds', ','.join(map(str, job.seeds)), '--workers', '1']
+    if getattr(a, 'timeout', None):  # supplementary extended-deadline runs only; default keeps run.py's 2700 s
+        cmd += ['--timeout', str(a.timeout)]
     t0 = time.time()
     with (shard / 'run.log').open('w') as fh:
         code = subprocess.run(cmd, cwd=a.repo, env=env, stdout=fh, stderr=subprocess.STDOUT).returncode
@@ -282,6 +285,8 @@ def main_loop():
     p.add_argument('--snapshot-dir', default='')
     p.add_argument('--source-cache', default='', help='prefetch staging dir written by run.run_dataset')
     p.add_argument('--audit-every-min', type=float, default=30)
+    p.add_argument('--timeout', type=float, default=None, help='per-model deadline passed to run.py (default: run.py default)')
+    p.add_argument('--defer', default='', help='comma list of datasets scheduled after all others (order only)')
     a = p.parse_args()
     sys.path.insert(0, a.repo)
     from experiments.expanded_42seeds_20261120.run import selected_registry, validate_record
@@ -302,7 +307,8 @@ def main_loop():
         if not stats['conflicts'] and stats['source'] != 'SOURCE_CONFLICT':
             shutil.rmtree(shard, ignore_errors=True)
     only = {d for d in a.datasets.split(',') if d}
-    jobs = plan(main, registry, profile, only)
+    defer = frozenset(x for x in a.defer.split(',') if x)
+    jobs = plan(main, registry, profile, only, defer)
     if a.seeds:
         keep = {int(s) for s in a.seeds.split(',')}
         jobs = [Job(j.dataset, tuple(s for s in j.seeds if s in keep), j.cost, j.mem_gb, j.heavy)

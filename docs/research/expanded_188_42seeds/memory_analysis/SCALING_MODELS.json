@@ -1,0 +1,53 @@
+{
+ "n_models": 31404,
+ "rules_model": {
+  "coef": {
+   "intercept": 0.6714641885024469,
+   "log10_train_rows": 0.17907983804031147,
+   "log10_1p_category_values": 0.7381693766386714,
+   "n_categorical": -0.1334500571152644,
+   "n_continuous": -0.039006926479776674,
+   "log10_n_classes": 0.26650485358861686,
+   "federated": 0.15263710181290657
+  },
+  "r2": 0.374976021280247,
+  "residual_sd_log10": 0.542480862054406
+ },
+ "lem2_time_model": {
+  "coef": {
+   "intercept": -4.8114431896224445,
+   "log10_rules": 0.9607490941939894,
+   "log10_train_rows": 0.6527631428064766
+  },
+  "r2": 0.8824595824810182,
+  "residual_sd_log10": 0.34819825750012257,
+  "n": 25953
+ },
+ "wall_time_model": {
+  "coef": {
+   "intercept": -2.9015961551958935,
+   "log10_rules": 0.7371195363092226,
+   "log10_train_rows": 0.4816426981815098
+  },
+  "r2": 0.8088433910024249,
+  "residual_sd_log10": 0.36663839800136877,
+  "n": 30596
+ },
+ "memory_model": {
+  "model": "peak_rss_mb = a + b*(rules*train_rows/1e6) + c*(train_rows/1e3)",
+  "a": 109.09379871854141,
+  "b_per_MB_of_rules_x_rows": 2.06741307758445,
+  "c_per_1000_train_rows": 0.906357665451651,
+  "r2": 0.9739904730811972,
+  "n_models": 31404,
+  "max_support_mb_observed": 399.842313,
+  "max_peak_rss_mb_observed": 1101.26171875
+ },
+ "n_features_distribution_datasets": {
+  "2": 2,
+  "3": 1,
+  "4": 7,
+  "5": 7,
+  "6": 171
+ }
+}

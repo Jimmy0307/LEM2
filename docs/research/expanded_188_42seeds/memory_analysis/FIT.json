@@ -1,0 +1,10 @@
+{
+ "model": "peak_rss_mb = a + b*(rules*train_rows/1e6) + c*(train_rows/1e3)",
+ "a": 109.09379871854141,
+ "b_per_MB_of_rules_x_rows": 2.06741307758445,
+ "c_per_1000_train_rows": 0.906357665451651,
+ "r2": 0.9739904730811972,
+ "n_models": 31404,
+ "max_support_mb_observed": 399.842313,
+ "max_peak_rss_mb_observed": 1101.26171875
+}
