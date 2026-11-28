@@ -219,7 +219,7 @@ def merge(job, shard, main, validate_record):
 def run_job(job, a, main, work):
     shard = seed_job_dir(job, main, work, Path(a.source_cache) if a.source_cache else None)
     env = {**os.environ, **THREAD_ENV}
-    cmd = [a.python, '-m', 'experiments.expanded_42seeds_20261120.run', '--output', str(shard),
+    cmd = [a.python, '-m', a.module, '--output', str(shard),
            '--dataset', job.dataset, '--seeds', ','.join(map(str, job.seeds)), '--workers', '1']
     if getattr(a, 'timeout', None):  # supplementary extended-deadline runs only; default keeps run.py's 2700 s
         cmd += ['--timeout', str(a.timeout)]
@@ -231,7 +231,7 @@ def run_job(job, a, main, work):
 
 def audit(a, main, lock):
     with lock:
-        r = subprocess.run([a.python, '-m', 'experiments.expanded_42seeds_20261120.run', '--audit',
+        r = subprocess.run([a.python, '-m', a.module, '--audit',
                             '--output', str(main)], cwd=a.repo, capture_output=True, text=True)
     lines = (r.stdout.strip().splitlines() or ['{}'])
     try:
@@ -285,11 +285,15 @@ def main_loop():
     p.add_argument('--snapshot-dir', default='')
     p.add_argument('--source-cache', default='', help='prefetch staging dir written by run.run_dataset')
     p.add_argument('--audit-every-min', type=float, default=30)
+    p.add_argument('--module', default='experiments.expanded_42seeds_20261120.run',
+                   help='experiment module run per job (same CLI and checkpoint layout as the default)')
     p.add_argument('--timeout', type=float, default=None, help='per-model deadline passed to run.py (default: run.py default)')
     p.add_argument('--defer', default='', help='comma list of datasets scheduled after all others (order only)')
     a = p.parse_args()
     sys.path.insert(0, a.repo)
-    from experiments.expanded_42seeds_20261120.run import selected_registry, validate_record
+    import importlib
+    _run = importlib.import_module(a.module)
+    selected_registry, validate_record = _run.selected_registry, _run.validate_record
 
     main, work = Path(a.main), Path(a.work)
     work.mkdir(parents=True, exist_ok=True)
