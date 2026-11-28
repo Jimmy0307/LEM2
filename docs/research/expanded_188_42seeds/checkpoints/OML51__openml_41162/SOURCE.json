@@ -1,0 +1,41 @@
+{
+  "features": [
+    "PurchDate",
+    "Auction",
+    "VehYear",
+    "VehicleAge",
+    "Make",
+    "Model"
+  ],
+  "target": "class",
+  "continuous": [
+    "PurchDate"
+  ],
+  "categorical": [
+    "Auction",
+    "VehYear",
+    "VehicleAge",
+    "Make",
+    "Model"
+  ],
+  "raw_sha256": "0cc49df3b51fbf8ad91f99d554304c3e50b82e03ce2e5d929094894a6fd9e310",
+  "prepared_sha256": "d483280f985f374a105c4fe8a0f18babbd54a5ad2ddb8c7999287d7ab6dc63e2",
+  "original_rows": 72983,
+  "original_features": 32,
+  "original_feature_names": [
+    "PurchDate",
+    "Auction",
+    "VehYear",
+    "VehicleAge",
+    "Make",
+    "Model"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://data.openml.org/datasets/0004/41162/dataset_41162.pq",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "OML51:openml_41162",
+  "used_rows": 72983,
+  "cohort": "OML51"
+}
