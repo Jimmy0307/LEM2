@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+# LEM2 container entry point. Outputs go to $LEM2_WORK (/work, mount a host directory there).
+set -euo pipefail
+REPO="${LEM2_REPO_DIR:-/opt/lem2}"
+WORK="${LEM2_WORK:-/work}"
+mkdir -p "$WORK" "${HOME:-$WORK/.home}"
+cd "$REPO"
+
+module_of() {
+  case "${1:-}" in
+    expanded) echo experiments.expanded_42seeds_20261120.run ;;
+    protocol) echo experiments.protocol_compare_20261128.run ;;
+    *) echo "unknown experiment '${1:-}' (use: expanded | protocol)" >&2; exit 2 ;;
+  esac
+}
+
+usage() {
+  cat <<'EOF'
+LEM2 reproduction container   (code commit: see `lem2 version`)
+
+  lem2 version                         code commit, Python and package versions
+  lem2 selftest                        offline unit/equivalence tests (no network)
+  lem2 smoke                           run UCI20:iris seed 1 in both experiments and verify bit-for-bit
+                                       against the published reference results (needs network)
+  lem2 list                            the 188 registered datasets (dataset, rows)
+  lem2 run <expanded|protocol> <DATASET> <SEEDS> [TIMEOUT_S]
+                                       one dataset, e.g.  lem2 run expanded UCI20:iris 1,2,3
+  lem2 run-all <expanded|protocol> [orchestrator options]
+                                       memory-aware parallel run of all (or --datasets A,B) datasets,
+                                       e.g.  lem2 run-all protocol --max-jobs 4 --mem-budget-gb 8
+  lem2 audit <expanded|protocol>       completeness / failure summary of /work/<experiment>
+  lem2 verify <NEW_DIR> <REFERENCE_DIR>
+                                       compare checkpoint JSONs (results must be identical; timing ignored)
+
+Experiments
+  expanded : 188 datasets x 42 seeds x {CENTRALIZED, FED_IID, FED_A05, FED_A01}; 6 policies x 2 rule variants
+  protocol : same grid; 80/20 holdout vs nested 80(64/16)/20 on the same outer test split
+Default per-model deadline is 2,700 s (published main-run contract). Pass a larger TIMEOUT_S
+(or --timeout for run-all) for the extended-deadline variant; results then use a separate contract.
+EOF
+}
+
+cmd="${1:-help}"; shift || true
+case "$cmd" in
+  help|-h|--help) usage ;;
+  version)
+    echo "code commit: $(cat /opt/LEM2_COMMIT 2>/dev/null || git rev-parse HEAD)"
+    python -c "import sys, numpy, pandas, scipy, pyarrow; print('python', sys.version.split()[0], '| numpy', numpy.__version__, '| pandas', pandas.__version__, '| scipy', scipy.__version__, '| pyarrow', pyarrow.__version__)" ;;
+  selftest)
+    python -m pytest -q -p no:cacheprovider tests/test_bitset_union_equivalence.py docker/test_container_contract.py "$@" ;;
+  list)
+    python -c "
+from experiments.expanded_42seeds_20261120.run import selected_registry
+_, c = selected_registry()
+for r in c.sort_values(['original_rows', 'dataset']).itertuples():
+    print(f'{r.dataset:45s} {int(r.original_rows):>10,d}')
+print(len(c), 'datasets')" ;;
+  run)
+    exp="${1:?experiment}"; ds="${2:?dataset}"; seeds="${3:?seeds e.g. 1,2,3}"; timeout="${4:-2700}"
+    python -m "$(module_of "$exp")" --output "$WORK/$exp" --dataset "$ds" --seeds "$seeds" --workers 1 --timeout "$timeout" ;;
+  run-all)
+    exp="${1:?experiment}"; shift
+    timeout=2700; prev=""
+    for a in "$@"; do [ "$prev" = "--timeout" ] && timeout="$a"; prev="$a"; done
+    # The orchestrator copies the run manifest into each job; create it with one tiny model first,
+    # using the same deadline so the contract matches (orchestrator default = run.py default 2700 s).
+    if [ ! -f "$WORK/$exp/RUN_MANIFEST.json" ]; then
+      python -m "$(module_of "$exp")" --output "$WORK/$exp" --dataset UCI20:iris --seeds 1 --workers 1 --timeout "$timeout"
+    fi
+    python -I docker/orchestrate.py --repo "$REPO" --python "$(command -v python)" --module "$(module_of "$exp")" \
+      --main "$WORK/$exp" --work "$WORK/shards-$exp" --profile docker/schedule_profile.json "$@" ;;
+  audit)
+    exp="${1:?experiment}"
+    python -m "$(module_of "$exp")" --audit --output "$WORK/$exp" ;;
+  verify)
+    python docker/verify_results.py "${1:?new dir}" "${2:?reference dir}" ;;
+  smoke)
+    rc=0
+    for exp in expanded protocol; do
+      out="$WORK/smoke-$exp"; rm -rf "$out"
+      python -m "$(module_of "$exp")" --output "$out" --dataset UCI20:iris --seeds 1 --workers 1 --timeout 2700 >/dev/null
+      echo "== $exp"
+      python docker/verify_results.py "$out" "docker/reference/$exp" || rc=1
+    done
+    [ "$rc" = 0 ] && echo "SMOKE PASS" || echo "SMOKE FAIL"
+    exit "$rc" ;;
+  *) echo "unknown command: $cmd" >&2; usage; exit 2 ;;
+esac

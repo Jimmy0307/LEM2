@@ -1,0 +1,754 @@
+{
+ "COMMERCE2:ai4i_maintenance": {
+  "per_model": 1.02,
+  "rss_mb": 139.5
+ },
+ "COMMERCE2:online_shoppers": {
+  "per_model": 0.68,
+  "rss_mb": 137.1
+ },
+ "EXT7:cmc": {
+  "per_model": 0.28,
+  "rss_mb": 124.8
+ },
+ "EXT7:glass": {
+  "per_model": 0.22,
+  "rss_mb": 124.4
+ },
+ "EXT7:nursery": {
+  "per_model": 13.94,
+  "rss_mb": 195.9
+ },
+ "EXT7:tictactoe": {
+  "per_model": 0.35,
+  "rss_mb": 124.5
+ },
+ "EXT7:voting_records": {
+  "per_model": 0.21,
+  "rss_mb": 124.2
+ },
+ "EXT7:wisconsin_original": {
+  "per_model": 0.17,
+  "rss_mb": 124.6
+ },
+ "EXT7:zoo": {
+  "per_model": 0.16,
+  "rss_mb": 124.2
+ },
+ "NEXT12:blood_donation": {
+  "per_model": 0.09,
+  "rss_mb": 123.7
+ },
+ "NEXT12:fertility": {
+  "per_model": 0.19,
+  "rss_mb": 124.2
+ },
+ "NEXT12:heart_disease": {
+  "per_model": 0.21,
+  "rss_mb": 124.1
+ },
+ "NEXT12:image_segmentation": {
+  "per_model": 0.26,
+  "rss_mb": 124.3
+ },
+ "NEXT12:ionosphere": {
+  "per_model": 0.21,
+  "rss_mb": 124.3
+ },
+ "NEXT12:raisin_grains": {
+  "per_model": 0.26,
+  "rss_mb": 125.1
+ },
+ "NEXT12:student_dropout": {
+  "per_model": 1.63,
+  "rss_mb": 134.9
+ },
+ "NEXT12:student_performance": {
+  "per_model": 0.25,
+  "rss_mb": 124.4
+ },
+ "NEXT12:vehicle_silhouettes": {
+  "per_model": 0.27,
+  "rss_mb": 124.4
+ },
+ "NEXT12:vertebral_column": {
+  "per_model": 0.23,
+  "rss_mb": 124.3
+ },
+ "NEXT12:wine_quality_ordinal_to_binary": {
+  "per_model": 0.37,
+  "rss_mb": 130.6
+ },
+ "NEXT12:yeast_localization": {
+  "per_model": 0.35,
+  "rss_mb": 124.1
+ },
+ "O3:Balance Scale": {
+  "per_model": 0.18,
+  "rss_mb": 124.2
+ },
+ "O3:Car Evaluation": {
+  "per_model": 0.57,
+  "rss_mb": 125.9
+ },
+ "O3:Hayes-Roth": {
+  "per_model": 0.1,
+  "rss_mb": 124.1
+ },
+ "OML51:openml_1049": {
+  "per_model": 0.24,
+  "rss_mb": 132.4
+ },
+ "OML51:openml_1050": {
+  "per_model": 0.22,
+  "rss_mb": 132.4
+ },
+ "OML51:openml_1053": {
+  "per_model": 0.28,
+  "rss_mb": 148.5
+ },
+ "OML51:openml_1063": {
+  "per_model": 0.1,
+  "rss_mb": 133.4
+ },
+ "OML51:openml_1067": {
+  "per_model": 0.28,
+  "rss_mb": 132.8
+ },
+ "OML51:openml_1068": {
+  "per_model": 0.1,
+  "rss_mb": 135.3
+ },
+ "OML51:openml_1169": {
+  "per_model": 2565.15,
+  "rss_mb": 398.9
+ },
+ "OML51:openml_1468": {
+  "per_model": 0.14,
+  "rss_mb": 141.7
+ },
+ "OML51:openml_1475": {
+  "per_model": 0.45,
+  "rss_mb": 140.9
+ },
+ "OML51:openml_1478": {
+  "per_model": 0.55,
+  "rss_mb": 303.9
+ },
+ "OML51:openml_1480": {
+  "per_model": 0.14,
+  "rss_mb": 133.0
+ },
+ "OML51:openml_1485": {
+  "per_model": 0.4,
+  "rss_mb": 168.2
+ },
+ "OML51:openml_1486": {
+  "per_model": 1.32,
+  "rss_mb": 221.1
+ },
+ "OML51:openml_1487": {
+  "per_model": 0.29,
+  "rss_mb": 133.2
+ },
+ "OML51:openml_1494": {
+  "per_model": 0.26,
+  "rss_mb": 130.1
+ },
+ "OML51:openml_1497": {
+  "per_model": 0.58,
+  "rss_mb": 141.7
+ },
+ "OML51:openml_1501": {
+  "per_model": 0.22,
+  "rss_mb": 133.9
+ },
+ "OML51:openml_151": {
+  "per_model": 1.99,
+  "rss_mb": 202.9
+ },
+ "OML51:openml_188": {
+  "per_model": 0.13,
+  "rss_mb": 130.2
+ },
+ "OML51:openml_23381": {
+  "per_model": 0.26,
+  "rss_mb": 131.4
+ },
+ "OML51:openml_23517": {
+  "per_model": 20.24,
+  "rss_mb": 299.2
+ },
+ "OML51:openml_37": {
+  "per_model": 0.19,
+  "rss_mb": 133.7
+ },
+ "OML51:openml_40966": {
+  "per_model": 0.27,
+  "rss_mb": 133.5
+ },
+ "OML51:openml_40978": {
+  "per_model": 0.2,
+  "rss_mb": 172.0
+ },
+ "OML51:openml_40982": {
+  "per_model": 0.21,
+  "rss_mb": 132.7
+ },
+ "OML51:openml_40983": {
+  "per_model": 0.17,
+  "rss_mb": 134.3
+ },
+ "OML51:openml_40994": {
+  "per_model": 0.21,
+  "rss_mb": 133.5
+ },
+ "OML51:openml_40996": {
+  "per_model": 1.59,
+  "rss_mb": 332.7
+ },
+ "OML51:openml_41027": {
+  "per_model": 2581.55,
+  "rss_mb": 239.4
+ },
+ "OML51:openml_41142": {
+  "per_model": 0.36,
+  "rss_mb": 375.1
+ },
+ "OML51:openml_41143": {
+  "per_model": 0.25,
+  "rss_mb": 134.0
+ },
+ "OML51:openml_41144": {
+  "per_model": 0.41,
+  "rss_mb": 151.7
+ },
+ "OML51:openml_41145": {
+  "per_model": 0.39,
+  "rss_mb": 195.9
+ },
+ "OML51:openml_41146": {
+  "per_model": 0.57,
+  "rss_mb": 143.7
+ },
+ "OML51:openml_41150": {
+  "per_model": 0.66,
+  "rss_mb": 337.2
+ },
+ "OML51:openml_41156": {
+  "per_model": 0.3,
+  "rss_mb": 136.7
+ },
+ "OML51:openml_41158": {
+  "per_model": 0.28,
+  "rss_mb": 151.6
+ },
+ "OML51:openml_41162": {
+  "per_model": 2315.33,
+  "rss_mb": 575.1
+ },
+ "OML51:openml_41164": {
+  "per_model": 0.29,
+  "rss_mb": 264.4
+ },
+ "OML51:openml_41166": {
+  "per_model": 0.32,
+  "rss_mb": 354.4
+ },
+ "OML51:openml_41168": {
+  "per_model": 3.4,
+  "rss_mb": 332.7
+ },
+ "OML51:openml_4134": {
+  "per_model": 0.35,
+  "rss_mb": 240.9
+ },
+ "OML51:openml_4135": {
+  "per_model": 2157.28,
+  "rss_mb": 424.3
+ },
+ "OML51:openml_42732": {
+  "per_model": 2700.0,
+  "rss_mb": 1200.0
+ },
+ "OML51:openml_42733": {
+  "per_model": 2378.55,
+  "rss_mb": 516.7
+ },
+ "OML51:openml_42734": {
+  "per_model": 1409.98,
+  "rss_mb": 473.6
+ },
+ "OML51:openml_42742": {
+  "per_model": 850.57,
+  "rss_mb": 963.6
+ },
+ "OML51:openml_42769": {
+  "per_model": 44.88,
+  "rss_mb": 1187.9
+ },
+ "OML51:openml_4538": {
+  "per_model": 0.64,
+  "rss_mb": 151.3
+ },
+ "OML51:openml_4541": {
+  "per_model": 121.98,
+  "rss_mb": 365.8
+ },
+ "OML51:openml_6332": {
+  "per_model": 0.2,
+  "rss_mb": 130.3
+ },
+ "PMLB:GAMETES_Epistasis_2_Way_1000atts_0.4H_EDM_1_EDM_1_1": {
+  "per_model": 0.35,
+  "rss_mb": 122.3
+ },
+ "PMLB:GAMETES_Epistasis_2_Way_20atts_0.1H_EDM_1_1": {
+  "per_model": 0.42,
+  "rss_mb": 126.1
+ },
+ "PMLB:GAMETES_Epistasis_2_Way_20atts_0.4H_EDM_1_1": {
+  "per_model": 0.32,
+  "rss_mb": 125.7
+ },
+ "PMLB:GAMETES_Epistasis_3_Way_20atts_0.2H_EDM_1_1": {
+  "per_model": 0.41,
+  "rss_mb": 126.0
+ },
+ "PMLB:GAMETES_Heterogeneity_20atts_1600_Het_0.4_0.2_50_EDM_2_001": {
+  "per_model": 0.39,
+  "rss_mb": 125.4
+ },
+ "PMLB:GAMETES_Heterogeneity_20atts_1600_Het_0.4_0.2_75_EDM_2_001": {
+  "per_model": 0.39,
+  "rss_mb": 126.1
+ },
+ "PMLB:Hill_Valley_with_noise": {
+  "per_model": 0.14,
+  "rss_mb": 124.3
+ },
+ "PMLB:Hill_Valley_without_noise": {
+  "per_model": 0.07,
+  "rss_mb": 124.8
+ },
+ "PMLB:allbp": {
+  "per_model": 0.43,
+  "rss_mb": 127.4
+ },
+ "PMLB:allhyper": {
+  "per_model": 0.42,
+  "rss_mb": 127.4
+ },
+ "PMLB:allhypo": {
+  "per_model": 0.38,
+  "rss_mb": 127.5
+ },
+ "PMLB:allrep": {
+  "per_model": 0.43,
+  "rss_mb": 127.7
+ },
+ "PMLB:analcatdata_authorship": {
+  "per_model": 0.39,
+  "rss_mb": 124.3
+ },
+ "PMLB:analcatdata_dmft": {
+  "per_model": 0.18,
+  "rss_mb": 124.6
+ },
+ "PMLB:analcatdata_germangss": {
+  "per_model": 0.21,
+  "rss_mb": 124.3
+ },
+ "PMLB:analcatdata_lawsuit": {
+  "per_model": 0.07,
+  "rss_mb": 123.9
+ },
+ "PMLB:ann_thyroid": {
+  "per_model": 0.43,
+  "rss_mb": 130.9
+ },
+ "PMLB:auto_insurance_symboling": {
+  "per_model": 0.27,
+  "rss_mb": 124.3
+ },
+ "PMLB:backache": {
+  "per_model": 0.17,
+  "rss_mb": 124.3
+ },
+ "PMLB:banana": {
+  "per_model": 0.09,
+  "rss_mb": 125.5
+ },
+ "PMLB:biomed": {
+  "per_model": 0.24,
+  "rss_mb": 124.0
+ },
+ "PMLB:breast_cancer": {
+  "per_model": 0.16,
+  "rss_mb": 124.3
+ },
+ "PMLB:bupa": {
+  "per_model": 0.16,
+  "rss_mb": 124.4
+ },
+ "PMLB:calendarDOW": {
+  "per_model": 0.29,
+  "rss_mb": 124.7
+ },
+ "PMLB:cars": {
+  "per_model": 0.23,
+  "rss_mb": 124.1
+ },
+ "PMLB:chess": {
+  "per_model": 0.36,
+  "rss_mb": 126.7
+ },
+ "PMLB:churn": {
+  "per_model": 0.65,
+  "rss_mb": 130.8
+ },
+ "PMLB:clean1": {
+  "per_model": 0.09,
+  "rss_mb": 120.7
+ },
+ "PMLB:clean2": {
+  "per_model": 0.14,
+  "rss_mb": 124.4
+ },
+ "PMLB:coil2000": {
+  "per_model": 2.03,
+  "rss_mb": 148.0
+ },
+ "PMLB:connect_4": {
+  "per_model": 2.17,
+  "rss_mb": 216.4
+ },
+ "PMLB:corral": {
+  "per_model": 0.17,
+  "rss_mb": 124.0
+ },
+ "PMLB:credit_approval_australia": {
+  "per_model": 0.22,
+  "rss_mb": 124.9
+ },
+ "PMLB:dermatology": {
+  "per_model": 0.25,
+  "rss_mb": 124.7
+ },
+ "PMLB:dis": {
+  "per_model": 0.32,
+  "rss_mb": 127.2
+ },
+ "PMLB:dna": {
+  "per_model": 0.06,
+  "rss_mb": 121.8
+ },
+ "PMLB:ecoli": {
+  "per_model": 0.25,
+  "rss_mb": 124.4
+ },
+ "PMLB:fars": {
+  "per_model": 7.42,
+  "rss_mb": 243.3
+ },
+ "PMLB:flags": {
+  "per_model": 0.28,
+  "rss_mb": 124.6
+ },
+ "PMLB:glass2": {
+  "per_model": 0.17,
+  "rss_mb": 124.4
+ },
+ "PMLB:heart_disease_hungarian": {
+  "per_model": 0.21,
+  "rss_mb": 124.4
+ },
+ "PMLB:heart_disease_va_long_beach": {
+  "per_model": 0.2,
+  "rss_mb": 124.3
+ },
+ "PMLB:hepatitis": {
+  "per_model": 0.23,
+  "rss_mb": 124.0
+ },
+ "PMLB:horse_colic_lesion_type": {
+  "per_model": 0.29,
+  "rss_mb": 123.9
+ },
+ "PMLB:horse_colic_outcome": {
+  "per_model": 0.25,
+  "rss_mb": 124.1
+ },
+ "PMLB:horse_colic_surgery": {
+  "per_model": 0.25,
+  "rss_mb": 124.6
+ },
+ "PMLB:hypothyroid": {
+  "per_model": 0.31,
+  "rss_mb": 126.7
+ },
+ "PMLB:irish": {
+  "per_model": 0.15,
+  "rss_mb": 124.2
+ },
+ "PMLB:kr_vs_kp": {
+  "per_model": 0.35,
+  "rss_mb": 126.3
+ },
+ "PMLB:led24": {
+  "per_model": 0.32,
+  "rss_mb": 126.3
+ },
+ "PMLB:led7": {
+  "per_model": 0.31,
+  "rss_mb": 126.8
+ },
+ "PMLB:mfeat_factors": {
+  "per_model": 0.35,
+  "rss_mb": 121.5
+ },
+ "PMLB:mfeat_fourier": {
+  "per_model": 0.49,
+  "rss_mb": 124.9
+ },
+ "PMLB:mfeat_karhunen": {
+  "per_model": 0.56,
+  "rss_mb": 124.6
+ },
+ "PMLB:mfeat_morphological": {
+  "per_model": 0.41,
+  "rss_mb": 124.9
+ },
+ "PMLB:mfeat_pixel": {
+  "per_model": 0.47,
+  "rss_mb": 122.2
+ },
+ "PMLB:mfeat_zernike": {
+  "per_model": 0.45,
+  "rss_mb": 124.7
+ },
+ "PMLB:mnist": {
+  "per_model": 0.49,
+  "rss_mb": 187.4
+ },
+ "PMLB:mofn_3_7_10": {
+  "per_model": 0.23,
+  "rss_mb": 124.9
+ },
+ "PMLB:monk1": {
+  "per_model": 0.13,
+  "rss_mb": 124.7
+ },
+ "PMLB:monk2": {
+  "per_model": 0.29,
+  "rss_mb": 124.5
+ },
+ "PMLB:monk3": {
+  "per_model": 0.21,
+  "rss_mb": 125.0
+ },
+ "PMLB:new_thyroid": {
+  "per_model": 0.12,
+  "rss_mb": 123.9
+ },
+ "PMLB:optdigits": {
+  "per_model": 0.51,
+  "rss_mb": 127.7
+ },
+ "PMLB:page_blocks": {
+  "per_model": 0.4,
+  "rss_mb": 127.0
+ },
+ "PMLB:parity5+5": {
+  "per_model": 0.16,
+  "rss_mb": 125.3
+ },
+ "PMLB:pendigits": {
+  "per_model": 0.93,
+  "rss_mb": 132.2
+ },
+ "PMLB:penguins": {
+  "per_model": 0.16,
+  "rss_mb": 124.1
+ },
+ "PMLB:phoneme": {
+  "per_model": 0.26,
+  "rss_mb": 127.7
+ },
+ "PMLB:prnn_crabs": {
+  "per_model": 0.18,
+  "rss_mb": 124.1
+ },
+ "PMLB:prnn_synth": {
+  "per_model": 0.03,
+  "rss_mb": 121.0
+ },
+ "PMLB:profb": {
+  "per_model": 0.3,
+  "rss_mb": 124.3
+ },
+ "PMLB:ring": {
+  "per_model": 0.65,
+  "rss_mb": 131.7
+ },
+ "PMLB:saheart": {
+  "per_model": 0.22,
+  "rss_mb": 124.2
+ },
+ "PMLB:satimage": {
+  "per_model": 0.52,
+  "rss_mb": 128.2
+ },
+ "PMLB:schizo": {
+  "per_model": 0.29,
+  "rss_mb": 124.5
+ },
+ "PMLB:shuttle": {
+  "per_model": 1.83,
+  "rss_mb": 180.7
+ },
+ "PMLB:sleep": {
+  "per_model": 22.89,
+  "rss_mb": 288.7
+ },
+ "PMLB:spect": {
+  "per_model": 0.18,
+  "rss_mb": 124.6
+ },
+ "PMLB:spectf": {
+  "per_model": 0.3,
+  "rss_mb": 124.5
+ },
+ "PMLB:splice": {
+  "per_model": 2.81,
+  "rss_mb": 141.7
+ },
+ "PMLB:tae": {
+  "per_model": 0.19,
+  "rss_mb": 124.2
+ },
+ "PMLB:texture": {
+  "per_model": 0.4,
+  "rss_mb": 127.3
+ },
+ "PMLB:threeOf9": {
+  "per_model": 0.22,
+  "rss_mb": 124.2
+ },
+ "PMLB:titanic": {
+  "per_model": 0.3,
+  "rss_mb": 126.7
+ },
+ "PMLB:tokyo1": {
+  "per_model": 0.21,
+  "rss_mb": 124.3
+ },
+ "PMLB:twonorm": {
+  "per_model": 0.71,
+  "rss_mb": 132.5
+ },
+ "PMLB:vowel": {
+  "per_model": 0.26,
+  "rss_mb": 124.4
+ },
+ "PMLB:waveform_21": {
+  "per_model": 0.52,
+  "rss_mb": 129.7
+ },
+ "PMLB:waveform_40": {
+  "per_model": 0.57,
+  "rss_mb": 129.9
+ },
+ "PMLB:wine_quality_red": {
+  "per_model": 0.42,
+  "rss_mb": 124.8
+ },
+ "PMLB:wine_quality_white": {
+  "per_model": 0.42,
+  "rss_mb": 126.9
+ },
+ "PMLB:xd6": {
+  "per_model": 0.29,
+  "rss_mb": 124.5
+ },
+ "UCI20:adult_income": {
+  "per_model": 608.96,
+  "rss_mb": 344.7
+ },
+ "UCI20:bank_marketing": {
+  "per_model": 6.7,
+  "rss_mb": 194.7
+ },
+ "UCI20:banknote": {
+  "per_model": 0.12,
+  "rss_mb": 125.1
+ },
+ "UCI20:breast_diagnostic": {
+  "per_model": 0.22,
+  "rss_mb": 124.3
+ },
+ "UCI20:covertype": {
+  "per_model": 43.24,
+  "rss_mb": 639.6
+ },
+ "UCI20:dry_bean": {
+  "per_model": 0.61,
+  "rss_mb": 138.2
+ },
+ "UCI20:eeg_eye_state": {
+  "per_model": 0.14,
+  "rss_mb": 135.1
+ },
+ "UCI20:german_credit": {
+  "per_model": 0.3,
+  "rss_mb": 124.3
+ },
+ "UCI20:grid_stability": {
+  "per_model": 5.23,
+  "rss_mb": 161.6
+ },
+ "UCI20:haberman": {
+  "per_model": 0.04,
+  "rss_mb": 120.8
+ },
+ "UCI20:htru2": {
+  "per_model": 0.71,
+  "rss_mb": 144.6
+ },
+ "UCI20:iris": {
+  "per_model": 0.07,
+  "rss_mb": 120.8
+ },
+ "UCI20:letter": {
+  "per_model": 78.58,
+  "rss_mb": 286.9
+ },
+ "UCI20:magic_gamma": {
+  "per_model": 0.66,
+  "rss_mb": 139.5
+ },
+ "UCI20:mushroom": {
+  "per_model": 0.46,
+  "rss_mb": 132.0
+ },
+ "UCI20:phishing": {
+  "per_model": 0.62,
+  "rss_mb": 142.1
+ },
+ "UCI20:rice": {
+  "per_model": 0.39,
+  "rss_mb": 126.7
+ },
+ "UCI20:sonar": {
+  "per_model": 0.18,
+  "rss_mb": 124.1
+ },
+ "UCI20:spambase": {
+  "per_model": 0.31,
+  "rss_mb": 135.4
+ },
+ "UCI20:wine": {
+  "per_model": 0.26,
+  "rss_mb": 124.3
+ }
+}
