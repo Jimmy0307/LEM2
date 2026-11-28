@@ -60,3 +60,19 @@ docker run --rm -v "$PWD/lem2-work:/work" -v "$PWD/published:/ref" lem2:20261128
   - 隨機比對與真實資料逐值比對都已驗證；
   - `smoke` 也會再驗證一次。
 - 執行合約（`RUN_MANIFEST.json`）裡的 `git_revision` 是這個映像的程式 commit，不會和已發布主實驗的 `56e293c` 相同；所以要比對的是**結果**，不是合約。
+
+## 7. 不建置、直接載入映像檔（離線發佈）
+已建好的映像檔（約 256 MB，gzip 壓縮）可以直接拷給別人：
+```bash
+docker load -i lem2_20261128_image.tar.gz        # 載入後名稱為 lem2:20261128
+sha256sum lem2_20261128_image.tar.gz             # 應為 1edb7544baaa33a2beaf1865c0b88eab0568557586d74d9ab0883612277add0c
+```
+映像 ID：`sha256:92b4a5e15f91fab325e0b69c5ed78e5ba75977cdbf22063c6ccda974f92ac1f3`，程式 commit：`5a752eb`。
+
+## 8. 驗收紀錄（2026-11-28，WSL2 Ubuntu + Docker 29.1.3）
+| 檢查 | 結果 |
+|---|---|
+| `lem2 version` | commit 5a752eb；Python 3.12.3、numpy 2.3.5、pandas 2.2.3、scipy 1.18.1、pyarrow 26.0.1 |
+| `lem2 selftest`（`--network none` 斷網） | 40 passed |
+| `lem2 smoke` | expanded 4/4、protocol 4/4 與已發布結果逐值相同，SMOKE PASS |
+| `lem2 run-all expanded --datasets UCI20:iris` | 42 Seeds × 4 情境共 168 個模型，與已發布結果 168/168 逐值相同 |
