@@ -1,0 +1,40 @@
+{
+  "features": [
+    "white_piece0_strength",
+    "white_piece0_file",
+    "white_piece0_rank",
+    "black_piece0_strength",
+    "black_piece0_file",
+    "black_piece0_rank"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [
+    "white_piece0_strength",
+    "white_piece0_file",
+    "white_piece0_rank",
+    "black_piece0_strength",
+    "black_piece0_file",
+    "black_piece0_rank"
+  ],
+  "raw_sha256": "64c739429fea003f8cdf646441bb42a8e881316a5c3aadb01c46ae9954177fc0",
+  "prepared_sha256": "1174ae9354253c81ebfa88dd2de4281cf9fcfe60a8ad8a40b6ac5f06ada8313d",
+  "original_rows": 44819,
+  "original_features": 6,
+  "original_feature_names": [
+    "white_piece0_strength",
+    "white_piece0_file",
+    "white_piece0_rank",
+    "black_piece0_strength",
+    "black_piece0_file",
+    "black_piece0_rank"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://data.openml.org/datasets/0004/41027/dataset_41027.pq",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "OML51:openml_41027",
+  "used_rows": 44819,
+  "cohort": "OML51"
+}

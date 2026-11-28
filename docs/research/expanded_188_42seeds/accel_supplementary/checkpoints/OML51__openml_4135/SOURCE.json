@@ -1,0 +1,40 @@
+{
+  "features": [
+    "RESOURCE",
+    "MGR_ID",
+    "ROLE_ROLLUP_1",
+    "ROLE_ROLLUP_2",
+    "ROLE_DEPTNAME",
+    "ROLE_TITLE"
+  ],
+  "target": "class",
+  "continuous": [],
+  "categorical": [
+    "RESOURCE",
+    "MGR_ID",
+    "ROLE_ROLLUP_1",
+    "ROLE_ROLLUP_2",
+    "ROLE_DEPTNAME",
+    "ROLE_TITLE"
+  ],
+  "raw_sha256": "ae08d2d1e14ef63f4d0924f0bdfd0dbaca9594613456969c01b0e66076ae1cd6",
+  "prepared_sha256": "38b8bb47518eac0adca9ecc26ea9aa8619ba1a025174788f3eb11dbf4ebb4d78",
+  "original_rows": 32769,
+  "original_features": 9,
+  "original_feature_names": [
+    "RESOURCE",
+    "MGR_ID",
+    "ROLE_ROLLUP_1",
+    "ROLE_ROLLUP_2",
+    "ROLE_DEPTNAME",
+    "ROLE_TITLE"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://data.openml.org/datasets/0000/4135/dataset_4135.pq",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "OML51:openml_4135",
+  "used_rows": 32769,
+  "cohort": "OML51"
+}

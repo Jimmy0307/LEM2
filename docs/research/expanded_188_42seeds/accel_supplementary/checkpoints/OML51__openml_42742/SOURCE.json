@@ -1,0 +1,41 @@
+{
+  "features": [
+    "ps_ind_01",
+    "ps_ind_02_cat",
+    "ps_ind_03",
+    "ps_ind_04_cat",
+    "ps_ind_05_cat",
+    "ps_ind_06_bin"
+  ],
+  "target": "class",
+  "continuous": [
+    "ps_ind_03"
+  ],
+  "categorical": [
+    "ps_ind_01",
+    "ps_ind_02_cat",
+    "ps_ind_04_cat",
+    "ps_ind_05_cat",
+    "ps_ind_06_bin"
+  ],
+  "raw_sha256": "8b0cfdc8729fd5eff4977d5b1c008ec3aa99367527b97d6a741bd51a798b0505",
+  "prepared_sha256": "f6d9812bd2a2c4cbdbe016710d092c57620fc5abf9d450c62957f2e78b436a00",
+  "original_rows": 595212,
+  "original_features": 57,
+  "original_feature_names": [
+    "ps_ind_01",
+    "ps_ind_02_cat",
+    "ps_ind_03",
+    "ps_ind_04_cat",
+    "ps_ind_05_cat",
+    "ps_ind_06_bin"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://data.openml.org/datasets/0004/42742/dataset_42742.pq",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "OML51:openml_42742",
+  "used_rows": 595212,
+  "cohort": "OML51"
+}
