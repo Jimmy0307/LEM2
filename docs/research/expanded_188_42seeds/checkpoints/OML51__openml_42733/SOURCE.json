@@ -1,0 +1,41 @@
+{
+  "features": [
+    "impression",
+    "url_hash",
+    "ad_id",
+    "advertiser_id",
+    "depth",
+    "position"
+  ],
+  "target": "class",
+  "continuous": [
+    "impression",
+    "url_hash"
+  ],
+  "categorical": [
+    "ad_id",
+    "advertiser_id",
+    "depth",
+    "position"
+  ],
+  "raw_sha256": "8904ac5fda29ed793fb06c83ffb17907c3b331df1444192badbae84d1a683bca",
+  "prepared_sha256": "6f808a511754d2acc2de76fd9b844b273baf2637bf80235505cf05508f12b081",
+  "original_rows": 39948,
+  "original_features": 11,
+  "original_feature_names": [
+    "impression",
+    "url_hash",
+    "ad_id",
+    "advertiser_id",
+    "depth",
+    "position"
+  ],
+  "dropped_classes": {},
+  "source_url": "https://data.openml.org/datasets/0004/42733/dataset_42733.pq",
+  "dynamic_types": false,
+  "missing_treatments": {},
+  "excluded_features": [],
+  "dataset": "OML51:openml_42733",
+  "used_rows": 39948,
+  "cohort": "OML51"
+}
